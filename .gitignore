@@ -1,0 +1,6 @@
+.htaccess
+*/.DS_Store
+*.DS_Store
+*/Runtime/
+*/Uploads/
+*/Application/Runtime/
