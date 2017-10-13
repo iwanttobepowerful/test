@@ -1,0 +1,149 @@
+<include file="Common:header" title="后台首页"/>
+<script src="__PUBLIC__/static/js/jquery.form.js"></script>
+<div id="page-wrapper">
+	<include file="Common:breadcrumb" />
+	<div id="page-inner" class="container">
+			<div class="search-form">
+				<button type="button" class="btn btn-primary btn-sm" onclick="addGroup()"><i class="glyphicon glyphicon-plus"></i> 添加</button>
+			</div>
+			<table class="table table-bordered table-striped table-hover">
+					<thead>
+						<th>角色名称</th>
+						<th>状态</th>
+						<th>管理操作</th>
+					</thead>
+					<tbody>
+						<volist name="list" id="vo">
+						<tr>
+						<td>{$vo.rolename}</td>
+						<td><if condition="$vo.status == 1"><span class="text-success">正常</span><else /><span class="text-danger">禁用</span></if></td>
+						<td>
+							<a href="javascript:;" onclick="editGroup({$vo.id})" class="glyphicon glyphicon-edit">修改</a>
+							&nbsp;&nbsp;<a href="{:U('/admin/auth/group')}?id={$vo.id}" class="glyphicon glyphicon-cog">分配权限</a>
+						</td>
+						</tr>
+						</volist>
+					</tbody>
+				</table>
+				<div class="clearfix"></div>
+	</div>
+</div>
+
+<!-- 模态框（Modal) -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <form class="form-horizontal" id="myform" action="" method="post">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="createModalLabel">添加角色</h4>
+            </div>
+            <div class="modal-body form-horizontal">
+            	<input type="hidden" name="modid" value="0" />
+             	
+             	<div class="form-group form-group-sm">
+             		<label class="col-sm-3 control-label talign-right fz13">角色名称</label>
+				    <div class="col-sm-7">
+				    	<input type="text" class="form-control" name="rolename">
+				    </div>
+                    <div class="clearfix"></div>
+             	</div>
+             	<div class="form-group form-group-sm">
+             		<label class="col-sm-3 control-label talign-right fz13">状态</label>
+				    <div class="col-sm-7">
+				    	<input type="radio" name="status" value="1"> 开启&nbsp;
+				    	<input type="radio" name="status" value="0"> 禁用
+				    </div>
+                    <div class="clearfix"></div>
+             	</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="submit" class="btn btn-primary" onclick="doAddGroup()">确定</button>
+            </div>
+        </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<script type="text/javascript">
+function addGroup(){
+	var modal = $("#editModal");
+	modal.find("input[name='modid']").val(0);
+	modal.modal();
+}
+function editGroup(id){
+	var modal = $("#editModal");
+	if(typeof id=='undefined') return;
+	
+	$.ajax({
+		type:"post",
+		url:"{:U('/admin/auth/getGroup')}",
+		dataType:"json",
+		data:{"id":id},
+		success:function(ret){
+			if(ret.msg=='succ'){
+				var info = ret.info;
+				if(info){
+					modal.find("input[name='modid']").val(info.id);
+					modal.find("input[name='rolename']").val(info.rolename);
+					modal.find("input[name='status'][value="+info.status+"]").prop('checked',true);
+				}				
+				modal.modal();
+			}
+		}
+	});
+}
+function doAddGroup(){
+	var options = {
+    	url: "{:U('/admin/auth/doAddGroup')}",
+    	dataType: 'json',
+    	beforeSubmit: function(){
+			return true;
+    	},
+        success: function (data) {
+        	if(data.msg=='succ'){
+        		var _options = {"text":"修改成功！","action":function(){window.location.reload();}};
+                doAlertDialog(_options);
+        	}else{
+        		var _options = {"text":"修改失败！"};
+        		if(data.msg) _options.text = data.msg;
+        		doAlertDialog(_options);
+        	}
+        }
+    };
+    $("#myform").ajaxForm(options);
+    return false;
+}
+function deleteNav(id){
+	if(typeof id=='undefined') return;
+	var options = {"flag":"error","text":"您确定要删除吗！","buttons":{"ok":{"action":function(){doDeleteNav(id);}},"cancel":{}}};
+    	doConfirmDialog(options);
+}
+function doDeleteNav(id){
+	var modal = $("#editModal");
+	if(typeof id=='undefined') return;
+	$.ajax({
+		type:"post",
+		url:"{:U('/admin/auth/doDelete')}",
+		dataType:"json",
+		data:{"id":id},
+		success:function(ret){
+			if(ret.msg=='succ'){
+				var _options = {
+					"text":"删除成功",
+					"flag":'success',
+					"action":function(){
+						window.location.reload();
+					}
+					
+				};
+		        doAlertDialog(_options); 
+			}else{
+				var _options = {"text":ret.msg,"flag":"error"};
+		        doAlertDialog(_options);  
+			}
+		}
+	});
+}
+</script>
+<include file="Common:footer" />

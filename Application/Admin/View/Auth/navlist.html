@@ -1,0 +1,327 @@
+<include file="Common:header" title="后台首页"/>
+<script src="__PUBLIC__/static/js/jquery.form.js"></script>
+<div id="page-wrapper">
+	<include file="Common:breadcrumb" />
+	<div id="page-inner" class="container">			
+			<div class="search-form">
+				<button type="button" class="btn btn-primary btn-sm" onclick="addNav()"><i class="glyphicon glyphicon-plus"></i> 添加</button>
+			</div>
+			<table class="table table-bordered table-striped table-hover">
+					<thead>
+						<th>菜单标题</th>
+						<th>访问地址</th>
+						<th>path路径</th>
+						<th>添加日期</th>
+						<th>排序</th>
+						<th>状态</th>
+						<th>管理操作</th>
+					</thead>
+					<tbody>
+						<?php 
+							if(isset($list) && $list){
+								foreach($list as $k=>$v){
+						?>
+					    <tr>
+				            <td colspan=""><strong class="text-primary">┬</strong>&nbsp;<?php echo $v['name'];?></td>
+				            <td>无需</td>
+							<td>{$v['path']}</td>
+							<td>{$v['addtime']}</td>			
+							<td>{$v['disorder']}</td>
+							<td><?php echo ($v['status'] ==0)?"<font color='red'>关闭</font>":'开启'; ?></td>
+				            <td class="text-center"><a href="javascript:;" onclick="editNav({$v['id']})" class="glyphicon glyphicon-edit"></a>&nbsp;&nbsp;<a href="javascript:;" onclick="addNav({$v['id']})" class="glyphicon glyphicon-plus"></a>
+				            <if condition="$v['status']=='0'">
+				            &nbsp;&nbsp;<a href="javascript:;" onclick="deleteNav({$v['id']})" class="glyphicon glyphicon-trash"></a>
+				            </if>
+				            </td>
+				        </tr>
+						<?php 
+							if(isset($v['childs']) && $v['childs']){
+								foreach($v['childs'] as $child_key=>$child_val){
+								
+						?>
+						<tr>
+				            <td colspan="">&nbsp;<strong class="text-danger">├</strong>&nbsp;<?php echo $child_val['name'];?></td>
+				            <td>{$child_val['url']}</td>
+							<td>{$child_val['path']}</td>
+							<td>{$child_val['addtime']}</td>
+							<td>{$child_val['disorder']}</td>
+				            <td><?php echo ($child_val['status'] ==0)?"<font color='red'>关闭</font>":'开启'; ?></td>
+							
+							<td class="text-center"><a href="javascript:;" onclick="editNav({$child_val['id']})" class="glyphicon glyphicon-edit"></a>&nbsp;&nbsp;<a href="javascript:;" onclick="addNav({$child_val['id']})" class="glyphicon glyphicon-plus"></a>
+							<if condition="$child_val['status'] ==0">
+				            &nbsp;&nbsp;<a href="javascript:;" onclick="deleteNav({$child_val['id']})" class="glyphicon glyphicon-trash"></a>
+				            </if>
+							</td>
+				       </tr>
+						<!--第三层关系开始-->
+						<?php 
+							if(isset($child_val['childs']) && $child_val['childs']){
+								foreach($child_val['childs'] as $t_key=>$t_val){
+								
+						?>
+						<tr>
+				                <td>&nbsp;&nbsp;&nbsp;&nbsp;<strong class="text-success">└</strong>&nbsp;<?php echo $t_val['name'];?></td>
+				                <td>{$t_val['url']}</td>
+								<td>{$t_val['path']}</td>
+								 <td>{$t_val['addtime']}</td>
+				                <td>{$t_val['disorder']}</td>
+				                <td><?php echo ($t_val['status'] ==0)?"<font color='red'>关闭</font>":'开启'; ?></td>
+				               
+				                <td class="text-center"><a href="javascript:;" onclick="editNav({$t_val['id']})" class="glyphicon glyphicon-edit"></a>&nbsp;&nbsp;<a href="javascript:;" onclick="addNav({$t_val['id']})" class="glyphicon glyphicon-plus"></a>
+				                <if condition="$t_val['status'] ==0">
+				            &nbsp;&nbsp;<a href="javascript:;" onclick="deleteNav({$t_val['id']})" class="glyphicon glyphicon-trash"></a>
+				            </if>
+				                </td>
+				        </tr>
+						<!--第四层关系开始-->
+						<?php
+							if(isset($t_val['childs']) && $t_val['childs']){
+								foreach($t_val['childs'] as $f_key=>$f_val){
+						?>
+						<tr>
+				                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└&nbsp;<?php echo $f_val['name'];?></td>
+				                <td>{$f_val['url']}</td>
+								<td>{$f_val['path']}</td>
+								<td>{$f_val['addtime']}</td>
+				                <td>{$f_val['disorder']}</td>
+				                <td><?php echo ($f_val['status'] ==0)?"<font color='red'>关闭</font>":'开启'; ?></td>
+				                <td class="text-center"><a href="javascript:;" onclick="editNav({$f_val['id']})" class="glyphicon glyphicon-edit"></a>&nbsp;<a href="javascript:;" onclick="addNav({$f_val['id']})" class="glyphicon glyphicon-plus"></a>
+
+				                <if condition="$f_val['status'] ==0">
+				            &nbsp;&nbsp;<a href="javascript:;" onclick="deleteNav({$f_val['id']})" class="glyphicon glyphicon-trash"></a>
+				            	</if>
+				                </td>
+				        </tr>		
+						<?php 
+							}
+						}	
+						?>
+						<!--第四层关系结束-->
+						<?php 
+							}
+						}	
+						?>
+						<!--第三层关系结束-->
+						
+					   <?php 
+							}
+						}	
+					   ?>
+					   <?php 
+							}
+						}	
+					   ?>
+					</tbody>
+				</table>
+				<div class=" pull-right"><nav aria-label="Page navigation" id="ajaxpagination"></nav></div>
+				<div class="clearfix"></div>
+	</div>
+</div>
+
+<!-- 模态框（Modal) -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <form class="form-horizontal" id="myform" action="" method="post">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="createModalLabel">菜单导航</h4>
+            </div>
+            <div class="modal-body form-horizontal">
+            	<input type="hidden" name="modid" value="0" />
+             	<div class="form-group form-group-sm">
+             		<label class="col-sm-3 control-label talign-right fz13">上级</label>
+				    <div class="col-sm-7">
+				    	<select name="pid" class="form-control" id="navs">
+				    		<option value="0">一级菜单</option>
+
+				    	</select>
+				    </div>
+                    <div class="clearfix"></div>
+             	</div>
+             	<div class="form-group form-group-sm">
+             		<label class="col-sm-3 control-label talign-right fz13">导航名称</label>
+				    <div class="col-sm-7">
+				    	<input type="text" class="form-control" name="name">
+				    </div>
+                    <div class="clearfix"></div>
+             	</div>
+             	<div class="form-group form-group-sm">
+             		<label class="col-sm-3 control-label talign-right fz13">url地址</label>
+				    <div class="col-sm-7">
+				    	<input type="text" class="form-control" name="url">
+				    </div>
+                    <div class="clearfix"></div>
+             	</div>
+             	<div class="form-group form-group-sm">
+             		<label class="col-sm-3 control-label talign-right fz13">排序</label>
+				    <div class="col-sm-7">
+				    	<input type="text" class="form-control form-col form-col-5" name="disorder">
+				    </div>
+                    <div class="clearfix"></div>
+             	</div>
+             	<div class="form-group form-group-sm">
+             		<label class="col-sm-3 control-label talign-right fz13">icon类名</label>
+				    <div class="col-sm-7">
+				    	<input type="text" class="form-control form-col form-col-5" name="icon">
+				    </div>
+                    <div class="clearfix"></div>
+             	</div>
+             	<div class="form-group form-group-sm">
+             		<label class="col-sm-3 control-label talign-right fz13">状态</label>
+				    <div class="col-sm-7">
+				    	<input type="radio" name="status" value="1"> 开启&nbsp;
+				    	<input type="radio" name="status" value="0"> 禁用
+				    </div>
+                    <div class="clearfix"></div>
+             	</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="submit" class="btn btn-primary" onclick="doAddNav()">确定</button>
+            </div>
+        </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<script type="text/javascript">
+function addNav(id){
+	var modal = $("#editModal");
+	if(typeof id=='undefined') id=0;
+	$.ajax({
+		type:"post",
+		url:"{:U('/admin/auth/getdata')}",
+		dataType:"json",
+		data:{"id":id},
+		success:function(ret){
+			if(ret.msg=='succ'){
+				var options = ret['list'].options;
+				var shtml = '<option value="0">一级菜单</option>';
+				if(options.length>0){
+					for(var i in options){
+						var row = options[i];
+						if(id==row['id']){
+							selected = "selected='selected'";
+						}else{
+							selected = "";
+						}
+						shtml += '<option value="'+row['id']+'" '+selected+">";
+						if(row['deep']==1){
+							shtml +='├ ';
+						}else if(row['deep']==2){
+							shtml +='&nbsp;&nbsp;&nbsp;└';
+						}
+						shtml += row['name'];
+						shtml +="</option>";
+					}
+				}
+				$("#editModal #navs").html(shtml);
+				modal.modal();
+			}
+		}
+	});
+	
+}
+function editNav(id){
+	var modal = $("#editModal");
+	if(typeof id=='undefined') id=0;
+	
+	$.ajax({
+		type:"post",
+		url:"{:U('/admin/auth/getdata')}",
+		dataType:"json",
+		data:{"id":id},
+		success:function(ret){
+			if(ret.msg=='succ'){
+				var options = ret['list'].options;
+				var info = ret['list'].info;
+				if(info){
+					modal.find("input[name='modid']").val(id);
+					modal.find("input[name='url']").val(info.url);
+					modal.find("input[name='name']").val(info.name);
+					modal.find("input[name='disorder']").val(info.disorder);
+					modal.find("input[name='icon']").val(info.icon);
+					modal.find("input[name='status'][value="+info.status+"]").prop('checked',true);
+				}
+				var shtml = '<option value="0">一级菜单</option>';
+				if(options.length>0){
+					for(var i in options){
+						var row = options[i];
+
+						if(row['id'] == info['pid']){
+							selected = "selected='selected'";
+						}else{
+							selected = "";
+						}
+						shtml += '<option value="'+row['id']+'" '+selected+">";
+						if(row['deep']==1){
+							shtml +='├ ';
+						}else if(row['deep']==2){
+							shtml +='&nbsp;&nbsp;&nbsp;└';
+						}
+						shtml += row['name'];
+						shtml +="</option>";
+					}
+				}
+				$("#editModal #navs").html(shtml);
+				modal.modal();
+			}
+		}
+	});
+}
+function doAddNav(){
+	var options = {
+    	url: "{:U('/admin/auth/doAdd')}",
+    	dataType: 'json',
+    	beforeSubmit: function(){
+			return true;
+    	},
+        success: function (data) {
+        	if(data.msg=='succ'){
+        		var _options = {"text":"修改成功！","action":function(){window.location.reload();}};
+                doAlertDialog(_options);
+        	}else{
+        		var _options = {"text":"修改失败！"};
+        		if(data.msg) _options.text = data.msg;
+        		doAlertDialog(_options);
+        	}
+        }
+    };
+    $("#myform").ajaxForm(options);
+    return false;
+}
+function deleteNav(id){
+	if(typeof id=='undefined') return;
+	var options = {"flag":"error","text":"您确定要删除吗！","buttons":{"ok":{"action":function(){doDeleteNav(id);}},"cancel":{}}};
+    	doConfirmDialog(options);
+}
+function doDeleteNav(id){
+	var modal = $("#editModal");
+	if(typeof id=='undefined') return;
+	$.ajax({
+		type:"post",
+		url:"{:U('/admin/auth/doDelete')}",
+		dataType:"json",
+		data:{"id":id},
+		success:function(ret){
+			if(ret.msg=='succ'){
+				var _options = {
+					"text":"删除成功",
+					"flag":'success',
+					"action":function(){
+						window.location.reload();
+					}
+					
+				};
+		        doAlertDialog(_options); 
+			}else{
+				var _options = {"text":ret.msg,"flag":"error"};
+		        doAlertDialog(_options);  
+			}
+		}
+	});
+
+
+}
+</script>
+<include file="Common:footer" />

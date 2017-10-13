@@ -1,0 +1,113 @@
+<include file="Common:header" title="后台首页"/>
+<div id="page-wrapper">
+	<include file="Common:breadcrumb" />
+	<div id="page-inner" class="container">
+			<ul id="ztree" class="ztree"></ul>
+			<div class="clearfix"></div>
+			<div class="search-form">
+				<button type="button" class="btn btn-primary btn-sm" onclick="doAddRole()">确定保存</button>
+			</div>
+	</div>
+</div>
+<script src="__PUBLIC__/static/js/jquery.ztree.core.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/js/jquery.ztree.excheck.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/js/jquery.ztree.exedit.min.js"></script>
+<SCRIPT type="text/javascript">
+	var zNodes =[];
+	var checkedNodes = [];
+	var rid = "{$roleid}";		
+    function initZtree(){
+		if(typeof rid=='undefined') return;
+		var setting = {
+			view: {
+				addHoverDom: false,
+		        removeHoverDom: false,
+		        selectedMulti: false
+		    },
+		    check: {
+		    	enable: true
+			},
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            }
+        };
+		$.ajax({
+			type:"post",
+			url:"{:U('/admin/auth/getNodes')}",
+			dataType:"json",
+			data:{"id":rid},
+			success:function(ret){
+				var navs = ret.list;
+				if(navs.length>0){
+					for(var i in navs){
+						if(navs[i].parentid==0){
+							var node = {"id":navs[i].id,"pId":0,"name":navs[i].name,"open":false,"checked":navs[i].checked ? true:false};
+							
+							var childs = navs[i].childs;
+							if(childs.length>0){
+								node['open'] = true;
+								zNodes.push(node);
+								for(var j in childs){
+									var child_node = {"id":childs[j].id,"pId":childs[j].parentid,"name":childs[j].name,"open":false,"checked":childs[j].checked ? true:false,"isHidden":childs[j].hidden ? true:false};
+									if(child_node.checked){
+										child_node['open'] = true;
+									}
+									zNodes.push(child_node);
+									if( typeof childs[j].childs!='undefined'){
+										var subchilds = childs[j].childs;
+										if(subchilds.length>0){
+											for(var k in subchilds){
+												zNodes.push({"id":subchilds[k].id,"pId":subchilds[k].parentid,"name":subchilds[k].name,"checked":subchilds[k].checked ? true:false});
+											}
+										}
+									}
+								}
+							}
+							
+						}
+					}
+					$.fn.zTree.init($("#ztree"), setting, zNodes);	        
+				}
+			}
+		});
+	}
+	
+	function doAddRole(){
+		var moduleTree = $.fn.zTree.getZTreeObj("ztree");
+		var moduleNodes = moduleTree.getCheckedNodes(true);
+		for(var i=0;i<moduleNodes.length;i++){
+			var node = moduleNodes[i];
+			if(node.id >0){
+				if(node.checked == true){
+					checkedNodes.push(node.id);
+				}
+			}
+		}
+		$.ajax({
+			type:"post",
+			url:"{:U('/admin/auth/doEditRole')}",
+			dataType:"json",
+			data:{"id":rid,"nodes":checkedNodes},
+			success:function(ret){
+
+				if(ret.msg=='succ'){
+					var _options = {
+						"text":"修改成功",
+						"flag":'success',
+						"action":function(){
+							window.location.reload();
+						}
+					};
+			        doAlertDialog(_options); 
+				}else{
+					var _options = {"text":ret.msg,"flag":"error"};
+			        doAlertDialog(_options);  
+				}
+			}
+		});
+	}
+	initZtree();
+	</SCRIPT>
+<include file="Common:footer" />

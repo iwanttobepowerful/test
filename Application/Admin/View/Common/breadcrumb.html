@@ -1,0 +1,20 @@
+<ol class="breadcrumb" id="bread-crumb"></ol>
+<script type="text/javascript">
+	var menu_active = "{$menu_active}";
+	var menu_secoud_active = "{$menu_secoud_active}";
+	var menu = $(window.parent.document).find("#navslide");
+	menu.find("li").each(function(){
+		var parent = $(this).data("parent");
+		var active = $(this).data("active");
+            if(parent==menu_active){
+                var parentObj = $(this).parent().parent();
+                
+                if(active==menu_secoud_active){
+                    var parentnav = parentObj.parent().find("dt").text();
+                    var curnav = $(this).text();
+                    var breadcrumbHtml = '<li class="glyphicon glyphicon-home">&nbsp;'+$.trim(parentnav)+'</li><li class="active">'+$.trim(curnav)+'</li>';
+                    $("#bread-crumb").html(breadcrumbHtml);
+                }
+            }
+        });
+</script>
