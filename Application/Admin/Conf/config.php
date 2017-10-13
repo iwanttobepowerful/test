@@ -2,13 +2,11 @@
 return array(
 	//数据库配置'配置项'=>'配置值'
 	'DB_TYPE'=>'mysql',
-    'DB_HOST'=>'localhost',
+    'DB_HOST'=>'101.200.140.10',
     'DB_NAME'=>'jiancai',
-    'DB_USER'=>'root',
-//    'DB_PWD'=>'cx123456',
-    'DB_PWD'=>'',
+    'DB_USER'=>'jcuser',
+    'DB_PWD'=>'jC0090#usr!op',
     'DB_PORT'=>'3306',
-//    'DB_PORT'=>'80',
     'DB_PREFIX' => '',
     //分页参数配置
     'Page' => array(
