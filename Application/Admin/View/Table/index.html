@@ -9,7 +9,7 @@
 <script data-jsfiddle="common" src="__PUBLIC__/static/handsontable/numbro/numbro.js"></script>
 <script data-jsfiddle="common" src="__PUBLIC__/static/handsontable/numbro/languages.js"></script>
 <script data-jsfiddle="common" src="__PUBLIC__/static/handsontable/handsontable.js"></script>
-
+<script type="text/javascript" src="__PUBLIC__/static/handsontable/numbro/languages/zh-CN.min.js"></script>
 <!--
 Loading demo dependencies. They are used here only to enhance the examples on this page
 -->
@@ -32,6 +32,7 @@ Loading demo dependencies. They are used here only to enhance the examples on th
               hot;
 
             hot = new Handsontable(container, {
+            	language: 'zh-CN',
               data: Handsontable.helper.createSpreadsheetData(10, 16),
               colWidths: [55, 47, 47, 47, 47, 47, 47, 47, 47, 47, 47, 47, 47, 47, 47, 47], // can also be a number or a function
               rowHeaders: true,
