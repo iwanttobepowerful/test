@@ -1,0 +1,63 @@
+<include file="Common:header" title="后台首页"/>
+<div id="page-wrapper">
+    <include file="Common:breadcrumb" />
+    <div id="page-inner" class="container">
+        <!-- 主要模板 starting -->
+
+
+
+
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+            <th width="10%">序号</th>
+            <th >中心编号</th>
+            <th width="30%">操作</th>
+            </thead>
+            <tbody>
+            <tr>
+                <td width="10%">1</td>
+                <td></td>
+
+                <td><button class="btn btn-success" type="button">签发</button></td>
+            </tr>
+            <tr>
+                <td width="10%">2</td>
+                <td></td>
+                <td><button class="btn btn-success" type="button">签发</button></td>
+            </tr>
+            <tr>
+
+                <td width="10%">3</td>
+                <td></td>
+                <td><button class="btn btn-success" type="button">签发</button></td>
+            </tr>
+            <tr>
+                <td width="10%">4</td>
+                <td></td>
+                <td><button class="btn btn-success" type="button">签发</button></td>
+
+            </tr>
+            <volist name="lists" id="one">
+                <tr>
+                    <td>{$one.username}</td>
+                    <td><php>if($one['super_admin']==1){echo '是';}else{echo '否';}</php></td>
+                    <td>{$one.rolename}</td>
+                    <td><php>if($one['status']==1){echo '正常';}else{echo '已禁用';}</php></td>
+                    <td>{$one.login_time}</td>
+                    <td>
+                        <span onclick="editAdminUser({$one.id})" class="glyphicon glyphicon-pencil">修改</span>
+                    </td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+        <div class=" pull-right"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
+
+
+
+        <!-- main end-->
+
+    </div>
+</div>
+</div>
+<include file="Common:footer" />
