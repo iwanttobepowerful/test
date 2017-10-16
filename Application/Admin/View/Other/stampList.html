@@ -16,7 +16,8 @@
 					   		<td><img src="{$one.offcial_seal}" onerror="this.src='__PUBLIC__/static/images/default-timg.gif'" style="width: 90px;" /></td>
 					   		<td>{$one.remark}</td>
 					   		<td>
-					   			<a href="{:U('/admin/other/stamp')}?id={$one.id}" class="btn btn-primary btn-xs" class="glyphicon glyphicon-pencil">修改</a>
+					   			<a href="{:U('/admin/other/stamp')}?id={$one.id}" class="btn btn-primary btn-xs" class="glyphicon glyphicon-pencil"><i class="glyphicon glyphicon-edit"></i> 修改</a>
+					   			<a href="javascript:void(0);" onclick="onDelete({$one.id})" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> 删除</a>
 					   		</td>
 					   </tr>
 					</volist>
@@ -27,74 +28,30 @@
 	</div>
 </div>
 
-<script src="__PUBLIC__/static/js/jquery.form.js"></script>
 <script type="text/javascript">
-$(document).on("click","input[name='super_admin']",function(){
-	var val = $(this).val();
-	if(val==1){
-		$("#rolegroup").hide();
-	}else{
-		$("#rolegroup").show();
-	}
-});
-function addAdminUser(){
-	var modal = $("#editModal");
-	modal.find("input[name='modid']").val(0);
-	modal.modal();
+function onDelete(id){
+	if(!id) return false;
+	var _options = {"flag":"error","text":"您确定要删除吗！","buttons":{"ok":{"action":function(){doneDel(id);}},"cancel":{}}};
+    doConfirmDialog(_options);
 }
-function editAdminUser(id){
-	var modal = $("#editModal");
-	if(typeof id=='undefined') return;
-	
+function doneDel(id){
+	if(!id) return false;
 	$.ajax({
 		type:"post",
-		url:"{:U('/admin/auth/getAdminUser')}",
-		dataType:"json",
+		url:"{:U('/admin/other/doDeleteStamp')}",
 		data:{"id":id},
+		dataType:"json",
 		success:function(ret){
 			if(ret.msg=='succ'){
-				var info = ret.info;
-				if(info){
-					modal.find("input[name='modid']").val(info.id);
-					modal.find("input[name='username']").val(info.username);
-					modal.find("input[name='status'][value="+info.status+"]").prop('checked',true);
-					modal.find("input[name='super_admin'][value="+info.super_admin+"]").prop('checked',true);
-					if(info.super_admin==1){
-						$("#rolegroup").hide();
-					}else{
-						$("#rolegroup").show();
-					}
-					if(info.gid){
-						modal.find("select[name='gid']").val(info.gid);
-					}
-					
-				}				
-				modal.modal();
+				var _options = {"text":"删除成功！","action":function(){window.location.reload();}};
+                doAlertDialog(_options);
+			}else{
+				var _options = {"text":"删除失败！"};
+            	if(data.msg) _options.text = data.msg;
+            	doAlertDialog(_options);
 			}
 		}
 	});
 }
-function doAddAdminUser(){
-	var options = {
-    	url: "{:U('/admin/auth/doAddAdmin')}",
-    	dataType: 'json',
-    	beforeSubmit: function(){
-			return true;
-    	},
-        success: function (data) {
-        	if(data.msg=='succ'){
-        		var _options = {"text":"修改成功！","action":function(){window.location.reload();}};
-                doAlertDialog(_options);
-        	}else{
-        		var _options = {"text":"修改失败！"};
-        		if(data.msg) _options.text = data.msg;
-        		doAlertDialog(_options);
-        	}
-        }
-    };
-    $("#myform").ajaxForm(options);
-    return false;
-}
-
 </script>
 <include file="Common:footer" />

@@ -62,4 +62,12 @@ class OtherController extends Controller {
         $this->assign($body);
         $this->display();
     }
+    public function doDeleteStamp(){
+        $id =I("id",0,'intval');
+        $rs = array("msg"=>"fail");
+        if(D("offcial_seal")->where("id=".$id)->delete()){
+            $rs['msg'] = 'succ';
+        }
+        $this->ajaxReturn($rs);
+    }
 }
