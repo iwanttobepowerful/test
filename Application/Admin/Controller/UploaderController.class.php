@@ -29,7 +29,7 @@ class UploaderController extends Controller {
             }
         }else{// 上传成功 获取上传文件信息
             $saveUrl = './Public/attached/'.$info['file']['savepath'].$info['file']['savename'];
-            $imgUrl = $this->cropImage($saveUrl,350,210);
+            $imgUrl = $this->cropImage($saveUrl,100,100);
             $array = array(
                 'info'=>'succ',
                 'url'=>substr($imgUrl, 1),
