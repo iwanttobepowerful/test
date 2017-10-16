@@ -19,7 +19,7 @@
                 <tr>
                     <td>{$vo.id}</td>
                     <td>{$vo.centreno}</td>
-                    <td><button class="btn btn-success" onclick="update()" type="submmit" id="">签发</button></td>
+                    <td><a href="javascript:void(0);" onclick="onUpdate({$vo.id})" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-ok-circle"></i> 签发</a></td>
                 </tr>
             </volist>
             </tbody>
@@ -33,4 +33,30 @@
     </div>
 </div>
 </div>
+<script type="text/javascript">
+    function onUpdate(id){
+        if(!id) return false;
+        var _options = {"flag":"error","text":"您确定要签发此项目吗！","buttons":{"ok":{"action":function(){doneUpd(id);}},"cancel":{}}};
+        doConfirmDialog(_options);
+    }
+    function doneUpd(id){
+        if(!id) return false;
+        $.ajax({
+            type:"post",
+            url:"{:U('/admin/testReport/doUpd')}",
+            data:{"id":id},
+            dataType:"json",
+            success:function(ret){
+                if(ret.msg=='succ'){
+                    var _options = {"text":"签发成功！","action":function(){window.location.reload();}};
+                    doAlertDialog(_options);
+                }else{
+                    var _options = {"text":"签发失败！"};
+                    if(data.msg) _options.text = data.msg;
+                    doAlertDialog(_options);
+                }
+            }
+        });
+    }
+</script>
 <include file="Common:footer" />

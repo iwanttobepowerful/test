@@ -30,13 +30,15 @@ class TestReportController extends Controller
 
 //签发按钮功能实现
 
-    public function update(){
-            $id=I("id");
-            $test_reprot = M("test_reprot");
+    public function doUpd(){
 // 要修改的数据对象属性赋值
-            $data['ifinnerissue'] = 1;
-            $test_reprot->where("id=" . $id)->save($data); // 根据条件更新记录
-
+        $data['ifinnerissue'] = 1;
+        $id =I("id",0,'intval');
+        $rs = array("msg"=>"fail");
+        if(D("test_reprot")->where("id=".$id)->save($data)){
+            $rs['msg'] = 'succ';
+        }
+        $this->ajaxReturn($rs);
         }
 
 
