@@ -18,6 +18,22 @@ class ContractController extends Controller
         $this->assign('menu_active', strtolower(CONTROLLER_NAME));
         $this->assign('menu_secoud_active', strtolower(ACTION_NAME));
     }
+    public function getTestReport(){
+        $test_reprot=M("test_reprot");//实例化对象
+        $where['authorizer']=1;
+        $where['ifinnerissue']=0;
+        $rs=$test_reprot->where($where)->field('id,centreNo')->order('id')->select();//查找条件为已经批准并且内部尚未领取的报告
+        $this->assign('lists',$rs);
+        $this->display();
+    }
+    //外部签发检验报告
+    public function issueTestReport(){
+
+        $this->display();
+    }
+
+//领取检验报告
+
 	
 	//进入合同录入页面
 	public function input(){
@@ -108,10 +124,7 @@ class ContractController extends Controller
 			$this->ajaxReturn($rs);
 	}
 
-    public function getTestReport(){
-        $this->display();
-    }
-    public function issueTestReport(){
-        $this->display();
-    }
+
+
 }
+?>
