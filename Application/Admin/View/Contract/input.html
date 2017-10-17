@@ -1,10 +1,5 @@
-<head>
-
-    <script src="__PUBLIC__/static/js/jquery.form.js"></script>
-</head>
-<body>
-
 <include file="Common:header" title="后台首页"/>
+<script src="__PUBLIC__/static/js/jquery.form.js"></script>
 <div id="page-wrapper">
 	<include file="Common:breadcrumb" />
     <div id="page-inner" class="container">
@@ -179,7 +174,7 @@
         </table>
         
         <button class="btn btn-success" type="button" id="sampling_list">生成抽样单</button>
-        <button class="btn btn-success" type="button" id="check_list" onClick="doInputContract()">生成检验工作单</button>
+        <button class="btn btn-success" type="submit" id="check_list" onClick="doInputContract()">生成检验工作单</button>
       </form>
     </div>
     
@@ -260,11 +255,7 @@
 					}
 				}
 			};
-			
-			
 			$("#form2").ajaxForm(options);
-			alert(11);
-			alert(data.msg);
 			return false;
 		}
 	</script>
