@@ -11,7 +11,7 @@
             <thead>
             <th>序号</th>
             <th>中心编号</th>
-            <th>受检单位</th>
+            <th>生产单位</th>
             <th>联系人</th>
             <th>联系电话</th>
             <th>操作</th>
@@ -22,8 +22,8 @@
                     <td>{$one.id}</td>
                     <td>{$one.centreno}</td>
                     <td>{$one.productunit}</td>
-                    <td>{$one.clientname}</td>
-                    <td>{$one.simplecode}</td>
+                    <td>{$one.clientsign}</td>
+                    <td>{$one.telephone}</td>
                     <td><a href="javascript:void(0);" onclick="onUpdate({$one.id})" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-ok-circle"></i> 签发</a></td>
                 </tr>
             </volist>
