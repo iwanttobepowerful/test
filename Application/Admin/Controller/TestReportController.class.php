@@ -20,11 +20,23 @@ class TestReportController extends Controller
     }
     //内部签发检验报告
     public function issueTestPort(){
-       $test_reprot=M("test_reprot");//实例化对象
+        $page = I("p",'int');
+        $pagesize = 10;
+        if($page<=0) $page = 1;
+        $offset = ( $page-1 ) * $pagesize;
+        $test_reprot=M("test_reprot");//实例化对象
         $where['authorizer']=1;
         $where['ifinnerissue']=0;
-        $rs=$test_reprot->where($where)->field('id,centreNo')->order('id')->select();//查找条件为已经批准并且内部尚未签发的报告
-        $this->assign('rs',$rs);
+        $rs=$test_reprot->where($where)->field('id,centreNo')->order('id')->limit("{$offset},{$pagesize}")->select();//查找条件为已经批准并且内部尚未签发的报告
+        $count = D("test_reprot")->where($where)->count();
+        $Page= new \Think\Page($count,$pagesize);
+        $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
+        $pagination= $Page->show();// 分页显示输出
+        $body = array(
+            'rs'=>$rs,
+            'pagination'=>$pagination,
+        );
+        $this->assign($body);
         $this->display();
     }
 
