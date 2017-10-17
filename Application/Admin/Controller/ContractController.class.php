@@ -158,10 +158,10 @@ class ContractController extends Controller
 			"testCost"=>$testCost,
 			"collectDate"=>$collectDate,
 			"reportDate"=>$reportDate,
-			"ifHighQuantity"=>$ifHighQuantity,	
+			"ifHighQuantity"=>$ifHighQuantity
 		);
-			
-			if(D("contract")->add($data)){
+			if(D("contract")->data($data)->add()){
+
 				$rs['msg'] = 'succ';
 			}else{
 				$rs['msg'] = '输入信息有误';
@@ -169,7 +169,36 @@ class ContractController extends Controller
 			$this->ajaxReturn($rs);
 	}
 
+	//特殊号段查询
+	public function specialCodeSelect(){
+		$list = D("special_centre_code")->select();
+		$body = array(
+			"special_list"=>$list,
+		);
+		//dump($body);
+	    $this->assign($body);
+		$this->display();
+	}
 
-
+	//合同列表
+	public function showList(){
+		$list = D("contract")->select();
+		$body = array(
+			"list"=>$list,
+		);
+		//dump($body);
+		$this->assign($body);
+		$this->display();
+	}
+	
+	//合同详情
+	public function doContractDetail(){
+		$list = D("contract")->select();
+		$body = array(
+			"contract_list" => $list,
+		);
+		$this->assign($body);
+		$this->display();
+	}
 }
 ?>
