@@ -1,0 +1,49 @@
+<include file="Common:header" title="后台首页"/>
+<div id="page-wrapper">
+    <include file="Common:breadcrumb" />
+    <div id="page-inner" class="container">
+        <!-- 主要模板 starting -->
+
+
+
+
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+            <th>部门</th>
+            <th>年</th>
+            <th>月</th>
+            <th>数量</th>
+            </thead>
+            <tbody>
+            <tr>
+                <td>A</td>
+                <td>2017</td>
+                <td>10</td>
+                <td>5</td>
+            </tr>
+            <tr>
+                <td>B</td>
+                <td>2017</td>
+                <td>7</td>
+                <td>3</td>
+            </tr>
+            <volist name="special_list" id="special">
+                <tr>
+                    <td>{$special.department}</td>
+                    <td>{$special.year}</td>
+                    <td>{$special.month}</td>
+                    <td>{$special.getNum}</td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+        <div class=" pull-right"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
+
+
+
+        <!-- main end-->
+
+    </div>
+</div>
+</div>
+<include file="Common:footer" />
