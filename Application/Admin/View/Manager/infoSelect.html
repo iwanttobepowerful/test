@@ -1,0 +1,34 @@
+<include file="Common:header" title="后台首页"/>
+<div id="page-wrapper">
+    <include file="Common:breadcrumb" />
+    <div id="page-inner" class="container">
+
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+            <th>管理员名称</th>
+            <th>超级管理员</th>
+            <th>角色组</th>
+            <th>状态</th>
+            <th>操作</th>
+            </thead>
+            <tbody>
+            <volist name="lists" id="one">
+                <tr>
+                    <td>{$one.username}</td>
+                    <td><php>if($one['super_admin']==1){echo '是';}else{echo '否';}</php></td>
+                    <td>{$one.rolename}</td>
+                    <td><php>if($one['status']==1){echo '正常';}else{echo '已禁用';}</php></td>
+                    <td>
+                        <span onclick="editAdminUser({$one.id})" class="glyphicon glyphicon-pencil">修改</span>
+                    </td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+        <div class=" pull-right"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
+    </div>
+</div>
+</div>
+<!-- 模态框（Modal) -->
+
+<include file="Common:footer" />
