@@ -46,12 +46,17 @@ class ContractController extends Controller
         $offset = ( $page-1 ) * $pagesize;
         $test_reprot=M("test_reprot");//实例化对象
         $contract=M("contract");//实例化对象
+        //显示条件
         $where['authorizer']=1;
         $where['ifinnerissue']=1;
         $where['ifouterissue']=0;
-        $rs1=$test_reprot->where($where)->field('id,centreNo,productUnit')->select();
-        $rs2=$contract->field('clientSign,telephone')->select();
-        $rs=$rs1+$rs2;
+        //从contract数据表中找出和test_reprot数据表centreno匹配的那一行
+        //返回对应的clientSign和telephone
+        $rs=$test_reprot->where($where)
+            ->join('contract ON test_reprot.centreNo = contract.centreNo')
+            ->field('test_reprot.id,test_reprot.centreNo,test_reprot.productUnit,contract.clientSign,contract.telephone')
+            ->limit("{$offset},{$pagesize}")->order('test_reprot.id')->select();
+
         $count = D("test_reprot")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
