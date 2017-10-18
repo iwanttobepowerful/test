@@ -165,7 +165,7 @@ class ContractController extends Controller
 			"reportDate"=>$reportDate,
 			"ifHighQuantity"=>$ifHighQuantity
 		);
-		pr($data);
+		//pr($data);
 			if(D("contract")->data($data)->add()){
 
 				$rs['msg'] = 'succ';
@@ -208,6 +208,35 @@ class ContractController extends Controller
 		);
 		$this->assign($body);
 		$this->display();
+	}
+	
+	//获取最中心编号
+	public function getLastCode(){
+		$centreNo['re']='none';
+		$year=I("year");
+		$month=I("month");
+		$centreHead=$year.$month;
+		$list = D("contract")->field('centreNo',SUBSTR(centreNo,9,3))->where('centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)>100')->order('SUBSTR(centreNo,9,3) desc')->select();
+		//pr(D("contract")->getLastSql());
+		$centreNo['re']= $list[0]['centreno'];
+		//dump($list[0]['centreno']);
+		$this->ajaxReturn($centreNo);
+	}
+	
+		//获取新最优质中心编号
+	public function getHighCode(){
+		$centreNo['re']='none';
+		$year=I("year");
+		$month=I("month");
+		$centreHead=$year.$month;
+		$list = D("contract")->field('centreNo',SUBSTR(centreNo,9,3))->where('centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)<100')->order('SUBSTR(centreNo,9,3) desc')->select();
+		//$count = D("contract")->field('count(*) as num')->where('centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)<100')->order('SUBSTR(centreNo,9,3) desc')->select();
+		//pr(D("contract")->getLastSql());
+		$centreNo['re']= $list[0]['centreno'];
+		//$centreNo['count'] = $count[0]['num'];
+		//pr($centreNo['count']);
+		//dump($list[0]['centreno']);
+		$this->ajaxReturn($centreNo);
 	}
 }
 ?>
