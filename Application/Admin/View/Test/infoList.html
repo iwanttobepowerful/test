@@ -1,1 +1,44 @@
- 
+<include file="Common:header" title="后台首页"/>
+<div id="page-wrapper">
+    <include file="Common:breadcrumb" />
+    <div id="page-inner" class="container">
+        <!-- 主要模板 starting -->
+
+        <div class="search-form">
+            <form class="form-inline" method="GET" action="">
+                <div class="form-group">
+                    <label>中心编号：</label>
+                    <input type="text" class="form-control input-sm" name="keyword" />
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm" >查询</button>
+            </form>
+        </div>
+
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+            <th>序号</th>
+            <th>中心编号</th>
+            <th>样本名称</th>
+            <th>操作</th>
+            </thead>
+            <tbody>
+            <volist name="lists" id="one">
+                <tr>
+                    <td>{$one.id}</td>
+                    <td>{$one.centreno}</td>
+                    <td>{$one.samplename}</td>
+                    <td>
+                        <a href="{:U('/admin/test/infoshow')}?id={$one.centreno}" class="glyphicon glyphicon-search">查看详情</a>
+                    </td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+        <div class=" pull-right"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
+        <!-- main end-->
+
+    </div>
+</div>
+</div>
+
+<include file="Common:footer" />
