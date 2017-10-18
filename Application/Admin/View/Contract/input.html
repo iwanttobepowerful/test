@@ -1,5 +1,5 @@
 <include file="Common:header" title="后台首页"/>
-<script src="__PUBLIC__/static/js/jquery.form.js"></script>
+
 <div id="page-wrapper">
 	<include file="Common:breadcrumb" />
     <div id="page-inner" class="container">
@@ -132,7 +132,7 @@
           <tr >
             <td  ><p align="center" >中心编号 </p></td>
             <td   colspan="3" ><p>
-              <input type="text" class="form-control"  name="centreNo" id="centreNo" disabled="disabled" size="9"/>
+              <input type="text" class="form-control"  name="centreNo" id="centreNo" readonly="readonly" size="9"/>
               <!--<input type="button" name="button2" id="button2" value="生成中心编码" />-->
               <input name="ifHighQuantity" type="checkbox" value="ifHighQuantity" onClick="upVIPCode()"/>
               是否为优质编码
@@ -179,6 +179,7 @@
     </div>
     
 </div>
+<script src="__PUBLIC__/static/js/jquery.form.js"></script>
 <script type="text/javascript">
 		//生成中心编码
 		makeCentreCode();

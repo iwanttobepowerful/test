@@ -160,6 +160,7 @@ class ContractController extends Controller
 			"reportDate"=>$reportDate,
 			"ifHighQuantity"=>$ifHighQuantity
 		);
+		pr($data);
 			if(D("contract")->data($data)->add()){
 
 				$rs['msg'] = 'succ';
@@ -172,6 +173,7 @@ class ContractController extends Controller
 	//特殊号段查询
 	public function specialCodeSelect(){
 		$list = D("special_centre_code")->select();
+		
 		$body = array(
 			"special_list"=>$list,
 		);
@@ -183,6 +185,8 @@ class ContractController extends Controller
 	//合同列表
 	public function showList(){
 		$list = D("contract")->select();
+		//echo  D("contract")->getLastSql();
+		//pr($list);
 		$body = array(
 			"list"=>$list,
 		);

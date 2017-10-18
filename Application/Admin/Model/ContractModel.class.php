@@ -9,6 +9,6 @@ namespace Admin\Model;
 use Think\Model;
 class ContractModel extends Model
 {
-    protected $tableName = 'test_reprot';
+    //protected $tableName = 'test_reprot';
 
 }
