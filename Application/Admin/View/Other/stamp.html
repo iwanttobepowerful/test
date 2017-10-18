@@ -3,8 +3,9 @@
 	<include file="Common:breadcrumb" />
 	<div id="page-inner" class="container">
 			<form class="form-horizontal" id="myform" action="" method="post">
+				<input type="hidden" name="id" value="{$stamp['id']}" />
 			  	<div class="form-group">
-			    	<label class="col-sm-2 control-label talign-center fz13">电子公章</label>
+			    	<label class="col-sm-2 control-label talign-center fz13">电子章</label>
 				    <div class="col-sm-10">
 				      	<div class="face" id="attachment" style="width: 120px;height: 80px;" onclick="onFileUpload()"><img src="{$stamp['offcial_seal']}" onerror="this.src='__PUBLIC__/static/images/default-timg.gif'" style="height: 100%;" /></div>
 				      	<input type="hidden" name="imgurl" value="{$stamp['offcial_seal']}" />

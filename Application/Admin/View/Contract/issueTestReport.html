@@ -11,38 +11,20 @@
             <thead>
             <th>序号</th>
             <th>中心编号</th>
-            <th>受检单位</th>
+            <th>生产单位</th>
             <th>联系人</th>
             <th>联系电话</th>
             <th>操作</th>
             </thead>
             <tbody>
-            <tr>
-                <td width="7%">1</td>
-                <td width="15%">201601CC104</td>
-                <td width="40%">北京中瑞天合环保科技有限公司</td>
-                <td width="10%">张丽丽</td>
-                <td width="18%">13568791234</td>
-                <td><button class="btn btn-success" type="button">签发</button></td>
-            </tr>
-            <tr>
-                <td width="7%">2</td>
-                <td width="15%"></td>
-                <td width="40%"></td>
-                <td width="10%"></td>
-                <td width="18%"></td>
-                <td><button class="btn btn-success" type="button">签发</button></td>
-            </tr>
             <volist name="lists" id="one">
                 <tr>
-                    <td>{$one.username}</td>
-                    <td><php>if($one['super_admin']==1){echo '是';}else{echo '否';}</php></td>
-                    <td>{$one.rolename}</td>
-                    <td><php>if($one['status']==1){echo '正常';}else{echo '已禁用';}</php></td>
-                    <td>{$one.login_time}</td>
-                    <td>
-                        <span onclick="editAdminUser({$one.id})" class="glyphicon glyphicon-pencil">修改</span>
-                    </td>
+                    <td>{$one.id}</td>
+                    <td>{$one.centreno}</td>
+                    <td>{$one.productunit}</td>
+                    <td>{$one.clientsign}</td>
+                    <td>{$one.telephone}</td>
+                    <td><a href="javascript:void(0);" onclick="onUpdate({$one.id})" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-ok-circle"></i> 签发</a></td>
                 </tr>
             </volist>
             </tbody>
@@ -56,4 +38,30 @@
     </div>
 </div>
 </div>
+<script type="text/javascript">
+    function onUpdate(id){
+        if(!id) return false;
+        var _options = {"flag":"error","text":"您确定要签发此项目吗！","buttons":{"ok":{"action":function(){doneUpd(id);}},"cancel":{}}};
+        doConfirmDialog(_options);
+    }
+    function doneUpd(id){
+        if(!id) return false;
+        $.ajax({
+            type:"post",
+            url:"{:U('/admin/contract/doUpd')}",
+            data:{"id":id},
+            dataType:"json",
+            success:function(ret){
+                if(ret.msg=='succ'){
+                    var _options = {"text":"签发成功！","action":function(){window.location.reload();}};
+                    doAlertDialog(_options);
+                }else{
+                    var _options = {"text":"签发失败！"};
+                    if(data.msg) _options.text = data.msg;
+                    doAlertDialog(_options);
+                }
+            }
+        });
+    }
+</script>
 <include file="Common:footer" />
