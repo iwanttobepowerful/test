@@ -3,22 +3,34 @@
     <include file="Common:breadcrumb" />
     <div id="page-inner" class="container">
         <!-- 主要模板 starting -->
+
+        <div class="search-form">
+            <form class="form-inline" method="GET" action="">
+                <div class="form-group">
+                    <label>中心编号：</label>
+                    <input type="text" class="form-control input-sm" name="keyword" />
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm" >查询</button>
+            </form>
+        </div>
+
         <table class="table table-bordered table-striped table-hover">
             <thead>
-            <th>序号</th>
-            <th>中心编号</th>
-            <th>操作</th>
+                <th>序号</th>
+                <th>中心编号</th>
+                <th>企业名称</th>
+                <th>产品名称</th>
+                <th>操作</th>
             </thead>
             <tbody>
             <volist name="lists" id="one">
                 <tr>
-                    <td>{$one.username}</td>
-                    <td><php>if($one['super_admin']==1){echo '是';}else{echo '否';}</php></td>
-                    <td>{$one.rolename}</td>
-                    <td><php>if($one['status']==1){echo '正常';}else{echo '已禁用';}</php></td>
-                    <td>{$one.login_time}</td>
+                    <td>{$one.id}</td>
+                    <td>{$one.centreno}</td>
+                    <td>{$one.clientname}</td>
+                    <td>{$one.productunit}</td>
                     <td>
-                        <span onclick="editAdminUser({$one.id})" class="glyphicon glyphicon-pencil">修改</span>
+                        <span onclick="editAdminUser({$one.id})" class="glyphicon glyphicon-pencil">查询</span>
                     </td>
                 </tr>
             </volist>
@@ -30,4 +42,5 @@
     </div>
 </div>
 </div>
+
 <include file="Common:footer" />
