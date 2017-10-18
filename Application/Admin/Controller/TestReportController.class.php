@@ -52,6 +52,21 @@ class TestReportController extends Controller
         }
         $this->ajaxReturn($rs);
         }
+		
+		
+		
+		
+	public function generateReport(){
+        $this->display(index);
+    }
+    
+    public function generateReportTwo(){
+        $this->display(select);
+    }
+    
+    public function generateReportThree(){
+        $this->display(testReport);
+    }
 
 
 }
