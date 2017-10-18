@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>通知单详情显示页面</title>
+    </head>
+    <body>
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+        <th>序号</th>
+        <th>中心编号</th>
+        <th>样本名称</th>
+        </thead>
+        <tbody>
+        <volist name="lists" id="one">
+            <tr>
+                <td>{$one.id}</td>
+                <td>{$one.centreno}</td>
+                <td>{$one.samplename}</td>
+            </tr>
+        </volist>
+        </tbody>
+    </table>
+    <div class=" pull-right"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
+    <!-- main end-->
+    </body>
+</html>
