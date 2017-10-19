@@ -47,12 +47,48 @@ class ManagerController extends Controller
 
     public function doUpd(){
 // 要修改的数据对象属性赋值
-        $data['authorizer'] = 1;
         $id =I("id",0,'intval');
+        $data['authorizer'] = 1;
         $rs = array("msg"=>"fail");
         if(D("test_reprot")->where("id=".$id)->save($data)){
             $rs['msg'] = 'succ';
         }
         $this->ajaxReturn($rs);
+    }
+    //合同详情查询
+    public function ContractDetail(){
+        $centreno=I("id");
+        $contract=D("contract");//实例化
+        $where= "centreno='{$centreno}'";
+        $data=$contract->where($where)->field('centreNo')->select();
+        $body=array(
+            'data'=>$data,
+        );
+        $this->assign($body);
+        $this->display();
+    }
+    //检验记录详情
+    public function testRecordDetail(){
+        $centreno=I("id");
+        $contract=D("contract");//实例化
+        $where= "centreno='{$centreno}'";
+        $data=$contract->where($where)->field('centreNo')->select();
+        $body=array(
+            'data'=>$data,
+        );
+        $this->assign($body);
+        $this->display();
+    }
+    //检验报告详情
+    public function testReportDetail(){
+        $centreno=I("id");
+        $contract=D("contract");//实例化
+        $where= "centreno='{$centreno}'";
+        $data=$contract->where($where)->field('centreNo')->select();
+        $body=array(
+            'data'=>$data,
+        );
+        $this->assign($body);
+        $this->display();
     }
 }
