@@ -16,27 +16,15 @@
             <th>详情</th>
             </thead>
             <tbody>
-            <tr>
-                <td>201710BW101</td>
-                <td>水泥厂</td>
-                <td>王坡</td>
-                <td>13409283743</td>
-                <td width="20%"><button class="btn btn-success" type="button" onclick="findContract()">合同详情</button></td>
-            </tr>
-            <tr>
-                <td>201710BW102</td>
-                <td>砂浆场</td>
-                <td>李建东</td>
-                <td>13820343484</td>
-                <td width="20%"><button class="btn btn-success" type="button">合同详情</button></td>
-            </tr>
             <volist name="list" id="con">
                 <tr>
                     <td>{$con.centreno}</td>
                     <td>{$con.clientname}</td>
                     <td>{$con.clientsign}</td>
                     <td>{$con.telephone}</td>
-                    <td width="20%"><button class="btn btn-success" type="button" onclick="findContract({$contract_list.centreNo})">合同详情</button></td>
+                    <td width="20%">
+                    	<button class="btn btn-info btn-xs" type="button" onclick="findContract('{$con.centreno}')" >合同详情</button>
+                    </td>
                 </tr>
             </volist>
             
@@ -54,18 +42,17 @@
 
 <script src="__PUBLIC__/static/js/jquery.form.js"></script>
 <script type="text/javascript">
-	function findContract(centureCode){
-		$.ajax({
+	function findContract(centreno){
+		window.location.href='/admin/contract/doContractDetail?centreno='+centreno;
+/*		$.ajax({
 			type:"post",
 			url:"{:U('/admin/contract/doContractDetail')}",	
 			dataType:"json",
-			data:{"centureCode":centureCode},
+			data:{"centreno":centreno},
 			success:function(re){
-				if(re.msg=='succ'){
-					
-				}
+				
 			}
-		});
+		});*/
 	}
 </script>
 

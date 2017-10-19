@@ -174,6 +174,11 @@ class ContractController extends Controller
 			}
 			$this->ajaxReturn($rs);
 	}
+	
+	//生成检验工作单
+	public function checkWorkList(){
+		$this->display();
+	}
 
 	//特殊号段查询
 	public function specialCodeSelect(){
@@ -202,10 +207,13 @@ class ContractController extends Controller
 	
 	//合同详情
 	public function doContractDetail(){
-		$list = D("contract")->select();
+		$centreno = I("centreno");
+		$list = D("contract")->where('centreNo = "'.$centreno.'"')->select();
 		$body = array(
-			"contract_list" => $list,
+			"contract_detail" => $list[0],
 		);
+		//dump(D("contract")->getLastSql());
+		//dump($body);
 		$this->assign($body);
 		$this->display();
 	}
@@ -218,7 +226,10 @@ class ContractController extends Controller
 		$centreHead=$year.$month;
 		$list = D("contract")->field('centreNo',SUBSTR(centreNo,9,3))->where('centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)>100')->order('SUBSTR(centreNo,9,3) desc')->select();
 		//pr(D("contract")->getLastSql());
-		$centreNo['re']= $list[0]['centreno'];
+		if(count($list)>0){
+			$centreNo['re']= $list[0]['centreno'];	
+		}
+		
 		//dump($list[0]['centreno']);
 		$this->ajaxReturn($centreNo);
 	}
@@ -232,7 +243,9 @@ class ContractController extends Controller
 		$list = D("contract")->field('centreNo',SUBSTR(centreNo,9,3))->where('centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)<100')->order('SUBSTR(centreNo,9,3) desc')->select();
 		//$count = D("contract")->field('count(*) as num')->where('centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)<100')->order('SUBSTR(centreNo,9,3) desc')->select();
 		//pr(D("contract")->getLastSql());
-		$centreNo['re']= $list[0]['centreno'];
+		if(count($list)>0){
+			$centreNo['re']= $list[0]['centreno'];	
+		}
 		//$centreNo['count'] = $count[0]['num'];
 		//pr($centreNo['count']);
 		//dump($list[0]['centreno']);
