@@ -91,4 +91,16 @@ class ManagerController extends Controller
         $this->assign($body);
         $this->display();
     }
+	
+	//特殊号段签发
+	public function issueSepcialCode(){
+		$list = D("special_centre_code")->select();
+		
+		$body = array(
+			"special_list"=>$list,
+		);
+	    $this->assign($body);
+		$this->display();
+	}
+	
 }

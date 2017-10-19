@@ -11,7 +11,7 @@
           <tr > 
             <td><p align="center" >委托单位 </p></td>
             <td colspan="8" >
-                <input name="clientName" type="text" class="form-control"  class="form-control" id="clientName2" size="100" />       
+                <input name="clientName" type="text" class="form-control"  class="form-control" id="clientName2" size="100" value=""/>       
             </td>
           </tr> 
           <tr > 
@@ -186,135 +186,6 @@
 </div>
 <script src="__PUBLIC__/static/js/jquery.form.js"></script>
 <script type="text/javascript">
-		//生成中心编码
-		makeCentreCode();
-		$("input[name = 'testCategory']").change(function(){
-			makeCentreCode();
-		});
 		
-		//时间
-		$(document).ready(function(){
-		$('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,	autoclose:true });
-	});
-		
-		function makeCentreCode(){
-			var nowDate = new Date();
-			var year = nowDate.getFullYear();
-			var month = nowDate.getMonth()+1;
-			month = month<10?'0'+month:month;
-			var department = 'B';
-			var type = $('input:radio[name="testCategory"]:checked').val();
-			type = (type == '委托检验')?'W':'C';
-			var code= '101';
-			//获取最新编码
-			$.ajax({
-				url: "{:U('/admin/contract/getLastCode')}",
-				dataType: 'json',			
-				data:{"year":year,"month":month},
-				async: false,
-				success: function (res) {
-					//var _options = {"text":"aaa！"};
-					//_options.text = data.re;
-					//doAlertDialog(_options);
-					if(res.re!='none'){
-						code = res.re;
-						code = parseInt(code.substring(8,11))+1;
-					}
-				}
-			});
-			
-			var centreCode = year+""+month+department+type+code;
-			$('input[name="centreNo"]').val(centreCode);
-			if(type=='W'){
-				$("#sampling_list").css("display","none");
-			}else{	
-				$("#sampling_list").css("display","inline-block");
-			}
-		}
-		
-		function upVIPCode(){
-			if($("input[name='ifHighQuantity']").is(':checked')){
-				var nowDate = new Date();
-				var year = nowDate.getFullYear();
-				var month = nowDate.getMonth()+1;
-				month = month<10?'0'+month:month;
-				var department = 'B';
-				var type = $('input:radio[name="testCategory"]:checked').val();
-				type = (type == '委托检验')?'W':'C';
-				var code='001';
-				var remain;//剩余优质编号
-				$.ajax({
-					url:"{:U('/admin/contract/getHighCode')}",
-					dataType:"json",
-					data:{"year":year,"month":month},
-					async:false,
-					success:function(res){
-						if(res.re!='none'){
-							code = res.re;
-							code = parseInt(code.substring(8,11))+1;
-							//保持后面编码为三位数，不够补零
-							code = (Array(3).join('0') + code).slice(-3);
-						}
-					}
-				});
-							
-				var centreCode = year+""+month+department+type+code;
-				remain = 100-code+1;
-				$('input[name="centreNo"]').val(centreCode);
-				$('input[name="ifHighQuantity"]').val(1);
-				$("#remain").html(remain+"(含当前编号)");
-				$("#remainCode").css("display","block");
-			}else{
-				makeCentreCode();
-				$('input[name="ifHighQuantity"]').val(0);
-				$("#remainCode").css("display","none");
-				
-			}
-		}
-		
-		//D部门费用选择函数--测试
-		function dCost1(){
-			$("#dCost").val(11);
-			computeSum();
-		}
-		
-		//本部门费用选择--测试
-		function myCost1(){
-			$("#myCost").val(22);
-			computeSum();
-		}
-		
-		
-		//实时计算总费用
-		function computeSum(){
-			if($("#myCost").val()!="" && $("#dCost").val()!="" && $("#copyCost").val()!="" && $("#editCost").val()!="" && $.trim($("#myCost").val()).length>0 && $.trim($("#dCost").val()).length>0 && $.trim($("#copyCost").val()).length>0 && $.trim($("#editCost").val()).length>0){
-				$("#sumCost").val(parseInt($("#myCost").val())+parseInt($("#dCost").val())+parseInt($("#editCost").val())+parseInt($("#copyCost").val()));
-			}
-			
-		}
-		
-		//合同入库
-		function doInputContract(){
-			//alert('start');
-			var options = {
-				url: "{:U('/admin/contract/doAddContract')}",
-				dataType: 'json',
-				beforeSubmit: function(){
-					return true;
-				},
-				success: function (data) {
-					if(data.msg=='succ'){
-						var _options = {"text":"录入成功！","action":function(){window.location.href='/admin/contract/checkWorkList';}};
-						doAlertDialog(_options);
-					}else{
-						var _options = {"text":"录入失败！"};
-						if(data.msg) _options.text = data.msg;
-						doAlertDialog(_options);
-					}
-				}
-			};
-			$("#form2").ajaxForm(options);
-			return false;
-		}
-	</script>
+</script>
 </body>
