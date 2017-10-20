@@ -23,7 +23,7 @@
                     <td>{$con.clientsign}</td>
                     <td>{$con.telephone}</td>
                     <td width="20%">
-                    	<button class="btn btn-info btn-xs" type="button" onclick="findContract('{$con.centreno}')" ><i class="glyphicon glyphicon-search"></i>合同详情</button>
+                    	<a href="/admin/manager/contractDetail?id={$con.centreno}" target="_blank" class="btn btn-info btn-xs" type="button"><i class="glyphicon glyphicon-search"></i>合同详情</button>
                     </td>
                 </tr>
             </volist>
@@ -42,18 +42,7 @@
 
 <script src="__PUBLIC__/static/js/jquery.form.js"></script>
 <script type="text/javascript">
-	function findContract(centreno){
-		window.location.href='/admin/contract/doContractDetail?centreno='+centreno;
-/*		$.ajax({
-			type:"post",
-			url:"{:U('/admin/contract/doContractDetail')}",	
-			dataType:"json",
-			data:{"centreno":centreno},
-			success:function(re){
-				
-			}
-		});*/
-	}
+
 </script>
 
 <include file="Common:footer" />

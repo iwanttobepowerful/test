@@ -179,11 +179,61 @@
         </table>
         
         <button class="btn btn-success" type="button" id="sampling_list" on>生成抽样单</button>
-        <button class="btn btn-success" type="submit" id="check_list" onClick="doInputContract()">录入并生成检验工作单</button>
+        <button class="btn btn-success" type="submit" id="check_list" onClick="doInputContract()">合同录入</button>
       </form>
     </div>
     
 </div>
+
+<!-- 模态框（Modal) -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <form class="form-horizontal" id="myform" action="" method="post">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="createModalLabel">本部门费用</h4>
+            </div>
+            <div class="form-group form-group-sm">
+             		<label class="col-sm-3 control-label talign-right fz13">材料</label>
+				    <div class="col-sm-7">
+				    	<select name="meterial" class="form-control" id="meterial" onchange="setProOption()">
+				    		<option value=0>请选择</option>
+				    	</select>
+				    </div>
+                    <div class="clearfix"></div>
+            </div>
+            <div class="form-group form-group-sm">
+             		<label class="col-sm-3 control-label talign-right fz13">产品名称</label>
+				    <div class="col-sm-7">
+				    	<select name="productname" class="form-control" id="productname" onchange="setItemOption()">
+				    		<option value=0>请选择</option>
+				    	</select>
+				    </div>
+                    <div class="clearfix"></div>
+            </div>
+            <div class="form-group form-group-sm">
+             		<label class="col-sm-3 control-label talign-right fz13">测试项目</label>
+				    <div class="col-sm-7" id="items">
+				    	
+				    </div>
+                    <div class="clearfix"></div>
+            </div>
+            <div class="form-group form-group-sm">
+             		<label class="col-sm-3 control-label talign-right fz13">金额</label>
+				    <div class="col-sm-7" id='fee'>
+				    	
+				    </div>
+                    <div class="clearfix"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="submit" class="btn btn-primary" onclick="doAddTestFee()">确定</button>
+            </div>
+        </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+
 <script src="__PUBLIC__/static/js/jquery.form.js"></script>
 <script type="text/javascript">
 		//生成中心编码
@@ -194,8 +244,8 @@
 		
 		//时间
 		$(document).ready(function(){
-		$('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,	autoclose:true });
-	});
+			$('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,	autoclose:true });
+		});	
 		
 		function makeCentreCode(){
 			var nowDate = new Date();
@@ -274,13 +324,16 @@
 		
 		//D部门费用选择函数--测试
 		function dCost1(){
-			$("#dCost").val(11);
+			var modal = $("#editModal");
+			modal.modal();
 			computeSum();
 		}
 		
 		//本部门费用选择--测试
 		function myCost1(){
-			$("#myCost").val(22);
+			var modal = $("#editModal");		
+			setMetOption();
+			modal.modal();
 			computeSum();
 		}
 		
@@ -304,7 +357,7 @@
 				},
 				success: function (data) {
 					if(data.msg=='succ'){
-						var _options = {"text":"录入成功！","action":function(){window.location.href='/admin/contract/checkWorkList';}};
+						var _options = {"text":"录入成功！","action":function(){window.location.reload();}};
 						doAlertDialog(_options);
 					}else{
 						var _options = {"text":"录入失败！"};
@@ -316,5 +369,90 @@
 			$("#form2").ajaxForm(options);
 			return false;
 		}
+		
+		//获取费用选项(下面三个函数)
+		function setMetOption(){
+			$.ajax({
+				url: "{:U('/admin/contract/findMetList')}",
+				dataType: 'json',
+				beforeSubmit: function(){
+					return true;
+				},
+				success: function (re) {
+					data = re['meterial_list'];
+					for(var i=0;i<data.length;i++){
+						var meterial = data[i]['meterial'];
+						option = "<option value='"+meterial+"'>"+meterial+"</option>";
+						$('#meterial').append(option);
+					}
+				}	
+			});
+		}
+		
+		function setProOption(){
+			m_select = $("#meterial").val();
+			if(m_select!=0){
+				$.ajax({
+					url: "{:U('/admin/contract/findProList')}",
+					dataType: 'json',
+					data:{'m_select':m_select},
+					beforeSubmit: function(){
+						return true;
+					},
+					success: function (re) {
+						$('#productname').find("option").remove();
+						var option = "<option value=0>请选择</option>";
+						$('#productname').append(option);
+						data = re['productname_list'];
+						for(var i=0;i<data.length;i++){
+							var productname = data[i]['productname'];
+							option = "<option value='"+productname+"'>"+productname+"</option>";
+							$('#productname').append(option);
+						}
+					}	
+				});
+			}else{
+				$('#productname').find("option").remove();
+				var option = "<option value=0>请选择</option>";
+				$('#productname').append(option);
+			}
+		}
+
+		function setItemOption(){
+			m_select = $("#meterial").val();
+			p_select = $("#productname").val();
+			if(m_select!=0){
+				$.ajax({
+					url: "{:U('/admin/contract/findItemList')}",
+					dataType: 'json',
+					data:{'m_select':m_select,'p_select':p_select},
+					beforeSubmit: function(){
+						return true;
+					},
+					success: function (re) {
+						data = re['item_list'];
+						for(var i=0;i<data.length;i++){
+							var items = data[i]['item'];
+							var money = data[i]['fee'];
+							option = "<input type='checkbox' name='items' value='"+money+"'/>&nbsp;&nbsp;"+items+"&nbsp;&nbsp;";
+							$('#items').append(option);
+						}
+					}	
+				});
+			}
+		}
+		
+		//计算费用
+		$("input[name='items']").click(function(){
+			var cash=0;
+			alert(cash);
+			$("input[name='items']:checked").each(function(index, element) {
+				cash+=element;
+			});
+			$("#fee").val(cash);
+			alert(cash);	
+		});
+		
+		
 	</script>
 </body>
