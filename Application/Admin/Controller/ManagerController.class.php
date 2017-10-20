@@ -56,7 +56,7 @@ class ManagerController extends Controller
         $this->ajaxReturn($rs);
     }
     //合同详情查询
-    public function ContractDetail(){
+    public function contractDetail(){
         $centreno=I("id");
         $contract=D("contract");//实例化
         $where= "centreno='{$centreno}'";
