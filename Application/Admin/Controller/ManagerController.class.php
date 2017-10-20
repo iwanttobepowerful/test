@@ -60,9 +60,9 @@ class ManagerController extends Controller
         $centreno=I("id");
         $contract=D("contract");//实例化
         $where= "centreno='{$centreno}'";
-        $data=$contract->where($where)->field('ifHighQuantity,remark1,remark2',ture)->select();
+        $data=$contract->where($where)->field('ifHighQuantity,remark1,remark2',ture)->find();
         $body=array(
-            'data'=>$data,
+            'one'=>$data,
         );
         $this->assign($body);
         $this->display();
