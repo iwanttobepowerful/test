@@ -100,14 +100,14 @@ class ContractController extends Controller
 		$specification = I("specification");
 		$trademark = I("trademark");
 		$productionDate = I("productionDate");
-		$sampleQuantity = I("sampleQuantity");
+		$sampleQuantity = I("sampleQuantity",0,'intval');
 		$sampleunti = I("sampleunti");
 		$sampleStatus = I("sampleStatus");
-		$ration = I("ration");
+		$ration = I("ration",0,'intval');
 		$testCriteria = I("testCriteria");
 		$testItem = I("testItem");
 		$testCategory = I("testCategory");
-		$ifOnline = I("ifOnline");
+		$ifOnline = I("ifOnline",0);
 		$postMethod = I("postMethod");
 		$ifSubpackage = I("ifSubpackage");
 		$clientSign = I("clientSign");
@@ -120,15 +120,15 @@ class ContractController extends Controller
 		$sampleStaQuan = I("sampleStaQuan");
 		$collector = I("collector");
 		$centreNo = I("centreNo");
-		$testCost = I("testCost");
+		$testCost = I("testCost",0,'intval');
 		$collectDate = I("collectDate");
 		$reportDate = I("reportDate");
 		$ifHighQuantity = I("ifHighQuantity");
 		
 		
 		$rs = array("msg"=>'fail');
-		if(empty($clientName)){
-			$rs['msg'] = '信息填写不完整!';
+		if(empty($reportDate)||empty($collectDate)||empty($productionDate)){
+			$rs['msg'] = '信息填写不完整(把日期都填上测试)!';
 			$this->ajaxReturn($rs);
 		}
 		$data = array(
@@ -167,7 +167,6 @@ class ContractController extends Controller
 		);
 		//pr($data);
 			if(D("contract")->data($data)->add()){
-
 				$rs['msg'] = 'succ';
 			}else{
 				$rs['msg'] = '输入信息有误';
@@ -251,5 +250,8 @@ class ContractController extends Controller
 		//dump($list[0]['centreno']);
 		$this->ajaxReturn($centreNo);
 	}
+	
+	//费用查询
+	
 }
 ?>
