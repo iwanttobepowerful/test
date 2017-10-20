@@ -57,8 +57,23 @@ class TestReportController extends Controller
 		
 		
 	public function generateReport(){
-        $this->display(index);
-    }
+       $page = I("p",'int');
+       $pagesize = 10;
+       if($page<=0) $page = 1;
+       $offset = ( $page-1 ) * $pagesize;
+       $test_reprot=M("test_reprot");//实例化对象
+       $rs=$test_reprot->field('centreNo')->order('id')->limit("{$offset},{$pagesize}")->select();
+       $count = D("test_reprot")->count();
+       $Page= new \Think\Page($count,$pagesize);
+       $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</ a></ul>");
+       $pagination= $Page->show();// 分页显示输出
+       $body = array(
+           'lists'=>$rs,
+           'pagination'=>$pagination,
+       );
+       $this->assign($body);
+       $this->display();
+   }
     
     public function generateReportTwo(){
         $this->display(select);
