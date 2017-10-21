@@ -304,5 +304,48 @@ class ContractController extends Controller
 		);
 		$this->ajaxReturn($rs);
 	}
+	
+	//显示特殊编码
+	public function findSpecialCode(){
+		$specialList = D("special_centre_code")->select();
+		//$year=array();
+		$codeList=array();
+		foreach($specialList as $special){
+			//array_push($year,$special->year);
+			$year = $special['year']; 
+			$month = $special['month'];
+			$num = $special['getnum'];
+			$department = $special['department'];
+			$centreHead=$year.$month;
+			//SELECT centreNo,SUBSTR(centreNo,9,3) from contract where ifHighQuantity=0 order by SUBSTR(centreNo,9,3) desc
+			$special = D("contract")->field('centreNo,SUBSTR(centreNo,9,3) as codes')->where('centreNo like "'.$centreHead.'%" and ifHighQuantity=0')->order('SUBSTR(centreNo,9,3) desc')->find();
+			//pr($special);
+			//pr(D("contract")->getLastSql());
+			//pr(count($special));
+			if(count($special)==0){
+				$code=0;
+			}else{
+				$code = (int)$special->codes;
+				
+			}
+			for($i=1;$i<=$num;$i++){
+				$code = $code+$i;
+				$code=str_pad($code,3,"0",STR_PAD_LEFT);
+				$code=$centreHead.$department.'W'.$code;
+				array_push($codeList,$code);
+			}
+		}
+
+		//pr(D("contract")->getLastSql());
+		//if(count($list)>0){
+		//	$centreNo['re']= $list[0]['centreno'];	
+		//}
+
+		$rs = array(
+			//'special_list'=>$specialList,
+			'codeList'=>$codeList
+		);
+		$this->ajaxReturn($rs);
+	}
 }
 ?>
