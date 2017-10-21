@@ -30,7 +30,7 @@
                     <td>{$one.clientname}</td>
                     <td>{$one.productunit}</td>
                     <td>
-                        <span onclick="editAdminUser({$one.id})" class="glyphicon glyphicon-pencil">查询</span>
+                        <a href="{:U('/admin/test/sampleshow')}?id={$one.centreno}" class="glyphicon glyphicon-search" target="_blank">查看详情</a>
                     </td>
                 </tr>
             </volist>
