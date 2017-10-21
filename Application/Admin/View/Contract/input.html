@@ -242,9 +242,15 @@
 			makeCentreCode();
 		});
 		
+
+		
 		//时间
 		$(document).ready(function(){
 			$('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,	autoclose:true });
+					//计算费用
+					
+					
+
 		});	
 		
 		function makeCentreCode(){
@@ -434,7 +440,7 @@
 						for(var i=0;i<data.length;i++){
 							var items = data[i]['item'];
 							var money = data[i]['fee'];
-							option = "<input type='checkbox' name='items' value='"+money+"'/>&nbsp;&nbsp;"+items+"&nbsp;&nbsp;";
+							option = "<input type='checkbox' name='items' value='"+money+"' onclick='aa()'/>&nbsp;&nbsp;"+items+"&nbsp;&nbsp;";
 							$('#items').append(option);
 						}
 					}	
@@ -442,16 +448,14 @@
 			}
 		}
 		
-		//计算费用
-		$("input[name='items']").click(function(){
-			var cash=0;
-			alert(cash);
-			$("input[name='items']:checked").each(function(index, element) {
-				cash+=element;
-			});
-			$("#fee").val(cash);
-			alert(cash);	
-		});
+		function aa(){
+				cash=0;
+				$("input[name='items']:checked").each(function(index, element) {
+					cash+=element.value;
+				});
+				alert(cash);
+				$("#fee").val(cash);
+		}
 		
 		
 	</script>
