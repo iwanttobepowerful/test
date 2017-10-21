@@ -100,14 +100,14 @@ class ContractController extends Controller
 		$specification = I("specification");
 		$trademark = I("trademark");
 		$productionDate = I("productionDate");
-		$sampleQuantity = I("sampleQuantity");
+		$sampleQuantity = I("sampleQuantity",0,'intval');
 		$sampleunti = I("sampleunti");
 		$sampleStatus = I("sampleStatus");
-		$ration = I("ration");
+		$ration = I("ration",0,'intval');
 		$testCriteria = I("testCriteria");
 		$testItem = I("testItem");
 		$testCategory = I("testCategory");
-		$ifOnline = I("ifOnline");
+		$ifOnline = I("ifOnline",0);
 		$postMethod = I("postMethod");
 		$ifSubpackage = I("ifSubpackage");
 		$clientSign = I("clientSign");
@@ -120,15 +120,15 @@ class ContractController extends Controller
 		$sampleStaQuan = I("sampleStaQuan");
 		$collector = I("collector");
 		$centreNo = I("centreNo");
-		$testCost = I("testCost");
+		$testCost = I("testCost",0,'intval');
 		$collectDate = I("collectDate");
 		$reportDate = I("reportDate");
 		$ifHighQuantity = I("ifHighQuantity");
 		
 		
 		$rs = array("msg"=>'fail');
-		if(empty($clientName)){
-			$rs['msg'] = '信息填写不完整!';
+		if(empty($reportDate)||empty($collectDate)||empty($productionDate)){
+			$rs['msg'] = '信息填写不完整(把日期都填上测试)!';
 			$this->ajaxReturn($rs);
 		}
 		$data = array(
@@ -167,7 +167,6 @@ class ContractController extends Controller
 		);
 		//pr($data);
 			if(D("contract")->data($data)->add()){
-
 				$rs['msg'] = 'succ';
 			}else{
 				$rs['msg'] = '输入信息有误';
@@ -194,30 +193,28 @@ class ContractController extends Controller
 
 	//合同列表
 	public function showList(){
-		$list = D("contract")->select();
-		//echo  D("contract")->getLastSql();
-		//pr($list);
+		
+		$page = I("p",'int');
+        $pagesize = 10;
+        if($page<=0) $page = 1;
+        $offset = ( $page-1 ) * $pagesize;
+		
+		$list = D("contract")->limit("{$offset},{$pagesize}")->select();
+		$count = D("contract")->count();
+		$Page= new \Think\Page($count,$pagesize);
+		$Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
+		$pagination= $Page->show();// 分页显示输出
+
 		$body = array(
 			"list"=>$list,
+			'pagination'=>$pagination
 		);
 		//dump($body);
 		$this->assign($body);
 		$this->display();
 	}
 	
-	//合同详情
-	public function doContractDetail(){
-		$centreno = I("centreno");
-		$list = D("contract")->where('centreNo = "'.$centreno.'"')->select();
-		$body = array(
-			"contract_detail" => $list[0],
-		);
-		//dump(D("contract")->getLastSql());
-		//dump($body);
-		$this->assign($body);
-		$this->display();
-	}
-	
+
 	//获取最中心编号
 	public function getLastCode(){
 		$centreNo['re']='none';
@@ -250,6 +247,62 @@ class ContractController extends Controller
 		//pr($centreNo['count']);
 		//dump($list[0]['centreno']);
 		$this->ajaxReturn($centreNo);
+	}
+	
+	//费用查询
+	public function feeManage(){
+		$page = I("p",'int');
+        $pagesize = 10;
+        if($page<=0) $page = 1;
+        $offset = ( $page-1 ) * $pagesize;
+		
+		$list = D("test_fee")->limit("{$offset},{$pagesize}")->select();
+		$count = D("test_fee")->count();
+		$Page= new \Think\Page($count,$pagesize);
+		$Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
+		$pagination= $Page->show();// 分页显示输出
+		$body = array(
+			"fee_list"=>$list,
+			'pagination'=>$pagination
+		);
+		$this->assign($body);
+		$this->display();
+	}
+	
+	
+	//费用列表
+	public function findMetList(){
+		$meterial_list=D("test_fee")->field("meterial")->group("meterial")->select();
+		if($productname!=0 && $meterial!=0){
+			$productname_list=D("test_fee")->field("productname")->where('meterial="'.meterial.'"')->group("productname")->select();
+		}
+		
+		$rs = array(
+			"meterial_list"=>$meterial_list,
+			'productname_list'=>$productname_list,
+		);
+		$this->ajaxReturn($rs);
+	} 
+	
+	public function findProList(){
+		$meterial = I('m_select');
+		$productname_list=D("test_fee")->field("productname")->where('meterial="'.$meterial.'"')->group("productname")->select();
+		//pr(D("test_fee")->getLastSql());
+		$rs = array(
+			'productname_list'=>$productname_list,
+		);
+		$this->ajaxReturn($rs);
+	} 
+	
+	public function findItemList(){
+		$meterial = I('m_select');
+		$productname = I('p_select');
+		$item_list=D("test_fee")->field("item,fee")->where('meterial="'.$meterial.'" and productname="'.$productname.'"')->select();
+		//pr(D("test_fee")->getLastSql());
+		$rs = array(
+			'item_list'=>$item_list,
+		);
+		$this->ajaxReturn($rs);
 	}
 }
 ?>

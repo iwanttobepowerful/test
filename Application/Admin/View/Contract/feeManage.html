@@ -1,0 +1,61 @@
+<include file="Common:header" title="后台首页"/>
+<div id="page-wrapper">
+    <include file="Common:breadcrumb" />
+    <div id="page-inner" class="container">
+        <!-- 主要模板 starting -->
+
+
+
+
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+             <th>材料</th>
+            <th>执行标准</th>
+            <th>产品名称</th>
+            <th>测试项目</th>
+            <th>样品数量</th>
+            <th>试验周期</th>
+            <th>备注</th>
+            <th>单项费用</th>
+            <th>样品数量</th>
+            <th>操作</th>
+            </thead>
+            <tbody>
+            <volist name="fee_list" id="con">
+                <tr>
+                    <td>{$con.meterial}</td>
+                    <td>{$con.criteria}</td>
+                    <td>{$con.productname}</td>
+                    <td>{$con.item}</td>
+                    <td>{$con.samplequantity}</td>
+                    <td>{$con.testperiod}</td>
+                    <td>{$con.remark}</td>
+                    <td>{$con.fee}</td>
+                    <td>{$con.quantity}</td>
+                    <td width="20%">
+                    	<a href="/admin/manager/contractDetail?id={$con.centreno}" class="btn btn-info btn-xs" type="button">修改</button>
+                    </td>
+                </tr>
+            </volist>
+            
+            </tbody>
+        </table>
+        <div class=" pull-right"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
+
+
+
+        <!-- main end-->
+
+    </div>
+</div>
+</div>
+
+<script src="__PUBLIC__/static/js/jquery.form.js"></script>
+<script type="text/javascript">
+	function findContract(centreno){
+		window.location.href='/admin/contract/doContractDetail?centreno='+centreno;
+
+	}
+</script>
+
+<include file="Common:footer" />

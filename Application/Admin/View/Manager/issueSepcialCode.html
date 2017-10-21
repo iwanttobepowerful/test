@@ -5,7 +5,7 @@
         <!-- 主要模板 starting -->
 
 		<div class="search-form">
-			<button type="button" class="btn btn-primary btn-sm" >新增特殊号段</button>
+			<button type="button" class="btn btn-primary btn-sm" onclick="addSpecicalCode()" ><i class="glyphicon glyphicon-plus"></i>新增</button>
         </div>
 
         <table class="table table-bordered table-striped table-hover">
@@ -14,26 +14,16 @@
             <th>年</th>
             <th>月</th>
             <th>数量</th>
+            <th>备注</th>
             </thead>
             <tbody>
-            <tr>
-                <td>A</td>
-                <td>2017</td>
-                <td>10</td>
-                <td>5</td>
-            </tr>
-            <tr>
-                <td>B</td>
-                <td>2017</td>
-                <td>7</td>
-                <td>3</td>
-            </tr>
             <volist name="special_list" id="special">
                 <tr>
                     <td>{$special.department}</td>
                     <td>{$special.year}</td>
                     <td>{$special.month}</td>
                     <td>{$special.getnum}</td>
+                    <td>{$special.remark}</td>
                 </tr>
             </volist>
             </tbody>
@@ -46,5 +36,111 @@
 
     </div>
 </div>
+
+
+<!-- 模态框（Modal) -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <form class="form-horizontal" id="myform" action="" method="post">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="createModalLabel">新增特殊号段</h4>
+            </div>
+            <div class="modal-body form-horizontal">
+            	<input type="hidden" name="modid" value="0" />
+             	<div class="form-group form-group-sm">
+             		<label class="col-sm-3 control-label talign-right fz13">部门</label>
+				    <div class="col-sm-7">
+				    	<select name="department" class="form-control">
+				    		<option value="A">A</option>
+							<option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+				    	</select>
+				    </div>
+                    <div class="clearfix"></div>
+             	</div>
+             	<div class="form-group form-group-sm">
+             		<label class="col-sm-3 control-label talign-right fz13">年</label>
+				    <div class="col-sm-7">
+				    	<input type="text" class="form-control" name="year">
+				    </div>
+                    <div class="clearfix"></div>
+             	</div>
+             	<div class="form-group form-group-sm">
+             		<label class="col-sm-3 control-label talign-right fz13">月</label>
+				    <div class="col-sm-7">
+				    	<select name="month" class="form-control" id="month">
+				    		<option value="1">1</option>
+							<option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+							<option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+				    	</select>
+				    </div>
+                    <div class="clearfix"></div>
+             	</div>
+             	<div class="form-group form-group-sm">
+             		<label class="col-sm-3 control-label talign-right fz13">数量</label>
+				    <div class="col-sm-7">
+				    	<input type="text" class="form-control" name="getNum">
+				    </div>
+                    <div class="clearfix"></div>
+             	</div>
+             	<div class="form-group form-group-sm">
+             		<label class="col-sm-3 control-label talign-right fz13">备注</label>
+				    <div class="col-sm-7">
+				    	<textarea class="form-control" name="remark"></textarea>
+				    </div>
+                    <div class="clearfix"></div>
+             	</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="submit" class="btn btn-primary" onclick="doAddSpecicalCode()">确定</button>
+            </div>
+        </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
 </div>
+<script src="__PUBLIC__/static/js/jquery.form.js"></script>
+<script type="text/javascript">
+	//显示新增弹框
+	function addSpecicalCode(){
+		var modal = $("#editModal");
+		modal.modal();
+	}
+	
+	//新增特殊编号
+	function doAddSpecicalCode(){
+		var options = {
+    		url: "{:U('/admin/manager/doAddSpecialCode')}",
+			dataType: 'json',
+			success: function (data) {
+				if(data.msg=='succ'){
+					var _options = {"text":"修改成功！","action":function(){window.location.reload();}};
+					doAlertDialog(_options);
+				}else{
+					var _options = {"text":"修改失败！"};
+					if(data.msg) _options.text = data.msg;
+					doAlertDialog(_options);
+				}
+			}
+    	};
+		$("#myform").ajaxForm(options);
+		return false;
+	}
+	
+	
+</script>
 <include file="Common:footer" />
