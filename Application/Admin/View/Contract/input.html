@@ -139,16 +139,14 @@
               <div id="remainCode" style="display:none;color:red">
                 当前剩余量：<span id="remain"></span>
               </div>
-              <button class="btn btn-success" type="button" onclick="special_code()">申请特殊编码</button>
+              <input type="checkbox" id="spec_checkbox" onclick="special_code()"/>申请特殊编码<br/>
+              <!--<button class="btn btn-success" type="button" onclick="special_code()">申请特殊编码</button>-->
               <div>
-              <br/>
-              		<ul>
-                    	<li><a class="btn btn-default btn-xs" href="#" role="button">201710BW111  剩余量：5(含当前)</a></li>
-                        <li><a class="btn btn-default btn-xs" href="#" role="button">201710BW111  剩余量：5(含当前)</a></li>
-                        <li><a class="btn btn-default btn-xs" href="#" role="button">201710BW111  剩余量：5(含当前)</a></li>
+              		<ul id="spe_code" style="display:none">
+                    	
                     <ul>
               </div>
-            </p></td>
+            </td>
             <td  ><p align="center" >检验费用 </p></td>
             <td  colspan="4" >
               <div class="col-xs-5">
@@ -353,6 +351,7 @@
 		
 		function upVIPCode(){
 			if($("input[name='ifHighQuantity']").is(':checked')){
+				$("#spec_checkbox").attr("disabled","disabled");
 				var nowDate = new Date();
 				var year = nowDate.getFullYear();
 				var month = nowDate.getMonth()+1;
@@ -384,6 +383,7 @@
 				$("#remain").html(remain+"(含当前编号)");
 				$("#remainCode").css("display","block");
 			}else{
+				$("#spec_checkbox").removeAttr("disabled");
 				makeCentreCode();
 				$('input[name="ifHighQuantity"]').val(0);
 				$("#remainCode").css("display","none");
@@ -402,9 +402,16 @@
 		//合同入库
 		function doInputContract(){
 			//alert('start');
+			//查找是否是特殊编码
+			if($("#spec_checkbox").is(":checked")){
+				ifspecial=1;	
+			}else{
+				ifspecial=0;	
+			}
 			var options = {
 				url: "{:U('/admin/contract/doAddContract')}",
 				dataType: 'json',
+				data:{'ifspecial':ifspecial},
 				beforeSubmit: function(){
 					return true;
 				},
@@ -426,17 +433,39 @@
 		
 		//特殊编码
 		function special_code(){
-			$.ajax({
-				url:"{:U('/admin/contract/findSpecialCode')}",
-				dataType:'json',
-				success: function (re) {
-					data = re.special_list;
-					for(var i =0;i<data.length;i++){
-						var centreCode = year+""+month+department+type+code;
-						//code = data[i].year+""+data[i].month<10?'0'+data[i].month:data[i].month+""+data[i].department+"W"+;
-					}
-				}	
-			});
+			$("#spe_code").attr("display","block");
+			if($("#spec_checkbox").is(":checked")){
+				$.ajax({
+					url:"{:U('/admin/contract/findSpecialCode')}",
+					dataType:'json',
+					success: function (re) {
+						data = re.codeList;;
+						num = re.numList;
+						html="";
+						for(var i =0;i<data.length;i++){
+							html+="<button  type='button' id='spec_li_"+i+"' class='btn btn-default btn-xs' onclick=choseSpe('"+i+"')><span id='code'>"+data[i]+"</span> 剩余量：<span id='remain_code'>"+num[i]+"</span>(含当前)</button><br/>";
+							
+						}
+						$("#spe_code").html(html);
+					}	
+				});
+				
+				$("#spe_code").css("display","block");
+				$("input[name=ifHighQuantity]").attr("disabled","disabled");
+			}else{
+				$("#spe_code").css("display","none");
+				$("input[name=ifHighQuantity]").removeAttr("disabled");
+				makeCentreCode();
+			}
+		}
+		
+		
+		
+		//选择特殊编码
+		function choseSpe(id){
+			var code = $("#spec_li_"+id+" #code").html();
+			var remain_code = $("#spec_li_"+id+" #remain_code").html();
+			$("#centreNo").val(code);
 		}
 		
 		
@@ -444,7 +473,8 @@
 				
 		//本部门费用选
 		function myCost1(){
-			var modal = $("#editModal");		
+			
+			var modal = $("#editModal");
 			setMetOption();
 			modal.modal();
 			computeSum();
@@ -459,6 +489,9 @@
 					return true;
 				},
 				success: function (re) {
+					$('#meterial').find("option").remove();
+					var option = "<option value=0>请选择</option>";
+					$('#meterial').append(option);
 					data = re['meterial_list'];
 					for(var i=0;i<data.length;i++){
 						var meterial = data[i]['meterial'];
@@ -510,6 +543,8 @@
 						return true;
 					},
 					success: function (re) {
+						$("#items").empty();
+						$("#t_fee").empty();
 						data = re['item_list'];
 						for(var i=0;i<data.length;i++){
 							var items = data[i]['item'];
@@ -518,7 +553,7 @@
 								option = "<input type=\"checkbox\" id=\"t_items\" name=\"items_all\" value=\""+money+"\" onclick=checkAllFee(); />&nbsp;&nbsp;"+items+"&nbsp;&nbsp;";
 								$('#items').prepend(option);
 							}else{
-								option = "<input type=\"checkbox\" name=\"items\" value=\""+money+"\" onclick=checkFee();/>&nbsp;&nbsp;"+items+"&nbsp;&nbsp;";
+								option = "<input type=\"checkbox\" name=\"items\" value=\""+money+"\" onclick=checkFee();  />&nbsp;&nbsp;"+items+"&nbsp;&nbsp;";
 								$('#items').append(option);
 							}
 							
@@ -587,6 +622,9 @@
 					return true;
 				},
 				success: function (re) {
+					$('#dmeterial').find("option").remove();
+					var option = "<option value=0>请选择</option>";
+					$('#dmeterial').append(option);
 					data = re['meterial_list'];
 					for(var i=0;i<data.length;i++){
 						var meterial = data[i]['meterial'];
@@ -638,15 +676,17 @@
 						return true;
 					},
 					success: function (re) {
+						$("#ditems").empty();
+						$("#d_fee").empty();
 						data = re['item_list'];
 						for(var i=0;i<data.length;i++){
 							var items = data[i]['item'];
 							var money = data[i]['fee'];
 							if(items=='全项'){
-								option = "<input type=\"checkbox\" id=\"d_items\" name=\"ditems_all\" value=\""+money+"\" onclick=checkDAllFee(); />&nbsp;&nbsp;"+items+"&nbsp;&nbsp;";
+								option = "<input type=\"checkbox\" id=\"d_items\" name=\"ditems_all\" value=\""+money+"\" onclick=checkDAllFee() />&nbsp;&nbsp;"+items+"&nbsp;&nbsp;";
 								$('#ditems').prepend(option);
 							}else{
-								option = "<input type=\"checkbox\" name=\"ditems\" value=\""+money+"\" onclick=checkDFee();/>&nbsp;&nbsp;"+items+"&nbsp;&nbsp;";
+								option = "<input type=\"checkbox\" name=\"ditems\" value=\""+money+"\" onclick=checkDFee() />&nbsp;&nbsp;"+items+"&nbsp;&nbsp;";
 								$('#ditems').append(option);
 							}
 							
@@ -657,7 +697,7 @@
 		}
 			
 		//计算本部门费用--单项选择
-		function checkDFee(costType){
+		function checkDFee(){
 			cash = 0;
 			var allCheck=true;
 			$("input[name='ditems']").each(function(index, element) {
@@ -676,10 +716,10 @@
 			$("#d_fee").html(cash);
 		}
 		//计算本部门费用--全项选择
-		function checkDAllFee(costType){
+		function checkDAllFee(){
 			var cash=0;
 			$("#d_items").prop("checked",$("#d_items").prop("checked"));
-			if($("#t_items").prop("checked")){
+			if($("#d_items").prop("checked")){
 				$("input[name=ditems]").prop("checked",true);
 				cash = parseInt($("#d_items").val());
 			}else{
