@@ -392,5 +392,22 @@ class ContractController extends Controller
 		);
 		$this->ajaxReturn($rs);
 	}
+	
+	
+	//检验报告单详情
+	public function checkDetail(){
+		$body=array();
+		$this->assign($body);
+		$this->display();
+	}
+	
+	//抽样单
+	public function sampleDetail(){
+		$centreno = I("id");
+		$samdetail = D("contract")->where("centreNo=".$centreno)->find();
+		$body = array();
+		$this->assign($body);
+		$this->display();
+	}
 }
 ?>

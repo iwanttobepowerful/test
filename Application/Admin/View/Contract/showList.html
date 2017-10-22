@@ -7,7 +7,7 @@
 
 
 
-        <table class="table table-bordered table-striped table-hover">
+        <table class="table table-bordered table-striped table-hover" id="tb">
             <thead>
             <th>中心编号</th>
             <th>生产单位</th>
@@ -22,8 +22,12 @@
                     <td>{$con.clientname}</td>
                     <td>{$con.clientsign}</td>
                     <td>{$con.telephone}</td>
-                    <td width="20%">
+                    <!--判断委托/抽样检验-->
+                    
+                    <td width="25%">
                     	<a href="/admin/manager/contractDetail?id={$con.centreno}" target="_blank" class="btn btn-info btn-xs" ><i class="glyphicon glyphicon-search"></i>合同详情</a>
+                        <a href="/admin/test/infoShow?id={$con.centreno}" target="_blank" class="btn btn-info btn-xs" ><i class="glyphicon glyphicon-search"></i>检验报告单</a>
+                        <a href="{:U('/admin/test/sampleshow')}?id={$con.centreno}" id="smple" style="display:none" target="_blank" class="btn btn-info btn-xs" ><i class="glyphicon glyphicon-search"></i>抽样单</a>
                     </td>
                 </tr>
             </volist>
@@ -42,7 +46,17 @@
 
 <script src="__PUBLIC__/static/js/jquery.form.js"></script>
 <script type="text/javascript">
-
+	$(function(){
+		$("#tb tr").each(function(){
+            var text = $(this).children("td:first").text();
+			//alert(text+":"+text.substr(6,1))
+			if (text.substr(7,1)=='C'){
+				//alert($(this).children("td:last").children("a:last").html());
+				$(this).children("td:last").children("a:last").css("display","inline-block");
+			}
+        });
+		
+	});
 </script>
 
 <include file="Common:footer" />
