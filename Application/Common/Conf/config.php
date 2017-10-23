@@ -2,10 +2,10 @@
 return array(
 	//'配置项'=>'配置值'
 	'DEFAULT_MODULE'	=> 'Admin',
-	'MODULE_ALLOW_LIST'	=> array('Home','Admin','Api'),
+	'MODULE_ALLOW_LIST'	=> array('Home','Admin','Api','Wap'),
 	'APP_SUB_DOMAIN_DEPLOY'   =>    TRUE,
 	'APP_SUB_DOMAIN_RULES'    =>    array(
 		/*'adm.qoowan.net'  	=> array('/'),*/
-		'api.qoowan.net'   => array('Api/')
+		'm.qooce.cn'   => array('Wap/')
 	)
 );
