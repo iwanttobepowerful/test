@@ -12,7 +12,7 @@ class AccountController extends Controller {
 	 */
 	public function login(){
 		if(D("account")->isLogin()){
-			$loginUrl = U('/wap/index');
+			$loginUrl = U('/index/index');
         	@header("Location:{$loginUrl}");
         	exit();
 		}

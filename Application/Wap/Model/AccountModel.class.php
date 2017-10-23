@@ -8,7 +8,7 @@ class AccountModel extends Model{
         if($admin_auth){
             return $admin_auth;
         }
-        $loginUrl = U('/wap/account/login');
+        $loginUrl = U('/account/login');
         @header("Location:{$loginUrl}");
     }
     public function isLogin(){
