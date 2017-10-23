@@ -28,10 +28,17 @@ class TestController extends Controller{
     //工作通知单显示
     public function infoShow(){
         $keyword = I("id");//获取参数
-        $where= "centreno='{$keyword}'";
-        $result=M('work_inform_form')->where($where)->select();
+        $where= "centreNo='{$keyword}'";
+
+        $work_inform_form=M('work_inform_form');
+        $contract=M("contract");
+        $result=$work_inform_form->where($where)->select();
+        $res=$contract->where($where)->field('sampleStatus')->select();
+        dump($res);
+        dump($result);
         $body=array(
             'lists'=>$result,
+            'list2'=>$res,
 
         );
         $this->assign($body);
