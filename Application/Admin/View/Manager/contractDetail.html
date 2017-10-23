@@ -204,7 +204,7 @@
                 </td>
                 <td width=279 colspan=2 valign=top style='width:139.7pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
                     <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.productdate}</span></p>
+                        <span lang=EN-US style='line-height:150%'>{$one.productiondate}</span></p>
                 </td>
                 <td width=182 colspan=2 valign=top style='width:91.05pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
                     <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
@@ -212,7 +212,7 @@
                 </td>
                 <td width=365 colspan=4 valign=top style='width:182.45pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.5pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
                     <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.samplequantity}</span></p>
+                        <span lang=EN-US style='line-height:150%'>{$one.samplequantity}{$one.sampleunti}</span></p>
                 </td>
             </tr>
             <tr style='page-break-inside:avoid;height:22.4pt'>
@@ -421,7 +421,7 @@
                 </td>
                 <td width=365 colspan=4 valign=top style='width:182.45pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.25pt'>
                     <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.testcost}</span></p>
+                        <span lang=EN-US style='line-height:150%'>{$cost.testfee}+{$cost.drecord}+{$cost.dcopy}+{$cost.drevise}={$one.testcost}</span></p>
                 </td>
             </tr>
             <tr style='page-break-inside:avoid;height:22.25pt'>

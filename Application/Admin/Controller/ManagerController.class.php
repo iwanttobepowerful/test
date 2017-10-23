@@ -61,8 +61,10 @@ class ManagerController extends Controller
         $contract=D("contract");//实例化
         $where= "centreno='{$centreno}'";
         $data=$contract->where($where)->field('ifHighQuantity,remark1,remark2',ture)->find();
+		$cost=D("test_cost")->where('centreno="'.$centreno.'"')->find();
         $body=array(
             'one'=>$data,
+			'cost'=>$cost
         );
         $this->assign($body);
         $this->display();

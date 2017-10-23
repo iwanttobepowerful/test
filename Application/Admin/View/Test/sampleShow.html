@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>抽样单查询</title>
-    <script src="jiancai/Public/script/jquery.min.js" type="text/JavaScript"></script>
-    <script src="jiancai/Application/Admin/View/Test/jquery.PrintArea.js" type="text/JavaScript"></script>
+    <script src="__PUBLIC__/script/jquery.min.js" type="text/JavaScript"></script>
+    <script src="__PUBLIC__/static/js/jquery.PrintArea.js" type="text/JavaScript"></script>
     <script>
         $(document).ready(function(){
             $("input#biuuu_button").click(function(){
@@ -92,8 +92,8 @@
 
 <div class=WordSection1 style='layout-grid:15.6pt'>
 
-    <p class=MsoNormal align=center style='text-align:center'><img width=100
-                                                                   height=100 src="jiancai/Public/imgs/logo.png" align=center hspace=12><span
+    <p class=MsoNormal align=center style='text-align:center'><img width=60
+                                                                   height=74 src="__PUBLIC__/static/images/logo_company.png" align=center hspace=12><span
             lang=EN-US style='font-size:18.0pt'>&nbsp;(</span><span style='font-size:18.0pt;
 font-family:黑体'>国家</span><span lang=EN-US style='font-size:18.0pt'>)</span><span
             style='font-size:18.0pt;font-family:黑体'>建筑材料工业技术监督研究中心</span></p>
@@ -104,13 +104,10 @@ font-family:黑体'>国家</span><span lang=EN-US style='font-size:18.0pt'>)</sp
             style='font-size:18.0pt'> </span><span style='font-size:18.0pt;font-family:
 黑体'>单</span></p>
     <volist name="lists" id="one">
-    <p class=MsoNormal align=center style='text-indent:7.05pt'><span align=center
-            lang=EN-US style='font-family:"Times New Roman",serif'>　　　　　　　　　　　　　　　　　　　　　　　　　SJ</span><span align=center
-            style='font-family:宋体'>－</span><span lang=EN-US style='font-family:"Times New Roman",serif'>4</span><span align=center
-            style='font-family:宋体'>－</span><span lang=EN-US style='font-family:"Times New Roman",serif'>25&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span align=center style='font-family:宋体'>中心编号：</span><span
-            lang=EN-US style='mso-bidi-font-size:10.5pt'>{$one.centreno}</span><span lang=EN-US
-                                                                             style='font-family:"Times New Roman",serif'><o:p></o:p></span></p>
+    <p class=MsoNormal align=center style='text-indent:7.05pt'><span align=left
+            lang=EN-US style='font-family:"Times New Roman",serif;margin-left:0px'>SJ－4－25&nbsp;&nbsp;</span>
+            <span align=left style='font-family:宋体'>中心编号：</span><span
+            lang=EN-US style='mso-bidi-font-size:10.5pt'>{$one.centreno}</span></p>
 
     <table align=center class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=670
            style='width:502.55pt;border-collapse:collapse;
@@ -255,16 +252,16 @@ font-family:黑体'>国家</span><span lang=EN-US style='font-size:18.0pt'>)</sp
                 <p class=MsoNormal align=center style='text-align:center'><span lang=EN-US>{$one.samplemethod}</span></p>
             </td>
         </tr>
-        <tr style='height:139.05pt'>
+        <tr style='height:80.05pt'>
             <td width=120 style='width:89.95pt;border-top:none;border-left:solid black 1.0pt;
   border-bottom:solid black 1.0pt;border-right:solid windowtext 1.0pt;
-  padding:0cm 5.4pt 0cm 5.4pt;height:139.05pt'>
+  padding:0cm 5.4pt 0cm 5.4pt;height:80.05pt'>
                 <p class=MsoNormal align=center style='text-align:center'><span
                         style='font-family:宋体'>检验内容</span></p>
             </td>
             <td width=550 colspan=4 style='width:412.6pt;border-top:none;border-left:
   none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
-  padding:0cm 5.4pt 0cm 5.4pt;height:139.05pt'>
+  padding:0cm 5.4pt 0cm 5.4pt;height:80.05pt'>
                 <p class=MsoNormal align=center style='text-align:center'><span lang=EN-US>{$one.testitem}</span></p>
             </td>
         </tr>
@@ -296,15 +293,14 @@ font-family:黑体'>国家</span><span lang=EN-US style='font-size:18.0pt'>)</sp
                 </p>
             </td>
         </tr>
-        <tr style='mso-yfti-irow:10;height:89.2pt'>
+        <tr style='mso-yfti-irow:10;height:39.2pt'>
             <td width=334 colspan=2 valign=top style='width:250.35pt;border:solid black 1.0pt;
   border-top:none;mso-border-top-alt:solid black .5pt;mso-border-alt:solid black .5pt;
-  padding:0cm 5.4pt 0cm 5.4pt;height:89.2pt'>
+  padding:0cm 5.4pt 0cm 5.4pt;height:39.2pt'>
                 <p class=MsoNormal align=left style='text-align:left'><span style='mso-bidi-font-size:
   10.5pt;font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:
   Calibri'>抽样人（签名）</span><span lang=EN-US style='mso-bidi-font-size:10.5pt'><o:p></o:p></span></p>
-                <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
-                                                                            style='mso-bidi-font-size:10.5pt'>{$one.simplersign}<o:p></o:p></span></p>
+              
                 <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
                                                                             style='mso-bidi-font-size:10.5pt'><o:p>&nbsp;</o:p></span></p>
                 <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
@@ -325,13 +321,11 @@ font-family:黑体'>国家</span><span lang=EN-US style='font-size:18.0pt'>)</sp
             <td width=336 colspan=3 valign=top style='width:252.2pt;border-top:none;
   border-left:none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
   mso-border-top-alt:solid black .5pt;mso-border-left-alt:solid black .5pt;
-  mso-border-alt:solid black .5pt;padding:0cm 5.4pt 0cm 5.4pt;height:89.2pt'>
+  mso-border-alt:solid black .5pt;padding:0cm 5.4pt 0cm 5.4pt;height:39.2pt'>
                 <p class=MsoNormal align=left style='text-align:left'><span style='mso-bidi-font-size:
   10.5pt;font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:
   Calibri'>封样人（签名）</span><span lang=EN-US style='mso-bidi-font-size:10.5pt'><o:p></o:p></span></p>
-                <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
-                                                                            style='mso-bidi-font-size:10.5pt'>{$one.sealersign}<o:p></o:p></span></p>
-                <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
+  				<p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
                                                                             style='mso-bidi-font-size:10.5pt'><o:p>&nbsp;</o:p></span></p>
                 <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
                                                                             style='mso-bidi-font-size:10.5pt'><o:p>&nbsp;</o:p></span></p>
@@ -349,10 +343,10 @@ font-family:黑体'>国家</span><span lang=EN-US style='font-size:18.0pt'>)</sp
   Calibri'>日</span><span lang=EN-US style='mso-bidi-font-size:10.5pt'><o:p></o:p></span></p>
             </td>
         </tr>
-        <tr style='mso-yfti-irow:11;height:97.8pt'>
+        <tr style='mso-yfti-irow:11;height:47.8pt'>
             <td width=670 colspan=5 valign=top style='width:502.55pt;border:solid black 1.0pt;
   border-top:none;mso-border-top-alt:solid black .5pt;mso-border-alt:solid black .5pt;
-  padding:0cm 5.4pt 0cm 5.4pt;height:97.8pt'>
+  padding:0cm 5.4pt 0cm 5.4pt;height:47.8pt'>
                 <p class=MsoNormal align=left style='text-align:left'><span style='mso-bidi-font-size:
   10.5pt;font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:
   Calibri'>被抽检企业有关人员（签名）</span><span lang=EN-US style='mso-bidi-font-size:10.5pt'><o:p></o:p></span></p>
@@ -451,9 +445,9 @@ font-family:黑体'>国家</span><span lang=EN-US style='font-size:18.0pt'>)</sp
                                                                                 style='mso-bidi-font-size:10.5pt'>{$one.address}<o:p></o:p></span></p>
             </td>
         </tr>
-        <tr style='height:55.65pt'>
+        <tr style='height:25.65pt'>
             <td width=670 colspan=5 valign=top style='width:502.55pt;border:solid black 1.0pt;
-  border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:55.65pt'>
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:25.65pt'>
                 <p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
             </td>
         </tr>
