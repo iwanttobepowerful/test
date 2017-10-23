@@ -3,8 +3,8 @@
     <head>
         <meta charset="UTF-8">
         <title>检验工作通知单详情</title>
-        <script src="jiancai/Public/script/jquery.min.js" type="text/JavaScript"></script>
-        <script src="jiancai/Application/Admin/View/Test/jquery.PrintArea.js" type="text/JavaScript"></script>
+    <script src="__PUBLIC__/script/jquery.min.js" type="text/JavaScript"></script>
+    <script src="__PUBLIC__/static/js/jquery.PrintArea.js" type="text/JavaScript"></script>
         <script>
             $(document).ready(function(){
                 $("input#biuuu_button").click(function(){
@@ -252,14 +252,16 @@ major-fareast;mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fa
                             lang=EN-US style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
   mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'><o:p></o:p></span></p>
                 </td>
+                <volist name="list2" id="two">
                 <td width=138 style='width:103.7pt;border-top:none;border-left:none;
   border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
   mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
   mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
                     <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
                                                                                 style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
-  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'><o:p>&nbsp;</o:p></span></p>
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'><o:p>{$one.samplestatus}</o:p></span></p>
                 </td>
+                </volist>
             </tr>
             <tr style='mso-yfti-irow:6;height:351.45pt'>
                 <td width=553 colspan=4 valign=top style='width:414.8pt;border:solid windowtext 1.0pt;
