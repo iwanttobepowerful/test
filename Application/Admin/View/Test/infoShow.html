@@ -2,26 +2,332 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>通知单详情显示页面</title>
+        <title>检验工作通知单详情</title>
+    <script src="__PUBLIC__/script/jquery.min.js" type="text/JavaScript"></script>
+    <script src="__PUBLIC__/static/js/jquery.PrintArea.js" type="text/JavaScript"></script>
+        <script>
+            $(document).ready(function(){
+                $("input#biuuu_button").click(function(){
+                    $("div#myPrintArea").printArea();
+                });
+            });
+        </script>
+        <style>
+            table.MsoNormalTable
+            {mso-style-name:普通表格;
+                mso-tstyle-rowband-size:0;
+                mso-tstyle-colband-size:0;
+                mso-style-noshow:yes;
+                mso-style-priority:99;
+                mso-style-parent:"";
+                mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+                mso-para-margin:0cm;
+                mso-para-margin-bottom:.0001pt;
+                mso-pagination:widow-orphan;
+                font-size:10.5pt;
+                mso-bidi-font-size:11.0pt;
+                font-family:"Calibri",sans-serif;
+                mso-ascii-font-family:Calibri;
+                mso-ascii-theme-font:minor-latin;
+                mso-hansi-font-family:Calibri;
+                mso-hansi-theme-font:minor-latin;
+                mso-bidi-font-family:"Times New Roman";
+                mso-bidi-theme-font:minor-bidi;
+                mso-font-kerning:1.0pt;}
+            table.MsoTableGrid
+            {mso-style-name:网格型;
+                mso-tstyle-rowband-size:0;
+                mso-tstyle-colband-size:0;
+                mso-style-priority:39;
+                mso-style-unhide:no;
+                border:solid windowtext 1.0pt;
+                mso-border-alt:solid windowtext .5pt;
+                mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+                mso-border-insideh:.5pt solid windowtext;
+                mso-border-insidev:.5pt solid windowtext;
+                mso-para-margin:0cm;
+                mso-para-margin-bottom:.0001pt;
+                mso-pagination:widow-orphan;
+                font-size:10.5pt;
+                mso-bidi-font-size:11.0pt;
+                font-family:"Calibri",sans-serif;
+                mso-ascii-font-family:Calibri;
+                mso-ascii-theme-font:minor-latin;
+                mso-hansi-font-family:Calibri;
+                mso-hansi-theme-font:minor-latin;
+                mso-bidi-font-family:"Times New Roman";
+                mso-bidi-theme-font:minor-bidi;
+                mso-font-kerning:1.0pt;}
+        </style>
+
     </head>
-    <body>
-    <table class="table table-bordered table-striped table-hover">
-        <thead>
-        <th>序号</th>
-        <th>中心编号</th>
-        <th>样本名称</th>
-        </thead>
-        <tbody>
-        <volist name="lists" id="one">
-            <tr>
-                <td>{$one.id}</td>
-                <td>{$one.centreno}</td>
-                <td>{$one.samplename}</td>
+    <input id="biuuu_button" type="button" value="打印">
+    <div id="myPrintArea">
+
+    <body lang=ZH-CN style='tab-interval:21.0pt;text-justify-trim:punctuation'>
+
+    <div class=WordSection1 style='layout-grid:15.6pt'>
+
+        <p class=MsoNormal align=center style='text-align:center'><span
+                style='font-size:26.0pt;font-family:黑体'>　　　　检验工作通知单<span lang=EN-US><o:p></o:p></span></span></p>
+
+        <p class=MsoNormal align=left style='text-align:left'><b style='mso-bidi-font-weight:
+normal'><span lang=EN-US style='font-size:12.0pt;font-family:宋体;mso-ascii-theme-font:
+major-fareast;mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'><span
+                style='mso-tab-count:14'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+                style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp; </span>SJ-4-02<o:p></o:p></span></b></p>
+
+        <table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+               style='margin-left:311.9pt;border-collapse:collapse;border:none;mso-border-alt:
+ solid windowtext .5pt;mso-yfti-tbllook:1184;mso-padding-alt:0cm 5.4pt 0cm 5.4pt'>
+            <volist name="lists" id="one">
+            <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+                <td width=138 style='width:103.7pt;border:solid windowtext 1.0pt;mso-border-alt:
+  solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+                    <p class=MsoNormal align=center style='text-align:center'><span
+                            style='font-size:12.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>中心编号<span
+                            lang=EN-US><o:p></o:p></span></span></p>
+                </td>
+                <td width=138 style='width:103.7pt;border:solid windowtext 1.0pt;border-left:
+  none;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+                    <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
+                                                                                style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>{$one.centreno}</span></p>
+                </td>
+                <td width=138 style='width:103.7pt;border:solid windowtext 1.0pt;border-left:
+  none;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+                    <p class=MsoNormal align=center style='text-align:center'><span
+                            style='font-size:12.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>样品名称<span
+                            lang=EN-US><o:p></o:p></span></span></p>
+                </td>
+                <td width=138 style='width:103.7pt;border:solid windowtext 1.0pt;border-left:
+  none;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+                    <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
+                                                                                style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>{$one.samplename}</span></p>
+                </td>
             </tr>
-        </volist>
-        </tbody>
-    </table>
-    <div class=" pull-right"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
-    <!-- main end-->
+            <tr style='mso-yfti-irow:1'>
+                <td width=138 style='width:103.7pt;border:solid windowtext 1.0pt;border-top:
+  none;mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+                    <p class=MsoNormal align=center style='text-align:center'><span
+                            style='font-size:12.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>检验依据</span><span
+                            lang=EN-US style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'><o:p></o:p></span></p>
+                </td>
+                <td width=415 colspan=3 style='width:311.1pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+                    <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
+                                                                                style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>{$one.testcreiteria}</span></p>
+                </td>
+            </tr>
+            <tr style='mso-yfti-irow:2;height:57.95pt'>
+                <td width=138 style='width:103.7pt;border:solid windowtext 1.0pt;border-top:
+  none;mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:57.95pt'>
+                    <p class=MsoNormal align=center style='text-align:center'><span
+                            style='font-size:12.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>检验项目</span><span
+                            lang=EN-US style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'><o:p></o:p></span></p>
+                </td>
+                <td width=415 colspan=3 style='width:311.1pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;height:57.95pt'>
+                    <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
+                                                                                style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>{$one.testitem}</span></p>
+                </td>
+            </tr>
+            <tr style='mso-yfti-irow:3'>
+                <td width=138 style='width:103.7pt;border:solid windowtext 1.0pt;border-top:
+  none;mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+                    <p class=MsoNormal align=center style='text-align:center'><span
+                            style='font-size:12.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>检验科</span><span
+                            lang=EN-US style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'><o:p></o:p></span></p>
+                </td>
+                <td width=138 style='width:103.7pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+                    <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
+                                                                                style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>{$one.testdepartment}</span></p>
+                </td>
+                <td width=138 style='width:103.7pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+                    <p class=MsoNormal align=center style='text-align:center'><span
+                            style='font-size:12.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>水料比</span><span
+                            lang=EN-US style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'><o:p></o:p></span></p>
+                </td>
+                <td width=138 style='width:103.7pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+                    <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
+                                                                                style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>{$one.ration}</span></p>
+                </td>
+            </tr>
+            <tr style='mso-yfti-irow:4'>
+                <td width=138 style='width:103.7pt;border:solid windowtext 1.0pt;border-top:
+  none;mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+                    <p class=MsoNormal align=center style='text-align:center'><span
+                            style='font-size:12.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>下任务日期</span><span
+                            lang=EN-US style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'><o:p></o:p></span></p>
+                </td>
+                <td width=138 style='width:103.7pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+                    <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
+                                                                                style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>{$one.workdate}</span></p>
+                </td>
+                <td width=138 style='width:103.7pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+                    <p class=MsoNormal align=center style='text-align:center'><span
+                            style='font-size:12.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>完成日期</span><span
+                            lang=EN-US style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'><o:p></o:p></span></p>
+                </td>
+                <td width=138 style='width:103.7pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+                    <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
+                                                                                style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>{$one.finishdate}</span></p>
+                </td>
+            </tr>
+            <tr style='mso-yfti-irow:5'>
+                <td width=138 style='width:103.7pt;border:solid windowtext 1.0pt;border-top:
+  none;mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+                    <p class=MsoNormal align=center style='text-align:center'><span
+                            style='font-size:12.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>样品数量</span><span
+                            lang=EN-US style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'><o:p></o:p></span></p>
+                </td>
+                <td width=138 style='width:103.7pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+                    <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
+                                                                                style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>{$one.sampleauantity}{$one.sampleunti}</span></p>
+                </td>
+                <td width=138 style='width:103.7pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+                    <p class=MsoNormal align=center style='text-align:center'><span
+                            style='font-size:12.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>样品状态</span><span
+                            lang=EN-US style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'><o:p></o:p></span></p>
+                </td>
+
+                <td width=138 style='width:103.7pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+                    <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
+                                                                                style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'><o:p>{$one.samplestatus}</o:p></span></p>
+                </td>
+
+            </tr>
+            <tr style='mso-yfti-irow:6;height:351.45pt'>
+                <td width=553 colspan=4 valign=top style='width:414.8pt;border:solid windowtext 1.0pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:351.45pt'>
+                    <p class=MsoNormal align=center style='text-align:center'><span
+                            style='font-size:12.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>其<span
+                            lang=EN-US><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span></span>它<span
+                            lang=EN-US><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span></span>说<span
+                            lang=EN-US><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span></span>明</span>
+                        <span
+                            lang=EN-US style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'><o:p></o:p></span>
+                    </p>
+                    <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
+                                                                                style='font-size:12.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>{$one.othercomments}</span></p>
+                </td>
+            </tr>
+            <tr style='mso-yfti-irow:7;mso-yfti-lastrow:yes;height:3.5pt'>
+                <td width=138 style='width:103.7pt;border:solid windowtext 1.0pt;border-top:
+  none;mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:3.5pt'>
+                    <p class=MsoNormal align=center style='text-align:center'><span
+                            style='font-size:12.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>填表人</span><span
+                            lang=EN-US style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'><o:p></o:p></span></p>
+                </td>
+                <td width=138 style='width:103.7pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;height:3.5pt'>
+                    <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
+                                                                                style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>{$one.filler}</span></p>
+                </td>
+                <td width=138 style='width:103.7pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;height:3.5pt'>
+                    <p class=MsoNormal align=center style='text-align:center'><span
+                            style='font-size:12.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>填表日期</span><span
+                            lang=EN-US style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'><o:p></o:p></span></p>
+                </td>
+                <td width=138 style='width:103.7pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;height:3.5pt'>
+                    <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
+                                                                                style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>{$one.filldate}</span></p>
+                </td>
+            </tr>
+            </volist>
+        </table>
+
+        <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
+                                                                    style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
+mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'><o:p>&nbsp;</o:p></span></p>
+
+    </div>
+
     </body>
+    </div>
 </html>

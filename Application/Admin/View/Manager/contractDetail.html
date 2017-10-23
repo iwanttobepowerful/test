@@ -5,8 +5,6 @@
     <meta name=Generator content="Microsoft Word 15 (filtered)">
     <title>国家建筑材料工业房建材料质量监督检验测试中心</title>
     <style>
-        <!--
-        /* Font Definitions */
         @font-face
         {font-family:宋体;
             panose-1:2 1 6 0 3 1 1 1 1 1;}
@@ -114,7 +112,7 @@
     <div align=center>
 
         <table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=1002 style='width:501.2pt;border-collapse:collapse;border:none'>
-            <volist name="data" id="one">
+            
             <tr style='page-break-inside:avoid;height:21.35pt'>
                 <td width=1002 colspan=9 valign=top style='width:501.2pt;border:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:21.35pt'>
                     <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
@@ -206,7 +204,7 @@
                 </td>
                 <td width=279 colspan=2 valign=top style='width:139.7pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
                     <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.productdate}</span></p>
+                        <span lang=EN-US style='line-height:150%'>{$one.productiondate}</span></p>
                 </td>
                 <td width=182 colspan=2 valign=top style='width:91.05pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
                     <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
@@ -214,7 +212,7 @@
                 </td>
                 <td width=365 colspan=4 valign=top style='width:182.45pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.5pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
                     <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.samplequantity}</span></p>
+                        <span lang=EN-US style='line-height:150%'>{$one.samplequantity}{$one.sampleunti}</span></p>
                 </td>
             </tr>
             <tr style='page-break-inside:avoid;height:22.4pt'>
@@ -423,7 +421,7 @@
                 </td>
                 <td width=365 colspan=4 valign=top style='width:182.45pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.25pt'>
                     <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.testcost}</span></p>
+                        <span lang=EN-US style='line-height:150%'>{$cost.testfee}+{$cost.drecord}+{$cost.dcopy}+{$cost.drevise}={$one.testcost}</span></p>
                 </td>
             </tr>
             <tr style='page-break-inside:avoid;height:22.25pt'>
@@ -458,7 +456,6 @@
                         <span style='font-size:9.0pt;font-family:宋体'>委托方要求取走剩余样品时，若在收到检验报告后一个月内未取回，且没有说明情况的，剩余样品由中心统一处理；样品取走后不再受理异议申诉。</span></p>
                 </td>
             </tr>
-            </volist>
         </table>
         <p></p>
     </div>

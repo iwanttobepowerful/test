@@ -56,13 +56,15 @@ class ManagerController extends Controller
         $this->ajaxReturn($rs);
     }
     //合同详情查询
-    public function ContractDetail(){
+    public function contractDetail(){
         $centreno=I("id");
         $contract=D("contract");//实例化
         $where= "centreno='{$centreno}'";
-        $data=$contract->where($where)->field('ifHighQuantity,remark1,remark2',ture)->select();
+        $data=$contract->where($where)->field('ifHighQuantity,remark1,remark2',ture)->find();
+		$cost=D("test_cost")->where('centreno="'.$centreno.'"')->find();
         $body=array(
-            'data'=>$data,
+            'one'=>$data,
+			'cost'=>$cost
         );
         $this->assign($body);
         $this->display();
@@ -101,6 +103,35 @@ class ManagerController extends Controller
 		);
 	    $this->assign($body);
 		$this->display();
+	}
+	
+	//特殊号段添加
+	public function doAddSpecialCode(){
+		$department = I("department");
+		$year = I("year");
+		$month = I("month");
+		$getNum = I("getNum");
+		$remark = I("remark",'');
+		
+		$rs = array("msg"=>'fail');
+		if(empty($year)||$year==''||empty($getNum)||$getNum==''){
+			$rs['msg'] = '信息填写不完整!';
+			$this->ajaxReturn($rs);
+		}
+		$data = array(
+			"department"=>$department,
+			"year"=>$year,
+			"month"=>$month,
+			"getNum"=>$getNum,
+			"remark"=>$remark,
+			'getDate'=>Date("Y-m-d H:i:s")
+		);
+		if(D("special_centre_code")->data($data)->add()){
+			$rs['msg'] = 'succ';
+		}else{
+			$rs['msg'] = '输入信息有误';
+		}
+		$this->ajaxReturn($rs);
 	}
 	
 }

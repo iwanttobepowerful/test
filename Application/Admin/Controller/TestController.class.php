@@ -28,11 +28,12 @@ class TestController extends Controller{
     //工作通知单显示
     public function infoShow(){
         $keyword = I("id");//获取参数
-        $where= "centreno='{$keyword}'";
-        $result=M('work_inform_form')->where($where)->field("id,centreno,samplename")->select();
+        $where= "centreNo='{$keyword}'";
+
+        $work_inform_form=M('work_inform_form');
+        $result=$work_inform_form->where($where)->select();
         $body=array(
             'lists'=>$result,
-
         );
         $this->assign($body);
         $this->display();
@@ -53,6 +54,42 @@ class TestController extends Controller{
         $this->assign($body);
         $this->display();
     }
+
+    //抽样单显示
+    public function sampleShow(){
+        $keyword = I("id");//获取参数
+        $where= "centreno='{$keyword}'";
+        $result=M('sampling_form')->where($where)->select();
+
+        $simsigndateyear = $result[0]['simsigndate'] ? date("Y",strtotime($result[0]['simsigndate'])):"";
+        $simsigndatemonth =  $result[0]['simsigndate'] ? date("m",strtotime($result[0]['simsigndate'])):"";
+        $simsigndateday =  $result[0]['simsigndate'] ? date("d",strtotime($result[0]['simsigndate'])):"";
+        array_push($result[0],$simsigndateyear);
+        array_push($result[0],$simsigndatemonth);
+        array_push($result[0],$simsigndateday);
+
+        $seasingdateyear =  $result[0]['seasingdate'] ? date("Y",strtotime($result[0]['seasingdate'])):"";
+        $seasingdatemonth =  $result[0]['seasingdate'] ? date("m",strtotime($result[0]['seasingdate'])):"";
+        $seasingdateday =  $result[0]['seasingdate'] ? date("d",strtotime($result[0]['seasingdate'])):"";
+        array_push($result[0],$seasingdateyear);
+        array_push($result[0],$seasingdatemonth);
+        array_push($result[0],$seasingdateday);
+
+        $entsigndateyear =  $result[0]['entsigndate'] ? date("Y",strtotime($result[0]['entsigndate'])):"";
+        $entsigndatemonth =  $result[0]['entsigndate'] ? date("m",strtotime($result[0]['entsigndate'])):"";
+        $entsigndateday =  $result[0]['entsigndate'] ? date("d",strtotime($result[0]['entsigndate'])):"";
+        array_push($result[0],$entsigndateyear);
+        array_push($result[0],$entsigndatemonth);
+        array_push($result[0],$entsigndateday);
+
+        $body=array(
+            'lists'=>$result,
+
+        );
+        $this->assign($body);
+        $this->display();
+    }
+
 
     //检测记录上传
     public function recordUpload(){

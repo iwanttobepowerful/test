@@ -100,14 +100,14 @@ class ContractController extends Controller
 		$specification = I("specification");
 		$trademark = I("trademark");
 		$productionDate = I("productionDate");
-		$sampleQuantity = I("sampleQuantity");
+		$sampleQuantity = I("sampleQuantity",0,'intval');
 		$sampleunti = I("sampleunti");
 		$sampleStatus = I("sampleStatus");
-		$ration = I("ration");
+		$ration = I("ration",0,'intval');
 		$testCriteria = I("testCriteria");
 		$testItem = I("testItem");
 		$testCategory = I("testCategory");
-		$ifOnline = I("ifOnline");
+		$ifOnline = I("ifOnline",0);
 		$postMethod = I("postMethod");
 		$ifSubpackage = I("ifSubpackage");
 		$clientSign = I("clientSign");
@@ -120,15 +120,22 @@ class ContractController extends Controller
 		$sampleStaQuan = I("sampleStaQuan");
 		$collector = I("collector");
 		$centreNo = I("centreNo");
-		$testCost = I("testCost");
+		$testCost = I("testCost",0,'intval');
 		$collectDate = I("collectDate");
 		$reportDate = I("reportDate");
 		$ifHighQuantity = I("ifHighQuantity");
 		
+		//费用详情
+		$testFee = I("testCost1",0,'intval');
+		$Drecord = I("testCost2",0,'intval');
+		$Dcopy = I("testCost3",0,'intval');
+		$Drevise = I("testCost4",0,'intval');
+		
+		$ifspecial = I("ifspecial");//是否是特殊编码
 		
 		$rs = array("msg"=>'fail');
-		if(empty($clientName)){
-			$rs['msg'] = '信息填写不完整!';
+		if(empty($reportDate)||empty($collectDate)||empty($productionDate)){
+			$rs['msg'] = '信息填写不完整(把日期都填上测试)!';
 			$this->ajaxReturn($rs);
 		}
 		$data = array(
@@ -165,13 +172,79 @@ class ContractController extends Controller
 			"reportDate"=>$reportDate,
 			"ifHighQuantity"=>$ifHighQuantity
 		);
+		
+		//检验工作通知单入库
+		$data_work = array(
+			"centreNo"=>$centreNo,
+			"sampleName"=>$sampleName,
+			"testCreiteria"=>$testCriteria,
+			"testItem"=>$testItem,
+			"ration"=>$ration,
+			"sampleAuantity"=>$sampleQuantity,
+			"sampleStatus"=>$sampleStatus,
+			"sampleunti"=>$sampleunti,
+		);
+		
+
+		$date_cost =array(
+			"centreNo"=>$centreNo,
+			"testFee"=>$testFee,
+			"Drecord"=>$Drecord,
+			"Dcopy"=>$Dcopy,
+			"Drevise"=>$Drevise,
+			'costDate'=>Date("Y-m-d H:i:s")
+		);
+		D("test_cost")->data($date_cost)->add();
 		//pr($data);
 			if(D("contract")->data($data)->add()){
-
+				D("work_inform_form")->data($data_work)->add();
+				//抽样单入库
+				$type = substr($centreNo,7,1);
+				if($type=='C'){
+					
+					$data_sample = array(
+						"centreNo"=>$centreNo,
+						"clientName"=>$clientName,
+						"productUnit"=>$productUnit,
+						"specification"=>$specification,
+						"trademark"=>$trademark,
+						"sampleQuantity"=>$sampleQuantity,
+						"sampleUnit"=>$sampleunti,
+						"productionDate"=>$productionDate,
+						"testItem"=>$testItem,
+						"ifOnline"=>$ifOnline,
+						"ifSubpackage"=>$ifSubpackage,
+						"telephone"=>$telephone,
+						"tax"=>$tax,
+						"address"=>$address,
+					);
+					D("sampling_form")->data($data_sample)->add();
+				}
+				
 				$rs['msg'] = 'succ';
 			}else{
 				$rs['msg'] = '输入信息有误';
 			}
+			
+			if($ifspecial==1){
+				$year = substr($centreNo,0,4);
+				$month = substr($centreNo,4,2);
+				$where['year']=$year;
+				$where['month']=$month;
+				$specialItem = D("special_centre_code")->field('id,getNum')->where($where)->find();
+				$num = (int)$specialItem['getnum'];
+				//pr("num=".$num);
+				$special_id = $specialItem['id'];
+				if($num==1){
+					D("special_centre_code")->delete($special_id);
+				}else{
+					$num = $num-1;
+					$editData['getNum'] = $num;
+					D("special_centre_code")->where('id='.$special_id)->save($editData);	
+				}
+			}
+			
+			
 			$this->ajaxReturn($rs);
 	}
 	
@@ -194,30 +267,28 @@ class ContractController extends Controller
 
 	//合同列表
 	public function showList(){
-		$list = D("contract")->select();
-		//echo  D("contract")->getLastSql();
-		//pr($list);
+		
+		$page = I("p",'int');
+        $pagesize = 10;
+        if($page<=0) $page = 1;
+        $offset = ( $page-1 ) * $pagesize;
+		
+		$list = D("contract")->limit("{$offset},{$pagesize}")->select();
+		$count = D("contract")->count();
+		$Page= new \Think\Page($count,$pagesize);
+		$Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
+		$pagination= $Page->show();// 分页显示输出
+
 		$body = array(
 			"list"=>$list,
+			'pagination'=>$pagination
 		);
 		//dump($body);
 		$this->assign($body);
 		$this->display();
 	}
 	
-	//合同详情
-	public function doContractDetail(){
-		$centreno = I("centreno");
-		$list = D("contract")->where('centreNo = "'.$centreno.'"')->select();
-		$body = array(
-			"contract_detail" => $list[0],
-		);
-		//dump(D("contract")->getLastSql());
-		//dump($body);
-		$this->assign($body);
-		$this->display();
-	}
-	
+
 	//获取最中心编号
 	public function getLastCode(){
 		$centreNo['re']='none';
@@ -250,6 +321,129 @@ class ContractController extends Controller
 		//pr($centreNo['count']);
 		//dump($list[0]['centreno']);
 		$this->ajaxReturn($centreNo);
+	}
+	
+	//费用查询
+	public function feeManage(){
+		$page = I("p",'int');
+        $pagesize = 10;
+        if($page<=0) $page = 1;
+        $offset = ( $page-1 ) * $pagesize;
+		
+		$list = D("test_fee")->limit("{$offset},{$pagesize}")->select();
+		$count = D("test_fee")->count();
+		$Page= new \Think\Page($count,$pagesize);
+		$Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
+		$pagination= $Page->show();// 分页显示输出
+		$body = array(
+			"fee_list"=>$list,
+			'pagination'=>$pagination
+		);
+		$this->assign($body);
+		$this->display();
+	}
+	
+	
+	//费用列表
+	public function findMetList(){
+		$meterial_list=D("test_fee")->field("meterial")->group("meterial")->select();
+		if($productname!=0 && $meterial!=0){
+			$productname_list=D("test_fee")->field("productname")->where('meterial="'.meterial.'"')->group("productname")->select();
+		}
+		
+		$rs = array(
+			"meterial_list"=>$meterial_list,
+			'productname_list'=>$productname_list,
+		);
+		$this->ajaxReturn($rs);
+	} 
+	
+	public function findProList(){
+		$meterial = I('m_select');
+		$productname_list=D("test_fee")->field("productname")->where('meterial="'.$meterial.'"')->group("productname")->select();
+		//pr(D("test_fee")->getLastSql());
+		$rs = array(
+			'productname_list'=>$productname_list,
+		);
+		$this->ajaxReturn($rs);
+	} 
+	
+	public function findItemList(){
+		$meterial = I('m_select');
+		$productname = I('p_select');
+		$item_list=D("test_fee")->field("item,fee")->where('meterial="'.$meterial.'" and productname="'.$productname.'"')->select();
+		//pr(D("test_fee")->getLastSql());
+		$rs = array(
+			'item_list'=>$item_list,
+		);
+		$this->ajaxReturn($rs);
+	}
+	
+	//显示特殊编码
+	public function findSpecialCode(){
+		$specialList = D("special_centre_code")->select();
+		//$year=array();
+		$codeList=array();
+		$numList=array();
+		foreach($specialList as $special){
+			//array_push($year,$special->year);
+			$year = $special['year']; 
+			$month = str_pad($special['month'],2,"0",STR_PAD_LEFT);
+			$num = $special['getnum'];
+			$department = $special['department'];
+			$centreHead=$year.$month;
+			//SELECT centreNo,SUBSTR(centreNo,9,3) from contract where ifHighQuantity=0 order by SUBSTR(centreNo,9,3) desc
+			$special = D("contract")->field('centreNo,SUBSTR(centreNo,9,3) as codes')->where('centreNo like "'.$centreHead.'%" and ifHighQuantity=0')->order('SUBSTR(centreNo,9,3) desc')->find();
+			//pr($special);
+			//pr(D("contract")->getLastSql());
+			//pr(count($special));
+			if(count($special)==0){
+				$code=100;
+			}else{
+				$code = (int)$special['codes'];
+				//pr($code);
+			}
+			/*for($i=0;$i<$num;$i++){
+				$code = $code+1;
+				$code3=str_pad($code,3,"0",STR_PAD_LEFT);
+				$special_no=$centreHead.$department.'W'.$code3;
+				array_push($codeList,$special_no);
+			}*/
+			$code = $code+1;
+			$code3=str_pad($code,3,"0",STR_PAD_LEFT);
+			$special_no=$centreHead.$department.'W'.$code3;
+			array_push($codeList,$special_no);
+			array_push($numList,$num);
+		}
+
+		//pr(D("contract")->getLastSql());
+		//if(count($list)>0){
+		//	$centreNo['re']= $list[0]['centreno'];	
+		//}
+
+		$rs = array(
+			//'special_list'=>$specialList,
+			'codeList'=>$codeList,
+			'numList'=>$numList
+		);
+		$this->ajaxReturn($rs);
+	}
+	
+	
+	//检验报告单详情
+	public function checkDetail(){
+		$body=array();
+		$this->assign($body);
+		$this->display();
+	}
+	
+	//抽样单
+	public function sampleDetail(){
+		$centreno = I("id");
+		$samdetail = D("contract")->where("centreNo=".$centreno)->find();
+		$body = array();
+		$this->assign($body);
+		$this->display();
 	}
 }
 ?>
