@@ -173,7 +173,19 @@ class ContractController extends Controller
 			"ifHighQuantity"=>$ifHighQuantity
 		);
 		
+		//检验工作通知单入库
+		$data_work = array(
+			"centreNo"=>$centreNo,
+			"sampleName"=>$sampleName,
+			"testCreiteria"=>$testCriteria,
+			"testItem"=>$testItem,
+			"ration"=>$ration,
+			"sampleAuantity"=>$sampleQuantity,
+			"sampleStatus"=>$sampleStatus,
+			"sampleunti"=>$sampleunti,
+		);
 		
+
 		$date_cost =array(
 			"centreNo"=>$centreNo,
 			"testFee"=>$testFee,
@@ -185,6 +197,30 @@ class ContractController extends Controller
 		D("test_cost")->data($date_cost)->add();
 		//pr($data);
 			if(D("contract")->data($data)->add()){
+				D("work_inform_form")->data($data_work)->add();
+				//抽样单入库
+				$type = substr($centreNo,7,1);
+				if($type=='C'){
+					
+					$data_sample = array(
+						"centreNo"=>$centreNo,
+						"clientName"=>$clientName,
+						"productUnit"=>$productUnit,
+						"specification"=>$specification,
+						"trademark"=>$trademark,
+						"sampleQuantity"=>$sampleQuantity,
+						"sampleUnit"=>$sampleunti,
+						"productionDate"=>$productionDate,
+						"testItem"=>$testItem,
+						"ifOnline"=>$ifOnline,
+						"ifSubpackage"=>$ifSubpackage,
+						"telephone"=>$telephone,
+						"tax"=>$tax,
+						"address"=>$address,
+					);
+					D("sampling_form")->data($data_sample)->add();
+				}
+				
 				$rs['msg'] = 'succ';
 			}else{
 				$rs['msg'] = '输入信息有误';

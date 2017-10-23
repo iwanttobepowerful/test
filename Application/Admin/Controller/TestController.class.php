@@ -31,13 +31,9 @@ class TestController extends Controller{
         $where= "centreNo='{$keyword}'";
 
         $work_inform_form=M('work_inform_form');
-        $contract=M("contract");
         $result=$work_inform_form->where($where)->select();
-        $res=$contract->where($where)->field('sampleStatus')->select();
         $body=array(
             'lists'=>$result,
-            'list2'=>$res,
-
         );
         $this->assign($body);
         $this->display();
@@ -65,23 +61,23 @@ class TestController extends Controller{
         $where= "centreno='{$keyword}'";
         $result=M('sampling_form')->where($where)->select();
 
-        $simsigndateyear = date("Y",strtotime($result[0]['simsigndate']));
-        $simsigndatemonth = date("m",strtotime($result[0]['simsigndate']));
-        $simsigndateday = date("d",strtotime($result[0]['simsigndate']));
+        $simsigndateyear = $result[0]['simsigndate'] ? date("Y",strtotime($result[0]['simsigndate'])):"";
+        $simsigndatemonth =  $result[0]['simsigndate'] ? date("m",strtotime($result[0]['simsigndate'])):"";
+        $simsigndateday =  $result[0]['simsigndate'] ? date("d",strtotime($result[0]['simsigndate'])):"";
         array_push($result[0],$simsigndateyear);
         array_push($result[0],$simsigndatemonth);
         array_push($result[0],$simsigndateday);
 
-        $seasingdateyear = date("Y",strtotime($result[0]['seasingdate']));
-        $seasingdatemonth = date("m",strtotime($result[0]['seasingdate']));
-        $seasingdateday = date("d",strtotime($result[0]['seasingdate']));
+        $seasingdateyear =  $result[0]['seasingdate'] ? date("Y",strtotime($result[0]['seasingdate'])):"";
+        $seasingdatemonth =  $result[0]['seasingdate'] ? date("m",strtotime($result[0]['seasingdate'])):"";
+        $seasingdateday =  $result[0]['seasingdate'] ? date("d",strtotime($result[0]['seasingdate'])):"";
         array_push($result[0],$seasingdateyear);
         array_push($result[0],$seasingdatemonth);
         array_push($result[0],$seasingdateday);
 
-        $entsigndateyear = date("Y",strtotime($result[0]['entsigndate']));
-        $entsigndatemonth = date("m",strtotime($result[0]['entsigndate']));
-        $entsigndateday = date("d",strtotime($result[0]['entsigndate']));
+        $entsigndateyear =  $result[0]['entsigndate'] ? date("Y",strtotime($result[0]['entsigndate'])):"";
+        $entsigndatemonth =  $result[0]['entsigndate'] ? date("m",strtotime($result[0]['entsigndate'])):"";
+        $entsigndateday =  $result[0]['entsigndate'] ? date("d",strtotime($result[0]['entsigndate'])):"";
         array_push($result[0],$entsigndateyear);
         array_push($result[0],$entsigndatemonth);
         array_push($result[0],$entsigndateday);
