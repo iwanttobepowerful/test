@@ -34,8 +34,6 @@ class TestController extends Controller{
         $contract=M("contract");
         $result=$work_inform_form->where($where)->select();
         $res=$contract->where($where)->field('sampleStatus')->select();
-        dump($res);
-        dump($result);
         $body=array(
             'lists'=>$result,
             'list2'=>$res,
