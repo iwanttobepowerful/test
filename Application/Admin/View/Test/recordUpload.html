@@ -2,28 +2,21 @@
 <div id="page-wrapper">
     <include file="Common:breadcrumb" />
     <div id="page-inner" class="container">
+
+        <!-- 加载编辑器的容器 -->
+        <script id="container" name="content" type="text/plain">
+
+        </script>
+        <!-- 配置文件 -->
+        <script type="text/javascript" src="__PUBLIC__/ueditor/utf8-php/ueditor.config.js"></script>
+        <!-- 编辑器源码文件 -->
+        <script type="text/javascript" src="__PUBLIC__/ueditor/utf8-php/ueditor.all.js"></script>
+        <!-- 实例化编辑器 -->
+        <script type="text/javascript">
+            var ue = UE.getEditor('container');
+        </script>
         <!-- 主要模板 starting -->
-        <table class="table table-bordered table-striped table-hover">
-            <thead>
-            <th>序号</th>
-            <th>中心编号</th>
-            <th>操作</th>
-            </thead>
-            <tbody>
-            <volist name="lists" id="one">
-                <tr>
-                    <td>{$one.username}</td>
-                    <td><php>if($one['super_admin']==1){echo '是';}else{echo '否';}</php></td>
-                    <td>{$one.rolename}</td>
-                    <td><php>if($one['status']==1){echo '正常';}else{echo '已禁用';}</php></td>
-                    <td>{$one.login_time}</td>
-                    <td>
-                        <span onclick="editAdminUser({$one.id})" class="glyphicon glyphicon-pencil">修改</span>
-                    </td>
-                </tr>
-            </volist>
-            </tbody>
-        </table>
+
         <div class=" pull-right"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
         <!-- main end-->
 
