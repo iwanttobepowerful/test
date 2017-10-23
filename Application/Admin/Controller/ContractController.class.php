@@ -268,12 +268,14 @@ class ContractController extends Controller
 	//合同列表
 	public function showList(){
 		
+		$keyword = I("keyword");//获取参数
+        $where= "centreno like '%{$keyword}%'";
 		$page = I("p",'int');
         $pagesize = 10;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
 		
-		$list = D("contract")->limit("{$offset},{$pagesize}")->select();
+		$list = D("contract")->where($where)->limit("{$offset},{$pagesize}")->select();
 		$count = D("contract")->count();
 		$Page= new \Think\Page($count,$pagesize);
 		$Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
@@ -445,5 +447,74 @@ class ContractController extends Controller
 		$this->assign($body);
 		$this->display();
 	}
+	
+	//材料修改
+	public function doUpdateFee(){
+		$id = I('id');
+
+		$rs = D("test_fee")->where('id='.$id)->find();
+		$this->ajaxReturn($rs);
+	} 
+	
+	
+	//材料修改
+	public function updateFee(){
+		$rs['msg'] = 'fail';
+		$id = I('id');
+		$meterial = I('meterial');
+		$criteria = I('criteria');
+		$productname = I('productname');
+		$item = I('item');
+		$samplequantity = I('samplequantity');
+		$testperiod = I('testperiod');
+		$remark = I('remark');
+		$fee = I('fee');
+		$quantity = I('quantity');
+		
+		$where['meterial']=$meterial;
+		$where['criteria']=$criteria;
+		$where['productname']=$productname;
+		$where['item']=$item;
+		$where['sampleQuantity']=$samplequantity;
+		$where['testPeriod']=$testperiod;
+		$where['remark']=$remark;
+		$where['fee']=$fee;
+		$where['quantity']=$quantity;
+		
+		if(D("test_fee")->where('id='.$id)->save($where)){
+			$rs['msg'] = 'succ';
+		}
+		$this->ajaxReturn($rs);
+	} 
+	
+	
+		//材料修改
+	public function doAddFee(){
+		$rs['msg'] = 'fail';
+		$meterial = I('meterial');
+		$criteria = I('criteria');
+		$productname = I('productname');
+		$item = I('item');
+		$samplequantity = I('samplequantity');
+		$testperiod = I('testperiod');
+		$remark = I('remark');
+		$fee = I('fee');
+		$quantity = I('quantity');
+		
+		$where['meterial']=$meterial;
+		$where['criteria']=$criteria;
+		$where['productname']=$productname;
+		$where['item']=$item;
+		$where['sampleQuantity']=$samplequantity;
+		$where['testPeriod']=$testperiod;
+		$where['remark']=$remark;
+		$where['fee']=$fee;
+		$where['quantity']=$quantity;
+		
+		if(D("test_fee")->add($where)){
+			$rs['msg'] = 'succ';
+		}
+		$this->ajaxReturn($rs);
+	} 
 }
 ?>
