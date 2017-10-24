@@ -3,7 +3,9 @@
     <include file="Common:breadcrumb" />
     <div id="page-inner" class="container">
         <!-- 主要模板 starting -->
-
+		<div class="search-form">
+            <button type="button" class="btn btn-primary btn-sm" onclick="addFee()"><i class="glyphicon glyphicon-plus"></i> 添加</button>
+        </div>
 
 
 
@@ -33,8 +35,13 @@
                     <td>{$con.fee}</td>
                     <td>{$con.quantity}</td>
                     <td width="20%">
-                    	<a href="/admin/manager/contractDetail?id={$con.centreno}" class="btn btn-info btn-xs" type="button">修改</button>
+                    	<!--<a href="/admin/manager/contractDetail?id={$con.centreno}" class="btn btn-info btn-xs" type="button">-->
+                        <input type="hidden" name="id" id="test_fee_id" value="{$con.id}" />
+                        <button class="btn btn-info btn-xs" onclick="editFee({$con.id})">修改</button>
                     </td>
+                    
+                    
+                    
                 </tr>
             </volist>
             
@@ -50,12 +57,249 @@
 </div>
 </div>
 
+<!-- 模态框（Modal) -->
+<div>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <form class="form-horizontal" id="myform" action="" method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="createModalLabel">费用修改</h4>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">类别</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="meterial" value="{$con.meterial}" class="form-control">
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">执行标准</label>
+                        <div class="col-sm-7">
+                             <input type="text" name="criteria" value="{$con.criteria}" class="form-control">
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">产品名称</label>
+                        <div class="col-sm-7" id="items">
+                             <input type="text" name="productname" value="{$con.productname}" class="form-control">
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">测试项目</label>
+                        <div class="col-sm-7" id='t_fee'>
+                             <input type="text" name="item" value="{$con.item}" class="form-control">
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">样品数量</label>
+                        <div class="col-sm-7" id='t_fee'>
+                             <input type="text" name="samplequantity" value="{$con.samplequantity}" class="form-control">
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">试验周期</label>
+                        <div class="col-sm-7" id='t_fee'>
+                             <input type="text" name="testperiod" value="{$con.testperiod}" class="form-control">
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">备注</label>
+                        <div class="col-sm-7" id='t_fee'>
+                             <input type="text" name="remark" value="{$con.remark}" class="form-control">
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">单项费用</label>
+                        <div class="col-sm-7" id='t_fee'>
+                             <input type="text" name="fee" value="{$con.fee}" class="form-control">
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">样品数量</label>
+                        <div class="col-sm-7" id='t_fee'>
+                             <input type="text" name="quantity" value="{$con.quantity}" class="form-control">
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary" onclick="updateFee({$con.id})">确定</button>
+                </div>
+            </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+</div>
+
+
+<!-- 模态框（Modal) -->
+<div>
+    <div class="modal fade" id="editModal1" tabindex="-1" role="dialog" aria-labelledby="editModal1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <form class="form-horizontal" id="myform1" action="" method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="createModalLabel">费用修改</h4>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">类别</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="meterial" value="" class="form-control">
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">执行标准</label>
+                        <div class="col-sm-7">
+                             <input type="text" name="criteria" value="" class="form-control">
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">产品名称</label>
+                        <div class="col-sm-7" id="items">
+                             <input type="text" name="productname" value="" class="form-control">
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">测试项目</label>
+                        <div class="col-sm-7" id='t_fee'>
+                             <input type="text" name="item" value="" class="form-control">
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">样品数量</label>
+                        <div class="col-sm-7" id='t_fee'>
+                             <input type="text" name="samplequantity" value="" class="form-control">
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">试验周期</label>
+                        <div class="col-sm-7" id='t_fee'>
+                             <input type="text" name="testperiod" value="" class="form-control">
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">备注</label>
+                        <div class="col-sm-7" id='t_fee'>
+                             <input type="text" name="remark" value="" class="form-control">
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">单项费用</label>
+                        <div class="col-sm-7" id='t_fee'>
+                             <input type="text" name="fee" value="" class="form-control">
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">样品数量</label>
+                        <div class="col-sm-7" id='t_fee'>
+                             <input type="text" name="quantity" value="" class="form-control">
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary" onclick="doAddFee()">确定</button>
+                </div>
+            </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+</div>
 <script src="__PUBLIC__/static/js/jquery.form.js"></script>
 <script type="text/javascript">
-	function findContract(centreno){
-		window.location.href='/admin/contract/doContractDetail?centreno='+centreno;
-
+	function editFee(id){
+		var modal = $("#editModal");
+		$.ajax({
+			url: "{:U('/admin/contract/doUpdateFee')}",
+			dataType: 'json',
+			data:{'id':id},
+			beforeSubmit: function(){
+				return true;
+			},
+			success: function (re) {
+				$("input[name=meterial]").val(re.meterial);
+				$("input[name=criteria]").val(re.criteria);
+				$("input[name=productname]").val(re.productname);
+				$("input[name=item]").val(re.item);
+				$("input[name=samplequantity]").val(re.samplequantity);
+				$("input[name=testperiod]").val(re.testperiod);
+				$("input[name=remark]").val(re.remark);
+				$("input[name=fee]").val(re.fee);
+				$("input[name=quantity]").val(re.quantity);
+			}
+		});
+		modal.modal();
 	}
+	
+	function updateFee(id){
+		var options = {
+			url: "{:U('/admin/contract/updateFee')}",
+			dataType: 'json',
+			data:{'id':id},
+			beforeSubmit: function(){
+				return true;
+			},
+			success: function (re) {
+				if(re.msg=='succ'){
+					var _options = {"text":"修改成功！","action":function(){window.location.reload();}};
+					doAlertDialog(_options);	
+				}else{
+					var _options = {"text":"修改失败！","action":function(){window.location.reload();}};
+					doAlertDialog(_options);
+				}
+			}
+		};
+		$("#myform").ajaxForm(options);
+		return false;
+	}
+	
+
+	//添加费用
+	function addFee(){
+		var modal = $("#editModal1");
+		modal.modal();
+	}
+
+	//添加费用入库
+	function doAddFee(){
+		var options = {
+			url: "{:U('/admin/contract/doAddFee')}",
+			dataType: 'json',
+			beforeSubmit: function(){
+				return true;
+			},
+			success: function (re) {
+				if(re.msg=='succ'){
+					var _options = {"text":"添加成功！","action":function(){window.location.reload();}};
+					doAlertDialog(_options);	
+				}else{
+					var _options = {"text":"添加失败！","action":function(){window.location.reload();}};
+					doAlertDialog(_options);
+				}
+			}
+		};
+		$("#myform1").ajaxForm(options);
+		return false;
+	}
+
 </script>
 
 <include file="Common:footer" />

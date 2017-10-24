@@ -1,0 +1,30 @@
+/* 附加css类 */
+@charset "UTF-8";
+.aui-font-red {color:#ff7a7a !important;}
+.aui-border-red {border: 1px solid #ff7a7a;}
+input:-webkit-autofill {-webkit-box-shadow: 0 0 0px 1000px white inset;outline:none;}
+
+
+@media screen and (-webkit-min-device-pixel-ratio:1.5) {
+    .aui-border-red{
+        border: none;
+        background-image: -webkit-linear-gradient(270deg, #ff7a7a, #ff7a7a 50%, transparent 50%), -webkit-linear-gradient(180deg, #ff7a7a, #ff7a7a 50%, transparent 50%), -webkit-linear-gradient(90deg, #ff7a7a, #ff7a7a 50%, transparent 50%), -webkit-linear-gradient(0, #ff7a7a, #ff7a7a 50%, transparent 50%);
+        background-image: linear-gradient(180deg, #ff7a7a, #ff7a7a 50%, transparent 50%), linear-gradient(270deg, #ff7a7a, #ff7a7a 50%, transparent 50%), linear-gradient(0deg, #ff7a7a, #ff7a7a 50%, transparent 50%), linear-gradient(90deg, #ff7a7a, #ff7a7a 50%, transparent 50%);
+        background-size: 100% 1px, 1px 100%, 100% 1px, 1px 100%;
+        background-repeat: no-repeat;
+        background-position: top, right top, bottom, left top;
+    }
+}
+.aui-border-gray {border: 1px solid #999999;}
+@media screen and (-webkit-min-device-pixel-ratio:1.5) {
+    .aui-border-gray{
+        border: none;
+        background-image: -webkit-linear-gradient(270deg, #999999, #999999 50%, transparent 50%), -webkit-linear-gradient(180deg, #999999, #999999 50%, transparent 50%), -webkit-linear-gradient(90deg, #999999, #999999 50%, transparent 50%), -webkit-linear-gradient(0, #999999, #999999 50%, transparent 50%);
+        background-image: linear-gradient(180deg, #999999, #999999 50%, transparent 50%), linear-gradient(270deg, #999999, #999999 50%, transparent 50%), linear-gradient(0deg, #999999, #999999 50%, transparent 50%), linear-gradient(90deg, #999999, #999999 50%, transparent 50%);
+        background-size: 100% 1px, 1px 100%, 100% 1px, 1px 100%;
+        background-repeat: no-repeat;
+        background-position: top, right top, bottom, left top;
+    }
+}
+.aui-content .aui-list-item-inner {margin-bottom: 0.75rem;}
+.aui-content button{border: none;}

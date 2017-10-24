@@ -17,12 +17,13 @@
             <volist name="lists" id="vo">
                 <tr>
                     <td>{$vo.centreno}</td>
-                    <td><a href="javascript:void(0);" onclick="onUpdate({$vo.id})" class="btn btn-primary btn-xs">提交</a></td>
+                    <td><a href="/admin/TestReport/seleteKey?mod={$vo.centreno}" class="btn btn-primary btn-xs">提交</a></td>
                 </tr>
             </volist>
             </tbody>
         </table>
         <div class=" pull-right"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
+
 
 
         <!-- main end-->
