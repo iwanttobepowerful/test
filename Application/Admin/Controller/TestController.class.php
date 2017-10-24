@@ -96,5 +96,14 @@ class TestController extends Controller{
         $this->display();
     }
 
-
+    public function doUpd(){
+        $keyword = I("keyword");//获取参数
+        $recordname = I("recordname");//获取参数
+        $str =I("str");
+        $data = array("centreNo"=>$keyword,"recordName"=>$recordname,"remark"=>$str);
+        if(D("test_record")->add($data)){
+            $rs = array("msg"=>"succ");
+        }
+        $this->ajaxReturn($rs);
+    }
 }

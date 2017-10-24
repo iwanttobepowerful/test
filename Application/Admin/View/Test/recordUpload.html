@@ -1,6 +1,18 @@
 <include file="Common:header" title="后台首页"/>
 <div id="page-wrapper">
     <include file="Common:breadcrumb" />
+
+    <div class="search-form">
+        <form class="form-inline" method="GET" action="">
+            <div class="form-group">
+                <label>中心编号：</label>
+                <input type="text" class="form-control input-sm" id="keyword" />
+                <label>检测记录名称：</label>
+                <input type="text" class="form-control input-sm" id="recordname" />
+            </div>
+        </form>
+    </div>
+
     <div id="page-inner" class="container">
 
         <!-- 加载编辑器的容器 -->
@@ -11,16 +23,53 @@
         <script type="text/javascript" src="__PUBLIC__/static/ueditor/utf8-php/ueditor.config.js"></script>
         <!-- 编辑器源码文件 -->
         <script type="text/javascript" src="__PUBLIC__/static/ueditor/utf8-php/ueditor.all.js"></script>
+        <script type="text/javascript" charset="utf-8" src="../ueditor/lang/zh-cn/zh-cn.js"></script>
+        <script type="text/javascript" charset="utf-8" src="../ueditor/lang/en/en.js"></script>
+
         <!-- 实例化编辑器 -->
         <script type="text/javascript">
-            var ue = UE.getEditor('container');
+            var ue=UE.getEditor('container');
         </script>
-        <!-- 主要模板 starting -->
-
-        <div class=" pull-right"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
-        <!-- main end-->
 
     </div>
+    <!--
+    <form class="form-inline" method="GET" action="" id="form2">
+        <button onclick="getContent()">获得内容</button>
+    </form>
+    -->
+
+    <a href="javascript:void(0);" onclick="getContent()" class="btn btn-success btn-xs"><i class="glyphicon glyphicon-ok-circle"></i> 上传检测记录</a>
+
 </div>
-</div>
+<script type="text/javascript">
+    ue.ready(function(){
+        ue.focus();
+    });
+
+    function getContent(){
+        var _options = {"flag":"error","text":"您确定上传该检测记录吗！","buttons":{"ok":{"action":function(){doneUpd();}},"cancel":{}}};
+        doConfirmDialog(_options);
+    }
+    function doneUpd(){
+        var str=ue.getContent();
+        var keyword=document.getElementById("keyword").value;
+        var recordname=document.getElementById("recordname").value;
+        $.ajax({
+            type:"post",
+            url:"{:U('/admin/test/doUpd')}",
+            data:{"str":str,"recordname":recordname,"keyword":keyword},
+            dataType:"json",
+            success:function(ret){
+                if(ret.msg=='succ'){
+                    var _options = {"text":"上传成功！","action":function(){window.location.reload();}};
+                    doAlertDialog(_options);
+                }else{
+                    var _options = {"text":"上传失败！"};
+                    if(data.msg) _options.text = data.msg;
+                    doAlertDialog(_options);
+                }
+            }
+        });
+    }
+</script>
 <include file="Common:footer" />
