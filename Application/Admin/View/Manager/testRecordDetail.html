@@ -3,17 +3,13 @@
 
 
 <table class="table table-bordered table-striped table-hover">
-    <thead>
-    <th>中心编码</th>
-    </thead>
-    <tbody>
-    <a href="javascript:history.go(-1);" class="btn btn-default btn-xs "><i class="glyphicon glyphicon-arrow-left"></i>返回</a>
-    <volist name="data" id="one">
-        <tr>
-            <td>{$one.centreno}</td>
 
-        </tr>
-    </volist>
-    </tbody>
+
+    <body>
+    <div>
+        <h2 align="center">{$data.recordname}</h2>
+    </div>
+    <div align="center"><php>echo htmlspecialchars_decode($data['remark']);</php></div>
+    </body>
 </table>
 <include file="Common:footer" />

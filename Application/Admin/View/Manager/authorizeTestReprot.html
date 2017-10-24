@@ -17,7 +17,7 @@
                     <td>{$one.id}</td>
                     <td>{$one.centreno}</td>
                     <td><a href="{:U('/admin/manager/contractDetail')}?id={$one.centreno}" target="_blank"  class="btn btn-info btn-xs "  ><i class="glyphicon glyphicon-search"></i>合同详情</a></td>
-                    <td><a href="{:U('/admin/manager/testRecordDetail')}?id={$one.centreno}"  class="btn btn-info btn-xs "  ><i class="glyphicon glyphicon-search"></i>检验记录详情</a></td>
+                    <td><a href="{:U('/admin/manager/testRecordDetail')}?id={$one.centreno}" target="_blank" class="btn btn-info btn-xs "  ><i class="glyphicon glyphicon-search"></i>检验记录详情</a></td>
                     <td><a href="{:U('/admin/test/infoShow')}?id={$con.centreno}" target="_blank" class="btn btn-info btn-xs "  ><i class="glyphicon glyphicon-search"></i>检验报告详情</a></td>
                     <td><a href="javascript:void(0);" onclick="onUpdate({$one.id})" class="btn btn-success btn-xs"><i class="glyphicon glyphicon-ok-circle"></i> 批准</a></td>
                 </tr>

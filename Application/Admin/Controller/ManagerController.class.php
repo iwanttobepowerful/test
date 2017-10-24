@@ -72,9 +72,11 @@ class ManagerController extends Controller
     //检验记录详情
     public function testRecordDetail(){
         $centreno=I("id");
-        $contract=D("contract");//实例化
+        $test_record=D("test_record");//实例化find
         $where= "centreno='{$centreno}'";
-        $data=$contract->where($where)->field('centreNo')->select();
+        $data=$test_record->where($where)->field('recordName,remark')->find();
+        //$con=$test_record->where($where)->field('remark')->find();
+        //$con[‘remark‘] = htmlspecialchars_decode(html_entity_decode($con[‘remark‘]));
         $body=array(
             'data'=>$data,
         );
@@ -86,7 +88,7 @@ class ManagerController extends Controller
         $centreno=I("id");
         $contract=D("contract");//实例化
         $where= "centreno='{$centreno}'";
-        $data=$contract->where($where)->field('centreNo')->select();
+        $data=$contract->where($where)->field('centreNo')->find();
         $body=array(
             'data'=>$data,
         );
