@@ -490,7 +490,7 @@ class AuthController extends Controller {
 	public function menu(){
 		$adminAuth = session("admin_auth");
 		if($adminAuth){
-			$result = D("common_admin_nav")->field("id,name,pid as parentid,url,status,addtime,disorder,path,icon")->order("pid asc,disorder asc")->select();
+			$result = D("common_admin_nav")->where("status=1")->field("id,name,pid as parentid,url,status,addtime,disorder,path,icon")->order("pid asc,disorder asc")->select();
 			$list = array();
 			if($result){
 				foreach($result as $k=>$v){
