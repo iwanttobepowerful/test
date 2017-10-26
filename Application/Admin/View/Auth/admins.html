@@ -153,6 +153,8 @@ function editAdminUser(id){
 				var info = ret.info;
 				if(info){
 					modal.find("input[name='modid']").val(info.id);
+					modal.find("input[name='name']").val(info.name);
+					modal.find("select[name='department']").val(info.department);
 					modal.find("input[name='username']").val(info.username);
 					modal.find("input[name='status'][value="+info.status+"]").prop('checked',true);
 					modal.find("input[name='super_admin'][value="+info.super_admin+"]").prop('checked',true);
