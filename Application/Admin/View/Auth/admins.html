@@ -9,6 +9,8 @@
 				<thead>
 					<th>管理员名称</th>
 					<th>超级管理员</th>
+                    <th>管理员姓名</th>
+                    <th>所在部门</th>
 					<th>角色组</th>
 					<th>状态</th>
 					<th>上次登录时间</th>
@@ -19,7 +21,9 @@
 					   <tr>
 					   		<td>{$one.username}</td>
 					   		<td><php>if($one['super_admin']==1){echo '是';}else{echo '否';}</php></td>
-					   		<td>{$one.rolename}</td>
+					   		<td>{$one.name}</td>
+                            <td>{$one.department}</td>
+                            <td>{$one.rolename}</td>
 					   		<td><php>if($one['status']==1){echo '正常';}else{echo '已禁用';}</php></td>
 					   		<td>{$one.login_time}</td>
 					   		<td>
@@ -59,6 +63,30 @@
 				    </div>
                     <div class="clearfix"></div>
              	</div>
+               
+              	<div class="form-group form-group-sm">
+             		<label class="col-sm-3 control-label talign-right fz13">姓名</label>
+				    <div class="col-sm-7">
+				    	<input type="text" class="form-control" name="name">
+				    </div>
+                    <div class="clearfix"></div>
+             	</div>
+                <div class="form-group form-group-sm">
+             		<label class="col-sm-3 control-label talign-right fz13">所属部门</label>
+			      <div class="col-sm-7">
+                   	<select class="form-contorl" name="department">
+                        	<option value=" ">0</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                      </select>
+				    </div>
+                    <div class="clearfix"></div>
+             	</div>
+                              
              	<div class="form-group form-group-sm">
              		<label class="col-sm-3 control-label talign-right fz13">是否是超级管理员</label>
 				    <div class="col-sm-7">
