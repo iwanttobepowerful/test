@@ -424,6 +424,8 @@ class AuthController extends Controller {
 	public function doAddAdmin(){
 		$username = I("username");
 		$password = I("password");
+		$name = I("name");
+		$department = I("department");
 		$gid = I("gid",0,'intval');
 		$super_admin = I("super_admin",0,'intval');
 		$status = I("status",0,'intval');
@@ -436,6 +438,8 @@ class AuthController extends Controller {
 		$data = array(
 			'username'=>$username,
 			'gid'=>$gid,
+			'name'=>$name,
+			'department'=>$department,
 			'status'=>$status,
 			'super_admin'=>$super_admin,
 		);
