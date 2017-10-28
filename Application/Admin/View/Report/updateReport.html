@@ -1,0 +1,97 @@
+<include file="Common:header" title="后台首页"/>
+<div id="page-wrapper">
+    <include file="Common:breadcrumb" />
+    <div id="page-inner" class="container">
+        <div><a href="javascript:history.go(-1);" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-hand-left"></i>返回</a></div>
+        <form class="form-horizontal" id="myform" action="" method="post">
+            <input type="hidden" name="id" value="{$report['id']}" />
+            <div class="form-group">
+                <label class="col-sm-2 control-label talign-center fz13">报告模板</label>
+                <div class="col-sm-10">
+                    <div class="face" id="attachment" style="width: 120px;height: 80px;" onclick="onFileUpload()"><img src="{$report['path']}" onerror="this.src='__PUBLIC__/static/images/default-timg.gif'" style="height: 100%;" /></div>
+                    <input type="hidden" name="imgurl" value="{$report['path']}" />
+                    <input type="file" name="file" onchange="ajaxFileUpload()" id="addfile" style="display:none;"  />
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label talign-center fz13">文件名</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" name="filename">{$report['filename']}</textarea>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label talign-center">&nbsp;</label>
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-success btn-xs" onclick="onSave()"><i class="glyphicon glyphicon-save"></i>保 存</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+<script src="__PUBLIC__/static/js/jquery.form.js"></script>
+<script src="__PUBLIC__/static/js/ajaxfileupload.js"></script>
+<script type="text/javascript">
+
+
+    function ajaxFileUpload(){
+        var file = $("#addfile").val();
+        if(file){
+            $.ajaxFileUpload({
+                url: "{:U('Uploader/start')}",
+                secureuri: false,
+                fileElementId: 'addfile',
+                dataType: 'JSON',
+                success: function (data, status) {
+                    var ret = JSON.parse(data);
+                    $("#addfile").val("");
+                    if(ret.info=='succ'){
+                        $("input[name='imgurl']").val(ret.url);
+                        $("#attachment img").attr("src",ret.url);
+                    }else{
+                        var _options = {"text":"上传失败","flag":"error"};
+                        if(ret.info) _options.text = ret.info;
+                        doAlertDialog(_options);
+                    }
+                },
+                error: function (data, status, e){
+                    var _options = {"text":"上传失败","flag":"error"};
+                    doAlertDialog(_options);
+                }
+            });
+        }
+        return false;
+    }
+    function onFileUpload() {
+        $('#addfile').click();
+        return false;
+    }
+
+    function onSave(){
+        var options = {
+            url: "{:U('report/doUploadReport')}",
+            dataType: 'json',
+            beforeSubmit: function(){
+                return true;
+            },
+            success: function (data) {
+                if(data.msg=='succ'){
+                    var _options = {"text":"保存成功！","action":function(){window.location.reload();}};
+                    doAlertDialog(_options);
+                }else{
+                    var _options = {"text":"保存失败！"};
+                    if(data.msg) _options.text = data.msg;
+                    doAlertDialog(_options);
+                }
+            }
+        };
+        $("#myform").ajaxForm(options);
+        return false;
+    }
+
+
+</script>
+<include file="Common:footer" />

@@ -1,0 +1,58 @@
+<include file="Common:header" title="后台首页"/>
+<div id="page-wrapper">
+    <include file="Common:breadcrumb" />
+    <div><a class="btn btn-primary btn-s" href="updateReport.html"><i class="glyphicon glyphicon-plus"></i>上传</a></div>
+    <div id="page-inner" class="container">
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+            <th>序号</th>
+            <th>缩略号</th>
+            <th>文件名</th>
+            <th>操作</th>
+            </thead>
+            <tbody>
+            <volist name="lists" id="one">
+                <tr>
+                    <td>{$one.id}</td>
+                    <td><img src="{$one.path}" onerror="this.src='__PUBLIC__/static/images/default-timg.gif'" style="width: 90px;" /></td>
+                    <td>{$one.filename}</td>
+                    <td>
+                        <a href="{:U('/admin/report/updateReport')}?id={$one.id}" class="btn btn-primary btn-xs" class="glyphicon glyphicon-pencil"><i class="glyphicon glyphicon-edit"></i> 修改</a>
+                        <a href="javascript:void(0);" onclick="onDelete({$one.id})" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> 删除</a>
+                    </td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+        <div class=" pull-right"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
+    </div>
+</div>
+</div>
+
+<script type="text/javascript">
+    function onDelete(id){
+        if(!id) return false;
+        var _options = {"flag":"error","text":"您确定要删除吗！","buttons":{"ok":{"action":function(){doneDel(id);}},"cancel":{}}};
+        doConfirmDialog(_options);
+    }
+    function doneDel(id){
+        if(!id) return false;
+        $.ajax({
+            type:"post",
+            url:"{:U('/admin/report/doDeleteReport')}",
+            data:{"id":id},
+            dataType:"json",
+            success:function(ret){
+                if(ret.msg=='succ'){
+                    var _options = {"text":"删除成功！","action":function(){window.location.reload();}};
+                    doAlertDialog(_options);
+                }else{
+                    var _options = {"text":"删除失败！"};
+                    if(data.msg) _options.text = data.msg;
+                    doAlertDialog(_options);
+                }
+            }
+        });
+    }
+</script>
+<include file="Common:footer" />
