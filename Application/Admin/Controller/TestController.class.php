@@ -106,4 +106,91 @@ class TestController extends Controller{
         }
         $this->ajaxReturn($rs);
     }
+
+
+    public function recordUp(){
+
+        $this->display();
+    }
+
+
+    public function recordPicture(){
+        $keyword = I("keyword");//获取参数
+        $where= "centreno='{$keyword}'";
+        $result=M('test_record')->where($where)->field("centreno")->find();
+        $body=array(
+            'lists'=>$result,
+
+        );
+        $this->assign($body);
+        $this->display();
+    }
+
+    public function recordPictureUp(){
+        $page = I("p",'int');
+        $pagesize = 20;
+        if($page<=0) $page = 1;
+        $offset = ( $page-1 ) * $pagesize;
+        $orderby = "create_time desc";
+
+        $keyword = I("id");//获取参数
+        $where= "centreno='{$keyword}'";
+        $result=D('test_record')->limit("{$offset},{$pagesize}")->where($where)->select();
+
+        $count = D("test_record")->count();
+        $Page       = new \Think\Page($count,$pagesize);
+        $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
+        $pagination       = $Page->show();// 分页显示输出
+
+        $body=array(
+            'lists'=>$result,
+            'pagination'=>$pagination,
+        );
+        $this->assign($body);
+        $this->display();
+    }
+
+    public function picUp(){
+        $id =I("id",0,'intval');
+        if($id){
+            $pic = D('test_record')->where("id=".$id)->find();
+        }
+       // dump($pic);
+        $body = array(
+            'pic' => $pic,
+        );
+        $this->assign($body);
+        $this->display();
+    }
+    public function doUploadPic(){
+        $id = I("id",0,'intval');
+        $imgurl = I("imgurl");
+        $remark = I("remark");
+        $result = array("msg"=>"fail");
+        if(empty($imgurl)){
+            $result['msg'] = "无效的提交！";
+            $this->ajaxReturn($result);
+        }
+        $data = array("path"=>$imgurl,"remark"=>$remark);
+        $pic = D("test_record")->where("id=".$id)->find();
+        if($pic){
+            if(D("test_record")->where("id=".$pic['id'])->save($data)){
+                $result['msg'] = 'succ';
+            }
+        }else{
+            if(D("test_record")->data($data)->add()){
+                $result['msg'] = 'succ';
+            }
+        }
+        $this->ajaxReturn($result);
+    }
+
+    public function doDeletePic(){
+        $id =I("id",0,'intval');
+        $rs = array("msg"=>"fail");
+        if(D("test_record")->where("id=".$id)->delete()){
+            $rs['msg'] = 'succ';
+        }
+        $this->ajaxReturn($rs);
+    }
 }
