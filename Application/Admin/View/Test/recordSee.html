@@ -1,0 +1,18 @@
+<include file="Common:header" title="后台首页"/>
+<div id="page-wrapper">
+    <include file="Common:breadcrumb" />
+    <div id="page-inner" class="container">
+        <!-- 主要模板 starting -->
+
+        <volist name="lists" id="one">
+            <tr>
+                <td>{$one.remark}</td>
+            </tr>
+        </volist>
+        <!-- main end-->
+
+    </div>
+</div>
+</div>
+
+<include file="Common:footer" />
