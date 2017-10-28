@@ -100,8 +100,8 @@ class ContractController extends Controller
 		$specification = I("specification");
 		$trademark = I("trademark");
 		$productionDate = I("productionDate");
-		$sampleQuantity = I("sampleQuantity",0,'intval');
-		$sampleunti = I("sampleunti");
+		$sampleQuantity = I("sampleQuantity");
+		//$sampleunti = I("sampleunti");
 		$sampleStatus = I("sampleStatus");
 		$ration = I("ration",0,'intval');
 		$testCriteria = I("testCriteria");
@@ -134,10 +134,20 @@ class ContractController extends Controller
 		$ifspecial = I("ifspecial");//是否是特殊编码
 		
 		$rs = array("msg"=>'fail');
-		if(empty($reportDate)||empty($collectDate)||empty($productionDate)){
-			$rs['msg'] = '信息填写不完整(把日期都填上测试)!';
+		if(empty($clientName)||empty($productUnit)||empty($sampleName)||empty($testCriteria)||empty($testItem)){
+			$rs['msg'] = '信息填写不完整!';
 			$this->ajaxReturn($rs);
 		}
+		if(empty($productionDate)){
+			$productionDate=null;
+		}
+		if(empty($collectDate)){
+			$collectDate=null;
+		}
+		if(empty($reportDate)){
+			$reportDate=null;
+		}
+		
 		$data = array(
 			"clientName"=>$clientName,
 			"productUnit"=>$productUnit,
@@ -148,7 +158,7 @@ class ContractController extends Controller
 			"trademark"=>$trademark,
 			"productionDate"=>$productionDate,
 			"sampleQuantity"=>$sampleQuantity,
-			"sampleunti"=>$sampleunti,
+			//"sampleunti"=>$sampleunti,
 			"sampleStatus"=>$sampleStatus,
 			"ration"=>$ration,
 			"testCriteria"=>$testCriteria,
@@ -194,38 +204,13 @@ class ContractController extends Controller
 			"Drevise"=>$Drevise,
 			'costDate'=>Date("Y-m-d H:i:s")
 		);
-		D("test_cost")->data($date_cost)->add();
-		//pr($data);
-			if(D("contract")->data($data)->add()){
-				D("work_inform_form")->data($data_work)->add();
-				//抽样单入库
-				$type = substr($centreNo,7,1);
-				if($type=='C'){
-					
-					$data_sample = array(
-						"centreNo"=>$centreNo,
-						"clientName"=>$clientName,
-						"productUnit"=>$productUnit,
-						"specification"=>$specification,
-						"trademark"=>$trademark,
-						"sampleQuantity"=>$sampleQuantity,
-						"sampleUnit"=>$sampleunti,
-						"productionDate"=>$productionDate,
-						"testItem"=>$testItem,
-						"ifOnline"=>$ifOnline,
-						"ifSubpackage"=>$ifSubpackage,
-						"telephone"=>$telephone,
-						"tax"=>$tax,
-						"address"=>$address,
-					);
-					D("sampling_form")->data($data_sample)->add();
-				}
-				
-				$rs['msg'] = 'succ';
-			}else{
-				$rs['msg'] = '输入信息有误';
-			}
+			M()->startTrans();
+			$flag = true;
 			
+			//合同入库
+			if(!D("contract")->data($data)->add()) $flag=false;
+			
+			//特殊编码操作
 			if($ifspecial==1){
 				$year = substr($centreNo,0,4);
 				$month = substr($centreNo,4,2);
@@ -235,16 +220,50 @@ class ContractController extends Controller
 				$num = (int)$specialItem['getnum'];
 				//pr("num=".$num);
 				$special_id = $specialItem['id'];
-				if($num==1){
-					D("special_centre_code")->delete($special_id);
-				}else{
+				//if($num==1){
+					//D("special_centre_code")->delete($special_id);
+				//}else{
 					$num = $num-1;
-					$editData['getNum'] = $num;
+					$editData['remainNum'] = $num;
 					D("special_centre_code")->where('id='.$special_id)->save($editData);	
-				}
+				//}
 			}
 			
+			//费用入库
+			if(!D("test_cost")->data($date_cost)->add()) $flag=false;
 			
+			//通知单入库
+			if(!D("work_inform_form")->data($data_work)->add()) $flag=false;
+			
+			//抽样单入库
+			$type = substr($centreNo,7,1);
+			if($type=='C'){					
+				$data_sample = array(
+					"centreNo"=>$centreNo,
+					"clientName"=>$clientName,
+					"productUnit"=>$productUnit,
+					"specification"=>$specification,
+					"trademark"=>$trademark,
+					"sampleQuantity"=>$sampleQuantity,
+					"sampleUnit"=>$sampleunti,
+					"productionDate"=>$productionDate,
+					"testItem"=>$testItem,
+					"ifOnline"=>$ifOnline,
+					"ifSubpackage"=>$ifSubpackage,
+					"telephone"=>$telephone,
+					"tax"=>$tax,
+					"address"=>$address,
+				);
+				if(!D("sampling_form")->data($data_sample)->add()) $flag=false;	
+			}
+			
+			if($flag){
+				$rs['msg'] = 'succ';
+				M()->commit();
+			}else{
+				$rs['msg'] = '信息有误，录入不成功';
+				M()->rollback();
+			}			
 			$this->ajaxReturn($rs);
 	}
 	
@@ -255,7 +274,7 @@ class ContractController extends Controller
 
 	//特殊号段查询
 	public function specialCodeSelect(){
-		$list = D("special_centre_code")->select();
+		$list = D("special_centre_code")->where('remainNum>0')->select();
 		
 		$body = array(
 			"special_list"=>$list,
@@ -362,7 +381,7 @@ class ContractController extends Controller
 	
 	public function findProList(){
 		$meterial = I('m_select');
-		$productname_list=D("test_fee")->field("productname")->where('meterial="'.$meterial.'"')->group("productname")->select();
+		$productname_list=D("test_fee")->field("productname,criteria")->where('meterial="'.$meterial.'"')->group("productname")->select();
 		//pr(D("test_fee")->getLastSql());
 		$rs = array(
 			'productname_list'=>$productname_list,
@@ -383,7 +402,16 @@ class ContractController extends Controller
 	
 	//显示特殊编码
 	public function findSpecialCode(){
-		$specialList = D("special_centre_code")->select();
+		$admin_auth = session("admin_auth");
+		$department = $admin_auth['department'];
+		$if_admin = $admin_auth['super_admin'];
+		$where=array();
+		
+		//特殊编码管理员和该部门都可见
+		if($if_admin!=1) $where['department']=$department;
+		
+		$specialList = D("special_centre_code")->where($where)->select();
+		//pr(D("special_centre_code")->getLastSql());
 		//$year=array();
 		$codeList=array();
 		$numList=array();
@@ -391,7 +419,7 @@ class ContractController extends Controller
 			//array_push($year,$special->year);
 			$year = $special['year']; 
 			$month = str_pad($special['month'],2,"0",STR_PAD_LEFT);
-			$num = $special['getnum'];
+			$num = $special['remainnum'];
 			$department = $special['department'];
 			$centreHead=$year.$month;
 			//SELECT centreNo,SUBSTR(centreNo,9,3) from contract where ifHighQuantity=0 order by SUBSTR(centreNo,9,3) desc

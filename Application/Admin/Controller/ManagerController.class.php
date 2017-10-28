@@ -98,7 +98,7 @@ class ManagerController extends Controller
 	
 	//特殊号段签发
 	public function issueSepcialCode(){
-		$list = D("special_centre_code")->select();
+		$list = D("special_centre_code")->field('*,getNum-remainNum as useNum')->select();
 		
 		$body = array(
 			"special_list"=>$list,
@@ -125,6 +125,7 @@ class ManagerController extends Controller
 			"year"=>$year,
 			"month"=>$month,
 			"getNum"=>$getNum,
+			'remainNum'=>$getNum,
 			"remark"=>$remark,
 			'getDate'=>Date("Y-m-d H:i:s")
 		);

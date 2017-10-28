@@ -13,7 +13,9 @@
             <th>部门</th>
             <th>年</th>
             <th>月</th>
-            <th>数量</th>
+            <!--<th>数量</th>-->
+            <th>使用量</th>
+            <th>剩余量</th>
             <th>备注</th>
             </thead>
             <tbody>
@@ -22,7 +24,9 @@
                     <td>{$special.department}</td>
                     <td>{$special.year}</td>
                     <td>{$special.month}</td>
-                    <td>{$special.getnum}</td>
+                    <!--<td>{$special.getnum}</td>-->
+                    <td>{$special.usenum}</td>
+                    <td>{$special.remainnum}</td>
                     <td>{$special.remark}</td>
                 </tr>
             </volist>
