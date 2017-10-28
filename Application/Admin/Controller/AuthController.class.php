@@ -25,7 +25,7 @@ class AuthController extends Controller {
 			exit();
 		}
 
-		$result = D("common_admin_nav")->where("status=1")->field("id,name,pid as parentid,url,status,addtime,disorder,path")->order("pid asc,disorder asc")->select();
+		$result = D("common_admin_nav")->field("id,name,pid as parentid,url,status,addtime,disorder,path")->order("pid asc,disorder asc")->select();
 
 		$list = array();
 		if($result){
@@ -49,7 +49,7 @@ class AuthController extends Controller {
 				$rs['msg'] = "请传递正确的参数";
 				$this->ajaxReturn($rs);
 			}
-			$list = D("common_admin_nav")->where("status=1")->field("id,name,pid as parentid,url")->order("pid asc,disorder asc")->select();
+			$list = D("common_admin_nav")->field("id,name,pid as parentid,url")->order("pid asc,disorder asc")->select();
 			$result = array();
 			if($list){
 				foreach($list as $k=>$v){
@@ -65,7 +65,7 @@ class AuthController extends Controller {
 			$rs['msg'] = 'succ';
 			$rs['list'] = $data;
 		}else{
-			$list = D("common_admin_nav")->where("status=1")->field("id,name,pid as parentid,url")->order("pid asc,disorder asc")->select();
+			$list = D("common_admin_nav")->field("id,name,pid as parentid,url")->order("pid asc,disorder asc")->select();
 			$result = array();
 			if($list){
 				foreach($list as $k=>$v){
@@ -336,7 +336,7 @@ class AuthController extends Controller {
 	 */
 	public function getNodes(){
 		$id = I("id",0,'intval');
-		$result = D("common_admin_nav")->field("id,name,pid as parentid,url,status,addtime,disorder,path")->order("pid asc,disorder asc")->select();
+		$result = D("common_admin_nav")->where("status=1")->field("id,name,pid as parentid,url,status,addtime,disorder,path")->order("pid asc,disorder asc")->select();
 		$id && $role = D("common_role")->where("id=".$id)->find();
 		
 		$list = array();
