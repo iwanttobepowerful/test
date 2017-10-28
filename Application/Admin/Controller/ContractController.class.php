@@ -204,6 +204,8 @@ class ContractController extends Controller
 			"Drevise"=>$Drevise,
 			'costDate'=>Date("Y-m-d H:i:s")
 		);
+		
+		try{
 			M()->startTrans();
 			$flag = true;
 			
@@ -255,15 +257,20 @@ class ContractController extends Controller
 					"address"=>$address,
 				);
 				if(!D("sampling_form")->data($data_sample)->add()) $flag=false;	
-			}
-			
-			if($flag){
 				$rs['msg'] = 'succ';
 				M()->commit();
-			}else{
-				$rs['msg'] = '信息有误，录入不成功';
-				M()->rollback();
-			}			
+			}
+		}catch(Exception $e){
+			$rs['msg'] = '信息有误，录入不成功';
+			M()->rollback();
+		}
+			////if($flag){
+				//$rs['msg'] = 'succ';
+				//M()->commit();
+			//}else{
+			//	$rs['msg'] = '信息有误，录入不成功';
+				//M()->rollback();
+			//}			
 			$this->ajaxReturn($rs);
 	}
 	
