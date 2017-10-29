@@ -212,9 +212,8 @@ class ContractController extends Controller
 			"Drevise"=>$Drevise,
 			'costDate'=>Date("Y-m-d H:i:s")
 		);
-		
+		M()->startTrans();
 		try{
-			M()->startTrans();
 			$flag = true;
 			
 			//合同入库
@@ -281,6 +280,183 @@ class ContractController extends Controller
 				//M()->rollback();
 			//}			
 			$this->ajaxReturn($rs);
+	}
+	
+	//合同修改页面
+	public function editContract(){
+		$contreno = I('id');
+		$where['centreNo']=$contreno;
+		//$testCategory = substr($contreno,7,1);
+		$contractItem = D('contract')->where($where)->find();
+		$feeItem = D('test_cost')->where($where)->find();
+		$body = array(
+			'contract'=>$contractItem,
+			'feeItem'=>$feeItem,
+			//'$testCategory'=>$testCategory
+		);
+		$this->assign($body);
+		$this->display();
+	}
+	
+	//合同修改入库
+	public function doEditContract(){
+		$clientName = I("clientName");
+		$productUnit = I("productUnit");
+		$sampleName = I("sampleName");
+		$sampleCode = I("sampleCode");
+		$grade = I("grade");
+		$specification = I("specification");
+		$trademark = I("trademark");
+		$productionDate = I("productionDate");
+		$sampleQuantity = I("sampleQuantity");
+		//$sampleunti = I("sampleunti");
+		$sampleStatus = I("sampleStatus");
+		$ration = I("ration",0,'intval');
+		$testCriteria = I("testCriteria");
+		$testItem = I("testItem");
+		$testCategory = I("testCategory");
+		$ifOnline = I("ifOnline",0);
+		$postMethod = I("postMethod");
+		$ifSubpackage = I("ifSubpackage");
+		$clientSign = I("clientSign");
+		$telephone = I("telephone");
+		$tax = I("tax");
+		$postcode = I("postcode");
+		$email = I("email");
+		$address = I("address");
+		$remark = I("remark");
+		$sampleStaQuan = I("sampleStaQuan");
+		$collector = I("collector");
+		$centreNo = I("centreNo");
+		$testCost = I("testCost",0,'intval');
+		$collectDate = I("collectDate");
+		$reportDate = I("reportDate");
+		$ifHighQuantity = I("ifHighQuantity");
+		
+		//费用详情
+		$testFee = I("testCost1",0,'intval');
+		$Drecord = I("testCost2",0,'intval');
+		$Dcopy = I("testCost3",0,'intval');
+		$Drevise = I("testCost4",0,'intval');
+
+		$rs = array("msg"=>'fail');
+		if(empty($clientName)||empty($productUnit)||empty($sampleName)||empty($testCriteria)||empty($testItem)){
+			$rs['msg'] = '信息填写不完整!';
+			$this->ajaxReturn($rs);
+		}
+		if(empty($productionDate)){
+			$productionDate=null;
+		}
+		if(empty($collectDate)){
+			$collectDate=null;
+		}
+		if(empty($reportDate)){
+			$reportDate=null;
+		}
+		
+		$data = array(
+			"clientName"=>$clientName,
+			"productUnit"=>$productUnit,
+			"sampleName"=>$sampleName,
+			"sampleCode"=>$sampleCode,
+			"grade"=>$grade,
+			"specification"=>$specification,
+			"trademark"=>$trademark,
+			"productionDate"=>$productionDate,
+			"sampleQuantity"=>$sampleQuantity,
+			//"sampleunti"=>$sampleunti,
+			"sampleStatus"=>$sampleStatus,
+			"ration"=>$ration,
+			"testCriteria"=>$testCriteria,
+			"testItem"=>$testItem,
+			"testCategory"=>$testCategory,
+			"ifOnline"=>$ifOnline,
+			"postMethod"=>$postMethod,
+			"ifSubpackage"=>$ifSubpackage,
+			"clientSign"=>$clientSign,
+			"telephone"=>$telephone,
+			"tax"=>$tax,
+			"postcode"=>$postcode,
+			"email"=>$email,
+			"address"=>$address,
+			"remark"=>$remark,
+			"sampleStaQuan"=>$sampleStaQuan,
+			"collector"=>$collector,
+			"centreNo"=>$centreNo,
+			"testCost"=>$testCost,
+			"collectDate"=>$collectDate,
+			"reportDate"=>$reportDate,
+			"ifHighQuantity"=>$ifHighQuantity
+		);
+		$de = substr($centreNo,6,1);
+		$admin_auth = session("admin_auth");
+		$filler = $admin_auth['name'];
+		//检验工作通知单入库
+		$data_work = array(
+			"centreNo"=>$centreNo,
+			"sampleName"=>$sampleName,
+			"testCreiteria"=>$testCriteria,
+			"testItem"=>$testItem,
+			'testDepartment'=>$de,
+			"ration"=>$ration,
+			'workDate'=>$collectDate,
+			'finishDate'=>$reportDate,
+			"sampleAuantity"=>$sampleQuantity,
+			"sampleStatus"=>$sampleStatus,
+			'otherComments'=>$remark,
+			'filler'=>$filler,
+			'fillDate'=>Date("Y-m-d H:i:s"),
+			//"sampleunti"=>$sampleunti,
+		);
+		
+
+		$date_cost =array(
+			"centreNo"=>$centreNo,
+			"testFee"=>$testFee,
+			"Drecord"=>$Drecord,
+			"Dcopy"=>$Dcopy,
+			"Drevise"=>$Drevise,
+			'costDate'=>Date("Y-m-d H:i:s")
+		);
+		M()->startTrans();
+		try{
+			$where['centreNo']=$centreNo;
+			//合同入库
+			D("contract")->where($where)->save($data);
+			
+			//费用入库
+			D("test_cost")->where($where)->save($date_cost);
+			
+			//通知单入库
+			D("work_inform_form")->where($where)->save($data_work);
+			
+			//抽样单入库
+			$type = substr($centreNo,7,1);
+			if($type=='C'){					
+				$data_sample = array(
+					"centreNo"=>$centreNo,				
+					"productUnit"=>$productUnit,
+					"sampleName"=>$sampleName,
+					"specification"=>$specification,
+					//缺产品批号
+					"testCriteria"=>$testCriteria,
+					"trademark"=>$trademark,
+					"sampleQuantity"=>$sampleQuantity,
+					//"sampleUnit"=>$sampleunti,
+					"productionDate"=>$productionDate,
+					"testItem"=>$testItem,
+					"ifOnline"=>$ifOnline,
+					"ifSubpackage"=>$ifSubpackage,
+				);
+				D("sampling_form")->where($where)->save($data_sample);	
+			}
+			M()->commit();
+			$rs['msg'] = 'succ';
+		}catch(Exception $e){
+			$rs['msg'] = '信息有误，修改不成功';
+			M()->rollback();
+		}		
+		$this->ajaxReturn($rs);
 	}
 	
 	//生成检验工作单
@@ -362,19 +538,32 @@ class ContractController extends Controller
 	
 	//费用查询
 	public function feeManage(){
+		$criteria = I('criteria');
+		//$test_fee_list = D("test_fee")->where('criteria like %'.$criteria.'%')->select();
+		$admin_auth = session("admin_auth");
+		$if_admin = $admin_auth['super_admin'];
+		$roleid = $admin_auth['gid'];
+		
+		$role = D('common_role')->where('id='.$roleid)->find();
+		if($role['rolename']=="领导" || $if_admin==1){
+			$if_leader = 1;	
+		}else{
+			$if_leader = 0;	
+		}
 		$page = I("p",'int');
         $pagesize = 10;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
 		
-		$list = D("test_fee")->limit("{$offset},{$pagesize}")->select();
+		$list = D("test_fee")->where('criteria like "%'.$criteria.'%"')->limit("{$offset},{$pagesize}")->select();
 		$count = D("test_fee")->count();
 		$Page= new \Think\Page($count,$pagesize);
 		$Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
 		$pagination= $Page->show();// 分页显示输出
 		$body = array(
 			"fee_list"=>$list,
-			'pagination'=>$pagination
+			'pagination'=>$pagination,
+			'if_leader'=>$if_leader
 		);
 		$this->assign($body);
 		$this->display();
@@ -501,7 +690,7 @@ class ContractController extends Controller
 	} 
 	
 	
-	//材料修改
+	//费用标准修改
 	public function updateFee(){
 		$rs['msg'] = 'fail';
 		$id = I('id');
@@ -531,8 +720,7 @@ class ContractController extends Controller
 		$this->ajaxReturn($rs);
 	} 
 	
-	
-		//材料修改
+	//费用标准添加
 	public function doAddFee(){
 		$rs['msg'] = 'fail';
 		$meterial = I('meterial');
@@ -554,9 +742,14 @@ class ContractController extends Controller
 		$where['remark']=$remark;
 		$where['fee']=$fee;
 		$where['quantity']=$quantity;
-		
-		if(D("test_fee")->add($where)){
-			$rs['msg'] = 'succ';
+		M()->startTrans();
+		try{
+			if(D("test_fee")->add($where)){
+				$rs['msg'] = 'succ';
+				M()->commit();
+			}
+		}catch(Exception $e){
+			M()->rollback();
 		}
 		$this->ajaxReturn($rs);
 	} 

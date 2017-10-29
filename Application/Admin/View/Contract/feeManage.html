@@ -3,12 +3,21 @@
     <include file="Common:breadcrumb" />
     <div id="page-inner" class="container">
         <!-- 主要模板 starting -->
-		<div class="search-form">
-            <button type="button" class="btn btn-primary btn-sm" onclick="addFee()"><i class="glyphicon glyphicon-plus"></i> 添加</button>
+
+
+        <div class="search-form">
+            <form class="form-inline" method="GET" action="">
+                <if condition="$if_leader == 1">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="addFee()"><i class="glyphicon glyphicon-plus"></i> 添加</button>
+                </if>
+               	<span></span>
+                <div class="form-group" style="margin-left:20px">
+                    <label>执行标准：</label>
+                    <input type="text" class="form-control input-sm" name="criteria" />
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm" >查询</button>
+            </form>
         </div>
-
-
-
         <table class="table table-bordered table-striped table-hover">
             <thead>
              <th>材料</th>
@@ -20,7 +29,9 @@
             <th>备注</th>
             <th>单项费用(元)</th>
             <th>样品数量</th>
+            <if condition="$if_leader == 1">
             <th>操作</th>
+            </if>
             </thead>
             <tbody>
             <volist name="fee_list" id="con">
@@ -34,12 +45,13 @@
                     <td>{$con.remark}</td>
                     <td>{$con.fee}</td>
                     <td>{$con.quantity}</td>
+                    <if condition="$if_leader == 1">
                     <td width="20%">
                     	<!--<a href="/admin/manager/contractDetail?id={$con.centreno}" class="btn btn-info btn-xs" type="button">-->
                         <input type="hidden" name="id" id="test_fee_id" value="{$con.id}" />
                         <button class="btn btn-info btn-xs" onclick="editFee({$con.id})">修改</button>
                     </td>
-                    
+                    </if>
                     
                     
                 </tr>

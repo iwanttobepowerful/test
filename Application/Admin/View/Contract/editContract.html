@@ -1,0 +1,768 @@
+<include file="Common:header" title="后台首页"/>
+
+<div id="page-wrapper">
+	<include file="Common:breadcrumb" />
+    <div id="page-inner" class="container">
+      <form id="form2" name="form1" method="post" action="">
+        <table class="table table-bordered table-striped table-hover">
+          <tr >
+            <td  colspan="9" ><p align="center" >委 托 人 填 写 </p></td>
+          </tr> 
+          <tr > 
+            <td><p align="center" ><span style="color:red; font-size:15px">*</span>委托单位 </p></td>
+            <td colspan="8" >
+                <input name="clientName" type="text" class="form-control"  class="form-control" id="clientName2" size="100" value="{$contract.clientname}"/>       
+            </td>
+          </tr> 
+          <tr > 
+            <td ><p align="center" ><span style="color:red; font-size:15px">*</span>生产单位 </p></td>
+            <td colspan="8" ><input name="productUnit" type="text" class="form-control"  class="form-control"  id="productUnit2" size="100" value="{$contract.productunit}"/></td>
+          </tr> 
+          <tr > 
+            <td ><p align="center" ><span style="color:red; font-size:15px">*</span>样品名称 </p></td>
+            <td  colspan="2"><input name="sampleName" type="text" class="form-control"  id="sampleName2" size="20" value="{$contract.samplename}"/></td>
+            <td  colspan="1"><p align="center" >样品编号 </p></td>
+            <td  colspan="2"><input name="sampleCode" type="text" class="form-control"  id="sampleCode2" size="20" value="{$contract.samplecode}"/></td>
+            <td><p align="center" >等级 </p></td>
+            <td colspan="2"><input type="text" class="form-control"  name="grade" id="grade2" size="5" value="{$contract.grade}"/></td>
+          </tr>
+          <tr >
+            <td  ><p align="center" >规格型号 </p></td>
+            <td  colspan="2"><input type="text" class="form-control"  name="specification" id="specification2" size="20" value="{$contract.specification}"/></td>
+            <td  colspan="1"><p align="center" >商标 </p></td>
+            <td  colspan="5" ><input type="text" class="form-control"  name="trademark" id="trademark2" value="{$contract.trademark}"/></td>
+          </tr>
+          <tr >
+            <td><p align="center" >生产日期/批号 </p></td>
+            <td colspan="2"><input type="text" readonly class="form-control f-datetime input-sm" name="productionDate" value="{$contract.productiondate}"/>
+           					<!--<input type="text" class="form-control" name="productionDate"/>-->
+            <td colspan="1"><p align="center" >样品数量 </p></td>
+            <td colspan="5" >
+            	<div class="col-xs-4">
+            		<input type="text" class="form-control"  name="sampleQuantity" id="sampleQuantity" size="5" value="{$contract.samplequantity}"/>
+                </div>
+              <!--<label>
+                <select name="sampleunti" id="select" value="sampleunti" class="form-control">
+                	<option value="kg">kg</option>
+                    <option value="g">g</option>
+                    <option value="L">L</option>
+                    <option value="mL">mL</option>
+                </select>
+            </label>--></td>
+          </tr>
+          <tr >
+            <td ><p align="center" >样品状态 </p></td>
+            <td colspan="2"><input type="text" class="form-control"  name="sampleStatus" id="sampleStatus2" value="{$contract.samplestatus}"/></td>
+            <td colspan="1"><p align="center" >粉（料）水比 </p></td>
+            <td colspan="5" ><input type="text" class="form-control"  name="ration" id="ration2" value="{$contract.ration}"/></td>
+          </tr>
+          <tr >
+            <td valign="center" ><p align="center" ><span style="color:red; font-size:15px">*</span>检验依据 </p></td>
+            <td colspan="8" ><input type="text" class="form-control"  name="testCriteria" id="testCriteria2" size="100" value="{$contract.testcriteria}"/></td>
+          </tr>
+          <tr >
+            <td valign="center" ><p align="center" ><span style="color:red; font-size:15px">*</span>检验项目 </p></td>
+            <td colspan="8" ><p>
+              <input name="testItem" type="text" class="form-control"  id="testItem" size="100" value="{$contract.testitem}"/>
+            </p></td>
+          </tr>
+          <tr >
+            <td valign="center" ><p align="center" >检验类别 </p></td>
+            <td colspan="8" ><p align="center" >
+            <if condition="$contract.testcategory == 委托检验">
+            	<input type="radio" name="testCategory" id="testCategory10" value="委托检验" checked="checked"/>委托检验
+                <input type="radio" name="testCategory" id="testCategory11" value="抽样检验" />抽样检验
+                <input type="radio" name="testCategory" id="testCategory12" value="形式检验" />型式检验
+            <elseif condition="$contract.testcategory == 抽样检验" />
+            	<input type="radio" name="testCategory" id="testCategory10" value="委托检验" />委托检验
+                <input type="radio" name="testCategory" id="testCategory11" value="抽样检验" checked="checked"/>抽样检验
+                <input type="radio" name="testCategory" id="testCategory12" value="形式检验" />型式检验
+            <else />
+            	<input type="radio" name="testCategory" id="testCategory10" value="委托检验" />委托检验
+                <input type="radio" name="testCategory" id="testCategory11" value="抽样检验" />抽样检验
+                <input type="radio" name="testCategory" id="testCategory12" value="形式检验" checked="checked"/>型式检验
+            </if>
+            </p></td>
+          </tr>
+          <tr >
+            <td valign="center" colspan="6" ><p >检验报告是否在本中心网站可查询真伪 ?（www.dmtc.org.cn） </p></td>
+            <td valign="center" colspan="3" ><p >
+              <if condition="$contract.ifonline == 1">   
+                  是
+                  <input type="radio" name="ifOnline" id="testCategory13" value="1" checked/>
+                  否
+                  <input type="radio" name="ifOnline" id="testCategory14" value="0" />
+              <else />
+              	  是
+                  <input type="radio" name="ifOnline" id="testCategory13" value="1" />
+                  否
+                  <input type="radio" name="ifOnline" id="testCategory14" value="0" checked/>
+              </if>
+            </p></td>
+          </tr>
+          <tr >
+            <td valign="center" ><p align="center" >报告提交方式 </p></td>
+            <td valign="center" colspan="2"><p >
+              <if condition="$contract.postmethod == 自取">   
+                  自取
+                  <input type="radio" name="postMethod" id="testCategory15" value="自取" checked/>
+                  邮寄
+                  <input type="radio" name="postMethod" id="testCategory16" value="邮寄" />
+              <else />
+              	  自取
+                  <input type="radio" name="postMethod" id="testCategory15" value="自取" />
+                  邮寄
+                  <input type="radio" name="postMethod" id="testCategory16" value="邮寄" checked />
+              </if>
+              
+              
+            </p></td>
+            <td colspan="3"><p align="center" >是否同意分包 </p></td>
+            <td  colspan="3"><p >
+              <if condition="$contract.ifsubpackage == 1">
+                  是
+                  <input type="radio" name="ifSubpackage" id="testCategory17" value="1" checked/>
+                  否
+                  <input type="radio" name="ifSubpackage" id="testCategory18" value="0" />
+              <else />
+              	  是
+                  <input type="radio" name="ifSubpackage" id="testCategory17" value="1" />
+                  否
+                  <input type="radio" name="ifSubpackage" id="testCategory18" value="0" checked/>
+              </if>
+            </p></td>
+          </tr>
+          <tr >
+            <td  ><p align="center" >委托人(签字)</p></td>
+            <td  colspan="2"><input name="clientSign" type="text" class="form-control"  id="clientSign2" size="3" value="{$contract.clientsign}"/></td>
+            <td  ><p align="center" >联系电话 </p></td>
+            <td colspan="2" ><input type="text" class="form-control"  name="telephone" id="telephone2" size="8" value="{$contract.telephone}"/></td>
+            <td  ><p align="center" >传真 </p></td>
+            <td colspan="2" ><input type="text" class="form-control"  name="tax" id="tax2" size="11" value="{$contract.tax}" /></td>
+          </tr>
+          		  <tr >
+            <td  ><p align="center" >邮政编码 </p></td>
+            <td  colspan="2"><input type="text" class="form-control"  name="postcode" id="postcode2" size="8" value="{$contract.postcode}"/></td>
+            <td  ><p align="center" >E-mail </p></td>
+            <td  colspan="5" ><input type="text" class="form-control"  name="email" id="email2" value="{$contract.email}" /></td>
+          </tr>
+          <tr >
+            <td valign="center" ><p align="center" >通讯地址 </p></td>
+            <td valign="center" colspan="8" ><input type="text" class="form-control"  name="address" id="address2" size="100" value="{$contract.address}"/></td>
+          </tr>
+          <tr >
+            <td valign="center" ><p align="center" >备注 </p></td>
+            <td valign="center" colspan="8" >
+            <textarea class="form-control"  name="remark" id="remark">{$contract.remark}</textarea></td>
+          </tr>
+          <tr >
+            <td   colspan="9" ><p align="center" >中 心 办 公 室 填 写 </p></td>
+          </tr>
+          <tr >
+            <td valign="center" ><p align="center" >样品状态及数量 </p></td>
+            <td valign="center" colspan="3"><input type="text" class="form-control"  name="sampleStaQuan" id="sampleStaQuan2" size="20" value="{$contract.samplestaquan}"/></td>
+            <td valign="center" ><p align="center" >收 样 人 </p></td>
+            <td valign="center" colspan="4" ><input type="text" class="form-control"  name="collector" id="collector2" size="20" value="{$contract.collector}"/></td>
+          </tr>
+          <tr >
+            <td  ><p align="center" >中心编号 </p></td>
+            <td   colspan="3" ><p>
+              <input type="text" class="form-control"  name="centreNo" id="centreNo" readonly="readonly" size="9" value="{$contract.centreno}"/>
+              <!--<input name="ifHighQuantity" type="checkbox" value="0" onClick="upVIPCode()"/>
+              是否为优质编码
+              <div id="remainCode" style="display:none;color:red">
+                当前剩余量：<span id="remain"></span>
+              </div>
+              <input type="checkbox" id="spec_checkbox" onclick="special_code()"/>申请特殊编码<br/>
+              <div>
+              		<ul id="spe_code" style="display:none">
+                    	
+                    <ul>
+              </div>-->
+            </td>
+            <td  ><p align="center" >检验费用 </p></td>
+            <td  colspan="4" >
+              <div class="col-xs-6">
+              	<input name="testCost1" type="text" class="form-control"  id="myCost" size="5" placeholder="本部门" readonly onChange="computeSum()"  onClick="myCost1()" value="{$feeItem.testfee}"/>
+                +
+              <input name="testCost2" type="text" class="form-control"  id="dCost" size="5" placeholder="D部门" readonly onChange="computeSum()"  onClick="dCost1()" value="{$feeItem.drecord}"/>
+              +
+              <input name="testCost3" type="text" class="form-control"  id="copyCost" placeholder="副本" onKeyUp="computeSum()" size="5" value="{$feeItem.dcopy}" />
+              +
+              <input name="testCost4" type="text" class="form-control"  id="editCost" placeholder="项目修改" onKeyUp="computeSum()" size="6"  value="{$feeItem.drevise}"/>
+              =
+              <input name="testCost" type="text" class="form-control"  id="sumCost" placeholder="总计"  size="8" readonly  value="{$contract.testcost}"/></td>
+              </div>
+              
+          </tr>
+          <tr >
+            <td  ><p align="center" >收样日期 </p></td>
+            <td  colspan="3" ><p >
+            
+            <div class="form-group">
+				 <input type="text" readonly class="form-control f-datetime input-sm" name="collectDate" value="{$contract.collectdate}">
+				  	</div>
+            </p></td>
+            <td valign="center" ><p align="center" >报告日期<u> </u></p></td>
+            <td  colspan="4" ><p ><input type="text" readonly class="form-control f-datetime input-sm" name="reportDate" value="{$contract.reportdate}"></p></td>
+          </tr>
+          <tr >
+            <td valign="center" ><p >说明 </p></td>
+            <td  colspan="8" ><ol>
+              <li>委托人应对所提供的资料、信息和样品的真实性负责。 </li>
+              <li>若对本单内容有变动，请委托方电话、邮件、传真通知受理人。 </li>
+              <li>本中心仅对来样负责。 </li>
+              <li>委托方要求取走剩余样品时，若在收到检验报告后一个月内未取回，且没有说明情况的，剩余样品由中心统一处理；样品取走后不再受理异议申诉。 </li>
+            </ol></td>
+          </tr>
+        </table>
+        
+       <!-- <button class="btn btn-success" type="button" id="sampling_list" on>生成抽样单</button>-->
+        <button class="btn btn-success" type="submit" id="check_list" onClick="doEditContract()">修改</button>
+      </form>
+    </div>
+    
+</div>
+
+
+
+
+
+<div>
+    <!-- 模态框（Modal) -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <form class="form-horizontal" id="myform" action="" method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="createModalLabel">本部门费用</h4>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">类别</label>
+                        <div class="col-sm-7">
+                            <select name="meterial" class="form-control" id="meterial" onchange="setProOption()">
+                                <option value=0>请选择</option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">产品名称/标准号</label>
+                        <div class="col-sm-7">
+                            <select name="productname" class="form-control" id="productname" onchange="setItemOption()">
+                                <option value=0>请选择</option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">测试项目</label>
+                        <div class="col-sm-7" id="items">
+                            
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">金额</label>
+                        <div class="col-sm-7" id='t_fee'>
+                            
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
+                    <button type="button" class="btn btn-primary" onclick="returnCost()" data-dismiss="modal">确定</button>
+                </div>
+            </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+</div>
+<div>
+    <!-- 模态框（Modal) -->
+    <div class="modal fade" id="editDModal" tabindex="-1" role="dialog" aria-labelledby="editDModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <form class="form-horizontal" id="myform" action="" method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="createModalLabel">本部门费用</h4>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">类别</label>
+                        <div class="col-sm-7">
+                            <select name="meterial" class="form-control" id="dmeterial" onchange="setDProOption()">
+                                <option value=0>请选择</option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">产品名称/标准号</label>
+                        <div class="col-sm-7">
+                            <select name="productname" class="form-control" id="dproductname" onchange="setDItemOption()">
+                                <option value=0>请选择</option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">测试项目</label>
+                        <div class="col-sm-7" id="ditems">
+                            
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">金额</label>
+                        <div class="col-sm-7" id='d_fee'>
+                            
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
+                    <button type="button" class="btn btn-primary" onclick="returnDCost()" data-dismiss="modal">确定</button>
+                </div>
+            </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+</div>
+<script src="__PUBLIC__/static/js/jquery.form.js"></script>
+<script type="text/javascript">
+		//生成中心编码
+		$("input[name = 'testCategory']").change(function(){
+			makeCentreCode();
+		});
+		
+
+		
+		//时间
+		$(document).ready(function(){
+			$('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,	autoclose:true });
+					//计算费用
+					
+					
+
+		});	
+		
+		function makeCentreCode(){
+			var nowDate = new Date();
+			var year = nowDate.getFullYear();
+			var month = nowDate.getMonth()+1;
+			month = month<10?'0'+month:month;
+			var department = 'B';
+			var type = $('input:radio[name="testCategory"]:checked').val();
+			type = (type == '委托检验')?'W':'C';
+			var code= '101';
+			//获取最新编码
+			$.ajax({
+				url: "{:U('/admin/contract/getLastCode')}",
+				dataType: 'json',			
+				data:{"year":year,"month":month},
+				async: false,
+				success: function (res) {
+					//var _options = {"text":"aaa！"};
+					//_options.text = data.re;
+					//doAlertDialog(_options);
+					if(res.re!='none'){
+						code = res.re;
+						code = parseInt(code.substring(8,11))+1;
+					}
+				}
+			});
+			
+			var centreCode = year+""+month+department+type+code;
+			$('input[name="centreNo"]').val(centreCode);
+			if(type=='W'){
+				$("#sampling_list").css("display","none");
+			}else{	
+				$("#sampling_list").css("display","inline-block");
+			}
+		}
+		
+		function upVIPCode(){
+			if($("input[name='ifHighQuantity']").is(':checked')){
+				$("#spec_checkbox").attr("disabled","disabled");
+				var nowDate = new Date();
+				var year = nowDate.getFullYear();
+				var month = nowDate.getMonth()+1;
+				month = month<10?'0'+month:month;
+				var department = 'B';
+				var type = $('input:radio[name="testCategory"]:checked').val();
+				type = (type == '委托检验')?'W':'C';
+				var code='001';
+				var remain;//剩余优质编号
+				$.ajax({
+					url:"{:U('/admin/contract/getHighCode')}",
+					dataType:"json",
+					data:{"year":year,"month":month},
+					async:false,
+					success:function(res){
+						if(res.re!='none'){
+							code = res.re;
+							code = parseInt(code.substring(8,11))+1;
+							//保持后面编码为三位数，不够补零
+							code = (Array(3).join('0') + code).slice(-3);
+						}
+					}
+				});
+							
+				var centreCode = year+""+month+department+type+code;
+				remain = 100-code+1;
+				$('input[name="centreNo"]').val(centreCode);
+				$('input[name="ifHighQuantity"]').val(1);
+				$("#remain").html(remain+"(含当前编号)");
+				$("#remainCode").css("display","block");
+			}else{
+				$("#spec_checkbox").removeAttr("disabled");
+				makeCentreCode();
+				$('input[name="ifHighQuantity"]').val(0);
+				$("#remainCode").css("display","none");
+				
+			}
+		}
+				
+		//实时计算总费用
+		function computeSum(){
+			if($("#myCost").val()!="" && $("#dCost").val()!="" && $("#copyCost").val()!="" && $("#editCost").val()!="" && $.trim($("#myCost").val()).length>0 && $.trim($("#dCost").val()).length>0 && $.trim($("#copyCost").val()).length>0 && $.trim($("#editCost").val()).length>0){
+				$("#sumCost").val(parseInt($("#myCost").val())+parseInt($("#dCost").val())+parseInt($("#editCost").val())+parseInt($("#copyCost").val()));
+			}
+			
+		}
+		
+		//合同修改
+		function doEditContract(){
+			var options = {
+				url: "{:U('/admin/contract/doEditContract')}",
+				dataType: 'json',
+				beforeSubmit: function(){
+					return true;
+				},
+				success: function (data) {
+					if(data.msg=='succ'){
+						var _options = {"text":"修改成功！","action":function(){window.location.reload();}};
+						doAlertDialog(_options);
+					}else{
+						var _options = {"text":"修改失败！"};
+						if(data.msg) _options.text = data.msg;
+						doAlertDialog(_options);
+					}
+				}
+			};
+			$("#form2").ajaxForm(options);
+			return false;
+		}
+		
+		
+		//特殊编码
+		function special_code(){
+			$("#spe_code").attr("display","block");
+			if($("#spec_checkbox").is(":checked")){
+				$.ajax({
+					url:"{:U('/admin/contract/findSpecialCode')}",
+					dataType:'json',
+					success: function (re) {
+						data = re.codeList;;
+						num = re.numList;
+						html="";
+						for(var i =0;i<data.length;i++){
+							html+="<button  type='button' id='spec_li_"+i+"' class='btn btn-default btn-xs' onclick=choseSpe('"+i+"')><span id='code'>"+data[i]+"</span> 剩余量：<span id='remain_code'>"+num[i]+"</span>(含当前)</button><br/>";
+							
+						}
+						$("#spe_code").html(html);
+					}	
+				});
+				
+				$("#spe_code").css("display","block");
+				$("input[name=ifHighQuantity]").attr("disabled","disabled");
+			}else{
+				$("#spe_code").css("display","none");
+				$("input[name=ifHighQuantity]").removeAttr("disabled");
+				makeCentreCode();
+			}
+		}
+		
+		
+		
+		//选择特殊编码
+		function choseSpe(id){
+			var code = $("#spec_li_"+id+" #code").html();
+			var remain_code = $("#spec_li_"+id+" #remain_code").html();
+			$("#centreNo").val(code);
+		}
+		
+		
+		<!-----------------------------------本部门费用 start------------------------------------->
+				
+		//本部门费用选
+		function myCost1(){
+			
+			var modal = $("#editModal");
+			setMetOption();
+			modal.modal();
+			computeSum();
+		}
+		
+		//获取费用选项(下面三个函数)
+		function setMetOption(){
+			$.ajax({
+				url: "{:U('/admin/contract/findMetList')}",
+				dataType: 'json',
+				beforeSubmit: function(){
+					return true;
+				},
+				success: function (re) {
+					$('#meterial').find("option").remove();
+					var option = "<option value=0>请选择</option>";
+					$('#meterial').append(option);
+					data = re['meterial_list'];
+					for(var i=0;i<data.length;i++){
+						var meterial = data[i]['meterial'];
+						option = "<option value='"+meterial+"'>"+meterial+"</option>";
+						$('#meterial').append(option);
+					}
+				}	
+			});
+		}
+		
+		function setProOption(){
+			m_select = $("#meterial").val();
+			if(m_select!=0){
+				$.ajax({
+					url: "{:U('/admin/contract/findProList')}",
+					dataType: 'json',
+					data:{'m_select':m_select},
+					beforeSubmit: function(){
+						return true;
+					},
+					success: function (re) {
+						$('#productname').find("option").remove();
+						var option = "<option value=0>请选择</option>";
+						$('#productname').append(option);
+						data = re['productname_list'];
+						for(var i=0;i<data.length;i++){
+							var productname = data[i]['productname'];
+							var criteria = data[i]['criteria'];
+							option = "<option value='"+productname+"'>"+productname+" "+criteria+"</option>";
+							$('#productname').append(option);
+						}
+					}	
+				});
+			}else{
+				$('#productname').find("option").remove();
+				var option = "<option value=0>请选择</option>";
+				$('#productname').append(option);
+			}
+		}
+
+		function setItemOption(){
+			m_select = $("#meterial").val();
+			p_select = $("#productname").val();
+			if(m_select!=0){
+				$.ajax({
+					url: "{:U('/admin/contract/findItemList')}",
+					dataType: 'json',
+					data:{'m_select':m_select,'p_select':p_select},
+					beforeSubmit: function(){
+						return true;
+					},
+					success: function (re) {
+						$("#items").empty();
+						$("#t_fee").empty();
+						data = re['item_list'];
+						for(var i=0;i<data.length;i++){
+							var items = data[i]['item'];
+							var money = data[i]['fee'];
+							if(items=='全项'){
+								option = "<input type=\"checkbox\" id=\"t_items\" name=\"items_all\" value=\""+money+"\" onclick=checkAllFee(); />&nbsp;&nbsp;"+items+"&nbsp;&nbsp;";
+								$('#items').prepend(option);
+							}else{
+								option = "<input type=\"checkbox\" name=\"items\" value=\""+money+"\" onclick=checkFee();  />&nbsp;&nbsp;"+items+"&nbsp;&nbsp;";
+								$('#items').append(option);
+							}
+							
+						}
+					}	
+				});
+			}
+		}
+			
+		//计算本部门费用--单项选择
+		function checkFee(){
+			cash = 0;
+			var allCheck=true;
+			$("input[name='items']").each(function(index, element) {
+				if($(this).prop("checked") == false){
+					allCheck = false;
+				}else{
+					cash+=parseInt(element.value);
+				}		
+			});
+			if(allCheck==false){
+				$("#t_items").prop("checked",false);	
+			}else{
+				$("#t_items").prop("checked",true);
+				cash = parseInt($("#t_items").val());
+			}				
+			$("#t_fee").html(cash);
+		}
+		//计算本部门费用--全项选择
+		function checkAllFee(){
+			var cash=0;
+			$("#t_items").prop("checked",$("#t_items").prop("checked"));
+			if($("#t_items").prop("checked")){
+				$("input[name=items]").prop("checked",true);
+				cash = parseInt($("#t_items").val());
+			}else{
+				$("input[name=items]").prop("checked",false);
+			}
+			$("#t_fee").html(cash);
+		}
+		
+		function returnCost(){
+			$("#myCost").val($("#t_fee").html());
+		}
+
+		<!-----------------------------------本部门费用 end------------------------------------->
+		
+		
+		
+		<!-----------------------------------D部门费用 start------------------------------------->
+		
+		//D部门费用选择函数--测试
+		function dCost1(){
+			var modal = $("#editDModal");
+			setDMetOption();
+			modal.modal();
+			computeSum();
+		}
+		
+		//获取费用选项(下面三个函数)
+		function setDMetOption(){
+			$.ajax({
+				url: "{:U('/admin/contract/findMetList')}",
+				dataType: 'json',
+				beforeSubmit: function(){
+					return true;
+				},
+				success: function (re) {
+					$('#dmeterial').find("option").remove();
+					var option = "<option value=0>请选择</option>";
+					$('#dmeterial').append(option);
+					data = re['meterial_list'];
+					for(var i=0;i<data.length;i++){
+						var meterial = data[i]['meterial'];
+						option = "<option value='"+meterial+"'>"+meterial+"</option>";
+						$('#dmeterial').append(option);
+					}
+				}	
+			});
+		}
+		
+		function setDProOption(){
+			m_select = $("#dmeterial").val();
+			if(m_select!=0){
+				$.ajax({
+					url: "{:U('/admin/contract/findProList')}",
+					dataType: 'json',
+					data:{'m_select':m_select},
+					beforeSubmit: function(){
+						return true;
+					},
+					success: function (re) {
+						$('#dproductname').find("option").remove();
+						var option = "<option value=0>请选择</option>";
+						$('#dproductname').append(option);
+						data = re['productname_list'];
+						for(var i=0;i<data.length;i++){
+							var productname = data[i]['productname'];
+							var criteria = data[i]['criteria'];
+							option = "<option value='"+productname+"'>"+productname+" "+criteria+"</option>";
+							$('#dproductname').append(option);
+						}
+					}	
+				});
+			}else{
+				$('#dproductname').find("option").remove();
+				var option = "<option value=0>请选择</option>";
+				$('#dproductname').append(option);
+			}
+		}
+
+		function setDItemOption(){
+			m_select = $("#dmeterial").val();
+			p_select = $("#dproductname").val();
+			if(m_select!=0){
+				$.ajax({
+					url: "{:U('/admin/contract/findItemList')}",
+					dataType: 'json',
+					data:{'m_select':m_select,'p_select':p_select},
+					beforeSubmit: function(){
+						return true;
+					},
+					success: function (re) {
+						$("#ditems").empty();
+						$("#d_fee").empty();
+						data = re['item_list'];
+						for(var i=0;i<data.length;i++){
+							var items = data[i]['item'];
+							var money = data[i]['fee'];
+							if(items=='全项'){
+								option = "<input type=\"checkbox\" id=\"d_items\" name=\"ditems_all\" value=\""+money+"\" onclick=checkDAllFee() />&nbsp;&nbsp;"+items+"&nbsp;&nbsp;";
+								$('#ditems').prepend(option);
+							}else{
+								option = "<input type=\"checkbox\" name=\"ditems\" value=\""+money+"\" onclick=checkDFee() />&nbsp;&nbsp;"+items+"&nbsp;&nbsp;";
+								$('#ditems').append(option);
+							}
+							
+						}
+					}	
+				});
+			}
+		}
+			
+		//计算本部门费用--单项选择
+		function checkDFee(){
+			cash = 0;
+			var allCheck=true;
+			$("input[name='ditems']").each(function(index, element) {
+				if($(this).prop("checked") == false){
+					allCheck = false;
+				}else{
+					cash+=parseInt(element.value);
+				}		
+			});
+			if(allCheck==false){
+				$("#d_items").prop("checked",false);	
+			}else{
+				$("#d_items").prop("checked",true);
+				cash = parseInt($("#d_items").val());
+			}				
+			$("#d_fee").html(cash);
+		}
+		//计算本部门费用--全项选择
+		function checkDAllFee(){
+			var cash=0;
+			$("#d_items").prop("checked",$("#d_items").prop("checked"));
+			if($("#d_items").prop("checked")){
+				$("input[name=ditems]").prop("checked",true);
+				cash = parseInt($("#d_items").val());
+			}else{
+				$("input[name=ditems]").prop("checked",false);
+			}
+			$("#d_fee").html(cash);
+		}
+		
+		//返回费用
+		function returnDCost(){
+			$("#dCost").val($("#d_fee").html());
+		}
+		<!-----------------------------------D部门费用 end------------------------------------->
+		
+
+		
+		
+		
+	</script>
+</body>

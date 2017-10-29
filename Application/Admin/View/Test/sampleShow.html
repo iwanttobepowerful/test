@@ -87,9 +87,9 @@
 
 </head>
 <input id="biuuu_button" type="button" value="打印此页面"  style="height:50px;width:150px;">
-<div id="myPrintArea">
+<button class="btn btn-success" type="button" id="check_list" onClick="doEditSample()">修改</button>
 <body lang=ZH-CN style='text-justify-trim:punctuation'>
-
+<div id="myPrintArea">
 <div class=WordSection1 style='layout-grid:15.6pt'>
 
     <p class=MsoNormal align=center style='text-align:center'><img width=60
@@ -202,7 +202,13 @@ font-family:黑体'>国家</span><span lang=EN-US style='font-size:18.0pt'>)</sp
             <td width=246 style='width:184.25pt;border-top:none;border-left:none;
   border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;
   height:23.75pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span lang=EN-US>{$one.samplebase}</span></p>
+                <p class=MsoNormal align=center style='text-align:center'>
+                <span lang=EN-US>
+                	
+                    	<input type="text" name="samplebase" value="{$one.samplebase}" style="border:none; text-align:center"/>
+                    
+                
+                </span></p>
             </td>
         </tr>
         <tr style='height:22.6pt'>
@@ -214,7 +220,10 @@ font-family:黑体'>国家</span><span lang=EN-US style='font-size:18.0pt'>)</sp
             <td width=214 style='width:160.4pt;border-top:none;border-left:none;
   border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;
   height:22.6pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span lang=EN-US>&nbsp;{$one.sampledate}</span></p>
+                <p class=MsoNormal align=center style='text-align:center'>
+                <span lang=EN-US>
+                <input type="text" name="sampledate" value="{$one.sampledate}" style="border:none; text-align:center"/>
+                </span></p>
             </td>
             <td width=91 colspan=2 style='width:67.95pt;border-top:none;border-left:none;
   border-bottom:solid black 1.0pt;border-right:solid windowtext 1.0pt;
@@ -238,7 +247,10 @@ font-family:黑体'>国家</span><span lang=EN-US style='font-size:18.0pt'>)</sp
             <td width=214 style='width:160.4pt;border-top:none;border-left:none;
   border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;
   height:23.75pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span lang=EN-US>{$one.sampleplace}</span></p>
+                <p class=MsoNormal align=center style='text-align:center'>
+                <span lang=EN-US>
+                <input type="text" name="sampleplace" value="{$one.sampleplace}" style="border:none; text-align:center"/>
+                </span></p>
             </td>
             <td width=91 colspan=2 style='width:67.95pt;border-top:none;border-left:none;
   border-bottom:solid black 1.0pt;border-right:solid windowtext 1.0pt;
@@ -249,7 +261,10 @@ font-family:黑体'>国家</span><span lang=EN-US style='font-size:18.0pt'>)</sp
             <td width=246 style='width:184.25pt;border-top:none;border-left:none;
   border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;
   height:23.75pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span lang=EN-US>{$one.samplemethod}</span></p>
+                <p class=MsoNormal align=center style='text-align:center'>
+                <span lang=EN-US>
+                <input type="text" name="samplemethod" value="{$one.samplemethod}" style="border:none; text-align:center"/>
+                </span></p>
             </td>
         </tr>
         <tr style='height:80.05pt'>
@@ -463,7 +478,12 @@ font-family:黑体'>国家</span><span lang=EN-US style='font-size:18.0pt'>)</sp
     <p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
     </volist>
 </div>
-
-</body>
 </div>
+
+<script type="text/javascript">
+	function doEditSample(){
+		
+	}
+</script>
+</body>
 </html>
