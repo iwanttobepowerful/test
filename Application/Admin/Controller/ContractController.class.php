@@ -182,17 +182,25 @@ class ContractController extends Controller
 			"reportDate"=>$reportDate,
 			"ifHighQuantity"=>$ifHighQuantity
 		);
-		
+		$de = substr($centreNo,6,1);
+		$admin_auth = session("admin_auth");
+		$filler = $admin_auth['name'];
 		//检验工作通知单入库
 		$data_work = array(
 			"centreNo"=>$centreNo,
 			"sampleName"=>$sampleName,
 			"testCreiteria"=>$testCriteria,
 			"testItem"=>$testItem,
+			'testDepartment'=>$de,
 			"ration"=>$ration,
+			'workDate'=>$collectDate,
+			'finishDate'=>$reportDate,
 			"sampleAuantity"=>$sampleQuantity,
 			"sampleStatus"=>$sampleStatus,
-			"sampleunti"=>$sampleunti,
+			'otherComments'=>$remark,
+			'filler'=>$filler,
+			'fillDate'=>Date("Y-m-d H:i:s"),
+			//"sampleunti"=>$sampleunti,
 		);
 		
 
@@ -241,25 +249,26 @@ class ContractController extends Controller
 			$type = substr($centreNo,7,1);
 			if($type=='C'){					
 				$data_sample = array(
-					"centreNo"=>$centreNo,
-					"clientName"=>$clientName,
+					"centreNo"=>$centreNo,				
 					"productUnit"=>$productUnit,
+					"sampleName"=>$sampleName,
 					"specification"=>$specification,
+					//缺产品批号
+					"testCriteria"=>$testCriteria,
 					"trademark"=>$trademark,
 					"sampleQuantity"=>$sampleQuantity,
-					"sampleUnit"=>$sampleunti,
+					//"sampleUnit"=>$sampleunti,
 					"productionDate"=>$productionDate,
 					"testItem"=>$testItem,
 					"ifOnline"=>$ifOnline,
 					"ifSubpackage"=>$ifSubpackage,
-					"telephone"=>$telephone,
-					"tax"=>$tax,
-					"address"=>$address,
 				);
 				if(!D("sampling_form")->data($data_sample)->add()) $flag=false;	
-				$rs['msg'] = 'succ';
-				M()->commit();
+				
+				
 			}
+			M()->commit();
+			$rs['msg'] = 'succ';
 		}catch(Exception $e){
 			$rs['msg'] = '信息有误，录入不成功';
 			M()->rollback();
