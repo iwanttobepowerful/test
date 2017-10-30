@@ -1,0 +1,70 @@
+<include file="Common:header" title="后台首页"/>
+<div id="page-wrapper">
+    <include file="Common:breadcrumb" />
+    <div id="page-inner" class="container">
+        <!-- 主要模板 starting -->
+
+
+
+
+
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+            <th width="7%">序号</th>
+            <th >中心编号</th>
+            <th width="30%">生产单位</th>
+            <th width="10%">联系人</th>
+            <th width="10%">联系电话</th>
+            <th width="10%">操作</th>
+            <th width="23%">内部签发人/操作时间</th>
+            </thead>
+            <tbody>
+            <volist name="rs" id="vo">
+                <tr>
+                    <td>{$vo.id}</td>
+                    <td>{$vo.centreno}</td>
+                    <td>{$vo.productunit}</td>
+                    <td>{$vo.clientsign}</td>
+                    <td>{$vo.telephone}</td>
+                    <td><a href="javascript:void(0);" name="btn_change" onclick="onUpdate({$vo.id})" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-ok-circle"></i>待签发</a></td>
+                    <td>{$vo.name}/{$vo.inner_sign_time}</td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+        <div class=" pull-right"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
+
+
+
+        <!-- main end-->
+
+    </div>
+</div>
+</div>
+<script type="text/javascript">
+    function onUpdate(id){
+        if(!id) return false;
+        var _options = {"flag":"error","text":"您确定要签发此项目吗！","buttons":{"ok":{"action":function(){doneUpd(id);}},"cancel":{}}};
+        doConfirmDialog(_options);
+    }
+    function doneUpd(id){
+        id.onclick = function() {};
+        $.ajax({
+            type:"post",
+            url:"{:U('/admin/Report/passUpd')}",
+            data:{"id":id},
+            dataType:"json",
+            success:function(ret){
+                if(ret.msg=='succ'){
+                    var _options = {"text":"签发成功！","action":function(){window.location.reload();}};
+                    doAlertDialog(_options);
+                }else{
+                    var _options = {"text":"签发失败！"};
+                    if(data.msg) _options.text = data.msg;
+                    doAlertDialog(_options);
+                }
+            }
+        });
+    }
+</script>
+<include file="Common:footer" />

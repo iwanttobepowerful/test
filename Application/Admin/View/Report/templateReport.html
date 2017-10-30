@@ -1,12 +1,13 @@
 <include file="Common:header" title="后台首页"/>
 <div id="page-wrapper">
     <include file="Common:breadcrumb" />
-    <div><a class="btn btn-primary btn-s" href="updateReport.html"><i class="glyphicon glyphicon-plus"></i>上传</a></div>
     <div id="page-inner" class="container">
+        <div><a class="btn btn-primary btn-xs" href="updateReport.html"><i class="glyphicon glyphicon-plus"></i>上传</a></div>
+        <p></p>
         <table class="table table-bordered table-striped table-hover">
             <thead>
             <th>序号</th>
-            <th>缩略号</th>
+            <th>缩略图</th>
             <th>文件名</th>
             <th>操作</th>
             </thead>
@@ -14,11 +15,15 @@
             <volist name="lists" id="one">
                 <tr>
                     <td>{$one.id}</td>
-                    <td><img src="{$one.path}" onerror="this.src='__PUBLIC__/static/images/default-timg.gif'" style="width: 90px;" /></td>
+                    <td><div class="face" id="attachment" style="width: 120px;height: 80px;">
+                        <a href="javascript:void(0);" name="{$one.path}" onclick="return Check(this);"><img src="{$one.path}" onerror="this.src='__PUBLIC__/static/images/default-timg.gif'" style="width: 90px;" /></a>
+                    </div>
+                    </td>
+
                     <td>{$one.filename}</td>
                     <td>
-                        <a href="{:U('/admin/report/updateReport')}?id={$one.id}" class="btn btn-primary btn-xs" class="glyphicon glyphicon-pencil"><i class="glyphicon glyphicon-edit"></i> 修改</a>
-                        <a href="javascript:void(0);" onclick="onDelete({$one.id})" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> 删除</a>
+                        <a href="{:U('/admin/report/updateReport')}?id={$one.id}" class="btn btn-primary btn-xs" class="glyphicon glyphicon-pencil"><i class="glyphicon glyphicon-edit"></i>修改</a>
+                        <a href="javascript:void(0);" onclick="onDelete({$one.id})" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i>删除</a>
                     </td>
                 </tr>
             </volist>
@@ -54,5 +59,13 @@
             }
         });
     }
+    //点击查看原图
+    function Check(path) {
+        var url=path.name;
+        if(!url) return false;//获取缩略图url
+        var newurl=url.replace("_thumb","");//重写
+        window.open(newurl);
+    }
+
 </script>
 <include file="Common:footer" />
