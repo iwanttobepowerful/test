@@ -1,10 +1,91 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<include file="Common:header" title="后台首页"/>
+<div id="page-wrapper">
+    <include file="Common:breadcrumb" />
+    <div id="page-inner" class="container">
+        <!-- 主要模板 starting -->
 
-</body>
-</html>
+
+
+
+
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+            <th width="10%">序号</th>
+            <th >中心编号</th>
+            <th width="20%">审批</th>
+            <th width="30%">审核人/操作时间</th>
+            <th width="20%">审批状态</th>
+            </thead>
+            <tbody>
+            <volist name="rs" id="vo">
+                <tr>
+                    <td>{$vo.id}</td>
+                    <td>{$vo.centreno}</td>
+                    <td><a href="javascript:void(0);" name="btn_change" onclick="onUpdate({$vo.id})" class="btn btn-success btn-xs"><i class="glyphicon glyphicon-ok-circle"></i>批准</a>
+                        <a href="javascript:void(0);" name="btn_change" onclick="update({$vo.id})" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove-circle"></i>不批准</a></td>
+                    <td>{$vo.name}/{$vo.verify_time}</td>
+                    <td><php>if($vo['status']==3){echo '未审批';}else{echo '审批未通过';}</php></td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+        <div class=" pull-right"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
+
+
+
+        <!-- main end-->
+
+    </div>
+</div>
+</div>
+<script type="text/javascript">
+    function onUpdate(id){
+        if(!id) return false;
+        var _options = {"flag":"error","text":"将批准该报告","buttons":{"ok":{"action":function(){pass(id);}},"cancel":{}}};
+        doConfirmDialog(_options);
+    }
+    function pass(id){
+        id.onclick = function() {};
+        $.ajax({
+            type:"post",
+            url:"{:U('/admin/Report/isAuthorize')}",
+            data:{"id":id},
+            dataType:"json",
+            success:function(ret){
+                if(ret.msg=='succ'){
+                    var _options = {"text":"批准成功！","action":function(){window.location.reload();}};
+                    doAlertDialog(_options);
+                }else{
+                    var _options = {"text":"Error！"};
+                    if(data.msg) _options.text = data.msg;
+                    doAlertDialog(_options);
+                }
+            }
+        });
+    }
+    function update(id){
+        if(!id) return false;
+        var _options = {"flag":"error","text":"您确定不批准该报告吗？:","buttons":{"ok":{"action":function(){notPass(id);}},"cancel":{}}};
+        doConfirmDialog(_options);
+    }
+    function notPass(id){
+        id.onclick = function() {};
+        $.ajax({
+            type:"post",
+            url:"{:U('/admin/Report/notAuthorize')}",
+            data:{"id":id},
+            dataType:"json",
+            success:function(ret){
+                if(ret.msg=='succ'){
+                    var _options = {"text":"操作成功！","action":function(){window.location.reload();}};
+                    doAlertDialog(_options);
+                }else{
+                    var _options = {"text":"Error！"};
+                    if(data.msg) _options.text = data.msg;
+                    doAlertDialog(_options);
+                }
+            }
+        });
+    }
+</script>
+<include file="Common:footer" />
