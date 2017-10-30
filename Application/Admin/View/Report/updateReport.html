@@ -17,7 +17,7 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label talign-center fz13">文件名</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" name="filename" required />{$report['filename']}</div>
+                    <input type="text" class="form-control" name="filename" value="{$report['filename']}" required /></div>
                 <div class="clearfix"></div>
             </div>
 
@@ -78,7 +78,7 @@
             },
             success: function (data) {
                 if(data.msg=='succ'){
-                    var _options = {"text":"保存成功！","action":function(){window.location.reload();}};
+                    var _options = {"text":"保存成功！","action":function(){window.location.href="/Report/templateReport";}};
                     doAlertDialog(_options);
                 }else{
                     var _options = {"text":"保存失败！"};

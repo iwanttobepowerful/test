@@ -265,7 +265,7 @@ class ReportController extends Controller
         }
         $this->ajaxReturn($result);
     }
-
+//修改
     public function updateReport()
     {
 
@@ -280,7 +280,7 @@ class ReportController extends Controller
         $this->assign($body);
         $this->display();
     }
-
+//删除
     public function doDeleteReport()
     {
         $id = I("id", 0, 'intval');
