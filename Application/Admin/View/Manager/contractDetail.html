@@ -4,6 +4,15 @@
     <meta http-equiv=Content-Type content="text/html; charset=utf-8">
     <meta name=Generator content="Microsoft Word 15 (filtered)">
     <title>国家建筑材料工业房建材料质量监督检验测试中心</title>
+    <script src="__PUBLIC__/script/jquery.min.js" type="text/JavaScript"></script>
+    <script src="__PUBLIC__/static/js/jquery.PrintArea.js" type="text/JavaScript"></script>
+    <script>
+        $(document).ready(function(){
+            $("input#biuuu_button").click(function(){
+                $("div#myPrintArea").printArea();
+            });
+        });
+    </script>
     <style>
         @font-face
         {font-family:宋体;
@@ -87,16 +96,17 @@
     </style>
 
 </head>
-
+<input id="biuuu_button" type="button" value="打印此页面"  style="height:50px;width:150px;">
 <body lang=ZH-CN style='text-justify-trim:punctuation'>
-
+<div id="myPrintArea">
 <div class=WordSection1 style='layout-grid:15.6pt'>
     <!--<div><img src="__PUBLIC__/static/images/logo_company.png" alt="logo" width="60" height="74" align="left" style="margin-left:110px; margin-top:20px" hspace="12" /></div>-->
 
-    <h1 class=MsoNormal align=center ><span style='font-size:18.0pt;font-family:黑体'>建筑材料工业技术监督研究中心<br/>检  验  受  理  合  同</span></h1>
+    <p class=MsoNormal align=center style='text-align:center'><img width=60 height=74 src="__PUBLIC__/static/images/logo_company.png" align=center hspace=12>
+            <span style='font-size:18.0pt;font-family:黑体'>建筑材料工业技术监督研究中心<br/>检  验  受  理  合  同</span></p>
 
 
-    <p class=MsoNormal align=left style='text-align:left;text-indent:375pt'><span lang=EN-US>&nbsp;SJ - 4 - 17</span></p>
+    <p class=MsoNormal align=left style='text-align:center;text-indent:-458pt'><span lang=EN-US>&nbsp;SJ - 4 - 17</span></p>
 
     <div align=center>
 
@@ -420,7 +430,7 @@
                 </td>
                 <td width=341 colspan=3 valign=top style='width:170.45pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.25pt'>
                     <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>{$one.collectdate}</span></p>
+                        <span style='line-height:150%;font-family:宋体'>{$one.collectdate|strtotime|date=Y年m月d日,###}</span></p>
                 </td>
                 <td width=121 style='width:60.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.25pt'>
                     <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
@@ -428,7 +438,7 @@
                 </td>
                 <td width=365 colspan=4 valign=top style='width:182.45pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.25pt'>
                     <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>{$one.reportdate}</span></p>
+                        <span style='line-height:150%;font-family:宋体'>{$one.reportdate|strtotime|date=Y年m月d日,###}</span></p>
                 </td>
             </tr>
             <tr style='page-break-inside:avoid;height:20.0pt'>
@@ -438,11 +448,10 @@
                         <span lang=EN-US style='line-height:150%'>&nbsp;&nbsp;&nbsp; </span><span style='line-height:150%;font-family:宋体'>明</span></p>
                 </td>
                 <td width=826 colspan=8 valign=top style='width:413.2pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:20.0pt'>
-                    <p ><span lang=EN-US style='font-size:9.0pt'>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style='font-size:9.0pt;font-family:宋体'>委托人应对所提供的资料、信息和样品的真实性负责。</span></p>
-                    <p><span lang=EN-US style='font-size:9.0pt'>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style='font-size:9.0pt;font-family:宋体'>若对本单内容有变动，请委托方电话、邮件、传真通知受理人。</span></p>
-                    <p><span lang=EN-US style='font-size:9.0pt'>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style='font-size:9.0pt;font-family:宋体'>本中心仅对来样负责。</span></p>
-                    <p><span lang=EN-US style='font-size:9.0pt'>4.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;</span></span>
-                        <span style='font-size:9.0pt;font-family:宋体'>委托方要求取走剩余样品时，若在收到检验报告后一个月内未取回，且没有说明情况的，剩余样品由中心统一处理；样品取走后不再受理异议申诉。</span></p>
+                    <a><span lang=EN-US style='font-size:9.0pt'>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;</span></span><span style='font-size:9.0pt;font-family:宋体'>委托人应对所提供的资料、信息和样品的真实性负责。</span></a><br/>
+                    <a><span lang=EN-US style='font-size:9.0pt'>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;</span></span><span style='font-size:9.0pt;font-family:宋体'>若对本单内容有变动，请委托方电话、邮件、传真通知受理人。</span></a><br/>
+                    <a><span lang=EN-US style='font-size:9.0pt'>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;</span></span><span style='font-size:9.0pt;font-family:宋体'>本中心仅对来样负责。</span></a><br/>
+                    <a><span lang=EN-US style='font-size:9.0pt'>4.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;</span></span><span style='font-size:9.0pt;font-family:宋体'>委托方要求取走剩余样品时，若在收到检验报告后一个月内未取回，且没有说明情况的，剩余样品由中心统一处理；样品取走后不再受理异议申诉。</span></a><br/>
                 </td>
             </tr>
         </table>
@@ -460,7 +469,7 @@
     <p class=MsoNormal><span lang=EN-US style='font-size:5.0pt'>&nbsp;</span></p>
 
 </div>
-
+</div>
 </body>
 
 </html>
