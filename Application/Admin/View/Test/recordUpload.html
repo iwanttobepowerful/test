@@ -2,41 +2,27 @@
 <div id="page-wrapper">
     <include file="Common:breadcrumb" />
 
-    <div class="search-form">
-        <form class="form-inline" method="GET" action="">
-            <div class="form-group">
-                <label>中心编号：</label>
-                <input type="text" class="form-control input-sm" id="keyword" />
-                <label>检测记录名称：</label>
-                <input type="text" class="form-control input-sm" id="recordname" />
-            </div>
-        </form>
-    </div>
-
     <div id="page-inner" class="container">
 
-        <!-- 加载编辑器的容器 -->
-        <script id="container" name="content" type="text/plain">
+           <input type="hidden" id="record_id" value="{$pic['id']}" />
+            <input type="hidden" id="centreno" value="{$centreno}" />
+            <!--加载编辑器的容器 -->
+            <script id="container" name="content" type="text/plain">
 
-        </script>
-        <!-- 配置文件 -->
-        <script type="text/javascript" src="__PUBLIC__/static/ueditor/utf8-php/ueditor.config.js"></script>
-        <!-- 编辑器源码文件 -->
-        <script type="text/javascript" src="__PUBLIC__/static/ueditor/utf8-php/ueditor.all.js"></script>
-        <script type="text/javascript" charset="utf-8" src="../ueditor/lang/zh-cn/zh-cn.js"></script>
-        <script type="text/javascript" charset="utf-8" src="../ueditor/lang/en/en.js"></script>
+            </script>
+            <!-- 配置文件 -->
+            <script type="text/javascript" src="__PUBLIC__/static/ueditor/utf8-php/ueditor.config.js"></script>
+            <!-- 编辑器源码文件 -->
+            <script type="text/javascript" src="__PUBLIC__/static/ueditor/utf8-php/ueditor.all.js"></script>
+            <script type="text/javascript" charset="utf-8" src="../ueditor/lang/zh-cn/zh-cn.js"></script>
+            <script type="text/javascript" charset="utf-8" src="../ueditor/lang/en/en.js"></script>
 
-        <!-- 实例化编辑器 -->
-        <script type="text/javascript">
-            var ue=UE.getEditor('container');
-        </script>
+            <!-- 实例化编辑器 -->
+            <script type="text/javascript">
+                var ue=UE.getEditor('container');
+            </script>
 
     </div>
-    <!--
-    <form class="form-inline" method="GET" action="" id="form2">
-        <button onclick="getContent()">获得内容</button>
-    </form>
-    -->
 
     <a href="javascript:void(0);" onclick="getContent()" class="btn btn-success btn-xs"><i class="glyphicon glyphicon-ok-circle"></i> 上传检测记录</a>
 
@@ -52,12 +38,14 @@
     }
     function doneUpd(){
         var str=ue.getContent();
-        var keyword=document.getElementById("keyword").value;
-        var recordname=document.getElementById("recordname").value;
+        //var id=document.getElementById("record_id").value;
+        var centreno=document.getElementById("centreno").value;
+        //alert(str+id+centreno);
         $.ajax({
             type:"post",
-            url:"{:U('/admin/test/doUpd')}",
-            data:{"str":str,"recordname":recordname,"keyword":keyword},
+            url:"{:U('/admin/test/doUp')}",
+            //data:{"str":str,"centreno":centreno,"id":id},//
+            data:{"str":str,"centreno":centreno},
             dataType:"json",
             success:function(ret){
                 if(ret.msg=='succ'){

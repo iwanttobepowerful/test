@@ -2,8 +2,12 @@
 <div id="page-wrapper">
     <include file="Common:breadcrumb" />
     <div id="page-inner" class="container">
+        <div class="search-form">
+            <a href="{:U('/admin/test/recordPictureUp')}?id={$centreno}" class="btn btn-success">返回</a>
+        </div>
         <form class="form-horizontal" id="myform" action="" method="post">
             <input type="hidden" name="id" value="{$pic['id']}" />
+            <input type="hidden" name="centreno" value="{$centreno}" /><!--!!!!!!!!-->
             <div class="form-group">
                 <label class="col-sm-2 control-label talign-center fz13">上传图片</label>
                 <div class="col-sm-10">
@@ -71,7 +75,7 @@
 
     function onSave(){
         var options = {
-            url: "{:U('Test/doUploadPic')}",
+            url: "{:U('/admin/Test/doUploadPic')}",
             dataType: 'json',
             beforeSubmit: function(){
                 return true;

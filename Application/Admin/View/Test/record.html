@@ -8,7 +8,7 @@
             <form class="form-inline" method="GET" action="">
                 <div class="form-group">
                     <label>中心编号：</label>
-                    <input type="text" class="form-control input-sm" name="keyword" />
+                    <input type="text" class="form-control input-sm" name="centreno" />
                 </div>
                 <button type="submit" class="btn btn-primary btn-sm" >查询</button>
             </form>
@@ -16,19 +16,17 @@
 
         <table class="table table-bordered table-striped table-hover">
             <thead>
-                <th>中心编号</th>
-                <!--<th>样本名称</th>-->
-                <!--<th>检验类别</th>-->
-                <th>操作</th>
+            <th>中心编号</th>
+            <th>样本名称</th>
+            <th>操作</th>
             </thead>
             <tbody>
             <volist name="lists" id="one">
                 <tr>
                     <td>{$one.centreno}</td>
-                    <!--<td>{$one.samplename}</td>-->
-                    <!--<td>{$one.testcategory}</td>-->
+                    <td>{$one.samplename}</td>
                     <td>
-                        <a href="{:U('/admin/test/recordPictureUp')}?id={$one.centreno}" class="glyphicon glyphicon-search">检测图片上传</a>
+                        <a href="{:U('/admin/test/recordList')}?id={$one.centreno}" class="glyphicon glyphicon-search">检测报告上传</a>
                     </td>
                 </tr>
             </volist>

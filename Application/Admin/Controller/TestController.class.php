@@ -90,34 +90,10 @@ class TestController extends Controller{
         $this->display();
     }
 
-
-    //检测记录上传
-    public function recordUpload(){
-        $this->display();
-    }
-
-    public function doUpd(){
-        $keyword = I("keyword");//获取参数
-        $recordname = I("recordname");//获取参数
-        $str =I("str");
-        $data = array("centreNo"=>$keyword,"recordName"=>$recordname,"remark"=>$str);
-        if(D("test_record")->add($data)){
-            $rs = array("msg"=>"succ");
-        }
-        $this->ajaxReturn($rs);
-    }
-
-
-    public function recordUp(){
-
-        $this->display();
-    }
-
-
     public function recordPicture(){
         $keyword = I("keyword");//获取参数
         $where= "centreno='{$keyword}'";
-        $result=M('test_record')->where($where)->field("centreno")->find();
+        $result=M('contract')->where($where)->select();//从合同表!!!!里取出对应中心编号的信息     ->field("centreno")
         $body=array(
             'lists'=>$result,
 
@@ -133,11 +109,11 @@ class TestController extends Controller{
         $offset = ( $page-1 ) * $pagesize;
         $orderby = "create_time desc";
 
-        $keyword = I("id");//获取参数
+        $keyword = I("id");//获取中心编号
         $where= "centreno='{$keyword}'";
         $result=D('test_record')->limit("{$offset},{$pagesize}")->where($where)->select();
 
-        $count = D("test_record")->count();
+        $count = D("test_record")->where($where)->count();//!!!!!!!!!!!!!!
         $Page       = new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
         $pagination       = $Page->show();// 分页显示输出
@@ -145,6 +121,7 @@ class TestController extends Controller{
         $body=array(
             'lists'=>$result,
             'pagination'=>$pagination,
+            'centreno'=>$keyword,//!!!!!!!!!!!!!!
         );
         $this->assign($body);
         $this->display();
@@ -152,18 +129,21 @@ class TestController extends Controller{
 
     public function picUp(){
         $id =I("id",0,'intval');
+        $centreno=I("centreno");//!!!!!!!!!!!!!!!!!!!!!!!
         if($id){
             $pic = D('test_record')->where("id=".$id)->find();
         }
-       // dump($pic);
         $body = array(
             'pic' => $pic,
+            'centreno'=>$centreno,//!!!!!!!!!!!!!!!!!!!!!!!
         );
         $this->assign($body);
         $this->display();
     }
+
     public function doUploadPic(){
         $id = I("id",0,'intval');
+        $centreno=I("centreno");//!!!!!!!!!!!!!!!!
         $imgurl = I("imgurl");
         $remark = I("remark");
         $result = array("msg"=>"fail");
@@ -171,7 +151,7 @@ class TestController extends Controller{
             $result['msg'] = "无效的提交！";
             $this->ajaxReturn($result);
         }
-        $data = array("path"=>$imgurl,"remark"=>$remark);
+        $data = array("centreno"=>$centreno,"path"=>$imgurl,"remark"=>$remark,'lastmodifytime'=>date("Y-m-d H:i:s"));//!!!!!!!!!"centreno"=>$centreno,  'lastmodifytime'=>date("Y-m-d H:i:s")
         $pic = D("test_record")->where("id=".$id)->find();
         if($pic){
             if(D("test_record")->where("id=".$pic['id'])->save($data)){
@@ -193,4 +173,77 @@ class TestController extends Controller{
         }
         $this->ajaxReturn($rs);
     }
+
+    public function record(){
+        $centreno = I("centreno");//获取参数
+        $where= "centreno='{$centreno}'";
+        $result=M('contract')->where($where)->select();//从合同表!!!!里取出对应中心编号的信息     ->field("centreno")
+        $body=array(
+            'lists'=>$result,
+
+        );
+        $this->assign($body);
+        $this->display();
+    }
+
+    public function recordList(){
+        $page = I("p",'int');
+        $pagesize = 20;
+        if($page<=0) $page = 1;
+        $offset = ( $page-1 ) * $pagesize;
+        $orderby = "create_time desc";
+
+        $centreno = I("id");//获取中心编号
+
+        $where= "centreno='{$centreno}'";
+        $result=M('test_report')->limit("{$offset},{$pagesize}")->where($where)->select();
+        $count = M("test_report")->where($where)->count();//!!!!!!!!!!!!!!
+        $Page       = new \Think\Page($count,$pagesize);
+        $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
+        $pagination       = $Page->show();// 分页显示输出
+
+        $body=array(
+            'lists'=>$result,
+            'pagination'=>$pagination,
+            'centreno'=>$centreno,//!!!!!!!!!!!!!!
+        );
+        $this->assign($body);
+        $this->display();
+    }
+
+
+    public function recordUpload(){
+        $id =I("id",0,'intval');
+        $centreno=I("centreno");//!!!!!!!!!!!!!!!!!!!!!!!
+        if($id){
+            $pic = D('test_report')->where("id=".$id)->find();
+        }
+        $body = array(
+            'pic' => $pic,
+            'centreno'=>$centreno,//!!!!!!!!!!!!!!!!!!!!!!!
+        );
+        $this->assign($body);
+        $this->display();
+    }
+
+    public function doUp(){
+        //$id = I("record_id",0,'intval');//获取参数
+        $centreNo = I("centreno");//获取参数
+        $str =I("str");
+        $data = array("centreNo"=>$centreNo,"htmltable"=>$str);
+        if(M("test_report")->add($data)){
+            $rs = array("msg"=>"succ");
+        }
+        $this->ajaxReturn($rs);
+    }
+
+    public function doDeleteReport(){
+        $id =I("id",0,'intval');
+        $rs = array("msg"=>"fail");
+        if(M("test_report")->where("id=".$id)->delete()){
+            $rs['msg'] = 'succ';
+        }
+        $this->ajaxReturn($rs);
+    }
+
 }
