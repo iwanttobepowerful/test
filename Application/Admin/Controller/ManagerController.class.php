@@ -120,20 +120,50 @@ class ManagerController extends Controller
 			$rs['msg'] = '信息填写不完整!';
 			$this->ajaxReturn($rs);
 		}
+		$where['department']=$department;
+		$where['year']=$year;
+		$where['month']=$month;
+		$list = D("special_centre_code")->field('id,getNum,remainNum,count(*) as count')->where($where)->find();
+		$count = $list['count'];
+		$remainNumOld =  $list['remainnum'];
+		$getNumOld =  $list['getnum'];
+		$id = $list['id'];
 		$data = array(
 			"department"=>$department,
 			"year"=>$year,
 			"month"=>$month,
-			"getNum"=>$getNum,
-			'remainNum'=>$getNum,
+			//"getNum"=>$getNum,
+			//'remainNum'=>$getNum,
 			"remark"=>$remark,
 			'getDate'=>Date("Y-m-d H:i:s")
 		);
-		if(D("special_centre_code")->data($data)->add()){
-			$rs['msg'] = 'succ';
+		M()->startTrans();
+		if($count>0){
+			$remainNumNew = $remainNumOld + $getNum;
+			$getNumNew = $getNumOld +$getNum;
+			$data['getNum'] = $getNumNew;
+			$data['remainNum'] = $remainNumNew;
+			if(D("special_centre_code")->where("id=".$id)->save($data)){
+				$rs['msg'] = 'succ';
+				M()->commit();
+			} 
+			else{
+				$rs['msg'] = '输入信息有误';
+				M()->rollback();
+			} 
 		}else{
-			$rs['msg'] = '输入信息有误';
+			$data['getNum'] = $getNum;
+			$data['remainNum'] = $getNum;
+			if(D("special_centre_code")->data($data)->add()){
+				$rs['msg'] = 'succ';
+				M()->commit();
+			} 
+			else{
+				$rs['msg'] = '输入信息有误';
+				M()->rollback();
+			} 
 		}
+
 		$this->ajaxReturn($rs);
 	}
 	

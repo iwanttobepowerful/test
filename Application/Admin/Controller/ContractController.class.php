@@ -212,12 +212,19 @@ class ContractController extends Controller
 			"Drevise"=>$Drevise,
 			'costDate'=>Date("Y-m-d H:i:s")
 		);
+		
+		$data_flow = array(
+			"centreNo"=>$centreNo,
+			'modify_time'=>Date("Y-m-d H:i:s"),
+		);
+		
+		
 		M()->startTrans();
 		try{
-			$flag = true;
 			
 			//合同入库
-			if(!D("contract")->data($data)->add()) $flag=false;
+			D("contract")->data($data)->add();
+			D("contract_flow")->data($data_flow)->add();
 			
 			//特殊编码操作
 			if($ifspecial==1){
@@ -462,6 +469,75 @@ class ContractController extends Controller
 	//生成检验工作单
 	public function checkWorkList(){
 		$this->display();
+	}
+	
+	//抽样单修改
+	public function doEditSample(){
+		$centreno = I("centreno");
+		$samplebase=I("samplebase");
+		$sampledate=I("sampledate");
+		$sampleplace=I("sampleplace");
+		$samplemethod=I("samplemethod");
+		$data=array(
+			'sampleBase'=>$samplebase,
+			'sampleDate'=>$sampledate,
+			'samplePlace'=>$sampleplace,
+			'sampleMethod'=>$samplemethod
+		);
+		$where['centreno']=$centreno;
+		$rs['msg']='fail';
+		M()->startTrans();
+		if(D('sampling_form')->where($where)->save($data)){
+			M()->commit();
+			$rs['msg']='修改成功！';
+		}else{
+			M()->rollback();	
+			$rs['msg']='数据未更改！';
+		}
+		$this->ajaxReturn($rs);
+	}
+	
+	//抽样单上传
+	public function doUploadSampleImage(){
+		$centreno = I('centreno');
+		$type = I('type');
+		$body=array(
+			'centreno'=>$centreno,
+			'type'=>$type
+		);
+		$this->assign($body);
+		$this->display();
+	}
+	
+	public function saveSampleImage(){
+		$id = I("id",0,'intval');
+		$type = I("type");
+		if($type=='work'){
+			
+		}else{
+			
+		}
+		
+		
+        $imgurl = I("imgurl");
+        $remark = I("remark");
+        $result = array("msg"=>"fail");
+        if(empty($imgurl)){
+            $result['msg'] = "无效的提交！";
+            $this->ajaxReturn($result);
+        }
+        $data = array("offcial_seal"=>$imgurl,"remark"=>$remark);
+        $stamp = D("offcial_seal")->where("id=".$id)->find();
+        if($stamp){
+            if(D("offcial_seal")->where("id=".$stamp['id'])->save($data)){
+                $result['msg'] = 'succ';
+            }
+        }else{
+            if(D("offcial_seal")->data($data)->add()){
+                $result['msg'] = 'succ';
+            }
+        }
+        $this->ajaxReturn($result);
 	}
 
 	//特殊号段查询

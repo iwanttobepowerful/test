@@ -8,9 +8,53 @@
     <script>
         $(document).ready(function(){
             $("input#biuuu_button").click(function(){
-                $("div#myPrintArea").printArea();
+				var samplebase=$.trim($('input[name="samplebase"]').val());
+				var sampledate=$.trim($('input[name="sampledate"]').val());
+				var sampleplace=$.trim($('input[name="sampleplace"]').val());
+				var samplemethod=$.trim($('input[name="samplemethod"]').val());
+				if(samplebase=="" || sampledate=="" || sampleplace=="" || samplemethod==""){
+					alert("信息不完整,请完善信息后打印");
+					return;	
+				}else{
+					$("div#myPrintArea").printArea();
+				} 
             });
         });
+			
+		function doEditSample(){
+			var centreno=$('input[name="centreno"]').val();
+			var samplebase=$.trim($('input[name="samplebase"]').val());
+			var sampledate=$.trim($('input[name="sampledate"]').val());
+			var sampleplace=$.trim($('input[name="sampleplace"]').val());
+			var samplemethod=$.trim($('input[name="samplemethod"]').val());
+			if(samplebase=="" || sampledate=="" || sampleplace=="" || samplemethod==""){
+				alert("信息不完整,请完善信息");
+				return;	
+			}
+			$.ajax({
+				url: "{:U('/admin/contract/doEditSample')}",
+				dataType: 'json',			
+				data:{"centreno":centreno,"samplebase":samplebase,"sampledate":sampledate,"sampleplace":sampleplace,"samplemethod":samplemethod},
+				async: false,
+				success: function (res) {
+					alert(res.msg);
+					window.location.reload();
+				}
+			});
+		}
+		
+		function  doUpSample(type){
+			var centreno=$('input[name="centreno"]').val();
+			var samplebase=$.trim($('input[name="samplebase"]').val());
+			var sampledate=$.trim($('input[name="sampledate"]').val());
+			var sampleplace=$.trim($('input[name="sampleplace"]').val());
+			var samplemethod=$.trim($('input[name="samplemethod"]').val());
+			if(samplebase=="" || sampledate=="" || sampleplace=="" || samplemethod==""){
+				alert("信息不完整,请完善信息");
+				return;	
+			}
+			window.location.href="/admin/contract/doUploadSampleImage?centreno="+centreno+"&type="+type;			
+		}
     </script>
     <meta http-equiv=Content-Type content="text/html;">
     <meta name=Generator content="Microsoft Word 15 (filtered)">
@@ -87,7 +131,9 @@
 
 </head>
 <input id="biuuu_button" type="button" value="打印此页面"  style="height:50px;width:150px;">
-<button class="btn btn-success" type="button" id="check_list" onClick="doEditSample()">修改</button>
+<button class="btn btn-success" type="submit" id="check_list" onClick="doEditSample()">修改</button>
+<button class="btn btn-success" type="submit" id="up_sample" onClick="doUpSample('sample')">上传抽样单</button>
+<button class="btn btn-success" type="submit" id="up_check" onClick="doUpSample('work')">上传检测图片</button>
 <body lang=ZH-CN style='text-justify-trim:punctuation'>
 <div id="myPrintArea">
 <div class=WordSection1 style='layout-grid:15.6pt'>
@@ -108,7 +154,7 @@ font-family:黑体'>国家</span><span lang=EN-US style='font-size:18.0pt'>)</sp
             lang=EN-US style='font-family:"Times New Roman",serif;margin-left:0px'>SJ－4－25&nbsp;&nbsp;</span>
             <span align=left style='font-family:宋体'>中心编号：</span><span
             lang=EN-US style='mso-bidi-font-size:10.5pt'>{$one.centreno}</span></p>
-
+			<input type="hidden" name="centreno" value="{$one.centreno}">
     <table align=center class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=670
            style='width:502.55pt;border-collapse:collapse;
  border:none'>
@@ -480,10 +526,5 @@ font-family:黑体'>国家</span><span lang=EN-US style='font-size:18.0pt'>)</sp
 </div>
 </div>
 
-<script type="text/javascript">
-	function doEditSample(){
-		
-	}
-</script>
 </body>
 </html>
