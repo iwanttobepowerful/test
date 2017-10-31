@@ -56,15 +56,17 @@ class ReportController extends Controller
         $id =I("id",0,'intval');
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
-        $user=$admin_auth['id'];
+        $userid=$admin_auth['id'];
+        $user=$admin_auth['gid'];//判断是哪个角色
+        if ($user==8 or $user==6 or $user==13){
         $data=array(
             'status'=>3,
-            'verify_user_id'=>$user,
+            'verify_user_id'=>$userid,
             'verify_time'=>date("Y-m-d H:i:s"),
         );
         if(D("contract_flow")->where("id=".$id)->save($data)){
             $rs['msg'] = 'succ';
-        }
+        }}
         $this->ajaxReturn($rs);
     }
     //审核未通过
@@ -72,15 +74,17 @@ class ReportController extends Controller
         $id =I("id",0,'intval');
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
-        $user=$admin_auth['id'];
+        $userid=$admin_auth['id'];
+        $user=$admin_auth['gid'];//判断是哪个角色
+        if ($user==8 or $user==6 or $user==13){
         $data=array(
             'status'=>-3,
-            'verify_user_id'=>$user,
+            'verify_user_id'=>$userid,
             'verify_time'=>date("Y-m-d H:i:s"),
         );
         if(D("contract_flow")->where("id=".$id)->save($data)){
             $rs['msg'] = 'succ';
-        }
+        }}
         $this->ajaxReturn($rs);
     }
     //报告审批
@@ -121,15 +125,17 @@ class ReportController extends Controller
         $id =I("id",0,'intval');
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
-        $user=$admin_auth['id'];
+        $userid=$admin_auth['id'];
+        $user=$admin_auth['gid'];//判断是哪个角色
+        if ($user==8 or $user==14 or $user==6){
         $data=array(
             'status'=>4,
             'approve_time'=>date("Y-m-d H:i:s"),
-            'approve_user_id'=>$user,
+            'approve_user_id'=>$userid,
         );
         if(D("contract_flow")->where("id=".$id)->save($data)){
             $rs['msg'] = 'succ';
-        }
+        }}
         $this->ajaxReturn($rs);
     }
     //审批未通过
@@ -137,15 +143,17 @@ class ReportController extends Controller
         $id =I("id",0,'intval');
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
-        $user=$admin_auth['id'];
+        $userid=$admin_auth['id'];
+        $user=$admin_auth['gid'];//判断是哪个角色
+        if ($user==8 or $user==14 or $user==6){
         $data=array(
             'status'=>-4,
             'approve_time'=>date("Y-m-d H:i:s"),
-            'approve_user_id'=>$user,
+            'approve_user_id'=>$userid,
         );
         if(D("contract_flow")->where("id=".$id)->save($data)){
             $rs['msg'] = 'succ';
-        }
+        }}
         $this->ajaxReturn($rs);
     }
     //内部签发
@@ -188,15 +196,17 @@ class ReportController extends Controller
         $id =I("id",0,'intval');
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
-        $user=$admin_auth['id'];
+        $userid=$admin_auth['id'];
+        $user=$admin_auth['gid'];//判断是哪个角色
+        if ($user==8 or $user==14 or $user==6){//只有领导，批准人员，超级管理员才能审核
         $data=array(
             'status'=>5,
             'inner_sign_time'=>date("Y-m-d H:i:s"),
-            'inner_sign_user_id'=>$user,
+            'inner_sign_user_id'=>$userid,
         );
         if(D("contract_flow")->where("id=".$id)->save($data)){
             $rs['msg'] = 'succ';
-        }
+        }}
         $this->ajaxReturn($rs);
     }
 
@@ -239,15 +249,17 @@ class ReportController extends Controller
         $id =I("id",0,'intval');
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
-        $user=$admin_auth['id'];
+        $userid=$admin_auth['id'];
+        $user=$admin_auth['gid'];//判断是哪个角色
+        if ($user==8 or $user==14 or $user==6){//只有领导，批准人员，超级管理员才能审核
         $data=array(
             'status'=>6,
             'external_sign_time'=>date("Y-m-d H:i:s"),
-            'external_sign_user_id'=>$user,
+            'external_sign_user_id'=>$userid,
         );
         if(D("contract_flow")->where("id=".$id)->save($data)){
             $rs['msg'] = 'succ';
-        }
+        }}
         $this->ajaxReturn($rs);
     }
 
