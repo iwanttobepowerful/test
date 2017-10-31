@@ -20,6 +20,13 @@ class ReportController extends Controller
     }
     //报告审核
     public function auditReport(){
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $user=$admin_auth['gid'];//判断是哪个角色
+        if ($user==8 or $user==6 or $user==13){//只有领导，审核人员，超级管理员才能审核
+            $view="";
+        }else{
+            $view="disabled";
+        }
         $page = I("p",'int');
         $pagesize = 10;
         if($page<=0) $page = 1;
@@ -39,6 +46,7 @@ class ReportController extends Controller
         $body = array(
             'rs'=>$rs,
             'pagination'=>$pagination,
+            'view'=>$view,
         );
         $this->assign($body);
         $this->display();
@@ -77,6 +85,13 @@ class ReportController extends Controller
     }
     //报告审批
     public function authorizeReport(){
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $user=$admin_auth['gid'];//判断是哪个角色
+        if ($user==8 or $user==14 or $user==6){
+            $view="";
+        }else{
+            $view="disabled";
+        }
         $page = I("p",'int');
         $pagesize = 10;
         if($page<=0) $page = 1;
@@ -96,6 +111,7 @@ class ReportController extends Controller
         $body = array(
             'rs'=>$rs,
             'pagination'=>$pagination,
+            'view'=>$view,
         );
         $this->assign($body);
         $this->display();
@@ -134,6 +150,13 @@ class ReportController extends Controller
     }
     //内部签发
     public function internalIssue(){
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $user=$admin_auth['gid'];//判断是哪个角色
+        if ($user==8 or $user==14 or $user==6){//只有领导，批准人员，超级管理员才能审核
+            $view="";
+        }else{
+            $view="disabled";
+        }
         $page = I("p",'int');
         $pagesize = 10;
         if($page<=0) $page = 1;
@@ -153,6 +176,7 @@ class ReportController extends Controller
         $body = array(
             'rs'=>$rs,
             'pagination'=>$pagination,
+            'view'=>$view,
         );
         $this->assign($body);
         $this->display();
@@ -178,6 +202,13 @@ class ReportController extends Controller
 
     //外部签发
     public function externalIssue(){
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $user=$admin_auth['gid'];//判断是哪个角色
+        if ($user==8 or $user==14 or $user==6){//只有领导，批准人员，超级管理员才能审核
+            $view="";
+        }else{
+            $view="disabled";
+        }
         $page = I("p",'int');
         $pagesize = 10;
         if($page<=0) $page = 1;
@@ -198,6 +229,7 @@ class ReportController extends Controller
         $body = array(
             'rs'=>$rs,
             'pagination'=>$pagination,
+            'view'=>$view,
         );
         $this->assign($body);
         $this->display();

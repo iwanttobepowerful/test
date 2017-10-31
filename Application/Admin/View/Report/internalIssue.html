@@ -3,11 +3,6 @@
     <include file="Common:breadcrumb" />
     <div id="page-inner" class="container">
         <!-- 主要模板 starting -->
-
-
-
-
-
         <table class="table table-bordered table-striped table-hover">
             <thead>
             <th width="10%">序号</th>
@@ -20,7 +15,7 @@
                 <tr>
                     <td>{$vo.id}</td>
                     <td>{$vo.centreno}</td>
-                    <td><a href="javascript:void(0);" name="btn_change" onclick="onUpdate({$vo.id})" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-ok-circle"></i>待签发</a></td>
+                    <td><button name="btn_change" onclick="onUpdate({$vo.id})" class="btn btn-success btn-xs" {$view}><i class="glyphicon glyphicon-ok-circle"></i>待签发</button></td>
                     <td>{$vo.name}/{$vo.approve_time}</td>
                 </tr>
             </volist>

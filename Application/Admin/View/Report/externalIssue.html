@@ -26,7 +26,7 @@
                     <td>{$vo.productunit}</td>
                     <td>{$vo.clientsign}</td>
                     <td>{$vo.telephone}</td>
-                    <td><a href="javascript:void(0);" name="btn_change" onclick="onUpdate({$vo.id})" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-ok-circle"></i>待签发</a></td>
+                    <td><button name="btn_change" onclick="onUpdate({$vo.id})" class="btn btn-success btn-xs" {$view}><i class="glyphicon glyphicon-ok-circle"></i>待签发</button></td>
                     <td>{$vo.name}/{$vo.inner_sign_time}</td>
                 </tr>
             </volist>
