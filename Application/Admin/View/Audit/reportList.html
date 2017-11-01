@@ -2,39 +2,91 @@
 <div id="page-wrapper">
 	<include file="Common:breadcrumb" />
 	<div id="page-inner" class="container">
-			<div class="search-form">
-	            <form class="form-inline" method="GET" action="">
-	                <div class="form-group">
-	                    <label>中心编号：</label>
-	                    <input type="text" class="form-control input-sm" name="centreno" />
-	                </div>
-	                <button type="submit" class="btn btn-primary btn-sm" >查询</button>
-	            </form>
-	        </div>
-			<table class="table table-bordered table-striped table-hover">
-				<thead>
-					<th>合同编号</th>
-					<th>审核时间</th>
-                    <th>修改内容</th>
-                   
-					<th>状态</th>
-					<th>操作</th>
-				</thead>
-				<tbody>
-					<volist name="lists" id="one">
-					   <tr>
-					   		
-					   </tr>
-					</volist>
-				</tbody>
-			</table>
-			<div class=" pull-right"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
+		<div class="search-form">
+			<form class="form-inline" method="GET" action="">
+				<div class="form-group">
+					<label>中心编号：</label>
+					<input type="text" class="form-control input-sm" name="centreno" />
+				</div>
+				<button type="submit" class="btn btn-primary btn-sm" >查询</button>
+			</form>
 		</div>
+		<table class="table table-bordered table-striped table-hover">
+			<thead>
+			<th>合同编号</th>
+			<th>审核时间</th>
+			<th>修改内容</th>
+			<th>状态</th>
+			<th>操作</th>
+			</thead>
+			<tbody>
+			<volist name="lists" id="one">
+				<tr>
+					<td>{$one.contractno}</td>
+					<td>{$one.modify_time}</td>
+					<td>{$one.reason}</td>
+					<td><php>if($one['status']==0){echo "未处理";}else if($one['status']==1){echo "允许"; }else{echo "拒绝";}</php></td>
+					<td><button class="btn btn-success btn-xs" onclick="onUpdate({$one.id})" {$view}><i class="glyphicon glyphicon-ok-circle"></i>允许</button>
+						<button class="btn btn-danger btn-xs" onclick="update({$one.id})" {$view}><i class="glyphicon glyphicon-remove-circle"></i>拒绝</button>
+					</td>
+				</tr>
+			</volist>
+			</tbody>
+		</table>
+		<div class=" pull-right"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
 	</div>
+</div>
 </div>
 
 <script src="__PUBLIC__/static/js/jquery.form.js"></script>
 <script type="text/javascript">
-
+    function onUpdate(id){
+        if(!id) return false;
+        var _options = {"flag":"error","text":"将批准该申请","buttons":{"ok":{"action":function(){pass(id);}},"cancel":{}}};
+        doConfirmDialog(_options);
+    }
+    function pass(id){
+        id.onclick = function() {};
+        $.ajax({
+            type:"post",
+            url:"{:U('/admin/audit/isAllow')}",
+            data:{"id":id},
+            dataType:"json",
+            success:function(ret){
+                if(ret.msg=='succ'){
+                    var _options = {"text":"批准成功！","action":function(){window.location.reload();}};
+                    doAlertDialog(_options);
+                }else{
+                    var _options = {"text":"Error！"};
+                    if(data.msg) _options.text = data.msg;
+                    doAlertDialog(_options);
+                }
+            }
+        });
+    }
+    function update(id){
+        if(!id) return false;
+        var _options = {"flag":"error","text":"您确定拒绝该申请吗？:","buttons":{"ok":{"action":function(){notPass(id);}},"cancel":{}}};
+        doConfirmDialog(_options);
+    }
+    function notPass(id){
+        id.onclick = function() {};
+        $.ajax({
+            type:"post",
+            url:"{:U('/admin/audit/notAllow')}",
+            data:{"id":id},
+            dataType:"json",
+            success:function(ret){
+                if(ret.msg=='succ'){
+                    var _options = {"text":"操作成功！","action":function(){window.location.reload();}};
+                    doAlertDialog(_options);
+                }else{
+                    var _options = {"text":"Error！"};
+                    if(data.msg) _options.text = data.msg;
+                    doAlertDialog(_options);
+                }
+            }
+        });
+    }
 </script>
 <include file="Common:footer" />
