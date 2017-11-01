@@ -17,16 +17,14 @@
 		<table class="table table-bordered table-striped table-hover">
 			<thead>
 			<th>合同编号</th>
-			<th>状态</th>
 			<th>操作</th>
 			</thead>
 			<tbody>
 			<volist name="lists" id="vo">
 				<tr>
 					<td>{$vo.centreno}</td>
-					<td></td>
 					<td>
-						<span onclick="addAudit()" class="btn btn-primary btn-sm">添加申请</span>
+						<button onclick="addAudit('{$vo.centreno}')" class="btn btn-primary btn-sm">添加申请</button>
 					</td>
 				</tr>
 			</volist>
@@ -47,11 +45,10 @@
 				</div>
 				<div class="modal-body form-horizontal">
 					<input type="hidden" name="modid" value="0" />
-
 					<div class="form-group form-group-sm">
-						<label class="col-sm-3 control-label talign-right fz13">合同编号</label>
+						<label class="col-sm-3 control-label talign-right fz13"></label>
 						<div class="col-sm-7">
-							<input type="text" class="form-control" name="centreno">
+							<input type="hidden" class="form-control" name="centreno"  value=""/>
 						</div>
 						<div class="clearfix"></div>
 					</div>
@@ -75,9 +72,10 @@
 	</div><!-- /.modal -->
 </div>
 <script type="text/javascript">
-    function addAudit(){
+    function addAudit(centreno){
         var modal = $("#editModal");
-        modal.find("input[name='modid']").val(0);
+        modal.find("input[name='centreno']").val(centreno);
+		 modal.find("input[name='modid']").val(0);
         modal.modal();
     }
     function doAddGroup(){
