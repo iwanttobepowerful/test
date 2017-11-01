@@ -2,7 +2,7 @@
 namespace Wap\Controller;
 use Think\Controller;
 class UserController extends Controller {
-    //初始化方法
+    //初始化方法  -- 
     public function _initialize(){
         load('@.functions');
         D("account")->checkLogin();
