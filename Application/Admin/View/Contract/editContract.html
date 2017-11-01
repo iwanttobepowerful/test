@@ -441,7 +441,7 @@
 				},
 				success: function (data) {
 					if(data.msg=='succ'){
-						var _options = {"text":"修改成功！","action":function(){window.location.reload();}};
+						var _options = {"text":"修改成功！","action":function(){window.location.href="/admin/contract/showlist";}};
 						doAlertDialog(_options);
 					}else{
 						var _options = {"text":"修改失败！"};

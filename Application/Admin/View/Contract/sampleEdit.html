@@ -1,0 +1,160 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>抽样单查询</title>
+    <script src="__PUBLIC__/script/jquery.min.js" type="text/JavaScript"></script>
+    <script>
+    	function doEditSample(){
+			var centreno=$('input[name="centreno"]').val();
+			var samplebase=$.trim($('input[name="samplebase"]').val());
+			var sampledate=$.trim($('input[name="sampledate"]').val());
+			var sampleplace=$.trim($('input[name="sampleplace"]').val());
+			var samplemethod=$.trim($('input[name="samplemethod"]').val());
+			var telephone=$.trim($('input[name="telephone"]').val());
+			var tax=$.trim($('input[name="tax"]').val());
+			var address=$.trim($('input[name="address"]').val());
+			if(samplebase=="" || sampledate=="" || sampleplace=="" || samplemethod==""|| telephone=="" || tax=="" || address==""){
+				alert("信息不完整,请完善信息");
+				return;	
+			}
+			$.ajax({
+				url: "{:U('/admin/contract/doEditSample')}",
+				dataType: 'json',			
+				data:{"centreno":centreno,"samplebase":samplebase,"sampledate":sampledate,"sampleplace":sampleplace,"samplemethod":samplemethod,"telephone":telephone,"tax":tax,"address":address},
+				async: false,
+				success: function (res) {
+					alert(res.msg);
+					window.location.reload();
+				}
+			});
+		}
+		
+		//时间
+		$(document).ready(function(){
+			$('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,	autoclose:true });
+		});	
+    </script>
+</head>
+<body>
+<include file="Common:header" title="后台首页"/>
+<div id="page-wrapper">
+	<include file="Common:breadcrumb" />
+    <div id="page-inner" class="container">
+      <form id="form2" name="form1" method="post" action="">
+        <table class="table table-bordered table-striped table-hover">
+          <tr >
+            <td  colspan="5" ><p align="center" >抽 样 单 修 改</p></td>
+          </tr> 
+          <tr>
+            <td colspan="5"><p style="margin-left:55px">中心编号：{$one.centreno}</p></td>
+          </tr>
+          <tr >
+            <td width="179" valign="center" ><p align="center" >企业名称 </p></td>
+            <td width="825" valign="center" colspan="4" ><p align="center" >{$one.productunit}</p></td>
+          </tr>
+          <tr >
+            <td width="179" valign="center" ><p align="center" >产品名称 </p></td>
+            <td width="825" valign="center" colspan="4" ><p align="center" >{$one.samplename}</p></td>
+          </tr>
+          <tr >
+            <td width="179" valign="center" ><p align="center" >规格型号 </p></td>
+            <td width="319" valign="center" ><p align="center" >{$one.specification}</p></td>
+            <td width="138" valign="center" colspan="2" ><p align="center" >产品批号 </p></td>
+            <td width="367" valign="center" ><p align="center" >{$one.batchno}</p></td>
+          </tr>
+          <tr >
+            <td width="179" valign="center" ><p align="center" >执行标准 </p></td>
+            <td width="319" valign="center" ><p align="center" >{$one.testcriteria}</p></td>
+            <td width="138" valign="center" colspan="2" ><p align="center" >产品商标 </p></td>
+            <td width="367" valign="center" ><p align="center" >{$one.trademark}</p></td>
+          </tr>
+          <tr >
+            <td width="179" valign="center" ><p align="center" >抽样数量 </p></td>
+            <td width="319" valign="center" ><p align="center" >{$one.samplequantity}</p></td>
+            <td width="138" valign="center" colspan="2" ><p align="center" >抽样基数 </p></td>
+            <td width="367" valign="center" ><p align="center" >
+            	<input type="text" name="samplebase" value="{$one.samplebase}" class="form-control"/></p></td>
+          </tr>
+          <tr >
+            <td width="179" valign="center" ><p align="center" >抽样日期 </p></td>
+            <td width="319" valign="center" ><p align="center" >
+            	<input type="text" readonly class="form-control f-datetime input-sm" name="sampledate" value="{$one.sampledate}"/>
+            	<!--<input type="text" name="sampledate" value="{$one.sampledate}" class="form-control"/>--></p></td>
+            <td width="138" valign="center" colspan="2" ><p align="center" >生产日期 </p></td>
+            <td width="367" valign="center" ><p align="center" >
+            <if condition="$one[productiondate]">{$one.productiondate|strtotime|date=Y年m月d日,###}<else/></if>
+            </p></td>
+          </tr>
+          <tr >
+            <td width="179" valign="center" ><p align="center" >抽样地点 </p></td>
+            <td width="319" valign="center" ><p align="center" >
+            	<input type="text" name="sampleplace" value="{$one.sampleplace}" class="form-control" />
+            </p></td>
+            <td width="138" valign="center" colspan="2" ><p align="center" >封样方式 </p></td>
+            <td width="367" valign="center" ><p align="justify" >
+            	<input type="text" name="samplemethod" value="{$one.samplemethod}" class="form-control" />
+                </p>
+            </td>
+          </tr>
+          <tr >
+            <td width="179" valign="center" ><p align="center" >检验内容 </p></td>
+            <td width="825" valign="center" colspan="4" ><p align="center" >{$one.testitem}</p></td>
+          </tr>
+          <tr >
+            <td width="499" valign="center" colspan="2" ><p >是否同意在网上发表 </p></td>
+            <td width="505" valign="center" colspan="3" ><p >
+           		 <if condition="$one.ifonline == 1"><span style='font-family:宋体'>是</span><else /><span style='font-family:宋体'>否</span></if>
+            </p></td>
+          </tr>
+          <tr >
+            <td width="499" valign="center" colspan="2" ><p >对于本中心不能检验的项目是否同意安排分包 </p></td>
+            <td width="505" valign="center" colspan="3" ><p >
+            	<if condition="$one.ifsubpackage == 1"><span style='font-family:宋体'>是</span><else /><span style='font-family:宋体'>否</span></if>
+             </p></td>
+          </tr>
+          <!--<tr >
+            <td width="499" valign="top" colspan="2" ><p >抽样人（签名） <br />
+              &#160; <br />
+              &#160; <br />
+              年    月    日 </p></td>
+            <td width="505" valign="top" colspan="3" ><p >封样人（签名） <br />
+              &#160; <br />
+              &#160; <br />
+              年    月    日 </p></td>
+          </tr>
+          <tr >
+            <td width="1004" valign="top" colspan="5" ><p >被抽检企业有关人员（签名） <br />
+              <br />
+              （单 位 盖 章） <br />
+              年    月   日 </p></td>
+          </tr>-->
+          <tr >
+            <td width="179" valign="center" ><p align="center" >联系电话 </p></td>
+            <td width="319" valign="center" ><p align="center" ><input type="text" name="telephone" value="{$one.telephone}" class="form-control" /></p></td>
+            <td width="133" valign="center" ><p align="center" >传   真 </p></td>
+            <td width="372" valign="center" colspan="2" ><p align="center" >
+            <input type="text" name="tax" value="{$one.tax}" class="form-control" />
+            </p></td>
+          </tr>
+          <tr >
+            <td width="179" valign="center" ><p align="center" >通讯地址 </p></td>
+            <td width="825" valign="center" colspan="4" ><p align="center" >
+            <input type="text" name="address" value="{$one.address}" class="form-control" />
+            </p></td>
+          </tr>
+          <tr >
+            <td width="1004" valign="top" colspan="5" ><p >&#160; </p></td>
+          </tr>
+        </table>
+        <button class="btn btn-success" type="button" id="check_list" onClick="doEditSample()">修改</button>
+        <!--<button class="btn btn-success" type="button" id="up_sample" onClick="doUpSample('sample')">上传抽样单</button>
+		<button class="btn btn-success" type="button" id="up_check" onClick="doUpSample('work')">上传检测图片</button>-->
+        <a class="btn btn-success" href="/admin/contract/doUploadSampleImage?centreno={$one.centreno}&type=sample">上传抽样单</a>
+		<a class="btn btn-success" href="/admin/contract/doUploadSampleImage?centreno={$one.centreno}&type=work">上传检测图片</a>
+        <a class="btn btn-success" href="/admin/test/sampleShow?id={$one.centreno}" target='_blank'>打印</a>
+      </form>
+    </div>
+</div>
+</body>
+</html>
