@@ -11,7 +11,19 @@
 				margin: 0 auto;
 				margin-top: 24%;
 			}
-			
+            table{
+                width: 90%;
+                border-color: rgb(0, 0, 0);
+                border-width: 1px;
+                border-style: solid;
+                margin:0 auto;
+            }
+            td{
+                border-color: rgb(0, 0, 0);
+                border-width: 1px;
+                border-style: solid;
+                margin:0 auto;
+            }
 			.a_cover_content {
 				margin: 0 auto;
 				margin-top: 24%;
@@ -339,26 +351,26 @@
 					<b>TEST&nbsp;&nbsp;&nbsp;&nbsp;REPORT</b>
 				</p>
 				<p class="a_cover_number">
-					<span class="a_cover_guy">中心编号(No.)：</span><input type="text" name="a_cover_key" id="a_cover_key" />
+					<span class="a_cover_guy">中心编号(No.)：</span><input type="text" name="a_cover_key" id="a_cover_key" value="{$con_list['centreno']}"/>
 				</p>
 			</div>
 			<div class="a_cover_content">
 				<p class="a_cover_name">
-					<span class="a_cover_guy">样品名称：</span><input type="text" name="a_cover_name_content" id="a_cover_name_content" />
+					<span class="a_cover_guy">样品名称：</span><input type="text" name="a_cover_name_content" id="a_cover_name_content" value="{$con_list['samplename']}"/>
 				</p>
 				<p class="a_cover_ename">
 					Sample Name
 				</p>
 
 				<p class="a_cover_client">
-					<span class="a_cover_guy">受检单位：</span><input type="text" name="a_cover_client_content" id="a_cover_client_content" />
+					<span class="a_cover_guy">受检单位：</span><input type="text" name="a_cover_client_content" id="a_cover_client_content" value="{$con_list['productunit']}"/>
 				</p>
 				<p class="a_cover_ename">
 					Client
 				</p>
 
 				<p class="a_cover_type">
-					<span class="a_cover_guy">检验类别：</span><input type="text" name="a_cover_type_content" id="a_cover_type_content" />
+					<span class="a_cover_guy">检验类别：</span><input type="text" name="a_cover_type_content" id="a_cover_type_content" value="{$con_list['testcategory']}"/>
 				</p>
 				<p class="a_cover_ename">
 					Test Type
@@ -390,66 +402,66 @@
 				</tr>
 			</table>
 			<div class="a_middle">
-				<span class="a_two_key table_txt">中心编号(No.):</span><input type="text" name="a_key_number" id="a_key_number" value="" /></td>
+				<span class="a_two_key table_txt">中心编号(No.):</span><input type="text" name="a_key_number" id="a_key_number" value="{$con_list['centreno']}" /></td>
 			</div>
 			<table border="3" class="a_test">
 				<tr>
 					<td class="table_txt" style="width: 17%;">产品名称</td>
-					<td><input id="a_name" type="text" /> </td>
+					<td><input id="a_name" type="text" value="{$con_list['samplename']}"/> </td>
 					<td class="table_txt" style="width: 17%;">检验类别</td>
-					<td><input id="a_category" type="text" /> </td>
+					<td><input id="a_category" type="text" value="{$con_list['testcategory']}"/> </td>
 				</tr>
 				<tr>
 					<td class="table_txt">受检单位</td>
-					<td><input id="a_test_unit" type="text" /> </td>
+					<td><input id="a_test_unit" type="text"  value="{$con_list['productunit']}"/> </td>
 					<td class="table_txt">生产日期</td>
-					<td><input id="a_creat_date" type="text" /> </td>
+					<td><input id="a_creat_date" type="text" value="{$con_list['productiondate']}"/> </td>
 				</tr>
 				<tr>
 					<td class="table_txt">生产单位</td>
-					<td><input id="a_creat_unit" type="text" /> </td>
+					<td><input id="a_creat_unit" type="text"  value="{$con_list['productunit']}" /> </td>
 					<td class="table_txt">规格型号</td>
-					<td><input id="a_model" type="text" /> </td>
+					<td><input id="a_model" type="text" value="{$con_list['specification']}"/> </td>
 				</tr>
 				<tr>
 					<td class="table_txt">抽样地点</td>
-					<td><input id="a_local" type="text" /> </td>
+					<td><input id="a_local" type="text"  value="{$con_list['sampleplace']}"/> </td>
 					<td class="table_txt">商&nbsp;&nbsp;&nbsp;&nbsp;标</td>
-					<td><input id="a_brand" type="text" /> </td>
+					<td><input id="a_brand" type="text" value="{$con_list['trademark']}"/> </td>
 				</tr>
 				<tr>
 					<td class="table_txt">抽 样 人</td>
-					<td><input id="a_sample_people" type="text" /> </td>
+					<td><input id="a_sample_people" type="text" value="{$sam_list['simplersign']}"/> </td>
 					<td class="table_txt">等&nbsp;&nbsp;&nbsp;&nbsp;级</td>
-					<td><input id="a_rate" type="text" /> </td>
+					<td><input id="a_rate" type="text" value="{$con_list['grade']}"/> </td>
 				</tr>
 				<tr>
 					<td class="table_txt">抽样日期</td>
-					<td><input id="a_sample_date" type="text" /> </td>
+					<td><input id="a_sample_date" type="text" value="{$sam_list['sampledate']}"/> </td>
 					<td class="table_txt">抽样数量</td>
-					<td><input id="a_number" type="text" /> </td>
+					<td><input id="a_number" type="text" value="{$sam_list['samplequantity']}"/> </td>
 				</tr>
 				<tr>
 					<td class="table_txt">样品状态</td>
-					<td><input id="a_state" type="text" /> </td>
+					<td><input id="a_state" type="text" value="{$con_list['samplestatus']}"/> </td>
 					<td class="table_txt">抽样基数</td>
-					<td><input id="a_vol" type="text" /> </td>
+					<td><input id="a_vol" type="text" value="{$con_list['samplebase']}"/> </td>
 				</tr>
 				<tr>
 					<td class="table_txt">抽样单位</td>
-					<td colspan="3"><input id="a_sample_unit" type="text" /> </td>
+					<td colspan="3"><input id="a_sample_unit" type="text" value="{$con_list['sampleunit']}"/> </td>
 				</tr>
 				<tr>
 					<td class="table_txt">抽样依据</td>
-					<td colspan="3"><input id="a_sample_rule" type="text" /> </td>
+					<td colspan="3"><input id="a_sample_rule" type="text" value="{$con_list['samplename']}"/> </td>
 				</tr>
 				<tr>
 					<td class="table_txt">检验项目</td>
-					<td colspan="3"> <textarea name="a_pro" id="a_pro"></textarea></td>
+					<td colspan="3"> <textarea name="a_pro" id="a_pro">{$sam_list['testitem']}</textarea></td>
 				</tr>
 				<tr>
 					<td class="table_txt" rowspan="3">检验结论</td>
-					<td colspan="3" class="a_gone_bor"> <textarea name="a_result" id="a_result"></textarea></td>
+					<td colspan="3" class="a_gone_bor"> <textarea name="a_result" id="a_result">{$con_list['samplename']}</textarea></td>
 				</tr>
 				<tr>
 					<td colspan="3" style="text-align: right;" class="a_gone_bor table_txt">签发日期：<input type="text" id="a_sign_year" /> 年<input type="text" name="a_sign_month" id="a_sign_month" value="" /> 月<input type="text" name="a_sign_day" id="a_sign_day" value="" /> 日 </td>
@@ -492,45 +504,46 @@
 				</tr>
 			</table>
 			<div class="a_middle">
-				<span class="a_two_key table_txt">中心编号(No.):</span><input type="text" name="a_key_number" id="a_key_number" value="" /></td>
+				<span class="a_two_key table_txt">中心编号(No.):</span><input type="text" name="a_key_number" id="a_key_number" value="{$con_list['centreno']}" /></td>
 			</div>
-			<table border="3" class="a_test">
-				<tr>
-					<td  colspan="2" style="width: 40%;" class="table_txt">样品类型</td>
-					<td colspan="3"><input id="a_category" type="text" /> </td>
-				</tr>
-				<tr>
-					<td  colspan="2" class="table_txt">样品用量</td>
-					<td colspan="3"><input id="a_category" type="text" /> </td>
-				</tr>
-				<tr>
-					<td  colspan="2" class="table_txt">开灯时间</td>
-					<td colspan="3"><input id="a_category" type="text" /> </td>
-				</tr>
-				<tr>
-					<td class="table_txt">序号</td>
-					<td class="table_txt">检验项目</td>
-					<td class="table_txt">标准要求</td>
-					<td class="table_txt">检验结果</td>
-					<td class="table_txt">单项结论</td>
-				</tr>
-				<tr>
-					<td ></td>
-					<td ></td>
-					<td ></td>
-					<td ></td>
-					<td ></td>
-				</tr>
-				<tr>
-					<td colspan="5" style="height: 50%;">
-						<textarea name="a_result" id="a_three_result"></textarea>
-					</td>
-				</tr>
-				<tr>
-					<td align="center " class="a_dis_bor table_txt" colspan="2 ">备注:(此处空白)</td>
-					<td colspan="3 " class="a_dis_bor "><input id="a_remark " type="text" /> </td>
-				</tr>
-			</table>
+			<?php echo htmlspecialchars_decode($htmltable)?>
+			<!--<table border="3" class="a_test">-->
+				<!--<tr>-->
+					<!--<td  colspan="2" style="width: 40%;" class="table_txt">样品类型</td>-->
+					<!--<td colspan="3"><input id="a_category" type="text" /> </td>-->
+				<!--</tr>-->
+				<!--<tr>-->
+					<!--<td  colspan="2" class="table_txt">样品用量</td>-->
+					<!--<td colspan="3"><input id="a_category" type="text" /> </td>-->
+				<!--</tr>-->
+				<!--<tr>-->
+					<!--<td  colspan="2" class="table_txt">开灯时间</td>-->
+					<!--<td colspan="3"><input id="a_category" type="text" /> </td>-->
+				<!--</tr>-->
+				<!--<tr>-->
+					<!--<td class="table_txt">序号</td>-->
+					<!--<td class="table_txt">检验项目</td>-->
+					<!--<td class="table_txt">标准要求</td>-->
+					<!--<td class="table_txt">检验结果</td>-->
+					<!--<td class="table_txt">单项结论</td>-->
+				<!--</tr>-->
+				<!--<tr>-->
+					<!--<td ></td>-->
+					<!--<td ></td>-->
+					<!--<td ></td>-->
+					<!--<td ></td>-->
+					<!--<td ></td>-->
+				<!--</tr>-->
+				<!--<tr>-->
+					<!--<td colspan="5" style="height: 50%;">-->
+						<!--<textarea name="a_result" id="a_three_result"></textarea>-->
+					<!--</td>-->
+				<!--</tr>-->
+				<!--<tr>-->
+					<!--<td align="center " class="a_dis_bor table_txt" colspan="2 ">备注:(此处空白)</td>-->
+					<!--<td colspan="3 " class="a_dis_bor "><input id="a_remark " type="text" /> </td>-->
+				<!--</tr>-->
+			<!--</table>-->
 		</div>
 		<div class="page">
 			<p class="last_title cn">说&nbsp;&nbsp;明</p>

@@ -80,25 +80,23 @@ class TestReportController extends Controller
     
     //选择模板
    	public function seleteTemp(){
-	   $mod = I("mod");
-       $conNo=I("conNo");
-       //var_dump($conNo);
-       
-       $test_content=M("contract");
-       $sample_content=M("sampling_form");
-       //var_dump($test_content);
-       //echo '<br /><br /><br /><br /><br /><br />';
-       //var_dump($sample_content);
-       $map['centreNo']=array('eq',$conNo);
-       $final_content=$test_content->where($map)->find();
-       $final_content_two=$sample_content->where($map)->find();
-       //var_dump($final_content);
-       //var_dump($final_content_two);
-       $body = array(
-           'con_list'=>$final_content,
-           '<br /><br /><br /><br /><br />',
-           'sam_list'=>$final_content_two,
-       );
+        $mod = I("mod");
+        $conNo=I("conNo");
+        $test_content=M("contract");
+        $sample_content=M("sampling_form");
+        $where= "centreno='{$conNo}'";
+       // $map['centreNo']=array('eq',$conNo);
+        $final_content=$test_content->where($where)->find();
+        $final_content_two=$sample_content->where($where)->find();
+        $htmltable=M("test_report")->where($where)->field('htmltable')->select();
+
+        $body = array(
+            'con_list'=>$final_content,
+            'sam_list'=>$final_content_two,
+            'htmltable'=>($htmltable[0]['htmltable']),
+        );
+
+        $this->assign($body);
 
        $this->assign($body);
        
