@@ -130,7 +130,7 @@
     </style>
 
 </head>
-<input id="biuuu_button" type="button" value="打印此页面"  style="height:50px;width:150px;">
+<input id="biuuu_button" type="button" value="打印此页面" >
 <button class="btn btn-success" type="submit" id="check_list" onClick="doEditSample()">修改</button>
 <button class="btn btn-success" type="submit" id="up_sample" onClick="doUpSample('sample')">上传抽样单</button>
 <button class="btn btn-success" type="submit" id="up_check" onClick="doUpSample('work')">上传检测图片</button>
@@ -150,10 +150,11 @@ font-family:黑体'>国家</span><span lang=EN-US style='font-size:18.0pt'>)</sp
             style='font-size:18.0pt'> </span><span style='font-size:18.0pt;font-family:
 黑体'>单</span></p>
     <volist name="lists" id="one">
-    <p class=MsoNormal align=center style='text-indent:7.05pt'><span align=left
-            lang=EN-US style='font-family:"Times New Roman",serif;margin-left:0px'>SJ－4－25&nbsp;&nbsp;</span>
-            <span align=left style='font-family:宋体'>中心编号：</span><span
-            lang=EN-US style='mso-bidi-font-size:10.5pt'>{$one.centreno}</span></p>
+    <p class=MsoNormal align=left style='text-align:center;text-indent:-300pt'><span lang=EN-US>&nbsp;SJ－4－25 &nbsp;&nbsp;
+    中心编号：<span lang=EN-US style='mso-bidi-font-size:10.5pt'>{$one.centreno}</span>
+    
+    </span></p>
+
 			<input type="hidden" name="centreno" value="{$one.centreno}">
     <table align=center class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=670
            style='width:502.55pt;border-collapse:collapse;
@@ -280,7 +281,10 @@ font-family:黑体'>国家</span><span lang=EN-US style='font-size:18.0pt'>)</sp
             <td width=246 style='width:184.25pt;border-top:none;border-left:none;
   border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;
   height:22.6pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span lang=EN-US>{$one.productiondate}</span></p>
+                <p class=MsoNormal align=center style='text-align:center'><span lang=EN-US>
+                <if condition="$one[productiondate]">{$one.productiondate|strtotime|date=Y年m月d日,###}<else/></if>
+                
+                </span></p>
             </td>
         </tr>
         <tr style='height:23.75pt'>
