@@ -66,7 +66,7 @@ class TestReportController extends Controller
 
        $rs=$test_reprot->field('centreNo,id')->order('id')->limit("{$offset},{$pagesize}")->select();
        $count = M("contract")->count();
-       var_dump($count);
+
        $Page= new \Think\Page($count,$pagesize);
        $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</ a></ul>");
        $pagination= $Page->show();// 分页显示输出
@@ -99,7 +99,7 @@ class TestReportController extends Controller
            '<br /><br /><br /><br /><br />',
            'sam_list'=>$final_content_two,
        );
-       var_dump($body);
+
        $this->assign($body);
        
        switch($mod){
@@ -133,7 +133,7 @@ class TestReportController extends Controller
     //选择编号
     public function seleteKey(){
 	   $mod = I("mod");
-       var_dump($mod);
+
        $body = array(
            'contactNo'=>$mod,
        );
