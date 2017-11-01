@@ -1,0 +1,92 @@
+<include file="Common:header" title="后台首页"/>
+<script src="__PUBLIC__/static/js/jquery.form.js"></script>
+<div id="page-wrapper">
+	<include file="Common:breadcrumb" />
+	<div id="page-inner" class="container">
+		 	<div class="search-form">
+	            <form class="form-inline" method="GET" action="">
+	                <div class="form-group">
+	                    <label>中心编号：</label>
+	                    <input type="text" class="form-control input-sm" name="centreno" />
+	                </div>
+	                <button type="submit" class="btn btn-primary btn-sm" >查询</button>
+	            </form>
+	        </div>
+	       
+
+			<table class="table table-bordered table-striped table-hover">
+					<thead>
+						<th>合同编号</th>
+						<th>状态</th>
+						<th>操作</th>
+					</thead>
+					<tbody>
+						<volist name="list" id="vo">
+						<tr>
+						<td>{$vo.centreno}</td>
+						<td></td>
+						<td>
+							
+						 <span onclick="addAudit()" class="btn btn-primary btn-sm">添加申请</span>
+						</td>
+						</tr>
+						</volist>
+					</tbody>
+				</table>
+				<div class="clearfix"></div>
+	</div>
+</div>
+
+<!-- 模态框（Modal) -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <form class="form-horizontal" id="myform" action="" method="post">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="createModalLabel">添加修改申请</h4>
+            </div>
+            <div class="modal-body form-horizontal">
+            	<input type="hidden" name="modid" value="0" />
+             	
+             	<div class="form-group form-group-sm">
+             		<label class="col-sm-3 control-label talign-right fz13">合同编号</label>
+				    <div class="col-sm-7">
+				    	<input type="text" class="form-control" name="centreno">
+				    </div>
+                    <div class="clearfix"></div>
+             	</div>
+             	<div class="form-group form-group-sm">
+             		<label class="col-sm-3 control-label talign-right fz13">修改内容</label>
+				    <div class="col-sm-7">
+				    	<textarea class="form-control" rows="10" cols="10">
+				    		
+				    	</textarea>
+				    </div>
+                    <div class="clearfix"></div>
+             	</div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="submit" class="btn btn-primary" onclick="doAddGroup()">确定</button>
+            </div>
+        </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<script type="text/javascript">
+function addAudit(){
+	var modal = $("#editModal");
+	modal.find("input[name='modid']").val(0);
+	modal.modal();
+}
+function editGroup(id){
+	var modal = $("#editModal");
+	if(typeof id=='undefined') return;
+	
+	
+}
+
+</script>
+<include file="Common:footer" />
