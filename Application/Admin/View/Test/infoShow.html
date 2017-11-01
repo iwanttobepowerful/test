@@ -203,7 +203,10 @@ major-fareast;mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fa
   mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
                     <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
                                                                                 style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
-  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>{$one.workdate}</span></p>
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>
+  
+  <if condition="$one[workdate]">{$one.workdate|strtotime|date=Y年m月d日,###}<else/></if>
+ </span></p>
                 </td>
                 <td width=138 style='width:103.7pt;border-top:none;border-left:none;
   border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
@@ -221,7 +224,10 @@ major-fareast;mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fa
   mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
                     <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
                                                                                 style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
-  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>{$one.finishdate}</span></p>
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>
+  
+  <if condition="$one[finishdate]">{$one.finishdate|strtotime|date=Y年m月d日,###}<else/></if>
+ </span></p>
                 </td>
             </tr>
             <tr style='mso-yfti-irow:5'>
@@ -316,7 +322,10 @@ major-fareast;mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fa
   mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;height:3.5pt'>
                     <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
                                                                                 style='font-size:14.0pt;font-family:宋体;mso-ascii-theme-font:major-fareast;
-  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>{$one.filldate}</span></p>
+  mso-fareast-theme-font:major-fareast;mso-hansi-theme-font:major-fareast'>
+  
+  <if condition="$one[filldate]">{$one.filldate|strtotime|date=Y年m月d日,###}<else/></if>
+ </span></p>
                 </td>
             </tr>
             </volist>

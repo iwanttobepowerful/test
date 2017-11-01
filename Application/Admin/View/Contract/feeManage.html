@@ -50,6 +50,7 @@
                     	<!--<a href="/admin/manager/contractDetail?id={$con.centreno}" class="btn btn-info btn-xs" type="button">-->
                         <input type="hidden" name="id" id="test_fee_id" value="{$con.id}" />
                         <button class="btn btn-info btn-xs" onclick="editFee({$con.id})">修改</button>
+                        <button class="btn btn-info btn-xs" onclick="deleteFee({$con.id})">删除</button>
                     </td>
                     </if>
                     
@@ -259,6 +260,24 @@
 			}
 		});
 		modal.modal();
+	}
+	
+	function deleteFee(id){
+		if(confirm("确认删除此条费用吗")){
+			$.ajax({
+				url: "{:U('/admin/contract/doDeleteFee')}",
+				dataType: 'json',
+				data:{'id':id},
+				beforeSubmit: function(){
+					return true;
+				},
+				success: function (re) {
+					alert(re.msg);
+					window.location.reload();				
+				}
+			});
+		}
+
 	}
 	
 	function updateFee(id){

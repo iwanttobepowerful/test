@@ -563,7 +563,7 @@ class ContractController extends Controller
         $offset = ( $page-1 ) * $pagesize;
 		
 		$list = D("contract")->where($where)->limit("{$offset},{$pagesize}")->select();
-		$count = D("contract")->count();
+		$count = D("contract")->where($where)->count();
 		$Page= new \Think\Page($count,$pagesize);
 		$Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
 		$pagination= $Page->show();// 分页显示输出
@@ -632,7 +632,8 @@ class ContractController extends Controller
         $offset = ( $page-1 ) * $pagesize;
 		
 		$list = D("test_fee")->where('criteria like "%'.$criteria.'%"')->limit("{$offset},{$pagesize}")->select();
-		$count = D("test_fee")->count();
+		//pr(D("test_fee")->getLastSql());
+		$count = D("test_fee")->where('criteria like "%'.$criteria.'%"')->count();
 		$Page= new \Think\Page($count,$pagesize);
 		$Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
 		$pagination= $Page->show();// 分页显示输出
@@ -757,14 +758,14 @@ class ContractController extends Controller
 		$this->display();
 	}
 	
-	//材料修改
+	//费用标准修改数据回显
 	public function doUpdateFee(){
 		$id = I('id');
 
 		$rs = D("test_fee")->where('id='.$id)->find();
 		$this->ajaxReturn($rs);
 	} 
-	
+
 	
 	//费用标准修改
 	public function updateFee(){
@@ -829,5 +830,20 @@ class ContractController extends Controller
 		}
 		$this->ajaxReturn($rs);
 	} 
+	
+		
+	//费用标准删除
+	public function doDeleteFee(){
+		$id = I('id');
+		M()->startTrans();
+		if(D("test_fee")->where('id='.$id)->delete()){
+			$rs['msg'] = '删除成功';
+			M()->commit();
+		}else{
+			$rs['msg'] = '删除失败';
+			M()->rollback();	
+		}
+		$this->ajaxReturn($rs);
+	}
 }
 ?>
