@@ -471,6 +471,41 @@ class ContractController extends Controller
 		$this->display();
 	}
 	
+	//跳转抽样单修改页面
+	public function sampleEdit(){
+		$centreno = I("id");
+		$where['centreNo']=$centreno;
+		$result=M('sampling_form')->where($where)->find();
+		
+		
+		$simsigndateyear = $result['simsigndate'] ? date("Y",strtotime($result[0]['simsigndate'])):"";
+        $simsigndatemonth =  $result['simsigndate'] ? date("m",strtotime($result[0]['simsigndate'])):"";
+        $simsigndateday =  $result['simsigndate'] ? date("d",strtotime($result[0]['simsigndate'])):"";
+        array_push($result,$simsigndateyear);
+        array_push($result,$simsigndatemonth);
+        array_push($result,$simsigndateday);
+
+        $seasingdateyear =  $result['seasingdate'] ? date("Y",strtotime($result[0]['seasingdate'])):"";
+        $seasingdatemonth =  $result['seasingdate'] ? date("m",strtotime($result[0]['seasingdate'])):"";
+        $seasingdateday =  $result['seasingdate'] ? date("d",strtotime($result[0]['seasingdate'])):"";
+        array_push($result,$seasingdateyear);
+        array_push($result,$seasingdatemonth);
+        array_push($result,$seasingdateday);
+
+        $entsigndateyear =  $result['entsigndate'] ? date("Y",strtotime($result[0]['entsigndate'])):"";
+        $entsigndatemonth =  $result['entsigndate'] ? date("m",strtotime($result[0]['entsigndate'])):"";
+        $entsigndateday =  $result['entsigndate'] ? date("d",strtotime($result[0]['entsigndate'])):"";
+        array_push($result,$entsigndateyear);
+        array_push($result,$entsigndatemonth);
+        array_push($result,$entsigndateday);
+		
+		$body=array(
+            'one'=>$result,
+        );
+        $this->assign($body);
+        $this->display();
+	}
+	
 	//抽样单修改
 	public function doEditSample(){
 		$centreno = I("centreno");
@@ -478,11 +513,17 @@ class ContractController extends Controller
 		$sampledate=I("sampledate");
 		$sampleplace=I("sampleplace");
 		$samplemethod=I("samplemethod");
+		$telephone=I("telephone");
+		$tax=I("tax");
+		$address=I("address");
 		$data=array(
 			'sampleBase'=>$samplebase,
 			'sampleDate'=>$sampledate,
 			'samplePlace'=>$sampleplace,
-			'sampleMethod'=>$samplemethod
+			'sampleMethod'=>$samplemethod,
+			'telephone'=>$telephone,
+			'tax'=>$tax,
+			'address'=>$address
 		);
 		$where['centreno']=$centreno;
 		$rs['msg']='fail';
@@ -510,25 +551,42 @@ class ContractController extends Controller
 	}
 	
 	public function saveSampleImage(){
-		$id = I("id",0,'intval');
-		$type = I("type");
-		if($type=='work'){
-			
-		}else{
-			
-		}
-		
-		
-        $imgurl = I("imgurl");
+		$id = I("id");
+		//$type = I("type");
+		$imgurl = I("imgurl");
         $remark = I("remark");
         $result = array("msg"=>"fail");
-        if(empty($imgurl)){
+		
+		if(empty($imgurl)){
             $result['msg'] = "无效的提交！";
             $this->ajaxReturn($result);
         }
-        $data = array("offcial_seal"=>$imgurl,"remark"=>$remark);
-        $stamp = D("offcial_seal")->where("id=".$id)->find();
-        if($stamp){
+		
+		$data = array(
+			'centreNo'=>$id,
+			'picture_name'=>$imgurl,
+			'remark'=>$remark,
+		);
+		M()->startTrans();
+		if(D(sample_picture)->add($data)){
+			$result['msg'] = 'succ';
+			M()->commit();
+		}else{
+			M()->rollback();
+		}
+		
+		/*if($type=='work'){
+			
+		}else{
+			
+		}*/
+		
+		
+
+
+        //$data = array("offcial_seal"=>$imgurl,"remark"=>$remark);
+        //$stamp = D("offcial_seal")->where("id=".$id)->find();
+        /*if($stamp){
             if(D("offcial_seal")->where("id=".$stamp['id'])->save($data)){
                 $result['msg'] = 'succ';
             }
@@ -536,7 +594,7 @@ class ContractController extends Controller
             if(D("offcial_seal")->data($data)->add()){
                 $result['msg'] = 'succ';
             }
-        }
+        }*/
         $this->ajaxReturn($result);
 	}
 
@@ -563,7 +621,7 @@ class ContractController extends Controller
         $offset = ( $page-1 ) * $pagesize;
 		
 		$list = D("contract")->where($where)->limit("{$offset},{$pagesize}")->select();
-		$count = D("contract")->count();
+		$count = D("contract")->where($where)->count();
 		$Page= new \Think\Page($count,$pagesize);
 		$Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
 		$pagination= $Page->show();// 分页显示输出
@@ -632,7 +690,8 @@ class ContractController extends Controller
         $offset = ( $page-1 ) * $pagesize;
 		
 		$list = D("test_fee")->where('criteria like "%'.$criteria.'%"')->limit("{$offset},{$pagesize}")->select();
-		$count = D("test_fee")->count();
+		//pr(D("test_fee")->getLastSql());
+		$count = D("test_fee")->where('criteria like "%'.$criteria.'%"')->count();
 		$Page= new \Think\Page($count,$pagesize);
 		$Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
 		$pagination= $Page->show();// 分页显示输出
@@ -757,14 +816,14 @@ class ContractController extends Controller
 		$this->display();
 	}
 	
-	//材料修改
+	//费用标准修改数据回显
 	public function doUpdateFee(){
 		$id = I('id');
 
 		$rs = D("test_fee")->where('id='.$id)->find();
 		$this->ajaxReturn($rs);
 	} 
-	
+
 	
 	//费用标准修改
 	public function updateFee(){
@@ -829,5 +888,20 @@ class ContractController extends Controller
 		}
 		$this->ajaxReturn($rs);
 	} 
+	
+		
+	//费用标准删除
+	public function doDeleteFee(){
+		$id = I('id');
+		M()->startTrans();
+		if(D("test_fee")->where('id='.$id)->delete()){
+			$rs['msg'] = '删除成功';
+			M()->commit();
+		}else{
+			$rs['msg'] = '删除失败';
+			M()->rollback();	
+		}
+		$this->ajaxReturn($rs);
+	}
 }
 ?>

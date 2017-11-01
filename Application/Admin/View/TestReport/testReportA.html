@@ -28,17 +28,21 @@
 				font-size: 1.5em;
 				border-style: none;
 			}
-			
+			td{
+				text-align: center;
+			}
 			.a_cover_title {
 				text-align: center;
-				font-size: 360%;
+				font-family: "黑体";
+				font-size: 42pt;
 				margin-bottom: 2%;
 			}
 			
 			.a_cover_sub {
 				text-align: center;
 				font-weight: 700;
-				font-size: 1.5em;
+				font-size: 18pt;
+				font-family: "times new roman";
 			}
 			
 			.a_cover_number {
@@ -46,7 +50,9 @@
 			}
 			
 			.a_cover_guy {
-				font-size: 1.3em;
+				font-size: 16pt;
+				font-family: "黑体";
+				font-weight: 600;
 			}
 			
 			#a_cover_key {
@@ -76,7 +82,8 @@
 			
 			.a_cover_ename {
 				margin-left: 13%;
-				font-size: 1.3em;
+				font-size: 14pt;
+				font-family: "times new roman";
 			}
 			
 			#a_cover_name_content,
@@ -90,6 +97,11 @@
 				margin-top: 0.5em;
 			}
 			
+			.table_txt{
+				font-family: "黑体";
+				font-size: 14pt;
+			}
+			
 			.a_cover_txt,
 			.a_cover_btxt,
 			.a_cover_etxt {
@@ -98,23 +110,28 @@
 			
 			.a_cover_etxt {
 				font-weight: 600;
+				font-size: 10.5pt;
+				font-family: "times new roman";
 			}
 			
 			.a_cover_btxt {
-				font-size: 1.8em;
+				font-size: 18pt;
 				margin-bottom: -1px;
+				font-family:"黑体";
 			}
 			
 			.a_two_report {
 				margin-top: 5%;
-				font-size: 2.5em;
-				font-weight: 500;
+				font-size: 24pt;
+				font-weight: 600;
 				margin-bottom: 1px;
+				font-family: "黑体";
 			}
 			
 			.a_two_ereport {
-				font-size: 1.3em;
+				font-size: 14pt;
 				font-weight: 600;
+				font-family: "times new roman";
 			}
 			
 			.a_two_key {
@@ -124,11 +141,12 @@
 			.a_test {
 				width: 90%;
 				margin: 0 auto;
-				height: 90vh;
+				height: 78vh;
 			}
 			
 			.a_foot {
 				margin: 0 auto;
+				width: 90%;
 			}
 			
 			.a_middle {
@@ -174,7 +192,7 @@
 			}
 			
 			.a_foot_txt {
-				width: 13%;
+				width: 25%;
 			}
 			
 			.option {
@@ -315,10 +333,10 @@
 		<div class="page">
 			<div class="a_cover_head">
 				<p class="a_cover_title">
-					检&nbsp;&nbsp;&nbsp;&nbsp;验&nbsp;&nbsp;&nbsp;&nbsp;报&nbsp;&nbsp;&nbsp;&nbsp;告
+					检&nbsp;&nbsp;验&nbsp;&nbsp;报&nbsp;&nbsp;告
 				</p>
 				<p class="a_cover_sub">
-					TEST&nbsp;&nbsp;&nbsp;&nbsp;REPORT
+					<b>TEST&nbsp;&nbsp;&nbsp;&nbsp;REPORT</b>
 				</p>
 				<p class="a_cover_number">
 					<span class="a_cover_guy">中心编号(No.)：</span><input type="text" name="a_cover_key" id="a_cover_key" />
@@ -359,7 +377,7 @@
 		<div class="page">
 			<table class="a_head">
 				<tr>
-					<td align="center">
+					<td>
 						<p class="a_cover_btxt">
 							（国家）建筑材料工业技术监督研究中心
 						</p>
@@ -372,87 +390,87 @@
 				</tr>
 			</table>
 			<div class="a_middle">
-				<span class="a_two_key">中心编号(No.):</span><input type="text" name="a_key_number" id="a_key_number" value="" /></td>
+				<span class="a_two_key table_txt">中心编号(No.):</span><input type="text" name="a_key_number" id="a_key_number" value="" /></td>
 			</div>
 			<table border="3" class="a_test">
 				<tr>
-					<td align="center">产品名称</td>
+					<td class="table_txt" style="width: 17%;">产品名称</td>
 					<td><input id="a_name" type="text" /> </td>
-					<td align="center">检验类别</td>
+					<td class="table_txt" style="width: 17%;">检验类别</td>
 					<td><input id="a_category" type="text" /> </td>
 				</tr>
 				<tr>
-					<td align="center">受检单位</td>
+					<td class="table_txt">受检单位</td>
 					<td><input id="a_test_unit" type="text" /> </td>
-					<td align="center">生产日期</td>
+					<td class="table_txt">生产日期</td>
 					<td><input id="a_creat_date" type="text" /> </td>
 				</tr>
 				<tr>
-					<td align="center">生产单位</td>
+					<td class="table_txt">生产单位</td>
 					<td><input id="a_creat_unit" type="text" /> </td>
-					<td align="center">规格型号</td>
+					<td class="table_txt">规格型号</td>
 					<td><input id="a_model" type="text" /> </td>
 				</tr>
 				<tr>
-					<td align="center">抽样地点</td>
+					<td class="table_txt">抽样地点</td>
 					<td><input id="a_local" type="text" /> </td>
-					<td align="center">商 标</td>
+					<td class="table_txt">商&nbsp;&nbsp;&nbsp;&nbsp;标</td>
 					<td><input id="a_brand" type="text" /> </td>
 				</tr>
 				<tr>
-					<td align="center">抽 样 人</td>
+					<td class="table_txt">抽 样 人</td>
 					<td><input id="a_sample_people" type="text" /> </td>
-					<td align="center">等 级</td>
+					<td class="table_txt">等&nbsp;&nbsp;&nbsp;&nbsp;级</td>
 					<td><input id="a_rate" type="text" /> </td>
 				</tr>
 				<tr>
-					<td align="center">抽样日期</td>
+					<td class="table_txt">抽样日期</td>
 					<td><input id="a_sample_date" type="text" /> </td>
-					<td align="center">抽样数量</td>
+					<td class="table_txt">抽样数量</td>
 					<td><input id="a_number" type="text" /> </td>
 				</tr>
 				<tr>
-					<td align="center">样品状态</td>
+					<td class="table_txt">样品状态</td>
 					<td><input id="a_state" type="text" /> </td>
-					<td align="center">抽样基数</td>
+					<td class="table_txt">抽样基数</td>
 					<td><input id="a_vol" type="text" /> </td>
 				</tr>
 				<tr>
-					<td align="center">抽样单位</td>
+					<td class="table_txt">抽样单位</td>
 					<td colspan="3"><input id="a_sample_unit" type="text" /> </td>
 				</tr>
 				<tr>
-					<td align="center">抽样依据</td>
+					<td class="table_txt">抽样依据</td>
 					<td colspan="3"><input id="a_sample_rule" type="text" /> </td>
 				</tr>
 				<tr>
-					<td align="center">检验项目</td>
+					<td class="table_txt">检验项目</td>
 					<td colspan="3"> <textarea name="a_pro" id="a_pro"></textarea></td>
 				</tr>
 				<tr>
-					<td align="center" rowspan="3">检验结论</td>
+					<td class="table_txt" rowspan="3">检验结论</td>
 					<td colspan="3" class="a_gone_bor"> <textarea name="a_result" id="a_result"></textarea></td>
 				</tr>
 				<tr>
-					<td colspan="3" align="right" class="a_gone_bor">签发日期：<input type="text" id="a_sign_year" /> 年<input type="text" name="a_sign_month" id="a_sign_month" value="" /> 月<input type="text" name="a_sign_day" id="a_sign_day" value="" /> 日 </td>
+					<td colspan="3" style="text-align: right;" class="a_gone_bor table_txt">签发日期：<input type="text" id="a_sign_year" /> 年<input type="text" name="a_sign_month" id="a_sign_month" value="" /> 月<input type="text" name="a_sign_day" id="a_sign_day" value="" /> 日 </td>
 				</tr>
 				<tr>
-					<td colspan="3" align="right" class="a_gone_bor">(检验测试章)</td>
+					<td colspan="3" style="text-align: right;" class="a_gone_bor table_txt">(检验测试章)</td>
 				</tr>
 				<tr>
-					<td align="center" class="a_dis_bor">备注:(此处空白)</td>
+					<td  class="a_dis_bor table_txt">备注:(此处空白)</td>
 					<td colspan="3" class="a_dis_bor"><input id="a_remark" type="text" /> </td>
 				</tr>
 				<table class="a_foot">
 					<tr>
-						<td class="a_foot_txt" align="center">
-							<h4>批准：</h4></td>
+						<td class="a_foot_txt" >
+							<font class="table_txt">批准：</font></td>
 						<td><input type="text" name="a_prove" id="a_approve" value="" /></td>
-						<td class="a_foot_txt" align="center">
-							<h4>审核：</h4></td>
+						<td class="a_foot_txt" >
+							<font class="table_txt">审核：</font></td>
 						<td><input type="text" name="a_check" id="a_check" value="" /></td>
-						<td class="a_foot_txt" align="center">
-							<h4>编制：</h4></td>
+						<td class="a_foot_txt" >
+							<font class="table_txt">编制：</font></td>
 						<td><input type="text" name="a_compile" id="a_compile" value="" /></td>
 					</tr>
 				</table>
@@ -461,7 +479,7 @@
 		<div class="page">
 			<table class="a_head">
 				<tr>
-					<td align="center">
+					<td>
 						<p class="a_cover_btxt">
 							（国家）建筑材料工业技术监督研究中心
 						</p>
@@ -474,34 +492,34 @@
 				</tr>
 			</table>
 			<div class="a_middle">
-				<span class="a_two_key">中心编号(No.):</span><input type="text" name="a_key_number" id="a_key_number" value="" /></td>
+				<span class="a_two_key table_txt">中心编号(No.):</span><input type="text" name="a_key_number" id="a_key_number" value="" /></td>
 			</div>
 			<table border="3" class="a_test">
 				<tr>
-					<td align="center" colspan="2" style="width: 40%;">样品类型</td>
+					<td  colspan="2" style="width: 40%;" class="table_txt">样品类型</td>
 					<td colspan="3"><input id="a_category" type="text" /> </td>
 				</tr>
 				<tr>
-					<td align="center" colspan="2">样品用量</td>
+					<td  colspan="2" class="table_txt">样品用量</td>
 					<td colspan="3"><input id="a_category" type="text" /> </td>
 				</tr>
 				<tr>
-					<td align="center" colspan="2">开灯时间</td>
+					<td  colspan="2" class="table_txt">开灯时间</td>
 					<td colspan="3"><input id="a_category" type="text" /> </td>
 				</tr>
 				<tr>
-					<td align="center">序号</td>
-					<td align="center">检验项目</td>
-					<td align="center">标准要求</td>
-					<td align="center">检验结果</td>
-					<td align="center">单项结论</td>
+					<td class="table_txt">序号</td>
+					<td class="table_txt">检验项目</td>
+					<td class="table_txt">标准要求</td>
+					<td class="table_txt">检验结果</td>
+					<td class="table_txt">单项结论</td>
 				</tr>
 				<tr>
-					<td align="center"></td>
-					<td align="center"></td>
-					<td align="center"></td>
-					<td align="center"></td>
-					<td align="center"></td>
+					<td ></td>
+					<td ></td>
+					<td ></td>
+					<td ></td>
+					<td ></td>
 				</tr>
 				<tr>
 					<td colspan="5" style="height: 50%;">
@@ -509,7 +527,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td align="center " class="a_dis_bor " colspan="2 ">备注:(此处空白)</td>
+					<td align="center " class="a_dis_bor table_txt" colspan="2 ">备注:(此处空白)</td>
 					<td colspan="3 " class="a_dis_bor "><input id="a_remark " type="text" /> </td>
 				</tr>
 			</table>

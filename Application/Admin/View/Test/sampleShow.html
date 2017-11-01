@@ -8,53 +8,10 @@
     <script>
         $(document).ready(function(){
             $("input#biuuu_button").click(function(){
-				var samplebase=$.trim($('input[name="samplebase"]').val());
-				var sampledate=$.trim($('input[name="sampledate"]').val());
-				var sampleplace=$.trim($('input[name="sampleplace"]').val());
-				var samplemethod=$.trim($('input[name="samplemethod"]').val());
-				if(samplebase=="" || sampledate=="" || sampleplace=="" || samplemethod==""){
-					alert("信息不完整,请完善信息后打印");
-					return;	
-				}else{
-					$("div#myPrintArea").printArea();
-				} 
+				$("div#myPrintArea").printArea();
             });
         });
-			
-		function doEditSample(){
-			var centreno=$('input[name="centreno"]').val();
-			var samplebase=$.trim($('input[name="samplebase"]').val());
-			var sampledate=$.trim($('input[name="sampledate"]').val());
-			var sampleplace=$.trim($('input[name="sampleplace"]').val());
-			var samplemethod=$.trim($('input[name="samplemethod"]').val());
-			if(samplebase=="" || sampledate=="" || sampleplace=="" || samplemethod==""){
-				alert("信息不完整,请完善信息");
-				return;	
-			}
-			$.ajax({
-				url: "{:U('/admin/contract/doEditSample')}",
-				dataType: 'json',			
-				data:{"centreno":centreno,"samplebase":samplebase,"sampledate":sampledate,"sampleplace":sampleplace,"samplemethod":samplemethod},
-				async: false,
-				success: function (res) {
-					alert(res.msg);
-					window.location.reload();
-				}
-			});
-		}
-		
-		function  doUpSample(type){
-			var centreno=$('input[name="centreno"]').val();
-			var samplebase=$.trim($('input[name="samplebase"]').val());
-			var sampledate=$.trim($('input[name="sampledate"]').val());
-			var sampleplace=$.trim($('input[name="sampleplace"]').val());
-			var samplemethod=$.trim($('input[name="samplemethod"]').val());
-			if(samplebase=="" || sampledate=="" || sampleplace=="" || samplemethod==""){
-				alert("信息不完整,请完善信息");
-				return;	
-			}
-			window.location.href="/admin/contract/doUploadSampleImage?centreno="+centreno+"&type="+type;			
-		}
+
     </script>
     <meta http-equiv=Content-Type content="text/html;">
     <meta name=Generator content="Microsoft Word 15 (filtered)">
@@ -130,10 +87,7 @@
     </style>
 
 </head>
-<input id="biuuu_button" type="button" value="打印此页面"  style="height:50px;width:150px;">
-<button class="btn btn-success" type="submit" id="check_list" onClick="doEditSample()">修改</button>
-<button class="btn btn-success" type="submit" id="up_sample" onClick="doUpSample('sample')">上传抽样单</button>
-<button class="btn btn-success" type="submit" id="up_check" onClick="doUpSample('work')">上传检测图片</button>
+<input id="biuuu_button" type="button" value="打印此页面" >
 <body lang=ZH-CN style='text-justify-trim:punctuation'>
 <div id="myPrintArea">
 <div class=WordSection1 style='layout-grid:15.6pt'>
@@ -150,10 +104,11 @@ font-family:黑体'>国家</span><span lang=EN-US style='font-size:18.0pt'>)</sp
             style='font-size:18.0pt'> </span><span style='font-size:18.0pt;font-family:
 黑体'>单</span></p>
     <volist name="lists" id="one">
-    <p class=MsoNormal align=center style='text-indent:7.05pt'><span align=left
-            lang=EN-US style='font-family:"Times New Roman",serif;margin-left:0px'>SJ－4－25&nbsp;&nbsp;</span>
-            <span align=left style='font-family:宋体'>中心编号：</span><span
-            lang=EN-US style='mso-bidi-font-size:10.5pt'>{$one.centreno}</span></p>
+    <p class=MsoNormal align=left style='text-align:center;text-indent:-300pt'><span lang=EN-US>&nbsp;SJ－4－25 &nbsp;&nbsp;
+    中心编号：<span lang=EN-US style='mso-bidi-font-size:10.5pt'>{$one.centreno}</span>
+    
+    </span></p>
+
 			<input type="hidden" name="centreno" value="{$one.centreno}">
     <table align=center class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=670
            style='width:502.55pt;border-collapse:collapse;
@@ -251,7 +206,7 @@ font-family:黑体'>国家</span><span lang=EN-US style='font-size:18.0pt'>)</sp
                 <p class=MsoNormal align=center style='text-align:center'>
                 <span lang=EN-US>
                 	
-                    	<input type="text" name="samplebase" value="{$one.samplebase}" style="border:none; text-align:center"/>
+                    	{$one.samplebase}
                     
                 
                 </span></p>
@@ -268,7 +223,7 @@ font-family:黑体'>国家</span><span lang=EN-US style='font-size:18.0pt'>)</sp
   height:22.6pt'>
                 <p class=MsoNormal align=center style='text-align:center'>
                 <span lang=EN-US>
-                <input type="text" name="sampledate" value="{$one.sampledate}" style="border:none; text-align:center"/>
+                     <if condition="$one[sampledate]">{$one.sampledate|strtotime|date=Y年m月d日,###}<else/></if>
                 </span></p>
             </td>
             <td width=91 colspan=2 style='width:67.95pt;border-top:none;border-left:none;
@@ -280,7 +235,10 @@ font-family:黑体'>国家</span><span lang=EN-US style='font-size:18.0pt'>)</sp
             <td width=246 style='width:184.25pt;border-top:none;border-left:none;
   border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;
   height:22.6pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span lang=EN-US>{$one.productiondate}</span></p>
+                <p class=MsoNormal align=center style='text-align:center'><span lang=EN-US>
+                <if condition="$one[productiondate]">{$one.productiondate|strtotime|date=Y年m月d日,###}<else/></if>
+                
+                </span></p>
             </td>
         </tr>
         <tr style='height:23.75pt'>
@@ -295,7 +253,7 @@ font-family:黑体'>国家</span><span lang=EN-US style='font-size:18.0pt'>)</sp
   height:23.75pt'>
                 <p class=MsoNormal align=center style='text-align:center'>
                 <span lang=EN-US>
-                <input type="text" name="sampleplace" value="{$one.sampleplace}" style="border:none; text-align:center"/>
+                	{$one.sampleplace}
                 </span></p>
             </td>
             <td width=91 colspan=2 style='width:67.95pt;border-top:none;border-left:none;
@@ -309,7 +267,7 @@ font-family:黑体'>国家</span><span lang=EN-US style='font-size:18.0pt'>)</sp
   height:23.75pt'>
                 <p class=MsoNormal align=center style='text-align:center'>
                 <span lang=EN-US>
-                <input type="text" name="samplemethod" value="{$one.samplemethod}" style="border:none; text-align:center"/>
+                	{$one.samplemethod}
                 </span></p>
             </td>
         </tr>
