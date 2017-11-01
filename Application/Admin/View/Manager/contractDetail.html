@@ -430,7 +430,7 @@
                 </td>
                 <td width=341 colspan=3 valign=top style='width:170.45pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.25pt'>
                     <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>{$one.collectdate|strtotime|date=Y年m月d日,###}</span></p>
+                        <span style='line-height:150%;font-family:宋体'><if condition="$one['collectdate']">{$one.collectdate|strtotime|date=Y年m月d日,###}<else/></if></span></p>
                 </td>
                 <td width=121 style='width:60.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.25pt'>
                     <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
@@ -438,7 +438,7 @@
                 </td>
                 <td width=365 colspan=4 valign=top style='width:182.45pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.25pt'>
                     <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>{$one.reportdate|strtotime|date=Y年m月d日,###}</span></p>
+                        <span style='line-height:150%;font-family:宋体'><if condition="$one['reportdate']">{$one.reportdate|strtotime|date=Y年m月d日,###}<else/></if></span></p>
                 </td>
             </tr>
             <tr style='page-break-inside:avoid;height:20.0pt'>
