@@ -17,29 +17,34 @@
 
         <table class="table table-bordered table-striped table-hover" id="tb">
             <thead>
+            <th>收样日期</th>
             <th>中心编号</th>
+            <th>样品名称</th>
             <th>生产单位</th>
-            <th>委托人</th>
-            <th>联系电话</th>
-            <th>详情</th>
+            <th>检验依据</th>
+            <th>操作</th>
+            <th>状态</th>
             </thead>
             <tbody>
             <volist name="list" id="con">
                 <tr>
+                    <td>{$con.collectdate}</td>
                     <td>{$con.centreno}</td>
                     <td>{$con.clientname}</td>
-                    <td>{$con.clientsign}</td>
-                    <td>{$con.telephone}</td>
-                    <!--判断委托/抽样检验-->
-                    
-                    <td width="27%">
+                    <td>{$con.productunit}</td>
+                    <td>{$con.testcriteria}</td>
+                           
+                    <td width="33%">
                     	<!--<a href="{:U('/admin/contract/editContract')}?id={$con.centreno}" id="editContract" target="_blank" class="btn btn-info btn-xs" ><i class="glyphicon glyphicon-search"></i>修改</a>-->
-                        <a href="{:U('/admin/contract/editContract')}?id={$con.centreno}" class="btn btn-info btn-xs" >修改</a>
-                    	<a href="/admin/manager/contractDetail?id={$con.centreno}" target="_blank" class="btn btn-info btn-xs" >合同详情</a>
-                        <a href="/admin/test/infoShow?id={$con.centreno}" target="_blank" class="btn btn-info btn-xs" >检验工作通知单</a>
-                        <!--<a href="{:U('/admin/test/sampleShow')}?id={$con.centreno}" style="display:none" class="btn btn-info btn-xs" >抽样单</a>-->
-                    	<a href="{:U('/admin/contract/sampleEdit')}?id={$con.centreno}" style="display:none" class="btn btn-info btn-xs" >抽样单</a>
+                        <if condition="$if_edit==1">
+                       	 <a href="{:U('/admin/contract/editContract')}?id={$con.centreno}" class="btn btn-info btn-xs" >修改</a>
+                        </if>
+                    	<a href="/admin/manager/contractDetail?id={$con.centreno}"  class="btn btn-info btn-xs" >检验受理合同</a>
+                        <a href="/admin/test/infoShow?id={$con.centreno}"  class="btn btn-info btn-xs" >检验工作通知单</a>
+                        <a href="{:U('/admin/test/sampleShow')}?id={$con.centreno}" style="display:none" class="btn btn-info btn-xs" >抽样单</a>
+                    	<!--<a href="{:U('/admin/contract/sampleEdit')}?id={$con.centreno}" style="display:none" class="btn btn-info btn-xs" >抽样单</a>-->
                     </td>
+                    <td></td>
                 </tr>
             </volist>
             
@@ -59,11 +64,11 @@
 <script type="text/javascript">
 	$(function(){
 		$("#tb tr").each(function(){
-            var text = $(this).children("td:first").text();
+            var text = $(this).children("td").eq(1).text();
 			//alert(text+":"+text.substr(6,1))
 			if (text.substr(7,1)=='C'){
 				//alert($(this).children("td:last").children("a:last").html());
-				$(this).children("td:last").children("a:last").css("display","inline-block");
+				$(this).children("td").eq(5).children("a:last").css("display","inline-block");
 			}
         });
 		

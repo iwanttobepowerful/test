@@ -87,6 +87,12 @@ class ContractController extends Controller
 	
 	//进入合同录入页面
 	public function input(){
+		$admin_auth = session("admin_auth");
+		$collector = $admin_auth['name'];
+		$body=array(
+			'collector'=>$collector
+		);
+		$this->assign($body);
 		$this->display();	
 	}
 	
@@ -134,7 +140,7 @@ class ContractController extends Controller
 		$ifspecial = I("ifspecial");//是否是特殊编码
 		
 		$rs = array("msg"=>'fail');
-		if(empty($clientName)||empty($productUnit)||empty($sampleName)||empty($testCriteria)||empty($testItem)){
+		if(empty($clientName)||empty($productUnit)||empty($sampleName)||empty($testCriteria)||empty($testItem)||empty($sampleQuantity)||empty($sampleStatus)||empty($sampleStaQuan)||empty($collector)||empty($testCost)||empty($collectDate)||empty($reportDate)){
 			$rs['msg'] = '信息填写不完整!';
 			$this->ajaxReturn($rs);
 		}
@@ -513,6 +519,23 @@ class ContractController extends Controller
 		$sampledate=I("sampledate");
 		$sampleplace=I("sampleplace");
 		$samplemethod=I("samplemethod");
+		$productiondate=I("productiondate");
+		$batchno=I("batchno");
+		$simplerSign=I("simplerSign");
+		$simplerYear=I("simplerYear");
+		$simplerMonth=I("simplerMonth");
+		$simplerDay=I("simplerDay");
+		$simSignDate = $simplerYear."-".$simplerMonth."-".$simplerDay;
+		$sealerSign=I("sealerSign");
+		$sealerYear=I("sealerYear");
+		$sealerMonth=I("sealerMonth");
+		$sealerDay=I("sealerDay");
+		$seaSingDate = $sealerYear."-".$sealerMonth."-".$sealerDay;
+		$enterpriseSign=I("enterpriseSign");
+		$enterpriseYear=I("enterpriseYear");
+		$enterpriseMonth=I("enterpriseMonth");
+		$enterpriseDay=I("enterpriseDay");
+		$entSignDate = $enterpriseYear."-".$enterpriseMonth."-".$enterpriseDay;
 		$telephone=I("telephone");
 		$tax=I("tax");
 		$address=I("address");
@@ -521,11 +544,19 @@ class ContractController extends Controller
 			'sampleDate'=>$sampledate,
 			'samplePlace'=>$sampleplace,
 			'sampleMethod'=>$samplemethod,
+			'productionDate'=>$productiondate,
+			'batchNo'=>$batchno,
+			'simplerSign'=>$simplerSign,
+			'simSignDate'=>$simSignDate,
+			'sealerSign'=>$sealerSign,
+			'seaSingDate'=>$seaSingDate,
+			'enterpriseSign'=>$enterpriseSign,
+			'entSignDate'=>$entSignDate,
 			'telephone'=>$telephone,
 			'tax'=>$tax,
 			'address'=>$address
 		);
-		$where['centreno']=$centreno;
+		$where['centreNo']=$centreno;
 		$rs['msg']='fail';
 		M()->startTrans();
 		if(D('sampling_form')->where($where)->save($data)){
@@ -612,7 +643,17 @@ class ContractController extends Controller
 
 	//合同列表
 	public function showList(){
+		//判断角色，确定是否可以修改
+		$admin_auth = session("admin_auth");
+		$if_admin = $admin_auth['super_admin'];
+		$roleid = $admin_auth['gid'];
 		
+		$role = D('common_role')->where('id='.$roleid)->find();
+		if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
+			$if_edit = 1;	
+		}else{
+			$if_edit = 0;	
+		}
 		$keyword = I("keyword");//获取参数
         $where= "centreno like '%{$keyword}%'";
 		$page = I("p",'int');
@@ -620,7 +661,7 @@ class ContractController extends Controller
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
 		
-		$list = D("contract")->where($where)->limit("{$offset},{$pagesize}")->select();
+		$list = D("contract")->where($where)->order('collectDate desc,id desc')->limit("{$offset},{$pagesize}")->select();
 		$count = D("contract")->where($where)->count();
 		$Page= new \Think\Page($count,$pagesize);
 		$Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
@@ -628,7 +669,8 @@ class ContractController extends Controller
 
 		$body = array(
 			"list"=>$list,
-			'pagination'=>$pagination
+			'pagination'=>$pagination,
+			'if_edit'=>$if_edit
 		);
 		//dump($body);
 		$this->assign($body);

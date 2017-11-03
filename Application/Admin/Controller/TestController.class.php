@@ -60,6 +60,17 @@ class TestController extends Controller{
         $keyword = I("id");//获取参数
         $where= "centreno='{$keyword}'";
         $result=M('sampling_form')->where($where)->select();
+		
+		$admin_auth = session("admin_auth");
+		$if_admin = $admin_auth['super_admin'];
+		$roleid = $admin_auth['gid'];
+		
+		$role = D('common_role')->where('id='.$roleid)->find();
+		if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
+			$if_edit = 1;	
+		}else{
+			$if_edit = 0;	
+		}
 
         $simsigndateyear = $result[0]['simsigndate'] ? date("Y",strtotime($result[0]['simsigndate'])):"";
         $simsigndatemonth =  $result[0]['simsigndate'] ? date("m",strtotime($result[0]['simsigndate'])):"";
@@ -84,6 +95,7 @@ class TestController extends Controller{
 
         $body=array(
             'lists'=>$result,
+			'if_edit'=>$if_edit
 
         );
         $this->assign($body);
