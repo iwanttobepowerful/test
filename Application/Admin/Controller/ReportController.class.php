@@ -156,11 +156,11 @@ class ReportController extends Controller
         }}
         $this->ajaxReturn($rs);
     }
-    //内部签发
+    //盖章人员签发
     public function internalIssue(){
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
-        if ($user==8 or $user==14 or $user==6){//只有领导，批准人员，超级管理员才能审核
+        if ($user==8 or $user==15 or $user==6){//只有领导，盖章人员，超级管理员才能签发
             $view="";
         }else{
             $view="disabled";
@@ -198,7 +198,7 @@ class ReportController extends Controller
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
         $user=$admin_auth['gid'];//判断是哪个角色
-        if ($user==8 or $user==14 or $user==6){//只有领导，批准人员，超级管理员才能审核
+        if ($user==8 or $user==15 or $user==6){//只有领导，盖章人员，超级管理员才能签发
         $data=array(
             'status'=>5,
             'inner_sign_time'=>date("Y-m-d H:i:s"),
@@ -214,7 +214,7 @@ class ReportController extends Controller
     public function externalIssue(){
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
-        if ($user==8 or $user==14 or $user==6){//只有领导，批准人员，超级管理员才能审核
+        if ($user==8 or $user==7 or $user==6){//只有领导，前台，超级管理员才能签发
             $view="";
         }else{
             $view="disabled";
@@ -251,7 +251,7 @@ class ReportController extends Controller
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
         $user=$admin_auth['gid'];//判断是哪个角色
-        if ($user==8 or $user==14 or $user==6){//只有领导，批准人员，超级管理员才能审核
+        if ($user==8 or $user==7 or $user==6){//只有领导，前台人员，超级管理员才能签发
         $data=array(
             'status'=>6,
             'external_sign_time'=>date("Y-m-d H:i:s"),
@@ -267,17 +267,14 @@ class ReportController extends Controller
     public function templateReport()
     {
         $page = I("p", 'int');
-        $pagesize = 20;
+        $pagesize = 10;
         if ($page <= 0) $page = 1;
         $offset = ($page - 1) * $pagesize;
-        $orderby = "create_time desc";
         $result = D("tpl")->limit("{$offset},{$pagesize}")->select();
-        $imgs=D("tpl")->field('path')->select();
         $count = D("tpl")->count();
         $Page = new \Think\Page($count, $pagesize);
         $Page->setConfig('theme', "<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
         $pagination = $Page->show();// 分页显示输出
-
         $body = array(
             'lists' => $result,
             'pagination' => $pagination,
