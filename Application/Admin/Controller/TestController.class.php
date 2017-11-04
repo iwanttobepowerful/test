@@ -101,19 +101,46 @@ class TestController extends Controller{
         $this->assign($body);
         $this->display();
     }
-
+//检测记录
     public function recordPicture(){
         $keyword = I("keyword");//获取参数
-        $where= "centreno='{$keyword}'";
-        $result=M('contract')->where($where)->select();//从合同表!!!!里取出对应中心编号的信息     ->field("centreno")
+        $where= "contract_flow.centreno like '%{$keyword}%'";
+        $page = I("p",'int');
+        $pagesize = 10;
+        if($page<=0) $page = 1;
+        $offset = ( $page-1 ) * $pagesize;
+        $result=M('contract_flow')->where($where)
+            ->join('work_inform_form ON contract_flow.centreNo = work_inform_form.centreNo')//从工作通知单取数据
+            ->field('work_inform_form.workDate,work_inform_form.centreNo,work_inform_form.sampleName,work_inform_form.testCreiteria')
+            ->limit("{$offset},{$pagesize}")->select();//从合同表!!!!里取出对应中心编号的信息
+        $count = D("contract_flow")->where($where)->count();
+        $Page= new \Think\Page($count,$pagesize);
+        $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
+        $pagination= $Page->show();// 分页显示输出
         $body=array(
             'lists'=>$result,
+            'pagination'=>$pagination,
 
         );
         $this->assign($body);
         $this->display();
     }
-
+    //接单操作
+    public function doneTakeList(){
+        $centreno=I("centreno");
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $userid=$admin_auth['id'];
+        $where= "centreno='{$centreno}'";
+        $data=array(
+            'status'=>7,
+            'takelist_time'=>date("Y-m-d H:i:s"),
+            'takelist_user_id'=>$userid,
+        );
+        if(D("contract_flow")->where($where)->save($data)){
+            $rs['msg'] = 'succ';
+        }
+        $this->ajaxReturn($rs);
+    }
     public function recordPictureUp(){
         $page = I("p",'int');
         $pagesize = 20;

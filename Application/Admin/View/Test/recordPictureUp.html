@@ -21,7 +21,7 @@
                 <tr>
                     <td>{$one.id}</td>
                     <td>{$one.centreno}</td>
-                    <td><img src="{$one.path}" onerror="this.src='__PUBLIC__/static/images/default-timg.gif'" style="width: 90px;" /></td>
+                    <td><a href="javascript:void(0);" name="{$one.path}" onclick="return Check(this);"><img src="{$one.path}" onerror="this.src='__PUBLIC__/static/images/default-timg.gif'" style="width: 90px;" /></a></td>
                     <td>{$one.lastmodifytime}</td>
                     <td>{$one.remark}</td>
                     <td>
@@ -61,5 +61,13 @@
             }
         });
     }
+    //点击查看原图
+    function Check(path) {
+        var url=path.name;
+        if(!url) return false;//获取缩略图url
+        var newurl=url.replace("_thumb","");//重写
+        window.open(newurl);
+    }
+
 </script>
 <include file="Common:footer" />
