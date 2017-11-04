@@ -482,7 +482,17 @@ class ContractController extends Controller
 		$centreno = I("id");
 		$where['centreNo']=$centreno;
 		$result=M('sampling_form')->where($where)->find();
+		//判断角色，确定是否可以修改
+		$admin_auth = session("admin_auth");
+		$if_admin = $admin_auth['super_admin'];
+		$roleid = $admin_auth['gid'];
 		
+		$role = D('common_role')->where('id='.$roleid)->find();
+		if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
+			$if_edit = 1;	
+		}else{
+			$if_edit = 0;	
+		}
 		
 		$simsigndateyear = $result['simsigndate'] ? date("Y",strtotime($result[0]['simsigndate'])):"";
         $simsigndatemonth =  $result['simsigndate'] ? date("m",strtotime($result[0]['simsigndate'])):"";
@@ -507,6 +517,7 @@ class ContractController extends Controller
 		
 		$body=array(
             'one'=>$result,
+			'if_edit'=>$if_edit
         );
         $this->assign($body);
         $this->display();
@@ -522,20 +533,23 @@ class ContractController extends Controller
 		$productiondate=I("productiondate");
 		$batchno=I("batchno");
 		$simplerSign=I("simplerSign");
-		$simplerYear=I("simplerYear");
-		$simplerMonth=I("simplerMonth");
-		$simplerDay=I("simplerDay");
-		$simSignDate = $simplerYear."-".$simplerMonth."-".$simplerDay;
+		$simSignDate=I("simSignDate");
+		//$simplerYear=I("simplerYear");
+		//$simplerMonth=I("simplerMonth");
+		//$simplerDay=I("simplerDay");
+		//$simSignDate = $simplerYear."-".$simplerMonth."-".$simplerDay;
 		$sealerSign=I("sealerSign");
-		$sealerYear=I("sealerYear");
-		$sealerMonth=I("sealerMonth");
-		$sealerDay=I("sealerDay");
-		$seaSingDate = $sealerYear."-".$sealerMonth."-".$sealerDay;
+		$seaSingDate=I("seaSingDate");
+		//$sealerYear=I("sealerYear");
+		//$sealerMonth=I("sealerMonth");
+		//$sealerDay=I("sealerDay");
+		//$seaSingDate = $sealerYear."-".$sealerMonth."-".$sealerDay;
 		$enterpriseSign=I("enterpriseSign");
-		$enterpriseYear=I("enterpriseYear");
-		$enterpriseMonth=I("enterpriseMonth");
-		$enterpriseDay=I("enterpriseDay");
-		$entSignDate = $enterpriseYear."-".$enterpriseMonth."-".$enterpriseDay;
+		$entSignDate=I("entSignDate");
+		//$enterpriseYear=I("enterpriseYear");
+		//$enterpriseMonth=I("enterpriseMonth");
+		//$enterpriseDay=I("enterpriseDay");
+		//$entSignDate = $enterpriseYear."-".$enterpriseMonth."-".$enterpriseDay;
 		$telephone=I("telephone");
 		$tax=I("tax");
 		$address=I("address");
@@ -556,7 +570,9 @@ class ContractController extends Controller
 			'tax'=>$tax,
 			'address'=>$address
 		);
+		//pr($data);
 		$where['centreNo']=$centreno;
+		//pr($centreno);
 		$rs['msg']='fail';
 		M()->startTrans();
 		if(D('sampling_form')->where($where)->save($data)){
