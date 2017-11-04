@@ -27,9 +27,37 @@
 				  	<label class="col-sm-2 control-label talign-center">&nbsp;</label>
 				    <div class="col-sm-10">
 				   		<button type="submit" class="btn btn-success" onclick="onSave()">保 存</button>
+                        <button type="button" class="btn btn-success" onclick="javascript:history.go(-1);">返 回</button>
 				    </div>
 				</div>
 			</form>
+            <!--抽样单列表/现场图片列表-->
+            <div>
+            	<table class="table table-bordered table-striped table-hover">
+                	<thead>
+                    	<th>序号</th>
+                        <th>中心编号</th>
+                        <th>缩列图</th>
+                        <th>备注</th>
+                        <th>操作</th>
+                    </thead>
+                    <tbody>
+                    	<volist name="list" id="one">
+                        	<tr>
+                            	<td>{$i}<input type="hidden" id="pic_id" value="{$one.id}"></td>
+                                <td>{$one.centreno}</td>
+                                <td>
+                                	<a href="javascript:void(0);" name="{$one.picture_name}" onclick="return Check(this);">
+                               			<img src="{$one.picture_name}" onerror="this.src='__PUBLIC__/static/images/default-timg.gif'" style="width: 90px;"/>
+                                	</a>
+                                </td>
+                                <td>{$one.remark}</td>
+                                <td><a href="javascript:void(0);" onclick="onDelete({$one.id})" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> 删除</a></td>
+                            </tr>
+                        </volist>
+                    </tbody>
+                </table>
+            </div>
 		</div>
 	</div>
 </div>
@@ -48,7 +76,7 @@
 		        success: function (data, status) {
 		        	var ret = JSON.parse(data);
 		        	$("#addfile").val("");
-					alert(ret.url);
+					//alert(ret.url);
 		        	if(ret.info=='succ'){
 		        		$("input[name='imgurl']").val(ret.url);
 		        		$("#attachment img").attr("src",ret.url);
@@ -93,6 +121,40 @@
         return false;
 	}
 
+	//删除图片
+	function onDelete(id){
+		if(!id) return false;
+		var _options = {"flag":"error","text":"您确定要删除吗！","buttons":{"ok":{"action":function(){doneDel(id);}},"cancel":{}}};
+		doConfirmDialog(_options);
+	}
+	
+	function doneDel(id){
+		if(!id) return false;
+		$.ajax({
+			type:"post",
+			url:"{:U('/admin/contract/doDeleteSample')}",
+			data:{"id":id},
+			dataType:"json",
+			success:function(ret){
+				if(ret.msg=='succ'){
+					var _options = {"text":"删除成功！","action":function(){window.location.reload();}};
+					doAlertDialog(_options);
+				}else{
+					var _options = {"text":"删除失败！"};
+					if(data.msg) _options.text = data.msg;
+					doAlertDialog(_options);
+				}
+			}
+		});
+	}
+	
+	//点击查看原图
+    function Check(path) {
+        var url=path.name;
+        if(!url) return false;//获取缩略图url
+        var newurl=url.replace("_thumb","");//重写
+        window.open(newurl);
+    }
 
 </script>
 <include file="Common:footer" />
