@@ -122,6 +122,7 @@ class TestController extends Controller{
         $result=M('contract_flow')->where($where)
             ->join('work_inform_form ON contract_flow.centreNo = work_inform_form.centreNo')//从工作通知单取数据
             ->field('contract_flow.takelist_user_id,contract_flow.status,work_inform_form.workDate,work_inform_form.centreNo,work_inform_form.sampleName,work_inform_form.testCreiteria')
+            ->order('work_inform_form.workDate desc,work_inform_form.id desc')
             ->limit("{$offset},{$pagesize}")->select();//从合同表!!!!里取出对应中心编号的信息
         $count = D("contract_flow")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
@@ -181,13 +182,8 @@ class TestController extends Controller{
         $where= "centreno='{$keyword}'";
         $result=D('test_record')
             ->limit("{$offset},{$pagesize}")->where($where)->select();
-        $status=D("contract_flow")->where($where)->field('status')->find();
-        if($status==8){
-            $view="hidden";
-        }
-        else{
-            $view="";
-        }
+        $status=D("contract_flow")->where($where)->find();
+        $view=$status['status'];
         $count = D("test_record")->where($where)->count();//!!!!!!!!!!!!!!
         $Page       = new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
