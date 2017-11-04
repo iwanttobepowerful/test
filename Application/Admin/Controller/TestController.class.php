@@ -105,13 +105,23 @@ class TestController extends Controller{
     public function recordPicture(){
         $keyword = I("keyword");//获取参数
         $where= "contract_flow.centreno like '%{$keyword}%'";
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $userid=$admin_auth['id'];
+        $user=$admin_auth['gid'];//判断是哪个角色
+        $if_admin = $admin_auth['super_admin'];//是否是超级管理员
+        if ($user==10 || $if_admin ==1) {//只有报告编制员，超级管理员才能操作
+            $view="";
+        }
+        else
+        {$view="hidden";
+        }
         $page = I("p",'int');
         $pagesize = 10;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
         $result=M('contract_flow')->where($where)
             ->join('work_inform_form ON contract_flow.centreNo = work_inform_form.centreNo')//从工作通知单取数据
-            ->field('work_inform_form.workDate,work_inform_form.centreNo,work_inform_form.sampleName,work_inform_form.testCreiteria')
+            ->field('contract_flow.takelist_user_id,contract_flow.status,work_inform_form.workDate,work_inform_form.centreNo,work_inform_form.sampleName,work_inform_form.testCreiteria')
             ->limit("{$offset},{$pagesize}")->select();//从合同表!!!!里取出对应中心编号的信息
         $count = D("contract_flow")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
@@ -120,7 +130,8 @@ class TestController extends Controller{
         $body=array(
             'lists'=>$result,
             'pagination'=>$pagination,
-
+            'userid'=>$userid,
+            'view'=>$view,
         );
         $this->assign($body);
         $this->display();
@@ -141,6 +152,7 @@ class TestController extends Controller{
         }
         $this->ajaxReturn($rs);
     }
+    
     public function recordPictureUp(){
         $page = I("p",'int');
         $pagesize = 20;
