@@ -139,6 +139,7 @@ class TestController extends Controller{
     //接单操作
     public function doneTakeList(){
         $centreno=I("centreno");
+        $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
         $where= "centreno='{$centreno}'";
@@ -152,18 +153,41 @@ class TestController extends Controller{
         }
         $this->ajaxReturn($rs);
     }
-    
+//上传完毕
+    public function doAllSave(){
+        $centreno=I("centreno");
+        $rs = array("msg"=>"fail");
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $userid=$admin_auth['id'];
+        $where= "centreno='{$centreno}'";
+        $data=array(
+            'status'=>8,
+            //'takelist_time'=>date("Y-m-d H:i:s"),
+            //'takelist_user_id'=>$userid,
+        );
+        if(D("contract_flow")->where($where)->save($data)){
+            $rs['msg'] = 'succ';
+        }
+        $this->ajaxReturn($rs);
+    }
+    //上传图片
     public function recordPictureUp(){
         $page = I("p",'int');
         $pagesize = 20;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
         $orderby = "create_time desc";
-
         $keyword = I("id");//获取中心编号
         $where= "centreno='{$keyword}'";
-        $result=D('test_record')->limit("{$offset},{$pagesize}")->where($where)->select();
-
+        $result=D('test_record')
+            ->limit("{$offset},{$pagesize}")->where($where)->select();
+        $status=D("contract_flow")->where($where)->field('status')->find();
+        if($status==8){
+            $view="hidden";
+        }
+        else{
+            $view="";
+        }
         $count = D("test_record")->where($where)->count();//!!!!!!!!!!!!!!
         $Page       = new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
@@ -173,6 +197,7 @@ class TestController extends Controller{
             'lists'=>$result,
             'pagination'=>$pagination,
             'centreno'=>$keyword,//!!!!!!!!!!!!!!
+            'view'=>$view,
         );
         $this->assign($body);
         $this->display();

@@ -31,12 +31,15 @@
                     <td>{$one.testcreiteria}</td>
                     <td>
                         <div style="visibility:{$view}">
-                            <if condition="($one[status] eq 7) AND ($one[takelist_user_id] eq $userid)">
+                            <if condition="$one[takelist_user_id] eq $userid">
                                 <a href="{:U('/admin/test/recordPictureUp')}?id={$one.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-open"></i>检测图片上传</a>
                                 <a href="{:U('/admin/test/infoShow')}?id={$one.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检测工作通知单</a>
-                                <a class="btn btn-success btn-xs disabled">正在检测中</a>
-                                <else />
                                 <if condition="$one[status] eq 7">
+                                <a class="btn btn-warning btn-xs disabled">正在检测中</a>
+                                <else />
+                                    <a class="btn btn-success btn-xs disabled">检测完毕</a></if>
+                                <else/>
+                                <if condition="$one[status] neq 0">
                                     <a class="btn btn-primary btn-xs disabled">已接单</a>
                                     <else />
                                     <a href="javascript:void(0);" onclick="takeList('{$one.centreno}')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-check"></i>接单</a>
