@@ -19,7 +19,14 @@
                     <td><button name="btn_change" onclick="onUpdate({$vo.id})" class="btn btn-success btn-xs" {$view}><i class="glyphicon glyphicon-ok-circle"></i>批准</button>
                         <button name="btn_change" onclick="update({$vo.id})" class="btn btn-danger btn-xs" {$view}><i class="glyphicon glyphicon-remove-circle"></i>不批准</button></td>
                     <td>{$vo.name}/{$vo.verify_time}</td>
-                    <td><php>if($vo['status']==3){echo '未审批';}else{echo '审批未通过';}</php></td>
+                    <td>
+                        <if condition="$vo['status'] eq 3">
+                            <span>未审批</span>
+                            <else/>
+                            <if condition="$vo['status'] eq -4">
+                                <span style="color: red">审批未通过</span>
+                            </if></if>
+                    </td>
                 </tr>
             </volist>
             </tbody>

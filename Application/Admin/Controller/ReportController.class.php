@@ -22,7 +22,9 @@ class ReportController extends Controller
     public function auditReport(){
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
-        if ($user==8 or $user==6 or $user==13){//只有领导，审核人员，超级管理员才能审核
+        $if_admin = $admin_auth['super_admin'];
+        $role = D('common_role')->where('id='.$user)->find();
+        if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="审核员") {//只有领导，审核人员，超级管理员才能审核
             $view="";
         }else{
             $view="disabled";
@@ -37,7 +39,7 @@ class ReportController extends Controller
             ->join('common_system_user ON contract_flow.report_user_id = common_system_user.id')
             ->field('contract_flow.id,contract_flow.centreNo,contract_flow.status,contract_flow.report_time,common_system_user.name')
             ->limit("{$offset},{$pagesize}")
-            ->order('contract_flow.id')->select();
+            ->order('contract_flow.report_time desc,contract_flow.id desc')->select();
         //查找条件为已经批准并且内部尚未签发的报告
         $count = D("contract_flow")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
@@ -58,7 +60,9 @@ class ReportController extends Controller
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
         $user=$admin_auth['gid'];//判断是哪个角色
-        if ($user==8 or $user==6 or $user==13){
+        $if_admin = $admin_auth['super_admin'];
+        $role = D('common_role')->where('id='.$user)->find();
+        if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="审核员") {
         $data=array(
             'status'=>3,
             'verify_user_id'=>$userid,
@@ -76,7 +80,9 @@ class ReportController extends Controller
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
         $user=$admin_auth['gid'];//判断是哪个角色
-        if ($user==8 or $user==6 or $user==13){
+        $if_admin = $admin_auth['super_admin'];
+        $role = D('common_role')->where('id='.$user)->find();
+        if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="审核员") {
         $data=array(
             'status'=>-3,
             'verify_user_id'=>$userid,
@@ -91,7 +97,9 @@ class ReportController extends Controller
     public function authorizeReport(){
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
-        if ($user==8 or $user==14 or $user==6){
+        $if_admin = $admin_auth['super_admin'];
+        $role = D('common_role')->where('id='.$user)->find();
+        if($if_admin==1 || $role['rolename']=="批准员") {
             $view="";
         }else{
             $view="disabled";
@@ -106,7 +114,7 @@ class ReportController extends Controller
             ->join('common_system_user ON contract_flow.verify_user_id = common_system_user.id')
             ->field('contract_flow.id,contract_flow.centreNo,contract_flow.status,contract_flow.verify_time,common_system_user.name')
             ->limit("{$offset},{$pagesize}")
-            ->order('contract_flow.id')->select();
+            ->order('contract_flow.verify_time desc,contract_flow.id desc')->select();
         //查找条件为已经批准并且内部尚未签发的报告
         $count = D("contract_flow")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
@@ -127,7 +135,9 @@ class ReportController extends Controller
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
         $user=$admin_auth['gid'];//判断是哪个角色
-        if ($user==8 or $user==14 or $user==6){
+        $if_admin = $admin_auth['super_admin'];
+        $role = D('common_role')->where('id='.$user)->find();
+        if($if_admin==1 || $role['rolename']=="批准员") {
         $data=array(
             'status'=>4,
             'approve_time'=>date("Y-m-d H:i:s"),
@@ -145,7 +155,9 @@ class ReportController extends Controller
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
         $user=$admin_auth['gid'];//判断是哪个角色
-        if ($user==8 or $user==14 or $user==6){
+        $if_admin = $admin_auth['super_admin'];
+        $role = D('common_role')->where('id='.$user)->find();
+        if($if_admin==1 || $role['rolename']=="批准员") {
         $data=array(
             'status'=>-4,
             'approve_time'=>date("Y-m-d H:i:s"),
@@ -160,7 +172,9 @@ class ReportController extends Controller
     public function internalIssue(){
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
-        if ($user==8 or $user==15 or $user==6){//只有领导，盖章人员，超级管理员才能签发
+        $if_admin = $admin_auth['super_admin'];
+        $role = D('common_role')->where('id='.$user)->find();
+        if($if_admin==1 || $role['rolename']=="盖章人员") {
             $view="";
         }else{
             $view="disabled";
@@ -175,7 +189,7 @@ class ReportController extends Controller
             ->join('common_system_user ON contract_flow.approve_user_id = common_system_user.id')
             ->field('contract_flow.id,contract_flow.centreNo,contract_flow.approve_time,common_system_user.name')
             ->limit("{$offset},{$pagesize}")
-            ->order('contract_flow.id')->select();
+            ->order('contract_flow.approve_time desc,contract_flow.id desc')->select();
         //查找条件为已经批准并且内部尚未签发的报告
         $count = D("contract_flow")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
@@ -198,7 +212,9 @@ class ReportController extends Controller
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
         $user=$admin_auth['gid'];//判断是哪个角色
-        if ($user==8 or $user==15 or $user==6){//只有领导，盖章人员，超级管理员才能签发
+        $if_admin = $admin_auth['super_admin'];
+        $role = D('common_role')->where('id='.$user)->find();
+        if($if_admin==1 || $role['rolename']=="盖章人员") {
         $data=array(
             'status'=>5,
             'inner_sign_time'=>date("Y-m-d H:i:s"),
@@ -214,7 +230,9 @@ class ReportController extends Controller
     public function externalIssue(){
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
-        if ($user==8 or $user==7 or $user==6){//只有领导，前台，超级管理员才能签发
+        $if_admin = $admin_auth['super_admin'];
+        $role = D('common_role')->where('id='.$user)->find();
+        if($if_admin==1 || $role['rolename']=="前台人员") {//只有前台，超级管理员才能签发
             $view="";
         }else{
             $view="disabled";
@@ -230,7 +248,7 @@ class ReportController extends Controller
             ->join('contract ON contract_flow.centreNo = contract.centreNo')
             ->field('contract_flow.id,contract_flow.centreNo,contract_flow.inner_sign_time,common_system_user.name,contract.productUnit,contract.clientSign,contract.telephone')
             ->limit("{$offset},{$pagesize}")
-            ->order('contract_flow.id')->select();
+            ->order('contract_flow.inner_sign_time desc,contract_flow.id desc')->select();
         //查找条件为已经批准并且内部尚未签发的报告
         $count = D("contract_flow")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
@@ -251,7 +269,9 @@ class ReportController extends Controller
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
         $user=$admin_auth['gid'];//判断是哪个角色
-        if ($user==8 or $user==7 or $user==6){//只有领导，前台人员，超级管理员才能签发
+        $if_admin = $admin_auth['super_admin'];
+        $role = D('common_role')->where('id='.$user)->find();
+        if($if_admin==1 || $role['rolename']=="前台人员") {
         $data=array(
             'status'=>6,
             'external_sign_time'=>date("Y-m-d H:i:s"),

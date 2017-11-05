@@ -20,7 +20,13 @@
                         <button name="btn_change" onclick="update({$vo.id})" class="btn btn-danger btn-xs" {$view}><i class="glyphicon glyphicon-remove-circle"></i>不通过</button>
                     </td>
                     <td>{$vo.name}/{$vo.report_time}</td>
-                    <td><php>if($vo['status']==2){echo '未审核';}else{echo '审核未通过';}</php></td>
+                    <td><if condition="$vo['status'] eq 2">
+                        <span>未审核</span>
+                        <else/>
+                        <if condition="$vo['status'] eq -3">
+                            <span style="color: red">审核未通过</span>
+                        </if></if>
+                    </td>
                 </tr>
             </volist>
         </table>
