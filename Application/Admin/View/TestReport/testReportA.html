@@ -342,6 +342,7 @@
 	</head>
 
 	<body>
+	<include file="Common:header" title="后台首页"/>   <!--加上！！！！！-->
 		<div class="page">
 			<div class="a_cover_head">
 				<p class="a_cover_title">
@@ -351,7 +352,8 @@
 					<b>TEST&nbsp;&nbsp;&nbsp;&nbsp;REPORT</b>
 				</p>
 				<p class="a_cover_number">
-					<span class="a_cover_guy">中心编号(No.)：</span><input type="text" name="a_cover_key" id="a_cover_key" value="{$con_list['centreno']}"/>
+					<!--{$con_list['centreno']}-->
+					<span class="a_cover_guy">中心编号(No.)：</span><input type="text" name="a_cover_key" id="a_cover_key" value="{$con_list.centreno}"/>
 				</p>
 			</div>
 			<div class="a_cover_content">
@@ -575,10 +577,41 @@
 				<p class="sy fin">报告真伪查询（Tel）：（010）51164716</p>
 				<p class="sy fin">网址（Web：http://www.dmtc.org.cn/</p>
 				<p class="sy fin">电子邮箱（E-mail）： dmtc2007@163.com</p>
-				<img class="barcode" src="__PUBLIC__/static/images/barcode.png" />
+				<img style="visibility:{$dayinview}" class="barcode" src="__PUBLIC__/static/images/barcode.png" />
 			</div>
 		</div>
-		<button onclick="window.print()" class="Noprint">打印</button>
+
+	<center>
+		<button style="visibility:{$shengchengview}" onclick="createreport('{$con_list.centreno}')" class="btn btn-primary btn-xs">生成报告</button>
+	</center>
+	<center>
+		<button style="visibility:{$dayinview}" onclick="window.print()" class="btn btn-info btn-xs" >　报告已生成，可以打印　</button>
+	</center>
 	</body>
 
 </html>
+
+
+<script type="text/javascript">
+    function createreport(centreno){
+        //alert(centreno);
+        if(!centreno)
+            return false;
+        var _options = {"flag":"error","text":"您确定要生成报告吗？","buttons":{"ok":{"action":function(){doCreate(centreno);}},"cancel":{}}};
+        doConfirmDialog(_options);
+    }
+    function doCreate(centreno) {
+        centreno.onclick = function() {};
+        $.ajax({
+            type:"post",
+            url:"{:U('/admin/TestReport/doCreate')}",
+            data:{"centreno":centreno},
+            dataType:"json",
+            success:function(ret){
+                if(ret.msg=='succ') {
+                    window.location.reload();
+                }
+            }
+        });
+    }
+</script>
