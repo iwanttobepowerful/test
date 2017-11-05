@@ -578,6 +578,17 @@
 				<p class="sy fin">网址（Web：http://www.dmtc.org.cn/</p>
 				<p class="sy fin">电子邮箱（E-mail）： dmtc2007@163.com</p>
 				<img style="visibility:{$dayinview}" class="barcode" src="__PUBLIC__/static/images/barcode.png" />
+				<script>// <![CDATA[
+
+                thisURL = document.URL;
+
+                strwrite =
+
+                    "<img src='https://chart.googleapis.com/chart?cht=qr&chs=150x150&choe=UTF-8&chld=L|4&chl="  + thisURL + "' width='150' height='150' alt='二维码' />";
+
+                document.write( strwrite );
+
+                // ]]></script>
 			</div>
 		</div>
 
