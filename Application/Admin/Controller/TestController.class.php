@@ -109,11 +109,13 @@ class TestController extends Controller{
         $userid=$admin_auth['id'];
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];//是否是超级管理员
-        if ($user==10 || $if_admin ==1) {//只有报告编制员，超级管理员才能操作
-            $view="";
+        $role = D('common_role')->where('id='.$user)->find();
+        if ($role['rolename']=="检测员" || $if_admin ==1) {//只有报告编制员，超级管理员才能操作
+            $view="visible";
         }
         else
-        {$view="hidden";
+        {
+            $view="hidden";
         }
         $page = I("p",'int');
         $pagesize = 10;
@@ -122,6 +124,7 @@ class TestController extends Controller{
         $result=M('contract_flow')->where($where)
             ->join('work_inform_form ON contract_flow.centreNo = work_inform_form.centreNo')//从工作通知单取数据
             ->field('contract_flow.takelist_user_id,contract_flow.status,work_inform_form.workDate,work_inform_form.centreNo,work_inform_form.sampleName,work_inform_form.testCreiteria')
+            ->order('work_inform_form.workDate desc,work_inform_form.id desc')
             ->limit("{$offset},{$pagesize}")->select();//从合同表!!!!里取出对应中心编号的信息
         $count = D("contract_flow")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
@@ -139,6 +142,7 @@ class TestController extends Controller{
     //接单操作
     public function doneTakeList(){
         $centreno=I("centreno");
+        $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
         $where= "centreno='{$centreno}'";
@@ -152,18 +156,36 @@ class TestController extends Controller{
         }
         $this->ajaxReturn($rs);
     }
-    
+//上传完毕
+    public function doAllSave(){
+        $centreno=I("centreno");
+        $rs = array("msg"=>"fail");
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $userid=$admin_auth['id'];
+        $where= "centreno='{$centreno}'";
+        $data=array(
+            'status'=>8,
+            //'takelist_time'=>date("Y-m-d H:i:s"),
+            //'takelist_user_id'=>$userid,
+        );
+        if(D("contract_flow")->where($where)->save($data)){
+            $rs['msg'] = 'succ';
+        }
+        $this->ajaxReturn($rs);
+    }
+    //上传图片
     public function recordPictureUp(){
         $page = I("p",'int');
         $pagesize = 20;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
         $orderby = "create_time desc";
-
         $keyword = I("id");//获取中心编号
         $where= "centreno='{$keyword}'";
-        $result=D('test_record')->limit("{$offset},{$pagesize}")->where($where)->select();
-
+        $result=D('test_record')
+            ->limit("{$offset},{$pagesize}")->where($where)->select();
+        $status=D("contract_flow")->where($where)->find();
+        $view=$status['status'];
         $count = D("test_record")->where($where)->count();//!!!!!!!!!!!!!!
         $Page       = new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
@@ -173,6 +195,7 @@ class TestController extends Controller{
             'lists'=>$result,
             'pagination'=>$pagination,
             'centreno'=>$keyword,//!!!!!!!!!!!!!!
+            'view'=>$view,
         );
         $this->assign($body);
         $this->display();

@@ -3,7 +3,7 @@
     <include file="Common:breadcrumb" />
     <div id="page-inner" class="container">
         <div class="search-form">
-            <a href="{:U('/admin/test/recordPictureUp')}?id={$centreno}" class="btn btn-success">返回</a>
+            <a href="{:U('/admin/test/recordPictureUp')}?id={$centreno}" class="btn btn-primary">返回</a>
         </div>
         <form class="form-horizontal" id="myform" action="" method="post">
             <input type="hidden" name="id" value="{$pic['id']}" />
@@ -30,6 +30,7 @@
                 <label class="col-sm-2 control-label talign-center">&nbsp;</label>
                 <div class="col-sm-10">
                     <button type="submit" class="btn btn-success" onclick="onSave()">保 存</button>
+                    <a herf="javascript:void(0);" class="btn btn-success" onclick="allSave('{$centreno}')">上传完毕</a>
                 </div>
             </div>
         </form>
@@ -94,7 +95,29 @@
         $("#myform").ajaxForm(options);
         return false;
     }
-
-
+//上传完毕按钮
+    function allSave(centreno) {
+        if(!centreno) return false;
+        var _options = {"flag":"error","text":"您确定已经上传完所有的记录吗？","buttons":{"ok":{"action":function(){doneAllSave(centreno);}},"cancel":{}}};
+        doConfirmDialog(_options);
+    }
+    function doneAllSave(centreno){
+        if(!centreno) return false;
+        $.ajax({
+            type:"post",
+            url:"{:U('/admin/test/doAllSave')}",
+            data:{"centreno":centreno},
+            dataType:"json",
+            success:function(ret){
+                if(ret.msg=='succ'){
+                    window.location.href="{:U('/admin/test/recordPictureUp')}?id={$centreno}";
+                }else{
+                    var _options = {"text":"操作失败！"};
+                    if(data.msg) _options.text = data.msg;
+                    doAlertDialog(_options);
+                }
+            }
+        });
+    }
 </script>
 <include file="Common:footer" />

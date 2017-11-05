@@ -41,7 +41,9 @@ class AuditController extends Controller {
     public function reportList(){
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
-        if ($user==8 or $user==6){//只有领导，超级管理员才能审核
+        $if_admin = $admin_auth['super_admin'];
+        $role = D('common_role')->where('id='.$user)->find();
+        if($role['rolename']=="领导" || $if_admin==1){//只有领导，超级管理员才能审核
             $view="";
         }else{
             $view="disabled";
@@ -70,7 +72,9 @@ class AuditController extends Controller {
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
-        if ($user==8 or $user==6){
+        $if_admin = $admin_auth['super_admin'];
+        $role = D('common_role')->where('id='.$user)->find();
+        if($role['rolename']=="领导" || $if_admin==1){//只有领导，超级管理员才能审核
             $data=array(
                 'status'=>1,
                 'modify_time'=>date("Y-m-d H:i:s"),
@@ -86,7 +90,9 @@ class AuditController extends Controller {
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
-        if ($user==8 or $user==6){
+        $if_admin = $admin_auth['super_admin'];
+        $role = D('common_role')->where('id='.$user)->find();
+        if($role['rolename']=="领导" || $if_admin==1){//只有领导，超级管理员才能审核
             $data=array(
                 'status'=>2,
                 'modify_time'=>date("Y-m-d H:i:s"),

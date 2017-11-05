@@ -3,9 +3,10 @@
     <include file="Common:breadcrumb" />
     <div id="page-inner" class="container">
         <div class="search-form">
-            <a href="{:U('/admin/test/recordPicture')}" class="btn btn-success">返回</a>
-            <!--！！！！！！！{:U('/admin/test/picUp')}?centreno={$centreno}-->
-            <a href="{:U('/admin/test/picUp')}?centreno={$centreno}" class="btn btn-success">上传</a>
+            <a href="{:U('/admin/test/recordPicture')}" class="btn btn-primary">返回</a>
+            <if condition="$view eq 7">
+           <a href="{:U('/admin/test/picUp')}?centreno={$centreno}" class="btn btn-primary">上传</a>
+            </if>
         </div>
         <table class="table table-bordered table-striped table-hover">
             <thead>
