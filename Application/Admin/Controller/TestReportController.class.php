@@ -169,8 +169,8 @@ class TestReportController extends Controller
         $where= "centreno='{$centreno}'";
         $data=array(
             'status'=>2,
-            //'takelist_time'=>date("Y-m-d H:i:s"),
-           // 'takelist_user_id'=>$userid,
+            'report_time'=>date("Y-m-d H:i:s"),
+            'report_user_id'=>$userid,
         );
         if(D("contract_flow")->where($where)->save($data)){
             $rs['msg'] = 'succ';
