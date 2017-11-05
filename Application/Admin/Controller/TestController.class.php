@@ -109,11 +109,13 @@ class TestController extends Controller{
         $userid=$admin_auth['id'];
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];//是否是超级管理员
-        if ($user==10 || $if_admin ==1) {//只有报告编制员，超级管理员才能操作
-            $view="";
+        $role = D('common_role')->where('id='.$user)->find();
+        if ($role['rolename']=="报告编制员" || $if_admin ==1) {//只有报告编制员，超级管理员才能操作
+            $view="visible";
         }
         else
-        {$view="hidden";
+        {
+            $view="hidden";
         }
         $page = I("p",'int');
         $pagesize = 10;
