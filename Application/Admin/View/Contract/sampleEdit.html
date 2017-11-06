@@ -10,6 +10,10 @@
 			if($('#if_edit').val()==0){
 				$('input,a,button').attr('disabled','disabled');
 			}	
+			
+			if($('#sample_count').val()!=0){
+				$('.edit1').attr('disabled','disabled');
+			}	
 		});
     	function doEditSample(){
 			var centreno=$('input[name="centreno"]').val();
@@ -60,6 +64,23 @@
 					window.location.reload();
 				}
 			});
+			
+		}
+		
+		function doSubmit(){
+			centreno = $('input[name=centreno]').val();
+			if(confirm('确认已录入完毕？')){
+				$.ajax({
+					url: "{:U('/admin/contract/doUpdateState')}",
+					dataType: 'json',			
+					async: false,
+					data:{'centreno':centreno},
+					success: function (res) {
+						alert(res.msg);
+						window.location.reload();
+					}
+				});				
+			}
 			
 		}
 		
@@ -198,12 +219,14 @@
             <td width="1004" valign="top" colspan="5" ><p >&#160; </p></td>
           </tr>
         </table>
-        <button class="btn btn-success edit" type="button" id="check_list" onClick="doEditSample()">提交修改</button>
+        <button class="btn btn-success edit" type="button" id="check_list" onClick="doEditSample()">修改</button>
         <!--<button class="btn btn-success" type="button" id="up_sample" onClick="doUpSample('sample')">上传抽样单</button>
 		<button class="btn btn-success" type="button" id="up_check" onClick="doUpSample('work')">上传检测图片</button>-->
         <a class="btn btn-success edit" href="/admin/contract/doUploadSampleImage?centreno={$one.centreno}&type=sample">上传抽样单</a>
 		<a class="btn btn-success edit" href="/admin/contract/doUploadSampleImage?centreno={$one.centreno}&type=work">上传现场图片</a>
-        <a class="btn btn-success" href="/admin/test/sampleShow?id={$one.centreno}" target='_blank'>打印</a>
+        <a class="btn btn-success" href="/admin/test/sampleShow?id={$one.centreno}" >打印</a>
+        <input type="hidden" id="sample_count" value="{$sample_count}" />
+        <button class="btn btn-success edit1" type="button" onClick="doSubmit()">抽样单录入完毕</button>       	
       </form>
     </div>
 </div>
