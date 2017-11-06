@@ -1,474 +1,360 @@
+<!DOCTYPE html>
 <html>
 
 <head>
-    <meta http-equiv=Content-Type content="text/html; charset=utf-8">
-    <meta name=Generator content="Microsoft Word 15 (filtered)">
-    <title>国家建筑材料工业房建材料质量监督检验测试中心</title>
-    <script src="__PUBLIC__/script/jquery.min.js" type="text/JavaScript"></script>
-    <script src="__PUBLIC__/static/js/jquery.PrintArea.js" type="text/JavaScript"></script>
-    <script>
-        $(document).ready(function(){
-            $("input#biuuu_button").click(function(){
-                $("div#myPrintArea").printArea();
-            });
-        });
-    </script>
-    <style>
-        @font-face
-        {font-family:宋体;
-            panose-1:2 1 6 0 3 1 1 1 1 1;}
-        @font-face
-        {font-family:黑体;
-            panose-1:2 1 6 9 6 1 1 1 1 1;}
-        @font-face
-        {font-family:"Cambria Math";
-            panose-1:2 4 5 3 5 4 6 3 2 4;}
-        @font-face
-        {font-family:仿宋_GB2312;}
-        @font-face
-        {font-family:"\@黑体";
-            panose-1:2 1 6 0 3 1 1 1 1 1;}
-        @font-face
-        {font-family:"\@宋体";
-            panose-1:2 1 6 0 3 1 1 1 1 1;}
-        @font-face
-        {font-family:"\@仿宋_GB2312";}
-        /* Style Definitions */
-        p.MsoNormal, li.MsoNormal, div.MsoNormal
-        {margin:0cm;
-            margin-bottom:.0001pt;
-            text-align:justify;
-            text-justify:inter-ideograph;
-            font-size:10.5pt;
-            font-family:"Times New Roman",serif;}
-        p.MsoHeader, li.MsoHeader, div.MsoHeader
-        {mso-style-link:"页眉 Char";
-            margin:0cm;
-            margin-bottom:.0001pt;
-            text-align:center;
-            layout-grid-mode:char;
-            border:none;
-            padding:0cm;
-            font-size:9.0pt;
-            font-family:"Times New Roman",serif;}
-        p.MsoFooter, li.MsoFooter, div.MsoFooter
-        {mso-style-link:"页脚 Char";
-            margin:0cm;
-            margin-bottom:.0001pt;
-            layout-grid-mode:char;
-            font-size:9.0pt;
-            font-family:"Times New Roman",serif;}
-        p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
-        {margin:0cm;
-            margin-bottom:.0001pt;
-            text-align:justify;
-            text-justify:inter-ideograph;
-            font-size:9.0pt;
-            font-family:"Times New Roman",serif;}
-        p.CharCharCharChar, li.CharCharCharChar, div.CharCharCharChar
-        {mso-style-name:" Char Char Char Char";
-            margin:0cm;
-            margin-bottom:.0001pt;
-            text-align:justify;
-            text-justify:inter-ideograph;
-            font-size:16.0pt;
-            font-family:仿宋_GB2312;
-            font-weight:bold;}
-        span.Char
-        {mso-style-name:"页眉 Char";
-            mso-style-link:页眉;}
-        span.Char0
-        {mso-style-name:"页脚 Char";
-            mso-style-link:页脚;}
-        /* Page Definitions */
-        @page WordSection1
-        {size:595.3pt 841.9pt;
-            margin:49.65pt 90.0pt 42.55pt 90.0pt;
-            layout-grid:15.6pt;}
-        div.WordSection1
-        {page:WordSection1;}
-        /* List Definitions */
-        ol
-        {margin-bottom:0cm;}
-        ul
-        {margin-bottom:0cm;}
-        -->
+    <meta charset="UTF-8">
+    <title>受检合同</title>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/static/css/bootstrap.min.css" />
+    <script src="__PUBLIC__/static/js/jquery-2.1.3.min.js" type="text/javascript" charset="utf-8"></script>
+    <style type="text/css">
+        .test_content {
+            margin: 0 auto;
+            width: 90%;
+            height: 17.8cm;
+        }
+
+        .test_content_two {
+            margin: 0 auto;
+            width: 90%;
+            height: 6.8cm;
+            border-top-style: none;
+        }
+
+        .principal,
+        .office {
+            font-size: 14pt;
+            font-family: "黑体";
+        }
+
+        .test_txt {
+            font-family: 宋体;
+            font-size: 10.5pt;
+        }
+
+        td {
+            text-align: center;
+        }
+
+        .l_title,
+        .s_title {
+            font-size: 18pt;
+            font-weight: 600;
+            font-family: "黑体";
+        }
+
+        #email,
+        #checkout,
+        #remark {
+            width: 100%;
+            height: 90%;
+            font-size: 10.5pt;
+            resize: none;
+            border-style: none;
+        }
+
+        .hos,
+        .three_col {
+            width: 20%;
+        }
+
+        .two_col {
+            width: 28%;
+        }
+
+        .four_col {
+            width: 16%;
+        }
+
+        .five_col {
+            width: 8%;
+        }
+
+        .tel_col {
+            width: 15%;
+        }
+
+        .rate,
+        .filt {
+            width: 10%;
+        }
+
+        #in_year,
+        #in_month,
+        #in_day,
+        #out_year,
+        #out_month,
+        #out_day {
+            width: 20%;
+        }
+
+        #fin_read {
+            height: 3cm;
+        }
+
+        #readme {
+            resize: none;
+            width: 100%;
+            height: 90%;
+            overflow: hidden;
+            border-style: none;
+        }
+
+        .head_title {
+            margin: 0 auto;
+            width: 90%;
+            height: 1.5cm;
+        }
+
+        .logo {
+            width: 10%;
+        }
+
+        .img_logo {
+            margin-left: 20%;
+            width: 80%;
+        }
+
+        .mose {
+            margin-left: 5%;
+            font-weight: 700;
+            font-family: "times new roman";
+            font-size: 10.5pt;
+        }
+
+        .next_one {
+            width: 20%;
+        }
+        .next_two{
+            width: 30%;
+        }
+
+        .foot {
+            text-align: center;
+            height: 0.3cm;
+        }
+
+        .page {
+            width: 210mm;
+            height: 29.7cm;
+            padding: 1cm;
+            margin: 0 auto;
+            border: 1px #1B6D85 solid;
+            border-radius: 5px;
+            background: white;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .contract_txt {
+            font-family: "宋体";
+            font-size: 10.5pt;
+        }
     </style>
+    <style type="text/css" media="print">
+        /*以下是打印格式*/
 
+        *{
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+
+        @page {
+            size: A4;
+            margin: 0.3cm;
+        }
+
+        .page {
+            margin: 0;
+            border: initial;
+            padding: 0.3cm;
+            border-radius: initial;
+            /*width: 20cm;*/
+            min-height: 29.7cm;
+            box-shadow: initial;
+            background: initial;
+            page-break-after: always;
+        }
+        .Noprint{
+            display: none;
+        }
+    </style>
 </head>
-<input id="biuuu_button" type="button" value="打印此页面"  style="height:50px;width:150px;">
-<body lang=ZH-CN style='text-justify-trim:punctuation'>
-<div id="myPrintArea">
-<div class=WordSection1 style='layout-grid:15.6pt'>
-    <!--<div><img src="__PUBLIC__/static/images/logo_company.png" alt="logo" width="60" height="74" align="left" style="margin-left:110px; margin-top:20px" hspace="12" /></div>-->
 
-    <p class=MsoNormal align=center style='text-align:center'><img width=60 height=74 src="__PUBLIC__/static/images/logo_company.png" align=center hspace=12>
-            <span style='font-size:18.0pt;font-family:黑体'>建筑材料工业技术监督研究中心<br/>检  验  受  理  合  同</span></p>
+<body>
+<div class="page">
+    <table class="head_title">
+        <tr>
+            <td class="logo"><img class="img_logo" src="__PUBLIC__/static/images/logo_company.png" /></td>
+            <td style="padding-right: 53pt;">
+                <p class="l_title">建筑材料工业技术监督研究中心</p>
+                <p class="s_title">检 验 受 理 合 同</p>
+            </td>
+        </tr>
+    </table>
+    <div class="mose">SJ－4－17</div>
+    <table border="3" class="test_content">
+        <tr>
+            <td colspan="7" class="principal" align="center">委&nbsp;托&nbsp;人&nbsp;填&nbsp;写</td>
+        </tr>
+        <tr>
+            <td class="hos test_txt">委托单位</td>
+            <td colspan="6"><span class="contract_txt">{$one.clientname}
 
+					</span></td>
+        </tr>
+        <tr>
+            <td class="test_txt">生产单位</td>
+            <td colspan="6"><span class="contract_txt">{$one.productunit}
 
-    <p class=MsoNormal align=left style='text-align:center;text-indent:-458pt'><span lang=EN-US>&nbsp;SJ - 4 - 17</span></p>
+					</span></td>
+        </tr>
+        <tr>
+            <td class="test_txt">样品名称</td>
+            <td colspan="2" class="two_col"><span class="contract_txt">{$one.samplename}
 
-    <div align=center>
+					</span></td>
+            <td class="three_col test_txt">样品编号</td>
+            <td class="four_col"><span class="contract_txt">{$one.samplecode}
 
-        <table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=1002 style='width:501.2pt;border-collapse:collapse;border:none'>
-            
-            <tr style='page-break-inside:avoid;height:21.35pt'>
-                <td width=1002 colspan=9 valign=top style='width:501.2pt;border:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:21.35pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='font-size:14.0pt;line-height:150%;font-family:黑体'>委</span>
-                        <span style='font-size:14.0pt;line-height:150%'> </span>
-                        <span style='font-size:14.0pt;line-height:150%;font-family:黑体'>托</span>
-                        <span style='font-size:14.0pt;line-height:150%'> </span>
-                        <span style='font-size:14.0pt;line-height:150%;font-family:黑体'>人</span>
-                        <span style='font-size:14.0pt;line-height:150%'> </span>
-                        <span style='font-size:14.0pt;line-height:150%;font-family:黑体'>填</span>
-                        <span style='font-size:14.0pt;line-height:150%'> </span>
-                        <span style='font-size:14.0pt;line-height:150%;font-family:黑体'>写</span></p>
-                </td>
-            </tr>
-            <tr style='height:22.4pt'>
-                <td width=176 valign=top style='width:88.0pt;border-top:none;border-left:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>委托单位</span></p>
-                </td>
-                <td width=826 colspan=8 valign=top style='width:413.2pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.5pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.clientname}</span></p>
-                </td>
-            </tr>
-            <tr style='height:22.4pt'>
-                <td width=176 valign=top style='width:88.0pt;border-top:none;border-left:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>生产单位</span></p>
-                </td>
-                <td width=826 colspan=8 valign=top style='width:413.2pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.5pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.productunit}</span></p>
-                </td>
-            </tr>
-            <tr style='height:22.4pt'>
-                <td width=176 valign=top style='width:88.0pt;border-top:none;border-left:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>样品名称</span></p>
-                </td>
-                <td width=279 colspan=2 valign=top style='width:139.7pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.samplename}</span></p>
-                </td>
-                <td width=182 colspan=2 valign=top style='width:91.05pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>样品编号</span></p>
-                </td>
-                <td width=128 colspan=2 valign=top style='width:64.0pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.samplecode}</span></p>
-                </td>
-                <td width=113 valign=top style='width:2.0cm;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>等</span>
-                        <span lang=EN-US style='line-height:150%'>&nbsp;&nbsp; </span>
-                        <span style='line-height:150%;font-family:宋体'>级</span></p>
-                </td>
-                <td width=124 valign=top style='width:61.75pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.5pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.grade}</span></p>
-                </td>
-            </tr>
-            <tr style='height:22.4pt'>
-                <td width=176 valign=top style='width:88.0pt;border-top:none;border-left:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>规格型号</span></p>
-                </td>
-                <td width=279 colspan=2 valign=top style='width:139.7pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.specification}</span></p>
-                </td>
-                <td width=182 colspan=2 valign=top style='width:91.05pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>商</span>
-                        <span lang=EN-US style='line-height:150%'>&nbsp;&nbsp; </span>
-                        <span style='line-height:150%;font-family:宋体'>标</span></p>
-                </td>
-                <td width=365 colspan=4 valign=top style='width:182.45pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.5pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.trademark}</span></p>
-                </td>
-            </tr>
-            <tr style='page-break-inside:avoid;height:22.4pt'>
-                <td width=176 valign=top style='width:88.0pt;border-top:none;border-left:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>生产日期</span>
-                        <span lang=EN-US style='line-height:150%'>/</span>
-                        <span style='line-height:150%;font-family:宋体'>批号</span></p>
-                </td>
-                <td width=279 colspan=2 valign=top style='width:139.7pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.productiondate}</span></p>
-                </td>
-                <td width=182 colspan=2 valign=top style='width:91.05pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>样品数量</span></p>
-                </td>
-                <td width=365 colspan=4 valign=top style='width:182.45pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.5pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.samplequantity}</span></p>
-                </td>
-            </tr>
-            <tr style='page-break-inside:avoid;height:22.4pt'>
-                <td width=176 valign=top style='width:88.0pt;border-top:none;border-left:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>样品状态</span></p>
-                </td>
-                <td width=279 colspan=2 valign=top style='width:139.7pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.samplestatus}</span></p>
-                </td>
-                <td width=182 colspan=2 valign=top style='width:91.05pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>粉（料）水比</span></p>
-                </td>
-                <td width=365 colspan=4 valign=top style='width:182.45pt;border-top:none; border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.5pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.ration}</span></p>
-                </td>
-            </tr>
-            <tr style='height:19.1pt'>
-                <td width=176 style='width:88.0pt;border-top:none;border-left:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:19.1pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>检验依据</span></p>
-                </td>
-                <td width=826 colspan=8 valign=top style='width:413.2pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.5pt;padding:0cm 5.4pt 0cm 5.4pt;height:19.1pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.testcriteria}</span></p>
-                </td>
-            </tr>
-            <tr style='height:68.65pt'>
-                <td width=176 style='width:88.0pt;border-top:none;border-left:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:68.65pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>检验项目</span></p>
-                </td>
-                <td width=826 colspan=8 valign=top style='width:413.2pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.5pt;padding:0cm 5.4pt 0cm 5.4pt;height:68.65pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.testitem}</span></p>
-                </td>
-            </tr>
-            <tr style='height:16.8pt'>
-                <td width=176 style='width:88.0pt;border-top:none;border-left:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt; padding:0cm 5.4pt 0cm 5.4pt;height:16.8pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>检验类别</span></p>
-                </td>
-                <td width=826 colspan=8 valign=top style='width:413.2pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.5pt; padding:0cm 5.4pt 0cm 5.4pt;height:16.8pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>{$one.testcategory}</span></p>
-                </td>
-            </tr>
-            <tr style='page-break-inside:avoid;height:22.4pt'>
-                <td width=748 colspan=6 style='width:374.05pt;border-top:none;border-left:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;text-indent:15.75pt;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>检验报告是否在本中心网站可查询真伪</span>
-                        <span lang=EN-US style='line-height:150%'>&nbsp; </span>
-                        <span style='line-height:150%;font-family:宋体'>（</span>
-                        <span lang=EN-US style='line-height:150%'>www.dmtc.org.cn</span>
-                        <span style='line-height:150%;font-family:宋体'>）</span></p>
-                </td>
-                <td width=254 colspan=3 style='width:127.15pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.5pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;text-indent:10.5pt;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'><php>if($one['ifonline']==1){echo '是';}else{echo '否';}</php></span></p>
-                </td>
-            </tr>
-            <tr style='page-break-inside:avoid;height:22.4pt'>
-                <td width=176 style='width:88.0pt;border-top:none;border-left:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>报告提交方式</span></p>
-                </td>
-                <td width=279 colspan=2 style='width:139.7pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;text-indent:10.5pt;line-height:150%'><span style='line-height:150%;font-family:宋体'>{$one.postmethod}</span></p>
-                </td>
-                <td width=293 colspan=3 valign=top style='width:146.35pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>是否同意分包</span></p>
-                </td>
-                <td width=254 colspan=3 valign=top style='width:127.15pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.5pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;text-indent:10.5pt;line-height:150%'><span style='line-height:150%;font-family:宋体'><php>if($one['ifsubpackage']==1){echo '是';}else{echo '否';}</php></span></p>
-                </td>
-            </tr>
-            <tr style='page-break-inside:avoid;height:22.4pt'>
-                <td width=176 valign=top style='width:88.0pt;border-top:none;border-left:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>委</span>
-                        <span style='line-height:150%'> </span>
-                        <span style='line-height:150%;font-family:宋体'>托</span>
-                        <span style='line-height:150%'> </span>
-                        <span style='line-height:150%;font-family:宋体'>人（签字）</span></p>
-                </td>
-                <td width=152 valign=top style='width:76.0pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.clientsign}</span></p>
-                </td>
-                <td width=127 valign=top style='width:63.7pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>联系电话</span></p>
-                </td>
-                <td width=182 colspan=2 valign=top style='width:91.05pt;border-top:none; border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.telephone}</span></p>
-                </td>
-                <td width=111 valign=top style='width:55.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>传</span>
-                        <span lang=EN-US style='line-height:150%'>&nbsp; </span>
-                        <span style='line-height:150%;font-family:宋体'>真</span></p>
-                </td>
-                <td width=254 colspan=3 valign=top style='width:127.15pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.5pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.tax}</span></p>
-                </td>
-            </tr>
-            <tr style='page-break-inside:avoid;height:22.4pt'>
-                <td width=176 valign=top style='width:88.0pt;border-top:none;border-left:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>邮政编码</span></p>
-                </td>
-                <td width=152 valign=top style='width:76.0pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.postcode}</span></p>
-                </td>
-                <td width=127 valign=top style='width:63.7pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>E-mail</span></p>
-                </td>
-                <td width=547 colspan=6 valign=top style='width:273.5pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.5pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.4pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.email}</span></p>
-                </td>
-            </tr>
-            <tr style='height:21.8pt'>
-                <td width=176 style='width:88.0pt;border-top:none;border-left:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:21.8pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>通讯地址</span></p>
-                </td>
-                <td width=826 colspan=8 style='width:413.2pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.5pt;padding:0cm 5.4pt 0cm 5.4pt;height:21.8pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.address}</span></p>
-                </td>
-            </tr>
-            <tr style='height:34.95pt'>
-                <td width=176 style='width:88.0pt;border-top:none;border-left:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:34.95pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>备</span>
-                        <span lang=EN-US style='line-height:150%'>&nbsp;&nbsp; </span>
-                        <span style='line-height:150%;font-family:宋体'>注</span></p>
-                </td>
-                <td width=826 colspan=8 style='width:413.2pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.5pt;border-right:solid windowtext 1.5pt;padding:0cm 5.4pt 0cm 5.4pt;height:34.95pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.remark}</span></p>
+					</span></td>
+            <td class="rate" class="five_col test_txt">等级</td>
+            <td><span class="contract_txt">{$one.grade}
 
-                </td>
+					</span></td>
+        </tr>
+        <tr>
+            <td class="test_txt">规格型号</td>
+            <td colspan="2"><span class="contract_txt">{$one.specification}
+
+					</span></td>
+            <td class="test_txt">商标</td>
+            <td colspan="3"><span class="contract_txt">{$one.trademark}
+
+					</span></td>
+        </tr>
+        <tr>
+            <td class="test_txt">生产日期/批号</td>
+            <td colspan="2"><span class="contract_txt">{$one.productiondate}
+
+					</span></td>
+            <td class="test_txt">样品数量</td>
+            <td colspan="3"><span class="contract_txt">{$one.samplequantity}
+
+					</span></td>
+        </tr>
+        <tr>
+            <td class="test_txt">样品状态</td>
+            <td colspan="2"><span class="contract_txt">{$one.samplestatus}
+
+					</span></td>
+            <td class="test_txt">粉（料）水比</td>
+            <td colspan="3"><span class="contract_txt">{$one.ration}
+
+					</span></td>
+        </tr>
+        <tr>
+            <td class="test_txt">检验依据</td>
+            <td colspan="6"><span class="contract_txt">{$one.testcriteria}
+
+					</span></td>
+        </tr>
+        <tr>
+            <td class="test_txt">检验项目</td>
+            <td colspan="6"> <textarea name="checkout" id="checkout" readonly>{$one.testitem}</textarea></td>
+        </tr>
+        <tr>
+            <td class="test_txt">检验类别</td>
+            <td colspan="6">{$one.testcategory}</td>
+        </tr>
+        <tr>
+            <td colspan="5" class="test_txt">检验报告是否在本中心网站可查询真伪 （www.dmtc.org.cn）</td>
+            <td colspan="2"><php>if($one['ifonline']==1){echo '是';}else{echo '否';}</php></td>
+        </tr>
+        <tr>
+            <td class="test_txt">报告提交方式</td>
+            <td colspan="2">{$one.postmethod}</td>
+            <td colspan="2" class="test_txt">是否同意分包</td>
+            <td colspan="2"><php>if($one['ifsubpackage']==1){echo '是';}else{echo '否';}</php></td>
+        </tr>
+        <tr>
+            <td class="test_txt">委 托 人（签字）</td>
+            <td><span class="contract_txt">{$one.clientsign}
+					</span></td>
+            <td class="tel_col test_txt">联系电话</td>
+            <td><span class="contract_txt">{$one.telephone}
+
+					</span></td>
+            <td class="test_txt">传真</td>
+            <td colspan="2"><span class="contract_txt">{$one.tax}
+
+					</span></td>
+        </tr>
+        <tr>
+            <td class="test_txt">邮政编码</td>
+            <td><span class="contract_txt">{$one.postcode}
+
+					</span></td>
+            <td>E-mail</td>
+            <td colspan="4"><span class="contract_txt">{$one.email}
+
+					</span></td>
+        </tr>
+        <tr>
+            <td class="test_txt">通讯地址</td>
+            <td colspan="6"> <span class="contract_txt">{$one.address}
+
+					</span></td>
+        </tr>
+        <tr>
+            <td class="test_txt">备注</td>
+            <td colspan="6"> <textarea name="remark" id="remark" readonly>{$one.remark}</textarea></td>
+        </tr>
+        <table border="2" class="test_content_two">
+            <tr>
+                <td colspan="4" class="office" align="center">中&nbsp;心&nbsp;办&nbsp;公&nbsp;室&nbsp;填&nbsp;写</td>
             </tr>
-            <tr style='page-break-inside:avoid;height:29.15pt'>
-                <td width=1002 colspan=9 valign=top style='width:501.2pt;border:solid windowtext 1.0pt;border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:29.15pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='font-size:14.0pt;line-height:150%;font-family:黑体'>中</span>
-                        <span style='font-size:14.0pt;line-height:150%'> </span>
-                        <span style='font-size:14.0pt;line-height:150%;font-family:黑体'>心</span>
-                        <span style='font-size:14.0pt;line-height:150%'> </span>
-                        <span style='font-size:14.0pt;line-height:150%;font-family:黑体'>办</span>
-                        <span style='font-size:14.0pt;line-height:150%'> </span>
-                        <span style='font-size:14.0pt;line-height:150%;font-family:黑体'>公</span>
-                        <span style='font-size:14.0pt;line-height:150%'> </span>
-                        <span style='font-size:14.0pt;line-height:150%;font-family:黑体'>室</span>
-                        <span style='font-size:14.0pt;line-height:150%'> </span>
-                        <span style='font-size:14.0pt;line-height:150%;font-family:黑体'>填</span>
-                        <span style='font-size:14.0pt;line-height:150%'> </span>
-                        <span style='font-size:14.0pt;line-height:150%;font-family:黑体'>写</span></p>
-                </td>
+            <tr>
+                <td class="next_one test_txt">样品状态及数量</td>
+                <td class="next_two"><span class="contract_txt">{$one.samplestaquan}
+
+					</span> </td>
+                <td class="next_one test_txt">收 样 人</td>
+                <td class="next_two"> <span class="contract_txt">{$one.collector}
+
+					</span> </td>
             </tr>
-            <tr style='page-break-inside:avoid;height:22.25pt'>
-                <td width=176 style='width:88.0pt;border:solid windowtext 1.0pt;border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:22.25pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>样品状态及数量</span></p>
-                </td>
-                <td width=341 colspan=3 style='width:170.45pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.25pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.samplestaquan}</span></p>
-                </td>
-                <td width=121 style='width:60.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.25pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>收</span>
-                        <span style='line-height:150%'> </span>
-                        <span style='line-height:150%;font-family:宋体'>样</span>
-                        <span style='line-height:150%'> </span>
-                        <span style='line-height:150%;font-family: 宋体'>人</span></p>
-                </td>
-                <td width=365 colspan=4 style='width:182.45pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.25pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.collector}</span></p>
-                </td>
+            <tr>
+                <td class="test_txt">中心编号</td>
+                <td><span class="contract_txt">{$one.centreno}
+
+					</span></td>
+                <td class="test_txt">检验费用</td>
+                <td><span class="contract_txt">{$cost.testfee}+{$cost.drecord}+{$cost.dcopy}+{$cost.drevise}={$one.testcost}
+
+					</span></td>
             </tr>
-            <tr style='height:22.25pt'>
-                <td width=176 valign=top style='width:88.0pt;border:solid windowtext 1.0pt;border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:22.25pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>中心编号</span></p>
-                </td>
-                <td width=341 colspan=3 valign=top style='width:170.45pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.25pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$one.centreno}</span></p>
-                </td>
-                <td width=121 valign=top style='width:60.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.25pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>检验费用</span></p>
-                </td>
-                <td width=365 colspan=4 valign=top style='width:182.45pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.25pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span lang=EN-US style='line-height:150%'>{$cost.testfee}+{$cost.drecord}+{$cost.dcopy}+{$cost.drevise}={$one.testcost}</span></p>
-                </td>
+            <tr>
+                <td class="test_txt">收样日期</td>
+                <td><span class="contract_txt"><if condition="$one['collectdate']">{$one.collectdate|strtotime|date=Y年m月d日,###}</if>
+
+					</span></td>
+                <td class="test_txt">报告日期</td>
+                <td><span class="contract_txt"><if condition="$one['reportdate']">{$one.reportdate|strtotime|date=Y年m月d日,###}</if>
+
+					</span></td>
             </tr>
-            <tr style='page-break-inside:avoid;height:22.25pt'>
-                <td width=176 valign=top style='width:88.0pt;border:solid windowtext 1.0pt;border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:22.25pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>收样日期</span></p>
-                </td>
-                <td width=341 colspan=3 valign=top style='width:170.45pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.25pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'><if condition="$one['collectdate']">{$one.collectdate|strtotime|date=Y年m月d日,###}<else/></if></span></p>
-                </td>
-                <td width=121 style='width:60.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.25pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>报告日期</span></p>
-                </td>
-                <td width=365 colspan=4 valign=top style='width:182.45pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:22.25pt'>
-                    <p class=MsoNormal align=center style='text-align:center;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'><if condition="$one['reportdate']">{$one.reportdate|strtotime|date=Y年m月d日,###}<else/></if></span></p>
-                </td>
-            </tr>
-            <tr style='page-break-inside:avoid;height:20.0pt'>
-                <td width=176 style='width:88.0pt;border:solid windowtext 1.0pt;border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:20.0pt'>
-                    <p class=MsoNormal align=center style='text-align:center;text-indent:21.0pt;line-height:150%'>
-                        <span style='line-height:150%;font-family:宋体'>说</span>
-                        <span lang=EN-US style='line-height:150%'>&nbsp;&nbsp;&nbsp; </span><span style='line-height:150%;font-family:宋体'>明</span></p>
-                </td>
-                <td width=826 colspan=8 valign=top style='width:413.2pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:20.0pt'>
-                    <a><span lang=EN-US style='font-size:9.0pt'>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;</span></span><span style='font-size:9.0pt;font-family:宋体'>委托人应对所提供的资料、信息和样品的真实性负责。</span></a><br/>
-                    <a><span lang=EN-US style='font-size:9.0pt'>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;</span></span><span style='font-size:9.0pt;font-family:宋体'>若对本单内容有变动，请委托方电话、邮件、传真通知受理人。</span></a><br/>
-                    <a><span lang=EN-US style='font-size:9.0pt'>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;</span></span><span style='font-size:9.0pt;font-family:宋体'>本中心仅对来样负责。</span></a><br/>
-                    <a><span lang=EN-US style='font-size:9.0pt'>4.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;</span></span><span style='font-size:9.0pt;font-family:宋体'>委托方要求取走剩余样品时，若在收到检验报告后一个月内未取回，且没有说明情况的，剩余样品由中心统一处理；样品取走后不再受理异议申诉。</span></a><br/>
-                </td>
+            <tr>
+                <td class="test_txt">说&nbsp;&nbsp;&nbsp;明</td>
+                <td colspan="3" id="fin_read"> <textarea name="readme" id="readme" readonly>
+1. 委托人应对所提供的资料、信息和样品的真实性负责。
+2. 若对本单内容有变动，请委托方电话、邮件、传真通知受理人。
+3. 本中心仅对来样负责。
+4. 委托方要求取走剩余样品时，若在收到检验报告后一个月内未取回，且没有说明情况的，剩余样品由中心统一处理；样品取走后不再受理异议申诉。
+				</textarea></td>
             </tr>
         </table>
-        <p></p>
-    </div>
-
-    <p class=MsoNormal align=center style='margin-left:17.85pt;text-align:center'>
-        <span style='font-size:9.0pt;font-family:宋体'>单位地址：北京市朝阳区管庄东里中国建材院内北楼</span>
-        <span lang=EN-US style='font-size:9.0pt'>&nbsp; </span>
-        <span style='font-size:9.0pt;font-family:宋体'>电话：</span>
-        <span lang=EN-US style='font-size:9.0pt'>010-51164723&nbsp;</span>
-        <span style='font-size:9.0pt;font-family:宋体'>传真：</span>
-        <span lang=EN-US style='font-size:9.0pt'>010-51164724</span></p>
-
-    <p class=MsoNormal><span lang=EN-US style='font-size:5.0pt'>&nbsp;</span></p>
-
-</div>
+    </table>
+    <footer class="foot test_txt">单位地址：北京市朝阳区管庄东里中国建材院内北楼&nbsp;&nbsp;电话：010-51164723&nbsp;&nbsp;传真：010-51164724</footer>
+    <button onclick="window.print()" class="Noprint">打印</button>
 </div>
 </body>
 
