@@ -157,21 +157,12 @@ class TestController extends Controller{
         $this->ajaxReturn($rs);
     }
 //上传完毕
-    public function doAllSave(){
-        $centreno=I("centreno");
-        $rs = array("msg"=>"fail");
+    public function doAllSave($centreno){
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
         $where= "centreno='{$centreno}'";
-        $data=array(
-            'status'=>8,
-            //'takelist_time'=>date("Y-m-d H:i:s"),
-            //'takelist_user_id'=>$userid,
-        );
-        if(D("contract_flow")->where($where)->save($data)){
-            $rs['msg'] = 'succ';
-        }
-        $this->ajaxReturn($rs);
+        $data['status']=8;
+        D("contract_flow")->where($where)->save($data);
     }
     //上传图片
     public function recordPictureUp(){
@@ -215,9 +206,11 @@ class TestController extends Controller{
         $this->display();
     }
 
-    public function doUploadPic(){
+    public function doUploadPic($a=0){
         $id = I("id",0,'intval');
         $centreno=I("centreno");//!!!!!!!!!!!!!!!!
+        $where= "centreno='{$centreno}'";
+        $allsave=I("allsave");
         $imgurl = I("imgurl");
         $remark = I("remark");
         $result = array("msg"=>"fail");
@@ -236,7 +229,13 @@ class TestController extends Controller{
                 $result['msg'] = 'succ';
             }
         }
-        $this->ajaxReturn($result);
+        if($allsave==1){
+                $this->doAllSave($centreno);
+                    $result['msg'] = 'success';
+                    $this->ajaxReturn($result);
+        }
+        else{$this->ajaxReturn($result);}
+
     }
 
     public function doDeletePic(){

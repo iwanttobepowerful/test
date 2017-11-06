@@ -53,7 +53,7 @@ class AuditController extends Controller {
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
         $audit_report=M("audit_report");//实例化对象
-        $rs=$audit_report->order('id')->limit("{$offset},{$pagesize}")->select();
+        $rs=$audit_report->order('create_time desc,id desc')->limit("{$offset},{$pagesize}")->select();
         $count = D("audit_report")->count();
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");

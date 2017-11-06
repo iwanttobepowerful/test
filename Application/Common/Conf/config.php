@@ -6,6 +6,7 @@ return array(
 	'APP_SUB_DOMAIN_DEPLOY'   =>    TRUE,
 	'APP_SUB_DOMAIN_RULES'    =>    array(
 		/*'adm.qoowan.net'  	=> array('/'),*/
-		'm.qooce.cn'   => array('Wap/')
+		'm.qooce.cn'   => array('Wap/'),
+		'm.jiancai.com'   => array('Wap/')//test domain
 	)
 );

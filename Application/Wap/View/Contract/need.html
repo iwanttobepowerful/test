@@ -1,33 +1,52 @@
-<include file="Common:header" title=""/>
-
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+<meta name="format-detection" content="telephone=no,email=no,date=no,aItemress=no">
+<title></title>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/wap/css/aui.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/wap/css/aui-append.css" />
+<script type="text/javascript" src="__PUBLIC__/wap/script/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/wap/script/jquery.form.js"></script>
+<!--end -->
+</head>
+<body>
+<!-- <header class="aui-bar aui-bar-nav aui-font-size-12">我的控制台</header> -->
+<php>if(session('admin_auth')){</php>
 <header class="aui-bar aui-bar-nav">
     <a class="aui-pull-left aui-btn aui-font-size-12" href="javascript:history.go(-1);">
         <span class="aui-iconfont aui-icon-left"></span>返回
     </a>
-    <div class="aui-title aui-font-size-14">合同列表</div>
-	 <a class="aui-padded-10">
-    <a class="aui-pull-right aui-btn aui-btn-outlined" href="{:U('account/logout')}"><span class="aui-iconfont aui-icon-close "></span></a>
-</a>
+    <div class="aui-title aui-font-size-14">需修改报告</div>
+	 
 </header>
+<php>}else{</php>
+
+<php>}</php>
+
+
 <!--以下是模板-->
 <div class="aui-content aui-margin-b-15" >
     <ul class="aui-list aui-media-list">
         <li class="aui-list-item aui-list-item-arrow">
             <div class="aui-media-list-item-inner">
-                <div class="aui-list-item-inner">
+                <div class="aui-list-item-inner ">
                     <div class="aui-list-item-text">
                         <div class="aui-list-item-title">中心编号:2039A-L1</div>
                         <div class="aui-list-item-right">2017-10-12</div>
                     </div>
                     <div class="aui-list-item-text aui-ellipsis-2">
-                        委托单位：PHP
+                        样品名称：PHP
                         <br />
                         生产单位：从入门到放弃
                         <br />
-                        品项：水泥
-                        <br />
-                        费用：490￥
+                        检验依据：水泥
+						
+                    
                     </div>
+					<div class="aui-btn aui-btn-danger aui-pull-right  ">不通过</div>
+                      <div class="aui-btn aui-btn-info aui-margin-r-15 aui-pull-right">审核通过</div> 
                 </div>
             </div>
         </li>
@@ -43,14 +62,15 @@
                         <div class="aui-list-item-right">2017-10-12</div>
                     </div>
                     <div class="aui-list-item-text aui-ellipsis-2">
-                        委托单位：Java
+                        样品名称：PHP
                         <br />
-                        生产单位：从精通到陌生
+                        生产单位：从入门到放弃
                         <br />
-                        品项：水泥
-                        <br />
-                        费用：490￥
+                        检验依据：水泥
+                      
                     </div>
+						<div class="aui-btn aui-btn-danger aui-pull-right  ">不通过</div>
+                      <div class="aui-btn aui-btn-info aui-margin-r-15 aui-pull-right">审核通过</div>
                 </div>
             </div>
         </li>
@@ -66,14 +86,15 @@
                         <div class="aui-list-item-right">2017-10-12</div>
                     </div>
                     <div class="aui-list-item-text aui-ellipsis-2">
-                        委托单位：C#
+                        样品名称：PHP
                         <br />
-                        生产单位：从看懂到看开
+                        生产单位：从入门到放弃
                         <br />
-                        品项：水泥
-                        <br />
-                        费用：490￥
+                        检验依据：水泥
+                      
                     </div>
+						<div class="aui-btn aui-btn-danger aui-pull-right  ">不通过</div>
+                      <div class="aui-btn aui-btn-info aui-margin-r-15 aui-pull-right">审核通过</div>
                 </div>
             </div>
         </li>
@@ -89,14 +110,15 @@
                         <div class="aui-list-item-right">2017-10-12</div>
                     </div>
                     <div class="aui-list-item-text aui-ellipsis-2">
-                        委托单位：Dreamweaver
+                        样品名称：PHP
                         <br />
-                        生产单位：从安装到放弃
+                        生产单位：从入门到放弃
                         <br />
-                        品项：水泥
-                        <br />
-                        费用：490￥
+                        检验依据：水泥
+                      
                     </div>
+						<div class="aui-btn aui-btn-danger aui-pull-right  ">不通过</div>
+                      <div class="aui-btn aui-btn-info aui-margin-r-15 aui-pull-right">审核通过</div>
                 </div>
             </div>
         </li>
@@ -112,14 +134,15 @@
                         <div class="aui-list-item-right">2017-10-12</div>
                     </div>
                     <div class="aui-list-item-text aui-ellipsis-2">
-                        委托单位：SQL server
+                        样品名称：PHP
                         <br />
-                        生产单位：没入门就放弃
+                        生产单位：从入门到放弃
                         <br />
-                        品项：水泥
-                        <br />
-                        费用：490￥
+                        检验依据：水泥
+                      
                     </div>
+						<div class="aui-btn aui-btn-danger aui-pull-right  ">不通过</div>
+                      <div class="aui-btn aui-btn-info aui-margin-r-15 aui-pull-right">审核通过</div>
                 </div>
             </div>
         </li>
