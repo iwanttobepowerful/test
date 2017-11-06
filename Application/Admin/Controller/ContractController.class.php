@@ -209,7 +209,7 @@ class ContractController extends Controller
 			//"sampleunti"=>$sampleunti,
 		);
 		
-
+		//费用表
 		$date_cost =array(
 			"centreNo"=>$centreNo,
 			"testFee"=>$testFee,
@@ -219,9 +219,12 @@ class ContractController extends Controller
 			'costDate'=>Date("Y-m-d H:i:s")
 		);
 		
+		$contract_user_id = $admin_auth['id'];
+		//pr($contract_user_id);
 		$data_flow = array(
 			"centreNo"=>$centreNo,
-			'modify_time'=>Date("Y-m-d H:i:s"),
+			'contract_user_id'=>$contract_user_id,
+			'contract_time'=>Date("Y-m-d H:i:s"),
 		);
 		
 		
@@ -482,7 +485,17 @@ class ContractController extends Controller
 		$centreno = I("id");
 		$where['centreNo']=$centreno;
 		$result=M('sampling_form')->where($where)->find();
+		//判断角色，确定是否可以修改
+		$admin_auth = session("admin_auth");
+		$if_admin = $admin_auth['super_admin'];
+		$roleid = $admin_auth['gid'];
 		
+		$role = D('common_role')->where('id='.$roleid)->find();
+		if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
+			$if_edit = 1;	
+		}else{
+			$if_edit = 0;	
+		}
 		
 		$simsigndateyear = $result['simsigndate'] ? date("Y",strtotime($result[0]['simsigndate'])):"";
         $simsigndatemonth =  $result['simsigndate'] ? date("m",strtotime($result[0]['simsigndate'])):"";
@@ -507,6 +520,7 @@ class ContractController extends Controller
 		
 		$body=array(
             'one'=>$result,
+			'if_edit'=>$if_edit
         );
         $this->assign($body);
         $this->display();
@@ -522,20 +536,23 @@ class ContractController extends Controller
 		$productiondate=I("productiondate");
 		$batchno=I("batchno");
 		$simplerSign=I("simplerSign");
-		$simplerYear=I("simplerYear");
-		$simplerMonth=I("simplerMonth");
-		$simplerDay=I("simplerDay");
-		$simSignDate = $simplerYear."-".$simplerMonth."-".$simplerDay;
+		$simSignDate=I("simSignDate");
+		//$simplerYear=I("simplerYear");
+		//$simplerMonth=I("simplerMonth");
+		//$simplerDay=I("simplerDay");
+		//$simSignDate = $simplerYear."-".$simplerMonth."-".$simplerDay;
 		$sealerSign=I("sealerSign");
-		$sealerYear=I("sealerYear");
-		$sealerMonth=I("sealerMonth");
-		$sealerDay=I("sealerDay");
-		$seaSingDate = $sealerYear."-".$sealerMonth."-".$sealerDay;
+		$seaSingDate=I("seaSingDate");
+		//$sealerYear=I("sealerYear");
+		//$sealerMonth=I("sealerMonth");
+		//$sealerDay=I("sealerDay");
+		//$seaSingDate = $sealerYear."-".$sealerMonth."-".$sealerDay;
 		$enterpriseSign=I("enterpriseSign");
-		$enterpriseYear=I("enterpriseYear");
-		$enterpriseMonth=I("enterpriseMonth");
-		$enterpriseDay=I("enterpriseDay");
-		$entSignDate = $enterpriseYear."-".$enterpriseMonth."-".$enterpriseDay;
+		$entSignDate=I("entSignDate");
+		//$enterpriseYear=I("enterpriseYear");
+		//$enterpriseMonth=I("enterpriseMonth");
+		//$enterpriseDay=I("enterpriseDay");
+		//$entSignDate = $enterpriseYear."-".$enterpriseMonth."-".$enterpriseDay;
 		$telephone=I("telephone");
 		$tax=I("tax");
 		$address=I("address");
@@ -556,7 +573,9 @@ class ContractController extends Controller
 			'tax'=>$tax,
 			'address'=>$address
 		);
+		//pr($data);
 		$where['centreNo']=$centreno;
+		//pr($centreno);
 		$rs['msg']='fail';
 		M()->startTrans();
 		if(D('sampling_form')->where($where)->save($data)){
@@ -573,17 +592,34 @@ class ContractController extends Controller
 	public function doUploadSampleImage(){
 		$centreno = I('centreno');
 		$type = I('type');
+		if($type=='sample'){
+			$list = D('sample_picture')->where('type=0 and centreno="'.$centreno.'"')->select();
+		}else{
+			$list = D('sample_picture')->where('type=1 and centreno="'.$centreno.'"')->select();
+		}
 		$body=array(
 			'centreno'=>$centreno,
-			'type'=>$type
+			'type'=>$type,
+			'list'=>$list
 		);
 		$this->assign($body);
 		$this->display();
 	}
 	
+	//抽样单提交
+	public function doDeleteSample(){
+        $id =I("id",0,'intval');
+        $rs = array("msg"=>"fail");
+        if(D("sample_picture")->where("id=".$id)->delete()){
+            $rs['msg'] = 'succ';
+        }
+        $this->ajaxReturn($rs);
+    }
+	
+	//保存抽样图片
 	public function saveSampleImage(){
 		$id = I("id");
-		//$type = I("type");
+		$type = I("type")=='sample'?0:1;
 		$imgurl = I("imgurl");
         $remark = I("remark");
         $result = array("msg"=>"fail");
@@ -597,6 +633,7 @@ class ContractController extends Controller
 			'centreNo'=>$id,
 			'picture_name'=>$imgurl,
 			'remark'=>$remark,
+			'type'=>$type
 		);
 		M()->startTrans();
 		if(D(sample_picture)->add($data)){
@@ -655,18 +692,19 @@ class ContractController extends Controller
 			$if_edit = 0;	
 		}
 		$keyword = I("keyword");//获取参数
-        $where= "centreno like '%{$keyword}%'";
+        $where= "c.centreNo like '%{$keyword}%'";
 		$page = I("p",'int');
         $pagesize = 10;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
 		
-		$list = D("contract")->where($where)->order('collectDate desc,id desc')->limit("{$offset},{$pagesize}")->select();
-		$count = D("contract")->where($where)->count();
+		//判断是接单还是签发
+		$ifstatus = 
+		$list = D("contract as c")->field('c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id')->where($where)->order('c.collectDate desc,c.id desc')->limit("{$offset},{$pagesize}")->select();
+		$count = D("contract as c")->where($where)->count();
 		$Page= new \Think\Page($count,$pagesize);
 		$Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
 		$pagination= $Page->show();// 分页显示输出
-
 		$body = array(
 			"list"=>$list,
 			'pagination'=>$pagination,

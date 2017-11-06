@@ -41,10 +41,17 @@
                         </if>
                     	<a href="/admin/manager/contractDetail?id={$con.centreno}"  class="btn btn-info btn-xs" >检验受理合同</a>
                         <a href="/admin/test/infoShow?id={$con.centreno}"  class="btn btn-info btn-xs" >检验工作通知单</a>
-                        <a href="{:U('/admin/test/sampleShow')}?id={$con.centreno}" style="display:none" class="btn btn-info btn-xs" >抽样单</a>
-                    	<!--<a href="{:U('/admin/contract/sampleEdit')}?id={$con.centreno}" style="display:none" class="btn btn-info btn-xs" >抽样单</a>-->
+                        <!--<a href="{:U('/admin/test/sampleShow')}?id={$con.centreno}" style="display:none" class="btn btn-info btn-xs" >抽样单</a>-->
+                    	<a href="{:U('/admin/contract/sampleEdit')}?id={$con.centreno}" style="display:none" class="btn btn-info btn-xs" >抽样单</a>
                     </td>
-                    <td></td>
+                    <td>
+                    
+                    	<if condition="$con['status']==7">
+                        	<span style="color:green">{$con.takename}已接单<br/>{$con.takelist_time}</span>
+                        <elseif condition="$con['status']==5"/>
+                        	<span style="color:red">{$con.innername}已签发<br/>{$con.inner_sign_time}</span>
+                        </if>
+                    </td>
                 </tr>
             </volist>
             
