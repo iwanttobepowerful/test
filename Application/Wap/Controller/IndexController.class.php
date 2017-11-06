@@ -21,6 +21,10 @@ class IndexController extends Controller {
         $this->assign('orders_count',$orders_count);
         $this->display();
         */
+       $body = array(
+            'pagetitle'=>"我的控制台",
+        );
+       $this->assign($body);
        $this->display("Common/main");
     }
 }
