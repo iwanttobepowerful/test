@@ -16,8 +16,9 @@
                 <tr>
                     <td>{$vo.id}</td>
                     <td>{$vo.centreno}</td>
-                    <td><button name="btn_change" onclick="onUpdate({$vo.id})" class="btn btn-success btn-xs" {$view}><i class="glyphicon glyphicon-ok-circle"></i>批准</button>
-                        <button name="btn_change" onclick="update({$vo.id})" class="btn btn-danger btn-xs" {$view}><i class="glyphicon glyphicon-remove-circle"></i>不批准</button></td>
+                    <td><if condition="$vo['status'] eq 3">
+                        <button onclick="onUpdate({$vo.id})" class="btn btn-success btn-xs" {$view}><i class="glyphicon glyphicon-ok-circle"></i>批准</button>
+                        <button onclick="update({$vo.id})" class="btn btn-danger btn-xs" {$view}><i class="glyphicon glyphicon-remove-circle"></i>不批准</button></if></td>
                     <td>{$vo.name}/{$vo.verify_time}</td>
                     <td>
                         <if condition="$vo['status'] eq 3">
