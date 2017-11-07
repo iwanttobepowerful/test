@@ -31,9 +31,9 @@ class TestController extends Controller{
         $where= "centreNo='{$keyword}'";
 
         $work_inform_form=M('work_inform_form');
-        $result=$work_inform_form->where($where)->find();
+        $result=$work_inform_form->where($where)->select();
         $body=array(
-            'one'=>$result,
+            'lists'=>$result,
         );
         $this->assign($body);
         $this->display();
@@ -59,43 +59,43 @@ class TestController extends Controller{
     public function sampleShow(){
         $keyword = I("id");//获取参数
         $where= "centreno='{$keyword}'";
-        $result=M('sampling_form')->where($where)->find();
-		
-		$admin_auth = session("admin_auth");
-		$if_admin = $admin_auth['super_admin'];
-		$roleid = $admin_auth['gid'];
-		
-		$role = D('common_role')->where('id='.$roleid)->find();
-		if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
-			$if_edit = 1;	
-		}else{
-			$if_edit = 0;	
-		}
+        $result=M('sampling_form')->where($where)->select();
 
-        $simsigndateyear = $result['simsigndate'] ? date("Y",strtotime($result['simsigndate'])):"";
-        $simsigndatemonth =  $result['simsigndate'] ? date("m",strtotime($result['simsigndate'])):"";
-        $simsigndateday =  $result['simsigndate'] ? date("d",strtotime($result['simsigndate'])):"";
-        array_push($result,$simsigndateyear);
-        array_push($result,$simsigndatemonth);
-        array_push($result,$simsigndateday);
+        $admin_auth = session("admin_auth");
+        $if_admin = $admin_auth['super_admin'];
+        $roleid = $admin_auth['gid'];
 
-        $seasingdateyear =  $result['seasingdate'] ? date("Y",strtotime($result['seasingdate'])):"";
-        $seasingdatemonth =  $result['seasingdate'] ? date("m",strtotime($result['seasingdate'])):"";
-        $seasingdateday =  $result['seasingdate'] ? date("d",strtotime($result['seasingdate'])):"";
-        array_push($result,$seasingdateyear);
-        array_push($result,$seasingdatemonth);
-        array_push($result,$seasingdateday);
+        $role = D('common_role')->where('id='.$roleid)->find();
+        if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
+            $if_edit = 1;
+        }else{
+            $if_edit = 0;
+        }
 
-        $entsigndateyear =  $result['entsigndate'] ? date("Y",strtotime($result['entsigndate'])):"";
-        $entsigndatemonth =  $result['entsigndate'] ? date("m",strtotime($result['entsigndate'])):"";
-        $entsigndateday =  $result['entsigndate'] ? date("d",strtotime($result['entsigndate'])):"";
-        array_push($result,$entsigndateyear);
-        array_push($result,$entsigndatemonth);
-        array_push($result,$entsigndateday);
+        $simsigndateyear = $result[0]['simsigndate'] ? date("Y",strtotime($result[0]['simsigndate'])):"";
+        $simsigndatemonth =  $result[0]['simsigndate'] ? date("m",strtotime($result[0]['simsigndate'])):"";
+        $simsigndateday =  $result[0]['simsigndate'] ? date("d",strtotime($result[0]['simsigndate'])):"";
+        array_push($result[0],$simsigndateyear);
+        array_push($result[0],$simsigndatemonth);
+        array_push($result[0],$simsigndateday);
+
+        $seasingdateyear =  $result[0]['seasingdate'] ? date("Y",strtotime($result[0]['seasingdate'])):"";
+        $seasingdatemonth =  $result[0]['seasingdate'] ? date("m",strtotime($result[0]['seasingdate'])):"";
+        $seasingdateday =  $result[0]['seasingdate'] ? date("d",strtotime($result[0]['seasingdate'])):"";
+        array_push($result[0],$seasingdateyear);
+        array_push($result[0],$seasingdatemonth);
+        array_push($result[0],$seasingdateday);
+
+        $entsigndateyear =  $result[0]['entsigndate'] ? date("Y",strtotime($result[0]['entsigndate'])):"";
+        $entsigndatemonth =  $result[0]['entsigndate'] ? date("m",strtotime($result[0]['entsigndate'])):"";
+        $entsigndateday =  $result[0]['entsigndate'] ? date("d",strtotime($result[0]['entsigndate'])):"";
+        array_push($result[0],$entsigndateyear);
+        array_push($result[0],$entsigndatemonth);
+        array_push($result[0],$entsigndateday);
 
         $body=array(
-            'one'=>$result,
-			'if_edit'=>$if_edit
+            'lists'=>$result,
+            'if_edit'=>$if_edit
 
         );
         $this->assign($body);
@@ -157,12 +157,21 @@ class TestController extends Controller{
         $this->ajaxReturn($rs);
     }
 //上传完毕
-    public function doAllSave($centreno){
+    public function doAllSave(){
+        $centreno=I("centreno");
+        $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
         $where= "centreno='{$centreno}'";
-        $data['status']=8;
-        D("contract_flow")->where($where)->save($data);
+        $data=array(
+            'status'=>8,
+            //'takelist_time'=>date("Y-m-d H:i:s"),
+            //'takelist_user_id'=>$userid,
+        );
+        if(D("contract_flow")->where($where)->save($data)){
+            $rs['msg'] = 'succ';
+        }
+        $this->ajaxReturn($rs);
     }
     //上传图片
     public function recordPictureUp(){
@@ -206,11 +215,9 @@ class TestController extends Controller{
         $this->display();
     }
 
-    public function doUploadPic($a=0){
+    public function doUploadPic(){
         $id = I("id",0,'intval');
         $centreno=I("centreno");//!!!!!!!!!!!!!!!!
-        $where= "centreno='{$centreno}'";
-        $allsave=I("allsave");
         $imgurl = I("imgurl");
         $remark = I("remark");
         $result = array("msg"=>"fail");
@@ -229,13 +236,7 @@ class TestController extends Controller{
                 $result['msg'] = 'succ';
             }
         }
-        if($allsave==1){
-                $this->doAllSave($centreno);
-                    $result['msg'] = 'success';
-                    $this->ajaxReturn($result);
-        }
-        else{$this->ajaxReturn($result);}
-
+        $this->ajaxReturn($result);
     }
 
     public function doDeletePic(){
