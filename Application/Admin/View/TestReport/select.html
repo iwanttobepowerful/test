@@ -25,23 +25,15 @@
 	<body>
       		<table border="3" class="sel_img" >
 			     <tr>
-				    <td><a href="/admin/TestReport/seleteTemp?mod=1&conNo={$contactNo}"><img src="__PUBLIC__/static/images/a_img.png" class="img-rounded"></td>
-				    <td><a href="/admin/TestReport/seleteTemp?mod=2&conNo={$contactNo}"><img src="__PUBLIC__/static/images/b_img.png" class="img-rounded"></td>
-				    <td><a href="/admin/TestReport/seleteTemp?mod=3&conNo={$contactNo}"><img src="__PUBLIC__/static/images/c_img.png" class="img-rounded"></td>
-				    <td><a href="/admin/TestReport/seleteTemp?mod=4&conNo={$contactNo}"><img src="__PUBLIC__/static/images/d_img.png" class="img-rounded"></td>
-				    <td><a href="/admin/TestReport/seleteTemp?mod=5&conNo={$contactNo}"><img src="__PUBLIC__/static/images/e_img.png" class="img-rounded"></td>
-				    <td><a href="/admin/TestReport/seleteTemp?mod=6&conNo={$contactNo}"><img src="__PUBLIC__/static/images/f_img.png" class="img-rounded"></td>
-                    <td><a href="/admin/TestReport/seleteTemp?mod=7&conNo={$contactNo}"><img src="__PUBLIC__/static/images/g_img.png" class="img-rounded"></td>
-			     </tr>
+					 <volist name="tpl" id="one">
+						 <td>
+							  <a class="btn btn-primary" href="/admin/TestReport/seleteTemp?mod={$one.id}&conNo={$contactNo}">select</a>
+							 <img src="{$one.path}" class="img-rounded" />
+						 </td>
+
+					 </volist>
+				    </tr>
 			     <tr>
-				    <td><button type="button" class="btn btn-info">模板一</button></td>
-				    <td><button type="button" class="btn btn-info">模板二</button></td>
-				    <td><button type="button" class="btn btn-info">模板三</button></td>
-				    <td><button type="button" class="btn btn-info">模板四</button></td>
-				    <td><button type="button" class="btn btn-info">模板五</button></td>
-				    <td><button type="button" class="btn btn-info">模板六</button></td>
-                    <td><button type="button" class="btn btn-info">模板七</button></td>
-			     </tr>
 		  </table>
       
 		<script src="__PUBLIC__/static/js/index.js" type="text/javascript" charset="utf-8"></script>
