@@ -615,6 +615,16 @@ class ContractController extends Controller
 		$this->display();
 	}
 	
+	//检验抽样现场图片个数
+	public function checkFinish(){
+		$centreno = I('centreno');
+		$count = D('sample_picture')->where('type=1 and centreno="'.$centreno.'"')->count();
+		$rs=array(
+			'count'=>$count
+		);
+		$this->ajaxReturn($rs);
+	}
+	
 	//抽样单图片删除
 	public function doDeleteSample(){
         $id =I("id",0,'intval');
@@ -687,6 +697,31 @@ class ContractController extends Controller
 		//dump($body);
 	    $this->assign($body);
 		$this->display();
+	}
+	
+	//外部签发
+	public function externalSign(){
+		$rs = array('msg'=>'fail');
+		$centreNo = I('centreno');
+		//pr($centreNo);
+		$admin_auth = session("admin_auth");
+		$external_sign_user_id = $admin_auth['id'];
+		//pr($centreNo);
+		$data_flow = array(		
+			'status'=>6,
+			'external_sign_user_id'=>$external_sign_user_id,
+			'contract_time'=>Date("Y-m-d H:i:s"),
+		);
+		$where['centreNo']=$centreNo;
+		M()->startTrans();	
+		if(D("contract_flow")->where($where)->save($data_flow)){
+			M()->commit();
+			$rs['msg']='已外部签发';
+		}else{
+			$rs['msg']='签发失败';
+			M()->rollback();	
+		}
+		$this->ajaxReturn($rs);
 	}
 
 	//合同列表

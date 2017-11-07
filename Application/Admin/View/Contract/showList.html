@@ -37,7 +37,11 @@
                     <td width="33%">
                     	<!--<a href="{:U('/admin/contract/editContract')}?id={$con.centreno}" id="editContract" target="_blank" class="btn btn-info btn-xs" ><i class="glyphicon glyphicon-search"></i>修改</a>-->
                         <if condition="$if_edit==1">
-                       	 <a href="{:U('/admin/contract/editContract')}?id={$con.centreno}" class="btn btn-info btn-xs" >修改</a>
+                        	<if condition="$con['status'] != 5 and $con['status'] != 6">
+                       	 		<a href="{:U('/admin/contract/editContract')}?id={$con.centreno}" class="btn btn-info btn-xs" >修改</a>
+                            <else />
+                            	<a href="{:U('/admin/contract/editContract')}?id={$con.centreno}" class="btn btn-info btn-xs" >申请修改</a>
+                            </if>
                         </if>
                     	<a href="/admin/manager/contractDetail?id={$con.centreno}"  class="btn btn-info btn-xs" >检验受理合同</a>
                         <a href="/admin/test/infoShow?id={$con.centreno}"  class="btn btn-info btn-xs" >检验工作通知单</a>
@@ -49,7 +53,11 @@
                     	<if condition="$con['status']==7">
                         	<span style="color:green">{$con.takename}已接单<br/>{$con.takelist_time}</span>
                         <elseif condition="$con['status']==5"/>
-                        	<span style="color:red">{$con.innername}已签发<br/>{$con.inner_sign_time}</span>
+                        	<span style="color:red">{$con.innername}已内部签发&nbsp;&nbsp;&nbsp;<a href="#" class="btn btn-info btn-xs" onclick="externalSign('{$con.centreno}')" >外部签发完毕</a>
+                            <br/>
+                            {$con.inner_sign_time}</span>
+                        <elseif condition="$con['status']==6"/>
+                        	<span style="color:red">已外部签发</span>   
                         </if>
                     </td>
                 </tr>
@@ -80,6 +88,21 @@
         });
 		
 	});
+	
+	function externalSign(centreno){
+		if(confirm('确认已外部签发？')){
+			$.ajax({
+				url: "{:U('/admin/contract/externalSign')}",
+				dataType: 'json',			
+				async: false,
+				data:{'centreno':centreno},
+				success: function (res) {
+					alert(res.msg);
+					window.location.reload();
+				}
+			});	
+		}
+	}
 </script>
 
 <include file="Common:footer" />
