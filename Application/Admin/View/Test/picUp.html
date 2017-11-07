@@ -22,7 +22,6 @@
                 <div class="col-sm-10">
                     <textarea class="form-control" name="remark">{$pic['remark']}</textarea>
                     <p class="help-block">（选填）</p>
-                    <label><input type="checkbox" name="allsave" value="1" />检测完毕</label>
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -30,7 +29,8 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label talign-center">&nbsp;</label>
                 <div class="col-sm-10">
-                    <button type="submit" class="btn btn-success" onclick="onSave('{$centreno}')">保 存</button>
+                    <button type="submit" class="btn btn-success" onclick="onSave()">保 存</button>
+                    <a herf="javascript:void(0);" class="btn btn-success" onclick="allSave('{$centreno}')">上传完毕</a>
                 </div>
             </div>
         </form>
@@ -74,7 +74,7 @@
         return false;
     }
 
-    function onSave(centreno){
+    function onSave(){
         var options = {
             url: "{:U('/admin/Test/doUploadPic')}",
             dataType: 'json',
@@ -83,13 +83,10 @@
             },
             success: function (data) {
                 if(data.msg=='succ'){
-                    var _options = {"text":"保存成功！","action":function(){window.location.reload();}};
+                    var _options = {"text":"修改成功！","action":function(){window.location.reload();}};
                     doAlertDialog(_options);
-                }else if(data.msg=='success'){
-                    window.location.href="{:U('/admin/test/recordPictureUp')}?id={$centreno}";
-                }
-                else{
-                    var _options = {"text":"保存失败！"};
+                }else{
+                    var _options = {"text":"修改失败！"};
                     if(data.msg) _options.text = data.msg;
                     doAlertDialog(_options);
                 }
@@ -97,6 +94,30 @@
         };
         $("#myform").ajaxForm(options);
         return false;
+    }
+    //上传完毕按钮
+    function allSave(centreno) {
+        if(!centreno) return false;
+        var _options = {"flag":"error","text":"您确定已经上传完所有的记录吗？","buttons":{"ok":{"action":function(){doneAllSave(centreno);}},"cancel":{}}};
+        doConfirmDialog(_options);
+    }
+    function doneAllSave(centreno){
+        if(!centreno) return false;
+        $.ajax({
+            type:"post",
+            url:"{:U('/admin/test/doAllSave')}",
+            data:{"centreno":centreno},
+            dataType:"json",
+            success:function(ret){
+                if(ret.msg=='succ'){
+                    window.location.href="{:U('/admin/test/recordPictureUp')}?id={$centreno}";
+                }else{
+                    var _options = {"text":"操作失败！"};
+                    if(data.msg) _options.text = data.msg;
+                    doAlertDialog(_options);
+                }
+            }
+        });
     }
 </script>
 <include file="Common:footer" />
