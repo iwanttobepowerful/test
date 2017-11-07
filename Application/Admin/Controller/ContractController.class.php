@@ -304,6 +304,7 @@ class ContractController extends Controller
 	//合同修改页面
 	public function editContract(){
 		$contreno = I('id');
+		$type = I('type');
 		$where['centreNo']=$contreno;
 		//$testCategory = substr($contreno,7,1);
 		$contractItem = D('contract')->where($where)->find();
@@ -311,14 +312,17 @@ class ContractController extends Controller
 		$body = array(
 			'contract'=>$contractItem,
 			'feeItem'=>$feeItem,
+			'type'=>$type
 			//'$testCategory'=>$testCategory
 		);
+		
 		$this->assign($body);
 		$this->display();
 	}
 	
 	//合同修改入库
 	public function doEditContract(){
+		$type_apply = I("type");//是否为申请修改
 		$clientName = I("clientName");
 		$productUnit = I("productUnit");
 		$sampleName = I("sampleName");
@@ -470,6 +474,15 @@ class ContractController extends Controller
 					"ifSubpackage"=>$ifSubpackage,
 				);
 				D("sampling_form")->where($where)->save($data_sample);	
+			}
+			
+		    //申请修改的状态修改
+			if($type_apply=='apply'){
+				$where_apply['centreNo'] = $centreNo;
+				$data_apply = array(
+					"status"=>2			
+				);
+				D("contract_flow")->where($where_apply)->save($data_apply);	
 			}
 			M()->commit();
 			$rs['msg'] = 'succ';
@@ -746,11 +759,12 @@ class ContractController extends Controller
 		
 		//判断是接单还是签发
 		$ifstatus = 
-		$list = D("contract as c")->field('c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id')->where($where)->order('c.collectDate desc,c.id desc')->limit("{$offset},{$pagesize}")->select();
+		$list = D("contract as c")->field('if(r.status is null,-1,r.status) as sub_status,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN report_feedback r on r.centreNo = c.centreNo')->where($where)->order('c.collectDate desc,c.id desc')->limit("{$offset},{$pagesize}")->select();
 		$count = D("contract as c")->where($where)->count();
 		$Page= new \Think\Page($count,$pagesize);
 		$Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
 		$pagination= $Page->show();// 分页显示输出
+		
 		$body = array(
 			"list"=>$list,
 			'pagination'=>$pagination,
@@ -761,6 +775,26 @@ class ContractController extends Controller
 		$this->display();
 	}
 	
+	//申请修改
+	public function doSubmitFeedback(){
+		$rs = array('msg'=>'fail');
+		$centreno = I('centreno');
+		$reason = I('reason');
+		
+		$data = array(
+			'centreNo'=>$centreno,
+			'reason'=>$reason,
+		);
+		M()->startTrans();
+		if(D('report_feedback')->add($data)){
+			$rs['msg']='申请成功';
+			M()->commit();	
+		}else{
+			$rs['msg']='申请失败';
+			M()->rollback();		
+		}
+		$this->ajaxReturn($rs);
+	}
 
 	//获取最中心编号
 	public function getLastCode(){
