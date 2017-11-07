@@ -98,7 +98,7 @@ class TestReportController extends Controller
             'shengchengview'=>$shengchengview,
             'dayinview'=>$dayinview,
             'status'=>$status['status'],
-            'qrimg'=>$this->qrcode($final_content['centreno'],"http://127.0.0.1:82/index.php/admin/SeeReport/show?centreno={$final_content['centreno']}"),
+            'qrimg'=>$this->qrcode($final_content['centreno'],"getCurrentHost().'/admin/SeeReport/show?centreno='{$final_content['centreno']}"),
         );
 
         $this->assign($body);
