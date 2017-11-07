@@ -304,7 +304,6 @@ class ContractController extends Controller
 	//合同修改页面
 	public function editContract(){
 		$contreno = I('id');
-		$type = I('type');
 		$where['centreNo']=$contreno;
 		//$testCategory = substr($contreno,7,1);
 		$contractItem = D('contract')->where($where)->find();
@@ -312,7 +311,6 @@ class ContractController extends Controller
 		$body = array(
 			'contract'=>$contractItem,
 			'feeItem'=>$feeItem,
-			'type'=>$type
 			//'$testCategory'=>$testCategory
 		);
 		
@@ -322,7 +320,7 @@ class ContractController extends Controller
 	
 	//合同修改入库
 	public function doEditContract(){
-		$type_apply = I("type");//是否为申请修改
+
 		$clientName = I("clientName");
 		$productUnit = I("productUnit");
 		$sampleName = I("sampleName");
@@ -476,20 +474,36 @@ class ContractController extends Controller
 				D("sampling_form")->where($where)->save($data_sample);	
 			}
 			
-		    //申请修改的状态修改
-			if($type_apply=='apply'){
-				$where_apply['centreNo'] = $centreNo;
-				$data_apply = array(
-					"status"=>2			
-				);
-				D("contract_flow")->where($where_apply)->save($data_apply);	
-			}
 			M()->commit();
 			$rs['msg'] = 'succ';
 		}catch(Exception $e){
 			$rs['msg'] = '信息有误，修改不成功';
 			M()->rollback();
 		}		
+		$this->ajaxReturn($rs);
+	}
+	
+	//申请修改完毕
+	public function doUpdateEditState(){
+		$centreno = I('centreno');
+		$rs = array('msg'=>'fail');
+		$where['centreNo']=$centreno;
+		$data_apply = array(
+			"status"=>2			
+		);
+		//M()->startTrans();
+		D("contract_flow")->where($where)->save($data_apply);
+		D("report_feedback")->where($where)->delete();
+				//M()->commit();
+		$rs['msg']='修改提交成功';
+			/*}else{
+				M()->rollback();
+				$rs['msg']='修改提交失败';	
+			}
+		}else{
+			M()->rollback();
+			$rs['msg']='修改提交失败';
+		}*/
 		$this->ajaxReturn($rs);
 	}
 	
