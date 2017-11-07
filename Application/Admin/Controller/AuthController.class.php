@@ -116,14 +116,15 @@ class AuthController extends Controller {
 			$rs = array('msg'=>'fail');
 			M()->startTrans();
 			if(D("common_admin_nav")->where("id=".$this->id)->save($update)){
-				$restatus = $this->status ? 0:1;
-				$where = "path like '{$one['path']}-{$this->id}%' AND status=".$restatus;
-				$res = D("common_admin_nav")->where($where)->save(array("status"=>$this->status));
+				//$restatus = $this->status ? 0:1;
+				//$where = "path like '{$one['path']}-{$this->id}%' AND status=".$restatus;
+				//$res = D("common_admin_nav")->where($where)->save(array("status"=>$this->status));
 				$rs['msg'] = 'succ';
 				M()->commit();
-				$this->ajaxReturn($rs);
+			}else{
+				M()->rollback();
 			}
-			M()->rollback();
+			
 			$this->ajaxReturn($rs);
 		}else{
 			$nav = D("common_admin_nav")->where("id=".$this->pid)->field("pid,path")->find();
@@ -189,12 +190,13 @@ class AuthController extends Controller {
 				$this->ajaxReturn($rs);
 			}
 			M()->startTrans();
-			if(D("common_admin_nav")->where("id=".$id)->delete() && D("common_admin_nav")->where("path like '{$info['path']}-{$id}%' AND status=0")->delete()){
+			if(D("common_admin_nav")->where("id=".$id)->delete()){
+				D("common_admin_nav")->where("path like '{$info['path']}-{$id}%' AND status=0")->delete();
 				$rs['msg'] = 'succ';
 				M()->commit();
-				$this->ajaxReturn($rs);
+			}else{
+				M()->rollback();
 			}
-			M()->rollback();
 		}
 		$this->ajaxReturn($rs);
 	}

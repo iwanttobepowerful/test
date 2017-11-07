@@ -59,7 +59,7 @@
              	<div class="form-group form-group-sm">
              		<label class="col-sm-3 control-label talign-right fz13">登录密码</label>
 				    <div class="col-sm-7">
-				    	<input type="password" class="form-control" name="password">
+				    	<input type="password" class="form-control" name="password" value="" placeholder="登录密码" />
 				    </div>
                     <div class="clearfix"></div>
              	</div>
@@ -154,6 +154,7 @@ function editAdminUser(id){
 				if(info){
 					modal.find("input[name='modid']").val(info.id);
 					modal.find("input[name='name']").val(info.name);
+					modal.find("input[name='password']").val("");
 					modal.find("select[name='department']").val(info.department);
 					modal.find("input[name='username']").val(info.username);
 					modal.find("input[name='status'][value="+info.status+"]").prop('checked',true);
