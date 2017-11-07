@@ -16,8 +16,10 @@
                 <tr>
                     <td>{$vo.id}</td>
                     <td>{$vo.centreno}</td>
-                    <td><button name="btn_change" onclick="onUpdate({$vo.id})" class="btn btn-success btn-xs" {$view}><i class="glyphicon glyphicon-ok-circle"></i>通过</button>
+                    <td>
+                        <if condition="$vo['status'] eq 2"><button name="btn_change" onclick="onUpdate({$vo.id})" class="btn btn-success btn-xs" {$view}><i class="glyphicon glyphicon-ok-circle"></i>通过</button>
                         <button name="btn_change" onclick="update({$vo.id})" class="btn btn-danger btn-xs" {$view}><i class="glyphicon glyphicon-remove-circle"></i>不通过</button>
+                        </if>
                     </td>
                     <td>{$vo.name}/{$vo.report_time}</td>
                     <td><if condition="$vo['status'] eq 2">
