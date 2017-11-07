@@ -45,7 +45,8 @@
                             	<span style="color:green">申请中</span>
                             <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == 1)" />
                             	<span style="color:green">申请通过</span>
-                                <a href="{:U('/admin/contract/editContract')}?id={$con.centreno}&type='apply'" class="btn btn-info btn-xs" >修改</a>
+                                <a href="{:U('/admin/contract/editContract')}?id={$con.centreno}" class="btn btn-info btn-xs" >修改</a>
+                                <a href="#" class="btn btn-info btn-xs"  onclick="doUpdateEditState('{$con.centreno}')" >修改完毕</a>
                             <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == 2)" />
                             	<span style="color:red">申请拒绝</span>
                             </if>
@@ -168,6 +169,23 @@
 				window.location.reload();
 			}
 		});
+	}
+	
+	function doUpdateEditState(centreno){
+		if(confirm('确认后不可修改，是否已修改完毕？')){
+			$.ajax({
+				url: "{:U('/admin/contract/doUpdateEditState')}",
+				dataType: 'json',
+				data:{'centreno':centreno},
+				beforeSubmit: function(){
+					return true;
+				},
+				success: function (re) {
+					alert(re.msg);
+					window.location.reload();
+				}
+			});	
+		}
 	}
 </script>
 

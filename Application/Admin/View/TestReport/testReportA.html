@@ -94,7 +94,7 @@
 			}
 			.test_txt{
 				font-size: 12pt;
-				font-family: "黑体";
+				font-family: "楷体";
 			}
 			.bottom_line{
 				margin-top: 10pt;
@@ -542,10 +542,10 @@
 </div>
 
 <center>
-    <button style="visibility:{$shengchengview}" onclick="createreport('{$con_list.centreno}')" class="btn btn-primary btn-xs">生成报告</button>
+    <button style="visibility:{$shengchengview}" class="Noprint"  onclick="createreport('{$con_list.centreno}')" class="btn btn-primary btn-xs">生成报告</button>
 </center>
 <center>
-    <button style="visibility:{$dayinview}" onclick="window.print()" class="btn btn-info btn-xs" >　报告已生成，可以打印　</button>
+    <button style="visibility:{$dayinview}" class="Noprint" onclick="window.print()" class="btn btn-info btn-xs" >　报告已生成，可以打印　</button>
 </center>
 </body>
 
