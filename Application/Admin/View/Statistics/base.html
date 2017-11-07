@@ -1,0 +1,85 @@
+<include file="Common:header" title="后台首页"/>
+<div id="page-wrapper">
+	<include file="Common:breadcrumb" />
+	<div id="page-inner" class="container">
+        <div class="search-form">
+            <form class="form-inline" method="GET" action="">
+                <div class="form-group">
+                    <label>中心编号：</label>
+                    <input type="text" class="form-control input-sm" name="keyword" />
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm" >单项查询</button>
+            </form>
+        </div>
+
+		<table class="table table-bordered table-striped table-hover">
+			<thead>
+            
+            <th>盖章日期</th>
+            <th>中心编号</th>
+            <th>委托单位</th>
+            <th>生产单位</th>
+            <th>样品名称</th>
+            <th>规格型号</th>
+            <th>检验内容及要求</th>
+            <th>应收金额(元)</th>
+            <th>A记录(元)</th>
+            <th>B记录(元)</th>
+            <th>C记录(元)</th>
+            <th>D记录(元)</th>
+            <th>E记录(元)</th>
+            <th>F记录(元)</th>
+            <th>副本(元)</th>
+            <th>项目修改(元)</th>
+            <th>其它(元)</th>
+            <th>备注</th>
+            <th>检验依据</th>
+            <th>来样日期</th>
+            <th>报告日期</th>
+            <th>章数</th>
+            <th>样品数量</th>
+            <th>实验员</th>
+            <th>收样人</th>
+            <th>是否存档</th>
+
+
+			
+			</thead>
+			<tbody>
+			<volist name="lists" id="one">
+				<tr>
+					<td>{$one.external_sign_time}</td>
+                    <td>{$one.centreno}</td>
+                    <td>{$one.contract.clientname}</td>
+                    <td>{$one.contract.productunit}</td>
+                    <td>{$one.contract.samplename}</td>
+                    <td>{$one.contract.samplecode}</td>
+                    <td>{$one.contract.testitem}</td>
+                    <td>{$one.contract.testcost}</td>
+                    <td>{$one.test_cost.arecord}</td>
+                    <td>{$one.test_cost.brecord}</td>
+                    <td>{$one.test_cost.crecord}</td>
+                    <td>{$one.test_cost.drecord}</td>
+                    <td>{$one.test_cost.erecord}</td>
+                    <td>{$one.test_cost.frecord}</td>
+                    <td>{$one.test_cost.dcopy}</td>
+                    <td>{$one.test_cost.drevise}</td>
+                    <td>{$one.test_cost.dother}</td>
+                    <td>{$one.contract.remark}</td>
+                    <td>{$one.contract.testcriteria}</td>
+                    <td>{$one.contract.collectdate}</td>
+                    <td>{$one.inner_sign_time}</td>
+                    <td></td>
+                    <td>{$one.contract.samplequantity}</td>
+                    <td>{$one.takelist_user_id}</td>
+                    <td>{$one.contract.collector}</td>
+                    <td></td>
+				</tr>
+			</volist>
+			</tbody>
+		</table>
+		<div class=" pull-right"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
+	</div>
+</div>
+</div>
+<include file="Common:footer" />
