@@ -23,7 +23,7 @@ class TestReportController extends Controller
     //检验报告的生成
 	public function generateReport(){
         $keyword = I("keyword");//获取参数
-        $where= "contract_flow.centreno like '%{$keyword}%' and contract_flow.status=1";
+        $where= "contract_flow.centreno like '%{$keyword}%' and contract_flow.status=8";
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
         $user=$admin_auth['gid'];//判断是哪个角色
@@ -76,12 +76,12 @@ class TestReportController extends Controller
 
         $status = M("contract_flow")->where($where)->field('status')->find();
 
-        if ($status['status']==1) {
+        if ($status['status']==8) {
             $shengchengview="";
             $dayinview="hidden";
 
         }
-        if($status['status']==2)
+        if($status['status']==1)
         {
             $shengchengview="hidden";
             $dayinview="";
@@ -112,7 +112,7 @@ class TestReportController extends Controller
         $userid=$admin_auth['id'];
         $where= "centreno='{$centreno}'";
         $data=array(
-            'status'=>2,
+            'status'=>1,
             'report_time'=>date("Y-m-d H:i:s"),
             'report_user_id'=>$userid,
         );
