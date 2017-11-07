@@ -10,23 +10,23 @@
 
         <table class="table table-bordered table-striped table-hover">
             <thead>
-            <th width="7%">序号</th>
-            <th >中心编号</th>
-            <th width="30%">生产单位</th>
-            <th width="10%">联系人</th>
-            <th width="10%">联系电话</th>
-            <th width="10%">操作</th>
-            <th width="23%">内部签发人/操作时间</th>
+            <th width="10%">中心编号</th>
+            <th >生产单位</th>
+            <th width="11%">报告领取方式</th>
+            <th width="20%">通讯地址</th>
+            <th width="15%">联系人/联系电话</th>
+            <th width="7%">操作</th>
+            <th width="17%">内部签发人/操作时间</th>
             </thead>
             <tbody>
             <volist name="rs" id="vo">
                 <tr>
-                    <td>{$vo.id}</td>
                     <td>{$vo.centreno}</td>
                     <td>{$vo.productunit}</td>
-                    <td>{$vo.clientsign}</td>
-                    <td>{$vo.telephone}</td>
-                    <td><button name="btn_change" onclick="onUpdate({$vo.id})" class="btn btn-success btn-xs" {$view}><i class="glyphicon glyphicon-ok-circle"></i>待签发</button></td>
+                    <td>{$vo.postmethod}</td>
+                    <td>{$vo.address}</td>
+                    <td>{$vo.clientsign}/{$vo.telephone}</td>
+                    <td><button onclick="onUpdate({$vo.id})" class="btn btn-success btn-xs" {$view}><i class="glyphicon glyphicon-ok-circle"></i>待签发</button></td>
                     <td>{$vo.name}/{$vo.inner_sign_time}</td>
                 </tr>
             </volist>

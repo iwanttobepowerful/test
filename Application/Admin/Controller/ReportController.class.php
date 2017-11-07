@@ -34,7 +34,7 @@ class ReportController extends Controller
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
         $contract_flow=M("contract_flow");//实例化对象
-        $where['contract_flow.status'] = array('in','2,-3');
+        $where['contract_flow.status'] = 2;
         $rs=$contract_flow->where($where)
             ->join('common_system_user ON contract_flow.report_user_id = common_system_user.id')
             ->field('contract_flow.id,contract_flow.centreNo,contract_flow.status,contract_flow.report_time,common_system_user.name')
@@ -73,26 +73,6 @@ class ReportController extends Controller
         }}
         $this->ajaxReturn($rs);
     }
-    //审核未通过
-    public function notApprove(){
-        $id =I("id",0,'intval');
-        $rs = array("msg"=>"fail");
-        $admin_auth = session("admin_auth");//获取当前登录用户信息
-        $userid=$admin_auth['id'];
-        $user=$admin_auth['gid'];//判断是哪个角色
-        $if_admin = $admin_auth['super_admin'];
-        $role = D('common_role')->where('id='.$user)->find();
-        if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="审核员") {
-        $data=array(
-            'status'=>-3,
-            'verify_user_id'=>$userid,
-            'verify_time'=>date("Y-m-d H:i:s"),
-        );
-        if(D("contract_flow")->where("id=".$id)->save($data)){
-            $rs['msg'] = 'succ';
-        }}
-        $this->ajaxReturn($rs);
-    }
     //报告审批
     public function authorizeReport(){
         $admin_auth = session("admin_auth");//获取当前登录用户信息
@@ -109,7 +89,7 @@ class ReportController extends Controller
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
         $contract_flow=M("contract_flow");//实例化对象
-        $where['contract_flow.status'] = array('in','3,-4');
+        $where['contract_flow.status'] = 3;
         $rs=$contract_flow->where($where)
             ->join('common_system_user ON contract_flow.verify_user_id = common_system_user.id')
             ->field('contract_flow.id,contract_flow.centreNo,contract_flow.status,contract_flow.verify_time,common_system_user.name')
@@ -246,7 +226,7 @@ class ReportController extends Controller
         $rs=$contract_flow->where($where)
             ->join('common_system_user ON contract_flow.inner_sign_user_id = common_system_user.id')
             ->join('contract ON contract_flow.centreNo = contract.centreNo')
-            ->field('contract_flow.id,contract_flow.centreNo,contract_flow.inner_sign_time,common_system_user.name,contract.productUnit,contract.clientSign,contract.telephone')
+            ->field('contract_flow.id,contract_flow.centreNo,contract_flow.inner_sign_time,common_system_user.name,contract.productUnit,contract.clientSign,contract.telephone,contract.postmethod,contract.address')
             ->limit("{$offset},{$pagesize}")
             ->order('contract_flow.inner_sign_time desc,contract_flow.id desc')->select();
         //查找条件为已经批准并且内部尚未签发的报告
