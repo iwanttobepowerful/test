@@ -117,33 +117,20 @@ class ReportController extends Controller
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
         $role = D('common_role')->where('id='.$user)->find();
+
+        $ifedit=D("contract_flow")->where("contract_flow.id=".$id)->join('contract ON contract_flow.centreNo = contract.centreNo')->find();
+        $centreno=$ifedit['centreNo'];
+        $where="contract.centreNo='{$centreno}'";
+
         if($if_admin==1 || $role['rolename']=="批准员") {
+            $data1['ifedit']=1;
         $data=array(
             'status'=>4,
             'approve_time'=>date("Y-m-d H:i:s"),
             'approve_user_id'=>$userid,
         );
         if(D("contract_flow")->where("id=".$id)->save($data)){
-            $rs['msg'] = 'succ';
-        }}
-        $this->ajaxReturn($rs);
-    }
-    //审批未通过
-    public function  notAuthorize(){
-        $id =I("id",0,'intval');
-        $rs = array("msg"=>"fail");
-        $admin_auth = session("admin_auth");//获取当前登录用户信息
-        $userid=$admin_auth['id'];
-        $user=$admin_auth['gid'];//判断是哪个角色
-        $if_admin = $admin_auth['super_admin'];
-        $role = D('common_role')->where('id='.$user)->find();
-        if($if_admin==1 || $role['rolename']=="批准员") {
-        $data=array(
-            'status'=>-4,
-            'approve_time'=>date("Y-m-d H:i:s"),
-            'approve_user_id'=>$userid,
-        );
-        if(D("contract_flow")->where("id=".$id)->save($data)){
+            D("contract")->where($where)->save($data1);
             $rs['msg'] = 'succ';
         }}
         $this->ajaxReturn($rs);

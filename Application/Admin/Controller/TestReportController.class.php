@@ -66,8 +66,10 @@ class TestReportController extends Controller
         $conNo=I("conNo");
         $where= "centreno='{$conNo}'";
         $test_report=M("test_report");
-        $data['tplno'] = $mod;
-        $test_report->where($where)->save($data); // 根据条件保存修改的数据
+        $tpl = D("tpl")->where("id=".$mod)->find();
+
+        //$data['tplno'] = $mod;
+        //$test_report->where($where)->save($data); // 根据条件保存修改的数据
 
         $test_content=M("contract");
         $sample_content=M("sampling_form");
@@ -100,31 +102,8 @@ class TestReportController extends Controller
         );
 
         $this->assign($body);
-       
-       switch($mod){
-        case 1:
-            $this->display(testReportA);
-            break;
-        case 2:
-            $this->display(testReportB);
-            break;
-        case 3:
-            $this->display(testReportC);
-            break;
-        case 4:
-            $this->display(testReportD);
-            break;
-        case 5:
-            $this->display(testReportE);
-            break;
-        case 6:
-            $this->display(testReportF);
-            break;
-        case 7:
-            $this->display(testReportG);
-            break;           
-       }
-
+        $tplfile = $tpl['filename'];
+        $this->display($tplfile);
 	}
     //修改status
 	public function doCreate(){
@@ -162,9 +141,11 @@ class TestReportController extends Controller
     //选择编号
     public function seleteKey(){
 	   $mod = I("mod");
+        $tpl=D("tpl")->select();
 
-       $body = array(
+        $body = array(
            'contactNo'=>$mod,
+            'tpl'=>$tpl,
        );
        $this->assign($body);
        $this->display(select);
