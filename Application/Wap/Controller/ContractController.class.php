@@ -52,4 +52,13 @@ class ContractController extends Controller {
         $this->assign($body);
         $this->display();
     }
+	
+		    public function finance(){
+        $body = array(
+            "pagetitle"=>"财务汇总",
+            'backed'=>true,
+        );
+        $this->assign($body);
+        $this->display();
+    }
 }
