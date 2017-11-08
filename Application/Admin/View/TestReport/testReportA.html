@@ -473,7 +473,7 @@
 			<td class="table_txt">受检单位</td>
 			<td><span class="test_txt">{$one.clientname}</span></td>
 			<td class="table_txt">生产日期</td>
-			<td><span class="test_txt">{$con.productiondate}</span></td>
+			<td><span class="test_txt"><if condition="$con['productiondate']">{$con.productiondate|strtotime|date=Y年m月d日,###}</if></span></td>
 		</tr>
 		<tr>
 			<td class="table_txt">生产单位</td>
@@ -495,7 +495,8 @@
 		</tr>
 		<tr>
 			<td class="table_txt">抽样日期</td>
-			<td><span class="test_txt">{$con.sampledate}</span></td>
+			<td><span class="test_txt"><if condition="$con['sampledate']">{$con.sampledate|strtotime|date=Y年m月d日,###}</if>
+			</span></td>
 			<td class="table_txt">抽样数量</td>
 			<td><span class="test_txt">{$con.samplequantity}</span></td>
 		</tr>
