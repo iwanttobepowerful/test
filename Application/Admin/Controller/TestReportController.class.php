@@ -98,7 +98,7 @@ class TestReportController extends Controller
             'shengchengview'=>$shengchengview,
             'dayinview'=>$dayinview,
             'status'=>$status['status'],
-            'qrimg'=>$this->qrcode($final_content['centreno'],"getCurrentHost().'/admin/SeeReport/show?centreno='.{$final_content['centreno']}"),
+            'qrimg'=>$this->qrcode($final_content['centreno'],getCurrentHost().'/admin/SeeReport/show?centreno='.$final_content['centreno']),
         );
 
         $this->assign($body);
@@ -133,7 +133,6 @@ class TestReportController extends Controller
                 $rs['msg'] = 'succ';
             }
         }
-
         $this->ajaxReturn($rs);
     }
 //生成二维码
@@ -143,9 +142,11 @@ class TestReportController extends Controller
         $qr_level = 'L';
         $qr_size = '4';
         $save_prefix = '';
-        if(file_exists($save_path.md5($centreno).'.png')){
+        $distimg = $save_path.md5($centreno).'.png';
+        unlink($distimg);
+        if(file_exists($distimg)){
             $img = $save_path.md5($centreno).'.png';
-            //unlink($img);
+            //
         }elseif($filename = createQRcode($centreno,$save_path,$qr_data,$qr_level,$qr_size,$save_prefix)){
             $img = $save_path.$filename;
         }

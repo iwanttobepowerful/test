@@ -4,16 +4,6 @@
     <div id="page-inner" class="container">
         <!-- 主要模板 starting -->
 
-        <div class="search-form">
-            <form class="form-inline" method="GET" action="">
-                <div class="form-group">
-                    <label>中心编号：</label>
-                    <input type="text" class="form-control input-sm" name="centreno" />
-                </div>
-                <button type="submit" class="btn btn-primary btn-sm" >查询</button>
-            </form>
-        </div>
-
         <table class="table table-bordered table-striped table-hover">
             <thead>
             <th>中心编号</th>
@@ -26,7 +16,7 @@
                     <td>{$one.centreno}</td>
                     <td>{$one.samplename}</td>
                     <td>
-                        <a href="{:U('/admin/test/recordList')}?id={$one.centreno}" class="glyphicon glyphicon-search">检测报告上传</a>
+                        <a href="{:U('/admin/test/recordList')}?id={$one.centreno}" class="btn btn-primary btn-xs" ><i class="glyphicon glyphicon-open"></i>检测报告上传</a>
                     </td>
                 </tr>
             </volist>

@@ -61,7 +61,7 @@ class ContractController extends Controller {
             'backed'=>true,
         );
         $this->assign($body);
-        $this->display();
+			$this->display();}
     //报告审批
     public function reportList(){
         $rs = array("msg"=>"","status"=>"fail");
