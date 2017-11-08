@@ -31,9 +31,9 @@ class TestController extends Controller{
         $where= "centreNo='{$keyword}'";
 
         $work_inform_form=M('work_inform_form');
-        $result=$work_inform_form->where($where)->select();
+        $result=$work_inform_form->where($where)->find();
         $body=array(
-            'lists'=>$result,
+            'one'=>$result,
         );
         $this->assign($body);
         $this->display();
@@ -59,43 +59,43 @@ class TestController extends Controller{
     public function sampleShow(){
         $keyword = I("id");//获取参数
         $where= "centreno='{$keyword}'";
-        $result=M('sampling_form')->where($where)->select();
+        $result=M('sampling_form')->where($where)->find();
+		
+		$admin_auth = session("admin_auth");
+		$if_admin = $admin_auth['super_admin'];
+		$roleid = $admin_auth['gid'];
+		
+		$role = D('common_role')->where('id='.$roleid)->find();
+		if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
+			$if_edit = 1;	
+		}else{
+			$if_edit = 0;	
+		}
 
-        $admin_auth = session("admin_auth");
-        $if_admin = $admin_auth['super_admin'];
-        $roleid = $admin_auth['gid'];
+        $simsigndateyear = $result['simsigndate'] ? date("Y",strtotime($result['simsigndate'])):"";
+        $simsigndatemonth =  $result['simsigndate'] ? date("m",strtotime($result['simsigndate'])):"";
+        $simsigndateday =  $result['simsigndate'] ? date("d",strtotime($result['simsigndate'])):"";
+        array_push($result,$simsigndateyear);
+        array_push($result,$simsigndatemonth);
+        array_push($result,$simsigndateday);
 
-        $role = D('common_role')->where('id='.$roleid)->find();
-        if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
-            $if_edit = 1;
-        }else{
-            $if_edit = 0;
-        }
+        $seasingdateyear =  $result['seasingdate'] ? date("Y",strtotime($result['seasingdate'])):"";
+        $seasingdatemonth =  $result['seasingdate'] ? date("m",strtotime($result['seasingdate'])):"";
+        $seasingdateday =  $result['seasingdate'] ? date("d",strtotime($result['seasingdate'])):"";
+        array_push($result,$seasingdateyear);
+        array_push($result,$seasingdatemonth);
+        array_push($result,$seasingdateday);
 
-        $simsigndateyear = $result[0]['simsigndate'] ? date("Y",strtotime($result[0]['simsigndate'])):"";
-        $simsigndatemonth =  $result[0]['simsigndate'] ? date("m",strtotime($result[0]['simsigndate'])):"";
-        $simsigndateday =  $result[0]['simsigndate'] ? date("d",strtotime($result[0]['simsigndate'])):"";
-        array_push($result[0],$simsigndateyear);
-        array_push($result[0],$simsigndatemonth);
-        array_push($result[0],$simsigndateday);
-
-        $seasingdateyear =  $result[0]['seasingdate'] ? date("Y",strtotime($result[0]['seasingdate'])):"";
-        $seasingdatemonth =  $result[0]['seasingdate'] ? date("m",strtotime($result[0]['seasingdate'])):"";
-        $seasingdateday =  $result[0]['seasingdate'] ? date("d",strtotime($result[0]['seasingdate'])):"";
-        array_push($result[0],$seasingdateyear);
-        array_push($result[0],$seasingdatemonth);
-        array_push($result[0],$seasingdateday);
-
-        $entsigndateyear =  $result[0]['entsigndate'] ? date("Y",strtotime($result[0]['entsigndate'])):"";
-        $entsigndatemonth =  $result[0]['entsigndate'] ? date("m",strtotime($result[0]['entsigndate'])):"";
-        $entsigndateday =  $result[0]['entsigndate'] ? date("d",strtotime($result[0]['entsigndate'])):"";
-        array_push($result[0],$entsigndateyear);
-        array_push($result[0],$entsigndatemonth);
-        array_push($result[0],$entsigndateday);
+        $entsigndateyear =  $result['entsigndate'] ? date("Y",strtotime($result['entsigndate'])):"";
+        $entsigndatemonth =  $result['entsigndate'] ? date("m",strtotime($result['entsigndate'])):"";
+        $entsigndateday =  $result['entsigndate'] ? date("d",strtotime($result['entsigndate'])):"";
+        array_push($result,$entsigndateyear);
+        array_push($result,$entsigndatemonth);
+        array_push($result,$entsigndateday);
 
         $body=array(
-            'lists'=>$result,
-            'if_edit'=>$if_edit
+            'one'=>$result,
+			'if_edit'=>$if_edit
 
         );
         $this->assign($body);

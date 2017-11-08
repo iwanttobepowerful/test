@@ -517,6 +517,12 @@ class ContractController extends Controller
 		$centreno = I("id");
 		$where['centreNo']=$centreno;
 		$result=M('sampling_form')->where($where)->find();
+		//$status=M('contract_flow')->where($where)->find();
+		$ifedit=M('contract')->where($where)->find();
+		$sub_status=M('report_feedback')->where($where)->find();
+		if(empty($sub_status)){
+			$sub_status['status']=-1;
+		}
 		//判断角色，确定是否可以修改
 		$admin_auth = session("admin_auth");
 		$if_admin = $admin_auth['super_admin'];
@@ -556,7 +562,10 @@ class ContractController extends Controller
 		$body=array(
             'one'=>$result,
 			'if_edit'=>$if_edit,
-			'sample_count'=>$sample_count
+			'sample_count'=>$sample_count,
+			//'status'=>$status,
+			'ifedit'=>$ifedit,
+			'sub_status'=>$sub_status,
         );
         $this->assign($body);
         $this->display();
@@ -628,6 +637,16 @@ class ContractController extends Controller
 	public function doUploadSampleImage(){
 		$centreno = I('centreno');
 		$type = I('type');
+		
+		$where['centreNo']=$centreno;
+		//$result=M('sampling_form')->where($where)->find();
+		//$status=M('contract_flow')->where($where)->find();
+		$ifedit=M('contract')->where($where)->find();
+		$sub_status=M('report_feedback')->where($where)->find();
+		if(empty($sub_status)){
+			$sub_status['status']=-1;
+		}
+		
 		if($type=='sample'){
 			$list = D('sample_picture')->where('type=0 and centreno="'.$centreno.'"')->select();
 		}else{
@@ -636,7 +655,9 @@ class ContractController extends Controller
 		$body=array(
 			'centreno'=>$centreno,
 			'type'=>$type,
-			'list'=>$list
+			'list'=>$list,
+			'ifedit'=>$ifedit,
+			'sub_status'=>$sub_status,
 		);
 		$this->assign($body);
 		$this->display();
