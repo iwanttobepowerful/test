@@ -27,6 +27,7 @@
                     <td>{$one.remark}</td>
                     <td>
                         <a href="javascript:void(0);" onclick="onDelete({$one.id})" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> 删除</a>
+                        <a href="javascript:void(0);" name="{$one.path}" onclick="onPrint(this);" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-print"></i> 打印</a>
                     </td>
                 </tr>
             </volist>
@@ -68,6 +69,14 @@
         if(!url) return false;//获取缩略图url
         var newurl=url.replace("_thumb","");//重写
         window.open(newurl);
+    }
+    
+    //打印上传图片
+    function onPrint(path) {
+        var url=path.name;
+        if(!url) return false;//获取缩略图url
+        var newurl=url.replace("_thumb","");//重写
+        window.open(newurl).window.print();
     }
 
 </script>

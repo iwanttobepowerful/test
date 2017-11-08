@@ -15,8 +15,8 @@
 			.img-rounded{
 				width: 100%;
 			}
-			.btn-info{
-				margin-left: 30%;
+			.btn{
+				margin-left:30%;
 			}
 		</style>
 	</head>
@@ -27,12 +27,10 @@
 			     <tr>
 					 <volist name="tpl" id="one">
 						 <td>
-							  <a class="btn btn-primary" href="/admin/TestReport/seleteTemp?mod={$one.id}&conNo={$contactNo}">select</a>
 							 <img src="{$one.path}" class="img-rounded" />
+                             <a class="btn btn-primary" href="/admin/TestReport/seleteTemp?mod={$one.id}&conNo={$contactNo}">select</a>
 						 </td>
-
 					 </volist>
-				    </tr>
 			     <tr>
 		  </table>
       
