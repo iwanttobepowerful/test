@@ -390,26 +390,26 @@
 			<b>TEST&nbsp;&nbsp;&nbsp;&nbsp;REPORT</b>
 		</p>
 				<p class="a_cover_number">
-					<span class="a_cover_guy">中心编号(No.)：</span><span class="a_cover_key">131313CC13</span>
+					<span class="a_cover_guy">中心编号(No.)：</span><span class="a_cover_key">{$one.centreno}</span>
 				</p>
 			</div>
 			<div class="a_cover_content">
 				<p class="a_cover_name">
-					<span class="a_cover_guy">样品名称：</span><span class="bottom_line">北京邮电大学</span>
+					<span class="a_cover_guy">样品名称：</span><span class="bottom_line">{$con.samplename}</span>
 				</p>
 				<p class="a_cover_ename">
 					Sample Name
 				</p>
 
 				<p class="a_cover_client">
-					<span class="a_cover_guy">受检单位：</span><span class="bottom_line">北京邮电大学</span>
+					<span class="a_cover_guy">受检单位：</span><span class="bottom_line">{$one.clientname}</span>
 				</p>
 				<p class="a_cover_ename">
 					Client
 				</p>
 
 				<p class="a_cover_type">
-					<span class="a_cover_guy">检验类别：</span><span class="bottom_line">北京邮电大学</span>
+					<span class="a_cover_guy">检验类别：</span><span class="bottom_line">{$one.testcategory}</span>
 				</p>
 				<p class="a_cover_ename">
 					Test Type
@@ -441,50 +441,50 @@
 		</tr>
 	</table>
 	<div class="a_middle">
-		<span class="table_txt">中心编号(No.):</span><span class="a_content_key">131313CC13</span><span class="page_num table_txt">第&nbsp;1&nbsp;页&nbsp;第<span>&nbsp;2&nbsp;</span>页</span>
+		<span class="table_txt">中心编号(No.):</span><span class="a_content_key">{$one.centreno}</span><span class="page_num table_txt">第&nbsp;1&nbsp;页&nbsp;第<span>&nbsp;2&nbsp;</span>页</span>
 	</div>
 	<table border="3" class="a_test">
 		<tr>
 			<td class="table_txt" style="width: 17%;">产品名称</td>
-			<td style="width: 38%;"><span class="test_txt">的方式公司的</span></td>
+			<td style="width: 38%;"><span class="test_txt">{$con.samplename}</span></td>
 			<td class="table_txt" style="width: 17%;">检验类别</td>
-			<td><span class="test_txt">的方式公司的</span></td>
+			<td><span class="test_txt">{$one.testcategory}</span></td>
 		</tr>
 		<tr>
 			<td class="table_txt">受检单位</td>
-			<td><span class="test_txt">大哥发的发给</span></td>
+			<td><span class="test_txt">{$one.clientname}</span></td>
 			<td class="table_txt">生产日期</td>
-			<td><span class="test_txt"></span></td>
+			<td><span class="test_txt">{$con.productiondate}</span></td>
 		</tr>
 		<tr>
 			<td class="table_txt">生产单位</td>
-			<td><span class="test_txt">北邮</span></td>
+			<td><span class="test_txt">{$con.productunit}</span></td>
 			<td class="table_txt">规格型号</td>
-			<td><span class="test_txt">的方式公司的</span></td>
+			<td><span class="test_txt">{$con.specification}</span></td>
 		</tr>
 		<tr>
 			<td class="table_txt">抽样地点</td>
-			<td><span class="test_txt">的方式公司的</span></td>
+			<td><span class="test_txt">{$con.sampleplace}</span></td>
 			<td class="table_txt">商&nbsp;&nbsp;&nbsp;&nbsp;标</td>
-			<td><span class="test_txt">的方式公司的</span></td>
+			<td><span class="test_txt">{$con.trademark}</span></td>
 		</tr>
 		<tr>
 			<td class="table_txt">抽 样 人</td>
-			<td><span class="test_txt"></span></td>
+			<td><span class="test_txt">{$con.simplersign}</span></td>
 			<td class="table_txt">等&nbsp;&nbsp;&nbsp;&nbsp;级</td>
-			<td><span class="test_txt"></span></td>
+			<td><span class="test_txt">{$one.grade}</span></td>
 		</tr>
 		<tr>
 			<td class="table_txt">抽样日期</td>
-			<td><span class="test_txt"></span></td>
+			<td><span class="test_txt">{$con.sampledate}</span></td>
 			<td class="table_txt">抽样数量</td>
-			<td><span class="test_txt"></span></td>
+			<td><span class="test_txt">{$con.samplequantity}</span></td>
 		</tr>
 		<tr>
 			<td class="table_txt">样品状态</td>
-			<td><span class="test_txt"></span></td>
+			<td><span class="test_txt">{$one.samplestaquan}</span></td>
 			<td class="table_txt">抽样基数</td>
-			<td><span class="test_txt"></span></td>
+			<td><span class="test_txt">{$con.samplebase}</span></td>
 		</tr>
 		<tr>
 			<td class="table_txt">抽样单位</td>
@@ -492,11 +492,11 @@
 		</tr>
 		<tr>
 			<td class="table_txt">抽样依据</td>
-			<td colspan="3"><span class="test_txt"></span></td>
+			<td colspan="3"><span class="test_txt">{$con.testcriteria}</span></td>
 		</tr>
 		<tr>
 			<td class="table_txt">检验项目</td>
-			<td colspan="3"><span class="test_txt"></span></td>
+			<td colspan="3"><span class="test_txt">{$con.testitem}</span></td>
 		</tr>
 		<tr>
 			<td class="table_txt" rowspan="3">检验结论</td>
@@ -510,7 +510,7 @@
 		</tr>
 		<tr>
 			<td colspan="2" class="a_dis_bor table_txt">备注:</td>
-			<td colspan="2" class="a_dis_bor"><span class="test_txt"></span></td>
+			<td colspan="2" class="a_dis_bor"><span class="test_txt">{$one.remark}</span></td>
 		</tr>
 		<table class="a_foot">
 			<tr>
