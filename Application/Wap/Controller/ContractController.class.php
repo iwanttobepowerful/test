@@ -25,4 +25,31 @@ class ContractController extends Controller {
         $this->assign($body);
         $this->display();
     }
+	
+	    public function need(){
+        $body = array(
+            "pagetitle"=>"需修改报告",
+            'backed'=>true,
+        );
+        $this->assign($body);
+        $this->display();
+    }
+	
+	    public function over(){
+        $body = array(
+            "pagetitle"=>"已出报告",
+            'backed'=>true,
+        );
+        $this->assign($body);
+        $this->display();
+    }
+	
+	    public function updatePassword(){
+        $body = array(
+            "pagetitle"=>"修改密码",
+            'backed'=>true,
+        );
+        $this->assign($body);
+        $this->display();
+    }
 }

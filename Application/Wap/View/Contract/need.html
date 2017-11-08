@@ -1,31 +1,4 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
-<meta name="format-detection" content="telephone=no,email=no,date=no,aItemress=no">
-<title></title>
-<link rel="stylesheet" type="text/css" href="__PUBLIC__/wap/css/aui.css" />
-<link rel="stylesheet" type="text/css" href="__PUBLIC__/wap/css/aui-append.css" />
-<script type="text/javascript" src="__PUBLIC__/wap/script/jquery-2.1.3.min.js"></script>
-<script type="text/javascript" src="__PUBLIC__/wap/script/jquery.form.js"></script>
-<!--end -->
-</head>
-<body>
-<!-- <header class="aui-bar aui-bar-nav aui-font-size-12">我的控制台</header> -->
-<php>if(session('admin_auth')){</php>
-<header class="aui-bar aui-bar-nav">
-    <a class="aui-pull-left aui-btn aui-font-size-12" href="javascript:history.go(-1);">
-        <span class="aui-iconfont aui-icon-left"></span>返回
-    </a>
-    <div class="aui-title aui-font-size-14">需修改报告</div>
-	 
-</header>
-<php>}else{</php>
-
-<php>}</php>
-
-
+<include file="Common:header"/>
 <!--以下是模板-->
 <div class="aui-content aui-margin-b-15" >
     <ul class="aui-list aui-media-list">
