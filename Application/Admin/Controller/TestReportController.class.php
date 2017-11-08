@@ -65,7 +65,8 @@ class TestReportController extends Controller
         $mod = I("mod");
         $conNo=I("conNo");
         $where= "centreno='{$conNo}'";
-        $test_report=M("test_report");
+        $data=D("contract")->where($where)->find();
+        $data1=D("sampling_form")->where($where)->find();
         $tpl = D("tpl")->where("id=".$mod)->find();
 
         //$data['tplno'] = $mod;
@@ -81,7 +82,7 @@ class TestReportController extends Controller
             $dayinview="hidden";
 
         }
-       else
+        else
         {
             $shengchengview="hidden";
             $dayinview="";
@@ -92,6 +93,8 @@ class TestReportController extends Controller
         $htmltable=M("test_report")->where($where)->field('htmltable')->select();
 
         $body = array(
+            'one'=>$data,
+            'con'=>$data1,
             'con_list'=>$final_content,
             'sam_list'=>$final_content_two,
             'htmltable'=>($htmltable[0]['htmltable']),
