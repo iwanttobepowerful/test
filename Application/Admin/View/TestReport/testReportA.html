@@ -552,24 +552,27 @@
 </html>
 <script type="text/javascript">
     function createreport(centreno){
-        //alert(centreno);
         if(!centreno)
             return false;
         var _options = {"flag":"error","text":"您确定要生成报告吗？","buttons":{"ok":{"action":function(){doCreate(centreno);}},"cancel":{}}};
         doConfirmDialog(_options);
     }
     function doCreate(centreno) {
-        centreno.onclick = function() {};
+        var thisurl=document.URL;
+        var mod=thisurl.match(/mod=(\S*)&/)[1];//从地址栏获取所选择模板id
+        //centreno.onclick = function() {};
+
         $.ajax({
             type:"post",
             url:"{:U('/admin/TestReport/doCreate')}",
-            data:{"centreno":centreno},
+            data:{"centreno":centreno,"mod":mod},
             dataType:"json",
             success:function(ret){
                 if(ret.msg=='succ') {
-                    window.location.reload();
+					window.location.reload();
                 }
             }
         });
+
     }
 </script>

@@ -98,7 +98,7 @@ class TestReportController extends Controller
             'shengchengview'=>$shengchengview,
             'dayinview'=>$dayinview,
             'status'=>$status['status'],
-            'qrimg'=>$this->qrcode($final_content['centreno'],"getCurrentHost().'/admin/SeeReport/show?centreno='{$final_content['centreno']}"),
+            'qrimg'=>$this->qrcode($final_content['centreno'],"getCurrentHost().'/admin/SeeReport/show?centreno='.{$final_content['centreno']}"),
         );
 
         $this->assign($body);
@@ -108,17 +108,32 @@ class TestReportController extends Controller
     //修改status
 	public function doCreate(){
         $centreno=I("centreno");
+        $mod=I("mod");
+        $result = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
-        $where= "centreno='{$centreno}'";
+        $where= "centreNo='{$centreno}'";
         $data=array(
             'status'=>1,
             'report_time'=>date("Y-m-d H:i:s"),
             'report_user_id'=>$userid,
         );
-        if(D("contract_flow")->where($where)->save($data)){
-            $rs['msg'] = 'succ';
+        $data1=array(
+            'centreNo'=>$centreno,
+            'tplno'=>$mod,
+        );
+        $exist=D("test_report")->where($where)->find();
+        if($exist){
+            $result=D("test_report")->where($where)->save($data1);
+            if((D("contract_flow")->where($where)->save($data)) && ($result!== false)){
+                $rs['msg'] = 'succ';
+            }
+        }else{
+            if((D("contract_flow")->where($where)->save($data)) && (D("test_report")->data($data1)->add())){
+                $rs['msg'] = 'succ';
+            }
         }
+
         $this->ajaxReturn($rs);
     }
 //生成二维码
