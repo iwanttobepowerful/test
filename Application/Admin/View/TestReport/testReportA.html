@@ -389,7 +389,9 @@
 </head>
 
 <body>
-<include file="Common:header" title="后台首页"/>   <!--加上！！！！！-->
+<include file="Common:header" title="后台首页"/>
+<script src="__PUBLIC__/static/js/jquery.form.js"></script>
+<!--加上！！！！！-->
 <div class="page">
     <img src="__PUBLIC__/static/images/sign.png" class="ma Noprint" />
 	<img src="__PUBLIC__/static/images/sealB.png" class="sealB Noprint"/>
@@ -457,6 +459,9 @@
 	<div class="a_middle">
 		<span class="table_txt">中心编号(No.):</span><span class="a_content_key">{$one.centreno}</span><span class="page_num table_txt">第&nbsp;1&nbsp;页&nbsp;第<span>&nbsp;2&nbsp;</span>页</span>
 	</div>
+	<form class="form-horizontal" id="myform" action="" method="post">
+		<input type="hidden" class="form-control" name="centreno" value="{$one['centreno']}"/>
+		<input type="hidden" class="form-control" name="mod" value="{$mod}"/>
 	<table border="3" class="a_test">
 		<tr>
 			<td class="table_txt" style="width: 17%;">产品名称</td>
@@ -468,7 +473,7 @@
 			<td class="table_txt">受检单位</td>
 			<td><span class="test_txt">{$one.clientname}</span></td>
 			<td class="table_txt">生产日期</td>
-			<td><span class="test_txt">{$con.productiondate}</span></td>
+			<td><span class="test_txt"><if condition="$con['productiondate']">{$con.productiondate|strtotime|date=Y年m月d日,###}</if></span></td>
 		</tr>
 		<tr>
 			<td class="table_txt">生产单位</td>
@@ -490,7 +495,8 @@
 		</tr>
 		<tr>
 			<td class="table_txt">抽样日期</td>
-			<td><span class="test_txt">{$con.sampledate}</span></td>
+			<td><span class="test_txt"><if condition="$con['sampledate']">{$con.sampledate|strtotime|date=Y年m月d日,###}</if>
+			</span></td>
 			<td class="table_txt">抽样数量</td>
 			<td><span class="test_txt">{$con.samplequantity}</span></td>
 		</tr>
@@ -514,7 +520,9 @@
 		</tr>
 		<tr>
 			<td class="table_txt" rowspan="3">检验结论</td>
-			<td colspan="3" class="a_gone_bor test_result"> <textarea name="a_result" id="a_result"></textarea></td>
+			<td colspan="3" class="a_gone_bor test_result">
+					<textarea class="form-control" name="a_result" id="a_result" {$zhidu}>{$one.conclusion}</textarea>
+			</td>
 		</tr>
 		<tr>
 			<td colspan="3" style="text-align: right;" class="a_gone_bor table_txt">签发日期：&nbsp;<span class="test_txt"></span>年&nbsp;&nbsp;&nbsp;&nbsp;<span class="test_txt"></span>月&nbsp;&nbsp;&nbsp;&nbsp;<span class="test_txt"></span>日 &nbsp;&nbsp;</td>
@@ -540,6 +548,7 @@
 			</tr>
 		</table>
 	</table>
+
 	<img class="foot_img" src="__PUBLIC__/static/images/web_footer.png" />
 	<div class="foot_foot"><font class="font_txt">检验单位地址：北京市朝阳区管庄中国建材院内北楼    电话：010-51164723    邮编：100024</font></div>
 </div>
@@ -579,37 +588,40 @@
 </div>
 
 <center>
-    <button style="visibility:{$shengchengview}" class="Noprint"  onclick="createreport('{$con_list.centreno}')" class="btn btn-primary btn-xs">生成报告</button>
+    <button style="visibility:{$shengchengview}"  type="submit" onclick="doCreate()" class="btn btn-primary btn-xs">生成报告</button>
 </center>
 <center>
-    <button style="visibility:{$dayinview}" class="Noprint" onclick="window.print()" class="btn btn-info btn-xs" >　报告已生成，可以打印　</button>
+    <button style="visibility:{$dayinview}"  onclick="window.print()" class="btn btn-info btn-xs" >　报告已生成，可以打印　</button>
 </center>
+</form>
+
+<script type="text/javascript">
+    //function createreport(){
+        //var _options = {"flag":"error","text":"您确定要生成报告吗？","buttons":{"ok":{"action":function(){doCreate();}},"cancel":{}}};
+        //doConfirmDialog(_options);
+   // }
+    function doCreate() {
+        var options = {
+            url:"{:U('TestReport/doneCreate')}",
+            dataType: 'json',
+            beforeSubmit: function(){
+                return true;
+            },
+            success: function (data) {
+                if(data.msg=='succ'){
+                    var _options = {"text":"生成报告成功！","action":function(){window.location.reload();}};
+                    doAlertDialog(_options);
+                }else{
+                    var _options = {"text":"生成失败！"};
+                    if(data.msg) _options.text = data.msg;
+                    doAlertDialog(_options);
+                }
+            }
+        };
+        $("#myform").ajaxForm(options);
+        return false;
+    }
+</script>
 </body>
 
 </html>
-<script type="text/javascript">
-    function createreport(centreno){
-        if(!centreno)
-            return false;
-        var _options = {"flag":"error","text":"您确定要生成报告吗？","buttons":{"ok":{"action":function(){doCreate(centreno);}},"cancel":{}}};
-        doConfirmDialog(_options);
-    }
-    function doCreate(centreno) {
-        var thisurl=document.URL;
-        var mod=thisurl.match(/mod=(\S*)&/)[1];//从地址栏获取所选择模板id
-        //centreno.onclick = function() {};
-
-        $.ajax({
-            type:"post",
-            url:"{:U('/admin/TestReport/doCreate')}",
-            data:{"centreno":centreno,"mod":mod},
-            dataType:"json",
-            success:function(ret){
-                if(ret.msg=='succ') {
-					window.location.reload();
-                }
-            }
-        });
-
-    }
-</script>

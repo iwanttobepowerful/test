@@ -42,6 +42,7 @@ class TestReportController extends Controller
         $offset = ( $page-1 ) * $pagesize;
         $result=M('contract_flow')->where($where)
             ->join('contract ON contract_flow.centreNo = contract.centreNo')
+            ->order('contract_flow.takelist_time desc,contract.id desc')
             ->limit("{$offset},{$pagesize}")->select();
 
 
@@ -80,12 +81,14 @@ class TestReportController extends Controller
         if ($status['status']==8) {
             $shengchengview="";
             $dayinview="hidden";
+            $zhidu="";
 
         }
         else
         {
             $shengchengview="hidden";
             $dayinview="";
+            $zhidu="readonly";
 
         }
         $final_content=$test_content->where($where)->find();
@@ -95,6 +98,8 @@ class TestReportController extends Controller
         $body = array(
             'one'=>$data,
             'con'=>$data1,
+            'mod'=>$mod,
+            'zhidu'=>$zhidu,
             'con_list'=>$final_content,
             'sam_list'=>$final_content_two,
             'htmltable'=>($htmltable[0]['htmltable']),
@@ -109,10 +114,11 @@ class TestReportController extends Controller
         $this->display($tplfile);
 	}
     //修改status
-	public function doCreate(){
-        $centreno=I("centreno");
+	public function doneCreate(){
+        $conclusion= I("a_result");//填写的结论
         $mod=I("mod");
-        $result = array("msg"=>"fail");
+        $centreno=I("centreno");
+        $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
         $where= "centreNo='{$centreno}'";
@@ -125,14 +131,15 @@ class TestReportController extends Controller
             'centreNo'=>$centreno,
             'tplno'=>$mod,
         );
+        $data2['conclusion']=$conclusion;
         $exist=D("test_report")->where($where)->find();
         if($exist){
             $result=D("test_report")->where($where)->save($data1);
-            if((D("contract_flow")->where($where)->save($data)) && ($result!== false)){
+            if((D("contract_flow")->where($where)->save($data)) && ($result!== false)&&(D("contract")->where($where)->save($data2))){
                 $rs['msg'] = 'succ';
             }
         }else{
-            if((D("contract_flow")->where($where)->save($data)) && (D("test_report")->data($data1)->add())){
+            if((D("contract_flow")->where($where)->save($data)) && (D("test_report")->data($data1)->add())&&(D("contract")->where($where)->save($data2))){
                 $rs['msg'] = 'succ';
             }
         }
