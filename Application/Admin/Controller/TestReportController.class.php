@@ -81,7 +81,7 @@ class TestReportController extends Controller
             $dayinview="hidden";
 
         }
-        if($status['status']==1)
+       else
         {
             $shengchengview="hidden";
             $dayinview="";
