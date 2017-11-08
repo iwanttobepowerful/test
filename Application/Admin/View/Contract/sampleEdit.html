@@ -262,12 +262,31 @@
             <td width="1004" valign="top" colspan="5" ><p >&#160; </p></td>
           </tr>
         </table>
-        <button class="btn btn-success edit" type="button" id="check_list" onClick="doEditSample()">修改</button>
+        <if condition="($ifedit['ifedit'] == 0) OR (($ifedit['ifedit'] == 1) and ($sub_status['status'] == 1))">
+        	<button class="btn btn-success edit" type="button" id="check_list" onClick="doEditSample()">修改</button>
+        </if>
+        <!--<if condition="$ifedit['ifedit'] == 0">
+        	<button class="btn btn-success edit" type="button" id="check_list" onClick="doEditSample()">修改</button>
+        <elseif condition="($ifedit['ifedit'] == 1) and ($sub_status['status'] == -1)" />
+        	<button class="btn btn-success edit" type="button" id="check_list" onClick="doEditSample()">申请修改</button>
+        <elseif condition="($ifedit['ifedit'] == 1) and ($sub_status['status'] == 0)" />
+        	<span style="color:green">申请中</span>
+        <elseif condition="($ifedit['ifedit'] == 1) and ($sub_status['status'] == 1)" />
+        	<span style="color:green">申请通过</span>
+            <button class="btn btn-success edit" type="button" id="check_list" onClick="doEditSample()">修改</button>
+            <a href="#" class="btn btn-success edit"  onclick="doUpdateEditState('{$con.centreno}')" >修改完毕</a>
+        <elseif condition="($ifedit['ifedit'] == 1) and ($sub_status['status'] == 2)" />
+        	<span style="color:red">申请拒绝</span>
+        </if>-->
         <!--<button class="btn btn-success" type="button" id="up_sample" onClick="doUpSample('sample')">上传抽样单</button>
 		<button class="btn btn-success" type="button" id="up_check" onClick="doUpSample('work')">上传检测图片</button>-->
         <a class="btn btn-success edit" href="/admin/contract/doUploadSampleImage?centreno={$one.centreno}&type=sample">上传抽样单</a>
 		<a class="btn btn-success edit" href="/admin/contract/doUploadSampleImage?centreno={$one.centreno}&type=work">上传现场图片</a>
-        <a class="btn btn-success" href="/admin/test/sampleShow?id={$one.centreno}" onclick="return checkFinish()">打印</a>
+       	
+       
+        <a class="btn btn-success" href="/admin/test/sampleShow?id={$one.centreno}" onClick="return checkFinish()">打印</a>
+        
+        
         <input type="hidden" id="sample_count" value="{$sample_count}" />
         <button class="btn btn-success edit1" type="button" onClick="doSubmit()">抽样单录入完毕</button>       	
       </form>

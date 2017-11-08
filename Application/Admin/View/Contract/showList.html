@@ -37,17 +37,11 @@
                     <td width="33%">
                     	<!--<a href="{:U('/admin/contract/editContract')}?id={$con.centreno}" id="editContract" target="_blank" class="btn btn-info btn-xs" ><i class="glyphicon glyphicon-search"></i>修改</a>-->
                         <if condition="$if_edit==1">
-                        	<if condition="$con['ifedit'] == 0">
+                        	<if condition="($con['ifedit'] == 0) OR (($con['ifedit'] == 1) and ($con['sub_status'] == 1)) ">
                        	 		<a href="{:U('/admin/contract/editContract')}?id={$con.centreno}" class="btn btn-info btn-xs" >修改</a>
                             <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == -1)" />
                             	<a href="#" class="btn btn-info btn-xs" onclick="applyBack('{$con.centreno}')" >申请修改</a>
-                            <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == 0)" />
-                            	<span style="color:green">申请中</span>
-                            <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == 1)" />
-                            	<span style="color:green">申请通过</span>
-                                <a href="{:U('/admin/contract/editContract')}?id={$con.centreno}&type='apply'" class="btn btn-info btn-xs" >修改</a>
-                            <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == 2)" />
-                            	<span style="color:red">申请拒绝</span>
+      
                             </if>
                         </if>
                     	<a href="/admin/manager/contractDetail?id={$con.centreno}"  class="btn btn-info btn-xs" >检验受理合同</a>
@@ -56,7 +50,16 @@
                     	<a href="{:U('/admin/contract/sampleEdit')}?id={$con.centreno}" style="display:none" class="btn btn-info btn-xs" >抽样单</a>
                     </td>
                     <td>
-                    
+                   		 <if condition="$if_edit==1">
+                        	<if condition="($con['ifedit'] == 1) and ($con['sub_status'] == 0)">
+                            	<span style="color:green">申请中</span>
+                            <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == 1)" />
+                            	<span style="color:green">申请通过</span>
+                                <a href="#" class="btn btn-info btn-xs"  onclick="doUpdateEditState('{$con.centreno}')" >修改完毕</a>
+                            <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == 2)" />
+                            	<span style="color:red">申请拒绝</span>
+                            </if>
+                        </if>
                     	<if condition="$con['status']==7">
                         	<span style="color:green">{$con.takename}已接单<br/>{$con.takelist_time}</span>
                         <elseif condition="$con['status']==5"/>
@@ -168,6 +171,23 @@
 				window.location.reload();
 			}
 		});
+	}
+	
+	function doUpdateEditState(centreno){
+		if(confirm('确认后合同和抽样单均不可修改，是否已修改完毕？')){
+			$.ajax({
+				url: "{:U('/admin/contract/doUpdateEditState')}",
+				dataType: 'json',
+				data:{'centreno':centreno},
+				beforeSubmit: function(){
+					return true;
+				},
+				success: function (re) {
+					alert(re.msg);
+					window.location.reload();
+				}
+			});	
+		}
 	}
 </script>
 

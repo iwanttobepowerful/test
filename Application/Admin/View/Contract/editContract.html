@@ -241,7 +241,7 @@
         </table>
         
        <!-- <button class="btn btn-success" type="button" id="sampling_list" on>生成抽样单</button>-->
-        <button class="btn btn-success" type="submit" id="check_list" onClick="doEditContract({$type})">修改</button>
+        <button class="btn btn-success" type="submit" id="check_list" onClick="doEditContract()">修改</button>
       </form>
     </div>
     
@@ -683,14 +683,13 @@
 
 		
 		//合同修改
-		function doEditContract(type){
+		function doEditContract(){
 			var options = {
 				url: "{:U('/admin/contract/doEditContract')}",
 				dataType: 'json',
 				beforeSubmit: function(){
 					return true;
 				},
-				data:{'type':type},
 				success: function (data) {
 					if(data.msg=='succ'){
 						var _options = {"text":"修改成功！","action":function(){window.location.href="/admin/contract/showList";}};

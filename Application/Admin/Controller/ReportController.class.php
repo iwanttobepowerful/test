@@ -118,19 +118,18 @@ class ReportController extends Controller
         $if_admin = $admin_auth['super_admin'];
         $role = D('common_role')->where('id='.$user)->find();
 
-        $ifedit=D("contract_flow")->where("contract_flow.id=".$id)->join('contract ON contract_flow.centreNo = contract.centreNo')->find();
-        $centreno=$ifedit['centreNo'];
-        $where="contract.centreNo='{$centreno}'";
-
+        $ifedit=D("contract_flow")->where("id=".$id)->find();
+        $centreno=$ifedit['centreno'];
+        $where= "centreno='{$centreno}'";
         if($if_admin==1 || $role['rolename']=="批准员") {
-            $data1['ifedit']=1;
+            $data1=array('ifedit'=>1,
+        );
         $data=array(
             'status'=>4,
             'approve_time'=>date("Y-m-d H:i:s"),
             'approve_user_id'=>$userid,
         );
-        if(D("contract_flow")->where("id=".$id)->save($data)){
-            D("contract")->where($where)->save($data1);
+        if((D("contract_flow")->where("id=".$id)->save($data)) && (D("contract")->where($where)->save($data1))){
             $rs['msg'] = 'succ';
         }}
         $this->ajaxReturn($rs);
@@ -154,7 +153,8 @@ class ReportController extends Controller
         $where['contract_flow.status']=4;
         $rs=$contract_flow->where($where)
             ->join('common_system_user ON contract_flow.approve_user_id = common_system_user.id')
-            ->field('contract_flow.id,contract_flow.centreNo,contract_flow.approve_time,common_system_user.name')
+            ->join('test_report ON contract_flow.centreno=test_report.centreno')
+            ->field('contract_flow.id,contract_flow.centreNo,contract_flow.approve_time,common_system_user.name,test_report.tplno')
             ->limit("{$offset},{$pagesize}")
             ->order('contract_flow.approve_time desc,contract_flow.id desc')->select();
         //查找条件为已经批准并且内部尚未签发的报告
