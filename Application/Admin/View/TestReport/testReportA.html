@@ -1,45 +1,27 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<meta charset="UTF-8">
-		<title>检验报告A</title>
-        <link rel="stylesheet" type="text/css" href="__PUBLIC__/static/css/bootstrap.min.css" />
-        <script src="__PUBLIC__/static/js/jquery-2.1.3.min.js" type="text/javascript" charset="utf-8"></script>
-		<style type="text/css">
+<head>
+	<meta charset="UTF-8">
+	<title>检验报告A</title>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/static/css/bootstrap.min.css" />
+    <script src="__PUBLIC__/static/js/jquery-2.1.3.min.js" type="text/javascript" charset="utf-8"></script>
+	<style type="text/css">
 			.a_cover_head {
 				margin: 0 auto;
 				margin-top: 24%;
 			}
-            table{
-                width: 90%;
-                border-color: rgb(0, 0, 0);
-                border-width: 1px;
-                border-style: solid;
-                margin:0 auto;
-            }
-            td{
-                border-color: rgb(0, 0, 0);
-                border-width: 1px;
-                border-style: solid;
-                margin:0 auto;
-            }
+			
 			.a_cover_content {
 				margin: 0 auto;
-				margin-top: 24%;
+				margin-top: 23%;
 			}
 			
 			.a_cover_foot {
 				margin: 0 auto;
 				margin-top: 18%;
 			}
-			
-			input[type="text"] {
-				width: 100%;
-				height: 100%;
-				font-size: 1.5em;
-				border-style: none;
-			}
+
 			td{
 				text-align: center;
 			}
@@ -55,6 +37,7 @@
 				font-weight: 700;
 				font-size: 18pt;
 				font-family: "times new roman";
+				margin-bottom: 30pt;
 			}
 			
 			.a_cover_number {
@@ -67,19 +50,22 @@
 				font-weight: 600;
 			}
 			
-			#a_cover_key {
-				width: 40%;
-				margin-top: 2em;
-				border-style: none;
-				border-bottom: solid #101010;
-				border-bottom-width: 1px;
+			.a_cover_key {
+				width:30%;
+				display: inline-block;
+				text-align: center;
+				border-bottom: solid 1px #000000;
+				font-family: "times new roman";
+				font-size: 18pt;
 			}
 			
 			#a_key_number {
-				width: 28%;
+				width: 24%;
 				border-style: none;
 				border-bottom: solid #101010;
 				border-bottom-width: 1px;
+				font-family: "times new roman";
+				font-size: 14pt;
 			}
 			
 			.a_cover_name {
@@ -94,24 +80,60 @@
 			
 			.a_cover_ename {
 				margin-left: 13%;
+				margin-bottom: 10pt;
 				font-size: 14pt;
 				font-family: "times new roman";
 			}
-			
-			#a_cover_name_content,
-			#a_cover_client_content,
-			#a_cover_type_content {
-				width: 66%;
-				height: 1.5em;
+			#a_result {
+				width: 100%;
+				height: 90%;
+				font-size: 14pt;
+				font-family: "微软雅黑";
+				resize: none;
 				border-style: none;
-				border-bottom: solid #101010;
-				border-bottom-width: 1px;
-				margin-top: 0.5em;
 			}
+			.test_txt{
+				font-size: 12pt;
+				font-family: "楷体";
+			}
+			.bottom_line{
+				margin-top: 10pt;
+				border-bottom: solid 1px #000000;
+				display: inline-block;
+				width: 66%;
+				font-family: "微软雅黑";
+				font-size: 16pt;
+				text-align: center;
+				font-weight: 600;
+			}
+            .a_content_key{
+				border-bottom: solid 1px #000000;
+				display: inline-block;
+				width: 15%;
+				font-family: "times new roman";
+				font-size: 12pt;
+				text-align: center;
+				font-weight: 600;
+			}
+				
 			
 			.table_txt{
 				font-family: "黑体";
 				font-size: 14pt;
+			}
+			.foot_img{
+				width: 90%;
+				margin-left: 26pt;
+				margin-bottom: -7pt;
+			}
+			.foot_foot{
+				margin: 0 auto;
+				text-align: center;
+			}
+			.font_txt{
+				font-family: "宋体";
+				font-size: 10.5pt;
+				color: #777777;
 			}
 			
 			.a_cover_txt,
@@ -130,6 +152,7 @@
 				font-size: 18pt;
 				margin-bottom: -1px;
 				font-family:"黑体";
+				font-weight: 600;
 			}
 			
 			.a_two_report {
@@ -145,42 +168,23 @@
 				font-weight: 600;
 				font-family: "times new roman";
 			}
-			
-			.a_two_key {
-				font-size: 1.2em;
-			}
-			
 			.a_test {
 				width: 90%;
 				margin: 0 auto;
-				height: 78vh;
+				height: 20.5cm;
 			}
 			
 			.a_foot {
 				margin: 0 auto;
 				width: 90%;
+				margin-top: 20pt;
+				margin-bottom: 3pt;
 			}
 			
 			.a_middle {
-				margin-top: 2.6%;
+				margin-top: 3pt;
 				margin-bottom: 0.3%;
 				margin-left: 5%;
-			}
-			
-			#a_pro {
-				width: 100%;
-				height: 90%;
-				font-size: 1.5em;
-				resize: none;
-				border-style: none;
-			}
-			
-			#a_result {
-				width: 100%;
-				height: 90%;
-				font-size: 1.5em;
-				resize: none;
-				border-style: none;
 			}
 			
 			.a_head {
@@ -190,11 +194,16 @@
 			.a_dis_bor {
 				border-right: none;
 				border-left: none;
+				text-align: left;
 			}
 			
 			.a_gone_bor {
 				border-top: none;
 				border-bottom: none;
+			}
+			
+			.test_result{
+				height: 3cm;
 			}
 			
 			#a_sign_year,
@@ -203,7 +212,7 @@
 				width: 13%;
 			}
 			
-			.a_foot_txt {
+			.a_foot_foot {
 				width: 25%;
 			}
 			
@@ -220,8 +229,8 @@
 			
 			.page {
 				width: 210mm;
-				min-height: 29.7cm;
-				padding: 1cm;
+				height: 29.7cm;
+				padding: 0.8cm;
 				margin: 1cm auto;
 				border: 1px #D3D3D3 solid;
 				border-radius: 5px;
@@ -232,11 +241,13 @@
 			
 			.cn {
 				font-family: "宋体";
+				font-size: 12pt;
 			}
 			
 			.en {
 				font-family: "times new roman";
-				letter-spacing: -0.5pt;
+				/*letter-spacing: -0.5pt;*/
+				font-size: 12pt;
 			}
 			
 			.sy {
@@ -259,7 +270,8 @@
 			
 			.last_content {
 				margin: 0 auto;
-				width: 70%;
+				width: 80%;
+				height: 20cm;
 				margin-top: 3%;
 			}
 			
@@ -267,6 +279,7 @@
 				font-size: 12pt;
 				margin-left: 16pt;
 				margin-top: -8pt;
+				margin-bottom: 10pt;
 				/*line-height: 16pt;*/
 			}
 			
@@ -289,6 +302,7 @@
 				left: 90%;
 				bottom: 77pt;
 			}
+			
 		</style>
 		<style type="text/css" media="print">
 			/*以下是打印格式*/
@@ -304,7 +318,7 @@
 			
 			@page {
 				size: A4;
-				margin: 0.3cm;
+				margin: 0.5cm;
 			}
 			
 			.page {
@@ -312,19 +326,19 @@
 				border: initial;
 				border-radius: initial;
 				width: initial;
-				min-height: initial;
+				padding: 1cm;
+				height: initial;
 				box-shadow: initial;
 				background: initial;
 				page-break-after: always;
 			}
 			
 			.a_test {
-				height: 20cm;
+				height: 19cm;
 			}
 			/*以下是尾页样式*/
-			
 			.last_content {
-				width: 80%;
+				width: 85%;
 			}
 			
 			.fin {
@@ -337,292 +351,228 @@
 				position: relative;
 				left: 90%;
 				bottom: 66pt;
-			}
-		</style>
-	</head>
+                }
+    </style>
+	
+</head>
 
-	<body>
-	<include file="Common:header" title="后台首页"/>   <!--加上！！！！！-->
-		<div class="page">
-			<div class="a_cover_head">
-				<p class="a_cover_title">
-					检&nbsp;&nbsp;验&nbsp;&nbsp;报&nbsp;&nbsp;告
-				</p>
-				<p class="a_cover_sub">
-					<b>TEST&nbsp;&nbsp;&nbsp;&nbsp;REPORT</b>
-				</p>
+<body>
+<include file="Common:header" title="后台首页"/>   <!--加上！！！！！-->
+<div class="page">
+	<div class="a_cover_head">
+		<p class="a_cover_title">
+			检&nbsp;&nbsp;验&nbsp;&nbsp;报&nbsp;&nbsp;告
+		</p>
+		<p class="a_cover_sub">
+			<b>TEST&nbsp;&nbsp;&nbsp;&nbsp;REPORT</b>
+		</p>
 				<p class="a_cover_number">
-					<!--{$con_list['centreno']}-->
-					<span class="a_cover_guy">中心编号(No.)：</span><input type="text" name="a_cover_key" id="a_cover_key" value="{$con_list.centreno}"/>
+					<span class="a_cover_guy">中心编号(No.)：</span><span class="a_cover_key">131313CC13</span>
 				</p>
 			</div>
 			<div class="a_cover_content">
 				<p class="a_cover_name">
-					<span class="a_cover_guy">样品名称：</span><input type="text" name="a_cover_name_content" id="a_cover_name_content" value="{$con_list['samplename']}"/>
+					<span class="a_cover_guy">样品名称：</span><span class="bottom_line">北京邮电大学</span>
 				</p>
 				<p class="a_cover_ename">
 					Sample Name
 				</p>
 
 				<p class="a_cover_client">
-					<span class="a_cover_guy">受检单位：</span><input type="text" name="a_cover_client_content" id="a_cover_client_content" value="{$con_list['productunit']}"/>
+					<span class="a_cover_guy">受检单位：</span><span class="bottom_line">北京邮电大学</span>
 				</p>
 				<p class="a_cover_ename">
 					Client
 				</p>
 
 				<p class="a_cover_type">
-					<span class="a_cover_guy">检验类别：</span><input type="text" name="a_cover_type_content" id="a_cover_type_content" value="{$con_list['testcategory']}"/>
+					<span class="a_cover_guy">检验类别：</span><span class="bottom_line">北京邮电大学</span>
 				</p>
 				<p class="a_cover_ename">
 					Test Type
 				</p>
 			</div>
 
-			<div class="a_cover_foot">
+	<div class="a_cover_foot">
+		<p class="a_cover_btxt">
+			（国家）建筑材料工业技术监督研究中心
+		</p>
+		<p class="a_cover_etxt">
+			Technical Supervision and Research Center of the Building Materials Industry
+		</p>
+	</div>
+</div>
+<div class="page">
+	<table class="a_head">
+		<tr>
+			<td>
 				<p class="a_cover_btxt">
 					（国家）建筑材料工业技术监督研究中心
 				</p>
 				<p class="a_cover_etxt">
 					Technical Supervision and Research Center of the Building Materials Industry
 				</p>
-			</div>
-		</div>
-		<div class="page">
-			<table class="a_head">
-				<tr>
-					<td>
-						<p class="a_cover_btxt">
-							（国家）建筑材料工业技术监督研究中心
-						</p>
-						<p class="a_cover_etxt">
-							Technical Supervision and Research Center of the Building Materials Industry
-						</p>
-						<p class="a_two_report">检 验 报 告</p>
-						<p class="a_two_ereport">TEST REPORT</p>
-					</td>
-				</tr>
-			</table>
-			<div class="a_middle">
-				<span class="a_two_key table_txt">中心编号(No.):</span><input type="text" name="a_key_number" id="a_key_number" value="{$con_list['centreno']}" /></td>
-			</div>
-			<table border="3" class="a_test">
-				<tr>
-					<td class="table_txt" style="width: 17%;">产品名称</td>
-					<td><input id="a_name" type="text" value="{$con_list['samplename']}"/> </td>
-					<td class="table_txt" style="width: 17%;">检验类别</td>
-					<td><input id="a_category" type="text" value="{$con_list['testcategory']}"/> </td>
-				</tr>
-				<tr>
-					<td class="table_txt">受检单位</td>
-					<td><input id="a_test_unit" type="text"  value="{$con_list['productunit']}"/> </td>
-					<td class="table_txt">生产日期</td>
-					<td><input id="a_creat_date" type="text" value="{$con_list['productiondate']}"/> </td>
-				</tr>
-				<tr>
-					<td class="table_txt">生产单位</td>
-					<td><input id="a_creat_unit" type="text"  value="{$con_list['productunit']}" /> </td>
-					<td class="table_txt">规格型号</td>
-					<td><input id="a_model" type="text" value="{$con_list['specification']}"/> </td>
-				</tr>
-				<tr>
-					<td class="table_txt">抽样地点</td>
-					<td><input id="a_local" type="text"  value="{$con_list['sampleplace']}"/> </td>
-					<td class="table_txt">商&nbsp;&nbsp;&nbsp;&nbsp;标</td>
-					<td><input id="a_brand" type="text" value="{$con_list['trademark']}"/> </td>
-				</tr>
-				<tr>
-					<td class="table_txt">抽 样 人</td>
-					<td><input id="a_sample_people" type="text" value="{$sam_list['simplersign']}"/> </td>
-					<td class="table_txt">等&nbsp;&nbsp;&nbsp;&nbsp;级</td>
-					<td><input id="a_rate" type="text" value="{$con_list['grade']}"/> </td>
-				</tr>
-				<tr>
-					<td class="table_txt">抽样日期</td>
-					<td><input id="a_sample_date" type="text" value="{$sam_list['sampledate']}"/> </td>
-					<td class="table_txt">抽样数量</td>
-					<td><input id="a_number" type="text" value="{$sam_list['samplequantity']}"/> </td>
-				</tr>
-				<tr>
-					<td class="table_txt">样品状态</td>
-					<td><input id="a_state" type="text" value="{$con_list['samplestatus']}"/> </td>
-					<td class="table_txt">抽样基数</td>
-					<td><input id="a_vol" type="text" value="{$con_list['samplebase']}"/> </td>
-				</tr>
-				<tr>
-					<td class="table_txt">抽样单位</td>
-					<td colspan="3"><input id="a_sample_unit" type="text" value="{$con_list['sampleunit']}"/> </td>
-				</tr>
-				<tr>
-					<td class="table_txt">抽样依据</td>
-					<td colspan="3"><input id="a_sample_rule" type="text" value="{$con_list['samplename']}"/> </td>
-				</tr>
-				<tr>
-					<td class="table_txt">检验项目</td>
-					<td colspan="3"> <textarea name="a_pro" id="a_pro">{$sam_list['testitem']}</textarea></td>
-				</tr>
-				<tr>
-					<td class="table_txt" rowspan="3">检验结论</td>
-					<td colspan="3" class="a_gone_bor"> <textarea name="a_result" id="a_result">{$con_list['samplename']}</textarea></td>
-				</tr>
-				<tr>
-					<td colspan="3" style="text-align: right;" class="a_gone_bor table_txt">签发日期：<input type="text" id="a_sign_year" /> 年<input type="text" name="a_sign_month" id="a_sign_month" value="" /> 月<input type="text" name="a_sign_day" id="a_sign_day" value="" /> 日 </td>
-				</tr>
-				<tr>
-					<td colspan="3" style="text-align: right;" class="a_gone_bor table_txt">(检验测试章)</td>
-				</tr>
-				<tr>
-					<td  class="a_dis_bor table_txt">备注:(此处空白)</td>
-					<td colspan="3" class="a_dis_bor"><input id="a_remark" type="text" /> </td>
-				</tr>
-				<table class="a_foot">
-					<tr>
-						<td class="a_foot_txt" >
-							<font class="table_txt">批准：</font></td>
-						<td><input type="text" name="a_prove" id="a_approve" value="" /></td>
-						<td class="a_foot_txt" >
-							<font class="table_txt">审核：</font></td>
-						<td><input type="text" name="a_check" id="a_check" value="" /></td>
-						<td class="a_foot_txt" >
-							<font class="table_txt">编制：</font></td>
-						<td><input type="text" name="a_compile" id="a_compile" value="" /></td>
-					</tr>
-				</table>
-			</table>
-		</div>
-		<div class="page">
-			<table class="a_head">
-				<tr>
-					<td>
-						<p class="a_cover_btxt">
-							（国家）建筑材料工业技术监督研究中心
-						</p>
-						<p class="a_cover_etxt">
-							Technical Supervision and Research Center of the Building Materials Industry
-						</p>
-						<p class="a_two_report">检 验 报 告</p>
-						<p class="a_two_ereport">TEST REPORT</p>
-					</td>
-				</tr>
-			</table>
-			<div class="a_middle">
-				<span class="a_two_key table_txt">中心编号(No.):</span><input type="text" name="a_key_number" id="a_key_number" value="{$con_list['centreno']}" /></td>
-			</div>
-			<?php echo htmlspecialchars_decode($htmltable)?>
-			<!--<table border="3" class="a_test">-->
-				<!--<tr>-->
-					<!--<td  colspan="2" style="width: 40%;" class="table_txt">样品类型</td>-->
-					<!--<td colspan="3"><input id="a_category" type="text" /> </td>-->
-				<!--</tr>-->
-				<!--<tr>-->
-					<!--<td  colspan="2" class="table_txt">样品用量</td>-->
-					<!--<td colspan="3"><input id="a_category" type="text" /> </td>-->
-				<!--</tr>-->
-				<!--<tr>-->
-					<!--<td  colspan="2" class="table_txt">开灯时间</td>-->
-					<!--<td colspan="3"><input id="a_category" type="text" /> </td>-->
-				<!--</tr>-->
-				<!--<tr>-->
-					<!--<td class="table_txt">序号</td>-->
-					<!--<td class="table_txt">检验项目</td>-->
-					<!--<td class="table_txt">标准要求</td>-->
-					<!--<td class="table_txt">检验结果</td>-->
-					<!--<td class="table_txt">单项结论</td>-->
-				<!--</tr>-->
-				<!--<tr>-->
-					<!--<td ></td>-->
-					<!--<td ></td>-->
-					<!--<td ></td>-->
-					<!--<td ></td>-->
-					<!--<td ></td>-->
-				<!--</tr>-->
-				<!--<tr>-->
-					<!--<td colspan="5" style="height: 50%;">-->
-						<!--<textarea name="a_result" id="a_three_result"></textarea>-->
-					<!--</td>-->
-				<!--</tr>-->
-				<!--<tr>-->
-					<!--<td align="center " class="a_dis_bor table_txt" colspan="2 ">备注:(此处空白)</td>-->
-					<!--<td colspan="3 " class="a_dis_bor "><input id="a_remark " type="text" /> </td>-->
-				<!--</tr>-->
-			<!--</table>-->
-		</div>
-		<div class="page">
-			<p class="last_title cn">说&nbsp;&nbsp;明</p>
-			<p class="last_etitle en">Notice</p>
-			<div class="last_content">
-				<p class="cn">1、本报告无中心“检验测试章”和骑缝章无效。</p>
-				<p class="last_one_e en" style="font-family: 'times new roman';">This test report is invalid without the seal. </p>
-				<p class="last_one_c cn">2、本报告无“编制、审核、批准”签字无效。</p>
-				<p class="last_one_e en">This test report is invalid without the signatures of the related persons.</p>
-				<p class="last_one_c cn">3、本报告涂改、部分复印无效。</p>
-				<p class="last_one_e en">This test report is invalid if erased, altered or copied partially.</p>
-				<p class="last_one_c cn">4、对本报告若有异议，应于收到报告之日起十五个工作日内向本中心提出，逾</p>
-				<p style="text-indent:16pt;margin-top: -7pt;" class="cn">期恕不受理。</p>
-				<p class="last_one_e en">Any doubt should inform us within 15 workdays after receiving the test report. </p>
-				<p class="last_one_c cn">5、委托检验样品和委托信息由委托人提供，中心不对真实性负责，委托检验结</p>
-				<p style="text-indent:16pt;margin-top: -7pt" class="cn">果仅对来样负责。</p>
-				<p class="last_one_e en">The commissioned testing samples and commission information are provided by the applicant. The results shown in the test report refer only to the sample(s) tested unless otherwise stated. Identifying authenticity of the supplied samples and information is out of our responsibility. </p>
-				<p class="last_one_c cn">6、本报告的法律责任由建筑材料工业技术监督研究中心承担。</p>
-				<p class="last_one_e en">The legal responsibility of this test report is charged with Technical Supervision and Research Center of the Building Materials Industry.</p>
-				<p class="last_one_c cn">7、本报告采用防伪纸张，复印后应带有网络底纹。</p>
-				<p class="last_one_e en">This test report is printed on anti-counterfeiting paper. Its copy should have grid shading.</p>
-				<img style="margin-left: 20%;margin-top: 2%; margin-bottom: 3%;" src="__PUBLIC__/static/images/line.png" />
-				<p class="cn">本中心联系方式：</p>
-				<p class="cn fin">地址（Address）：北京市朝阳区管庄东里一号北楼</p>
-				<p class="en last_address fin">No.1 Guanzhuang Dongli, Chaoyang District, Beijing 100024, P.R. China.</p>
-				<p class="sy fin">邮编（Post Code）：100024</p>
-				<p class="sy fin">电话（Tel）：（010）51164723 51164718</p>
-				<p class="sy fin">传真（Fax）：（010）51164724</p>
-				<p class="sy fin">报告真伪查询（Tel）：（010）51164716</p>
-				<p class="sy fin">网址（Web：http://www.dmtc.org.cn/</p>
-				<p class="sy fin">电子邮箱（E-mail）： dmtc2007@163.com</p>
-				<img style="visibility:{$dayinview}" class="barcode" src="__PUBLIC__/static/images/barcode.png" />
-				<script>// <![CDATA[
+				<p class="a_two_report">检 验 报 告</p>
+				<p class="a_two_ereport">TEST REPORT</p>
+			</td>
+		</tr>
+	</table>
+	<div class="a_middle">
+		<span class="table_txt">中心编号(No.):</span><span class="a_content_key">131313CC13</span>
+	</div>
+	<table border="3" class="a_test">
+		<tr>
+			<td class="table_txt" style="width: 17%;">产品名称</td>
+			<td style="width: 38%;"><span class="test_txt">的方式公司的</span></td>
+			<td class="table_txt" style="width: 17%;">检验类别</td>
+			<td><span class="test_txt">的方式公司的</span></td>
+		</tr>
+		<tr>
+			<td class="table_txt">受检单位</td>
+			<td><span class="test_txt">大哥发的发给</span></td>
+			<td class="table_txt">生产日期</td>
+			<td><span class="test_txt"></span></td>
+		</tr>
+		<tr>
+			<td class="table_txt">生产单位</td>
+			<td><span class="test_txt">北邮</span></td>
+			<td class="table_txt">规格型号</td>
+			<td><span class="test_txt">的方式公司的</span></td>
+		</tr>
+		<tr>
+			<td class="table_txt">抽样地点</td>
+			<td><span class="test_txt">的方式公司的</span></td>
+			<td class="table_txt">商&nbsp;&nbsp;&nbsp;&nbsp;标</td>
+			<td><span class="test_txt">的方式公司的</span></td>
+		</tr>
+		<tr>
+			<td class="table_txt">抽 样 人</td>
+			<td><span class="test_txt"></span></td>
+			<td class="table_txt">等&nbsp;&nbsp;&nbsp;&nbsp;级</td>
+			<td><span class="test_txt"></span></td>
+		</tr>
+		<tr>
+			<td class="table_txt">抽样日期</td>
+			<td><span class="test_txt"></span></td>
+			<td class="table_txt">抽样数量</td>
+			<td><span class="test_txt"></span></td>
+		</tr>
+		<tr>
+			<td class="table_txt">样品状态</td>
+			<td><span class="test_txt"></span></td>
+			<td class="table_txt">抽样基数</td>
+			<td><span class="test_txt"></span></td>
+		</tr>
+		<tr>
+			<td class="table_txt">抽样单位</td>
+			<td colspan="3"><span class="test_txt"></span></td>
+		</tr>
+		<tr>
+			<td class="table_txt">抽样依据</td>
+			<td colspan="3"><span class="test_txt"></span></td>
+		</tr>
+		<tr>
+			<td class="table_txt">检验项目</td>
+			<td colspan="3"><span class="test_txt"></span></td>
+		</tr>
+		<tr>
+			<td class="table_txt" rowspan="3">检验结论</td>
+			<td colspan="3" class="a_gone_bor test_result"> <textarea name="a_result" id="a_result"></textarea></td>
+		</tr>
+		<tr>
+			<td colspan="3" style="text-align: right;" class="a_gone_bor table_txt">签发日期：&nbsp;<span class="test_txt"></span>年&nbsp;&nbsp;&nbsp;&nbsp;<span class="test_txt"></span>月&nbsp;&nbsp;&nbsp;&nbsp;<span class="test_txt"></span>日 &nbsp;&nbsp;</td>
+		</tr>
+		<tr>
+			<td colspan="3" style="text-align: right;padding-right: 40pt;" class="a_gone_bor table_txt">(检验测试章)</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="a_dis_bor table_txt">备注:</td>
+			<td colspan="2" class="a_dis_bor"><span class="test_txt"></span></td>
+		</tr>
+		<table class="a_foot">
+			<tr>
+				<td class="a_foot_foot" >
+					<font class="table_txt">批准：</font></td>
+				<td><span class="test_txt"></span></td>
+				<td class="a_foot_foot" >
+					<font class="table_txt">审核：</font></td>
+				<td><span class="test_txt"></span></td>
+				<td class="a_foot_foot" >
+					<font class="table_txt">编制：</font></td>
+				<td><span class="test_txt"></span></td>
+			</tr>
+		</table>
+	</table>
+	<img class="foot_img" src="__PUBLIC__/static/images/web_footer.png" />
+	<div class="foot_foot"><font class="font_txt">检验单位地址：北京市朝阳区管庄中国建材院内北楼    电话：010-51164723    邮编：100024</font></div>
+</div>
 
-                thisURL = document.URL;
+<div class="page">
+	<p class="last_title cn">说&nbsp;&nbsp;明</p>
+	<p class="last_etitle en">Notice</p>
+	<div class="last_content">
+		<p class="cn">1、本报告无中心“检验测试章”和骑缝章无效。</p>
+		<p class="last_one_e en" style="font-family: 'times new roman';">This test report is invalid without the seal. </p>
+		<p class="last_one_c cn">2、本报告无“编制、审核、批准”签字无效。</p>
+		<p class="last_one_e en">This test report is invalid without the signatures of the related persons.</p>
+		<p class="last_one_c cn">3、本报告涂改、部分复印无效。</p>
+		<p class="last_one_e en">This test report is invalid if erased, altered or copied partially.</p>
+		<p class="last_one_c cn">4、对本报告若有异议，应于收到报告之日起十五个工作日内向本中心提出，逾</p>
+		<p style="text-indent:16pt;margin-top: -7pt;" class="cn">期恕不受理。</p>
+		<p class="last_one_e en">Any doubt should inform us within 15 workdays after receiving the test report. </p>
+		<p class="last_one_c cn">5、委托检验样品和委托信息由委托人提供，中心不对真实性负责，委托检验结</p>
+		<p style="text-indent:16pt;margin-top: -7pt" class="cn">果仅对来样负责。</p>
+		<p class="last_one_e en">The commissioned testing samples and commission information are provided by the applicant. The results shown in the test report refer only to the sample(s) tested unless otherwise stated. Identifying authenticity of the supplied samples and information is out of our responsibility. </p>
+		<p class="last_one_c cn">6、本报告的法律责任由建筑材料工业技术监督研究中心承担。</p>
+		<p class="last_one_e en">The legal responsibility of this test report is charged with Technical Supervision and Research Center of the Building Materials Industry.</p>
+		<p class="last_one_c cn">7、本报告采用防伪纸张，复印后应带有网络底纹。</p>
+		<p class="last_one_e en">This test report is printed on anti-counterfeiting paper. Its copy should have grid shading.</p>
+		<img style="margin-left: 20%;margin-top: 2%; margin-bottom: 3%;" src="__PUBLIC__/static/images/line.png" />
+		<p class="cn">本中心联系方式：</p>
+		<p class="cn fin">地址（Address）：北京市朝阳区管庄东里一号北楼</p>
+		<p class="en last_address fin">No.1 Guanzhuang Dongli, Chaoyang District, Beijing 100024, P.R. China.</p>
+		<p class="sy fin">邮编（Post Code）：100024</p>
+		<p class="sy fin">电话（Tel）：（010）51164723 51164718</p>
+		<p class="sy fin">传真（Fax）：（010）51164724</p>
+		<p class="sy fin">报告真伪查询（Tel）：（010）51164716</p>
+		<p class="sy fin">网址（Web：http://www.dmtc.org.cn/</p>
+		<p class="sy fin">电子邮箱（E-mail）： dmtc2007@163.com</p>
+        <img style="visibility:{$dayinview}" class="barcode" src="{$qrimg}" />
+	</div>
+</div>
 
-                strwrite =
-
-                    "<img src='https://chart.googleapis.com/chart?cht=qr&chs=150x150&choe=UTF-8&chld=L|4&chl="  + thisURL + "' width='150' height='150' alt='二维码' />";
-
-                document.write( strwrite );
-
-                // ]]></script>
-			</div>
-		</div>
-
-	<center>
-		<button style="visibility:{$shengchengview}" onclick="createreport('{$con_list.centreno}')" class="btn btn-primary btn-xs">生成报告</button>
-	</center>
-	<center>
-		<button style="visibility:{$dayinview}" onclick="window.print()" class="btn btn-info btn-xs" >　报告已生成，可以打印　</button>
-	</center>
-	</body>
+<center>
+    <button style="visibility:{$shengchengview}" class="Noprint"  onclick="createreport('{$con_list.centreno}')" class="btn btn-primary btn-xs">生成报告</button>
+</center>
+<center>
+    <button style="visibility:{$dayinview}" class="Noprint" onclick="window.print()" class="btn btn-info btn-xs" >　报告已生成，可以打印　</button>
+</center>
+</body>
 
 </html>
-
-
 <script type="text/javascript">
     function createreport(centreno){
-        //alert(centreno);
         if(!centreno)
             return false;
         var _options = {"flag":"error","text":"您确定要生成报告吗？","buttons":{"ok":{"action":function(){doCreate(centreno);}},"cancel":{}}};
         doConfirmDialog(_options);
     }
     function doCreate(centreno) {
-        centreno.onclick = function() {};
+        var thisurl=document.URL;
+        var mod=thisurl.match(/mod=(\S*)&/)[1];//从地址栏获取所选择模板id
+        //centreno.onclick = function() {};
+
         $.ajax({
             type:"post",
             url:"{:U('/admin/TestReport/doCreate')}",
-            data:{"centreno":centreno},
+            data:{"centreno":centreno,"mod":mod},
             dataType:"json",
             success:function(ret){
                 if(ret.msg=='succ') {
-                    window.location.reload();
+					window.location.reload();
                 }
             }
         });
+
     }
 </script>

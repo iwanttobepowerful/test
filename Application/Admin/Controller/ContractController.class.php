@@ -132,10 +132,15 @@ class ContractController extends Controller
 		$ifHighQuantity = I("ifHighQuantity");
 		
 		//费用详情
-		$testFee = I("testCost1",0,'intval');
-		$Drecord = I("testCost2",0,'intval');
-		$Dcopy = I("testCost3",0,'intval');
-		$Drevise = I("testCost4",0,'intval');
+		$Arecord = I("Arecord",0,'intval');
+		$Brecord = I("Brecord",0,'intval');
+		$Crecord = I("Crecord",0,'intval');
+		$Drecord = I("Drecord",0,'intval');
+		$Erecord = I("Erecord",0,'intval');
+		$Frecord = I("Frecord",0,'intval');
+		$Dcopy = I("Dcopy",0,'intval');
+		$Drevise = I("Drevise",0,'intval');
+		$Dother = I("Dother",0,'intval');
 		
 		$ifspecial = I("ifspecial");//是否是特殊编码
 		
@@ -147,13 +152,6 @@ class ContractController extends Controller
 		if(empty($productionDate)){
 			$productionDate=null;
 		}
-		if(empty($collectDate)){
-			$collectDate=null;
-		}
-		if(empty($reportDate)){
-			$reportDate=null;
-		}
-		
 		$data = array(
 			"clientName"=>$clientName,
 			"productUnit"=>$productUnit,
@@ -208,17 +206,22 @@ class ContractController extends Controller
 			'fillDate'=>Date("Y-m-d H:i:s"),
 			//"sampleunti"=>$sampleunti,
 		);
-		
+
 		//费用表
 		$date_cost =array(
 			"centreNo"=>$centreNo,
-			"testFee"=>$testFee,
+			"Arecord"=>$Arecord,
+			"Brecord"=>$Brecord,
+			"Crecord"=>$Crecord,
 			"Drecord"=>$Drecord,
+			"Erecord"=>$Erecord,
+			"Frecord"=>$Frecord,
 			"Dcopy"=>$Dcopy,
 			"Drevise"=>$Drevise,
+			"Dother"=>$Dother,
 			'costDate'=>Date("Y-m-d H:i:s")
 		);
-		
+
 		$contract_user_id = $admin_auth['id'];
 		//pr($contract_user_id);
 		$data_flow = array(
@@ -233,7 +236,7 @@ class ContractController extends Controller
 			
 			//合同入库
 			D("contract")->data($data)->add();
-			D("contract_flow")->data($data_flow)->add();
+			
 			
 			//特殊编码操作
 			if($ifspecial==1){
@@ -273,14 +276,14 @@ class ContractController extends Controller
 					"trademark"=>$trademark,
 					"sampleQuantity"=>$sampleQuantity,
 					//"sampleUnit"=>$sampleunti,
-					"productionDate"=>$productionDate,
+					//"productionDate"=>$productionDate,
 					"testItem"=>$testItem,
 					"ifOnline"=>$ifOnline,
 					"ifSubpackage"=>$ifSubpackage,
 				);
-				if(!D("sampling_form")->data($data_sample)->add()) $flag=false;	
-				
-				
+				D("sampling_form")->data($data_sample)->add();				
+			}else{
+				D("contract_flow")->data($data_flow)->add();	
 			}
 			M()->commit();
 			$rs['msg'] = 'succ';
@@ -310,12 +313,14 @@ class ContractController extends Controller
 			'feeItem'=>$feeItem,
 			//'$testCategory'=>$testCategory
 		);
+		
 		$this->assign($body);
 		$this->display();
 	}
 	
 	//合同修改入库
 	public function doEditContract(){
+
 		$clientName = I("clientName");
 		$productUnit = I("productUnit");
 		$sampleName = I("sampleName");
@@ -350,24 +355,20 @@ class ContractController extends Controller
 		$ifHighQuantity = I("ifHighQuantity");
 		
 		//费用详情
-		$testFee = I("testCost1",0,'intval');
-		$Drecord = I("testCost2",0,'intval');
-		$Dcopy = I("testCost3",0,'intval');
-		$Drevise = I("testCost4",0,'intval');
+		$Arecord = I("Arecord",0,'intval');
+		$Brecord = I("Brecord",0,'intval');
+		$Crecord = I("Crecord",0,'intval');
+		$Drecord = I("Drecord",0,'intval');
+		$Erecord = I("Erecord",0,'intval');
+		$Frecord = I("Frecord",0,'intval');
+		$Dcopy = I("Dcopy",0,'intval');
+		$Drevise = I("Drevise",0,'intval');
+		$Dother = I("Dother",0,'intval');
+		
 
-		$rs = array("msg"=>'fail');
-		if(empty($clientName)||empty($productUnit)||empty($sampleName)||empty($testCriteria)||empty($testItem)){
+		if(empty($clientName)||empty($productUnit)||empty($sampleName)||empty($testCriteria)||empty($testItem)||empty($sampleQuantity)||empty($sampleStatus)||empty($sampleStaQuan)||empty($collector)||empty($testCost)||empty($collectDate)||empty($reportDate)){
 			$rs['msg'] = '信息填写不完整!';
 			$this->ajaxReturn($rs);
-		}
-		if(empty($productionDate)){
-			$productionDate=null;
-		}
-		if(empty($collectDate)){
-			$collectDate=null;
-		}
-		if(empty($reportDate)){
-			$reportDate=null;
 		}
 		
 		$data = array(
@@ -426,12 +427,18 @@ class ContractController extends Controller
 		);
 		
 
+		//费用表
 		$date_cost =array(
 			"centreNo"=>$centreNo,
-			"testFee"=>$testFee,
+			"Arecord"=>$Arecord,
+			"Brecord"=>$Brecord,
+			"Crecord"=>$Crecord,
 			"Drecord"=>$Drecord,
+			"Erecord"=>$Erecord,
+			"Frecord"=>$Frecord,
 			"Dcopy"=>$Dcopy,
 			"Drevise"=>$Drevise,
+			"Dother"=>$Dother,
 			'costDate'=>Date("Y-m-d H:i:s")
 		);
 		M()->startTrans();
@@ -459,19 +466,44 @@ class ContractController extends Controller
 					"trademark"=>$trademark,
 					"sampleQuantity"=>$sampleQuantity,
 					//"sampleUnit"=>$sampleunti,
-					"productionDate"=>$productionDate,
+					//"productionDate"=>$productionDate,
 					"testItem"=>$testItem,
 					"ifOnline"=>$ifOnline,
 					"ifSubpackage"=>$ifSubpackage,
 				);
 				D("sampling_form")->where($where)->save($data_sample);	
 			}
+			
 			M()->commit();
 			$rs['msg'] = 'succ';
 		}catch(Exception $e){
 			$rs['msg'] = '信息有误，修改不成功';
 			M()->rollback();
 		}		
+		$this->ajaxReturn($rs);
+	}
+	
+	//申请修改完毕
+	public function doUpdateEditState(){
+		$centreno = I('centreno');
+		$rs = array('msg'=>'fail');
+		$where['centreNo']=$centreno;
+		$data_apply = array(
+			"status"=>2			
+		);
+		//M()->startTrans();
+		D("contract_flow")->where($where)->save($data_apply);
+		D("report_feedback")->where($where)->delete();
+				//M()->commit();
+		$rs['msg']='修改提交成功';
+			/*}else{
+				M()->rollback();
+				$rs['msg']='修改提交失败';	
+			}
+		}else{
+			M()->rollback();
+			$rs['msg']='修改提交失败';
+		}*/
 		$this->ajaxReturn($rs);
 	}
 	
@@ -485,6 +517,12 @@ class ContractController extends Controller
 		$centreno = I("id");
 		$where['centreNo']=$centreno;
 		$result=M('sampling_form')->where($where)->find();
+		//$status=M('contract_flow')->where($where)->find();
+		$ifedit=M('contract')->where($where)->find();
+		$sub_status=M('report_feedback')->where($where)->find();
+		if(empty($sub_status)){
+			$sub_status['status']=-1;
+		}
 		//判断角色，确定是否可以修改
 		$admin_auth = session("admin_auth");
 		$if_admin = $admin_auth['super_admin'];
@@ -518,9 +556,16 @@ class ContractController extends Controller
         array_push($result,$entsigndatemonth);
         array_push($result,$entsigndateday);
 		
+		//查看是否已录入完毕
+		$sample_count = D('contract_flow')->where($where)->count();
+		
 		$body=array(
             'one'=>$result,
-			'if_edit'=>$if_edit
+			'if_edit'=>$if_edit,
+			'sample_count'=>$sample_count,
+			//'status'=>$status,
+			'ifedit'=>$ifedit,
+			'sub_status'=>$sub_status,
         );
         $this->assign($body);
         $this->display();
@@ -592,6 +637,16 @@ class ContractController extends Controller
 	public function doUploadSampleImage(){
 		$centreno = I('centreno');
 		$type = I('type');
+		
+		$where['centreNo']=$centreno;
+		//$result=M('sampling_form')->where($where)->find();
+		//$status=M('contract_flow')->where($where)->find();
+		$ifedit=M('contract')->where($where)->find();
+		$sub_status=M('report_feedback')->where($where)->find();
+		if(empty($sub_status)){
+			$sub_status['status']=-1;
+		}
+		
 		if($type=='sample'){
 			$list = D('sample_picture')->where('type=0 and centreno="'.$centreno.'"')->select();
 		}else{
@@ -600,13 +655,25 @@ class ContractController extends Controller
 		$body=array(
 			'centreno'=>$centreno,
 			'type'=>$type,
-			'list'=>$list
+			'list'=>$list,
+			'ifedit'=>$ifedit,
+			'sub_status'=>$sub_status,
 		);
 		$this->assign($body);
 		$this->display();
 	}
 	
-	//抽样单提交
+	//检验抽样现场图片个数
+	public function checkFinish(){
+		$centreno = I('centreno');
+		$count = D('sample_picture')->where('type=1 and centreno="'.$centreno.'"')->count();
+		$rs=array(
+			'count'=>$count
+		);
+		$this->ajaxReturn($rs);
+	}
+	
+	//抽样单图片删除
 	public function doDeleteSample(){
         $id =I("id",0,'intval');
         $rs = array("msg"=>"fail");
@@ -642,28 +709,30 @@ class ContractController extends Controller
 		}else{
 			M()->rollback();
 		}
-		
-		/*if($type=='work'){
-			
-		}else{
-			
-		}*/
-		
-		
-
-
-        //$data = array("offcial_seal"=>$imgurl,"remark"=>$remark);
-        //$stamp = D("offcial_seal")->where("id=".$id)->find();
-        /*if($stamp){
-            if(D("offcial_seal")->where("id=".$stamp['id'])->save($data)){
-                $result['msg'] = 'succ';
-            }
-        }else{
-            if(D("offcial_seal")->data($data)->add()){
-                $result['msg'] = 'succ';
-            }
-        }*/
         $this->ajaxReturn($result);
+	}
+	
+	//抽样单提交
+	public function doUpdateState(){
+		$rs = array('msg'=>'fail');
+		$centreNo = I('centreno');
+		$admin_auth = session("admin_auth");
+		$contract_user_id = $admin_auth['id'];
+		//pr($centreNo);
+		$data_flow = array(
+			"centreNo"=>$centreNo,
+			'contract_user_id'=>$contract_user_id,
+			'contract_time'=>Date("Y-m-d H:i:s"),
+		);
+		M()->startTrans();	
+		if(D("contract_flow")->data($data_flow)->add()){
+			M()->commit();
+			$rs['msg']='已提交';
+		}else{
+			$rs['msg']='提交失败';
+			M()->rollback();	
+		}
+		$this->ajaxReturn($rs);
 	}
 
 	//特殊号段查询
@@ -676,6 +745,31 @@ class ContractController extends Controller
 		//dump($body);
 	    $this->assign($body);
 		$this->display();
+	}
+	
+	//外部签发
+	public function externalSign(){
+		$rs = array('msg'=>'fail');
+		$centreNo = I('centreno');
+		//pr($centreNo);
+		$admin_auth = session("admin_auth");
+		$external_sign_user_id = $admin_auth['id'];
+		//pr($centreNo);
+		$data_flow = array(		
+			'status'=>6,
+			'external_sign_user_id'=>$external_sign_user_id,
+			'contract_time'=>Date("Y-m-d H:i:s"),
+		);
+		$where['centreNo']=$centreNo;
+		M()->startTrans();	
+		if(D("contract_flow")->where($where)->save($data_flow)){
+			M()->commit();
+			$rs['msg']='已外部签发';
+		}else{
+			$rs['msg']='签发失败';
+			M()->rollback();	
+		}
+		$this->ajaxReturn($rs);
 	}
 
 	//合同列表
@@ -700,11 +794,12 @@ class ContractController extends Controller
 		
 		//判断是接单还是签发
 		$ifstatus = 
-		$list = D("contract as c")->field('c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id')->where($where)->order('c.collectDate desc,c.id desc')->limit("{$offset},{$pagesize}")->select();
+		$list = D("contract as c")->field('if(r.status is null,-1,r.status) as sub_status,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN report_feedback r on r.centreNo = c.centreNo')->where($where)->order('c.collectDate desc,c.id desc')->limit("{$offset},{$pagesize}")->select();
 		$count = D("contract as c")->where($where)->count();
 		$Page= new \Think\Page($count,$pagesize);
 		$Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
 		$pagination= $Page->show();// 分页显示输出
+		
 		$body = array(
 			"list"=>$list,
 			'pagination'=>$pagination,
@@ -715,6 +810,26 @@ class ContractController extends Controller
 		$this->display();
 	}
 	
+	//申请修改
+	public function doSubmitFeedback(){
+		$rs = array('msg'=>'fail');
+		$centreno = I('centreno');
+		$reason = I('reason');
+		
+		$data = array(
+			'centreNo'=>$centreno,
+			'reason'=>$reason,
+		);
+		M()->startTrans();
+		if(D('report_feedback')->add($data)){
+			$rs['msg']='申请成功';
+			M()->commit();	
+		}else{
+			$rs['msg']='申请失败';
+			M()->rollback();		
+		}
+		$this->ajaxReturn($rs);
+	}
 
 	//获取最中心编号
 	public function getLastCode(){

@@ -29,8 +29,8 @@
                     <td>{$vo.testcriteria}</td>
                     <td>
                         <div style="visibility:{$view}">
-                            <if condition="($vo[status] eq 1)"><!-- AND ($vo[takelist_user_id] eq $userid)-->
-                                <a href="/admin/TestReport/seleteKey?mod={$vo.centreno}" class="btn btn-info btn-xs">查看报告</a>
+                            <if condition="($vo[status] eq 8)"><!-- AND ($vo[takelist_user_id] eq $userid)-->
+                                <a href="/admin/TestReport/seleteKey?mod={$vo.centreno}" class="btn btn-info btn-xs">生成报告</a>
                             </if>
                         </div>
                     </td>

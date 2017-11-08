@@ -1,549 +1,338 @@
+<!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>抽样单查询</title>
-    <meta http-equiv=Content-Type content="text/html;">
-</head>
-<body>
-<include file="Common:header" title="后台首页"/>
-<include file="Common:breadcrumb" />
-<div id="myPrintArea">
-<form id="form2" name="form1" method="post" action="">
-<input type="text" id="role" value="{$if_edit}" />
 
-<div class=WordSection1 style='layout-grid:15.6pt'>
-
-    <p class=MsoNormal align=center style='text-align:center'><img width=60
-                                                                   height=74 src="__PUBLIC__/static/images/logo_company.png" align=center hspace=12><span
-            lang=EN-US style='font-size:18.0pt'>&nbsp;(</span><span style='font-size:18.0pt;
-font-family:黑体'>国家</span><span lang=EN-US style='font-size:18.0pt'>)</span><span
-            style='font-size:18.0pt;font-family:黑体'>建筑材料工业技术监督研究中心</span></p>
-
-    <p class=MsoNormal align=center style='text-align:center'><span
-            style='font-size:18.0pt;font-family:黑体'>抽</span><span style='font-size:18.0pt'>
-</span><span style='font-size:18.0pt;font-family:黑体'>样</span><span
-            style='font-size:18.0pt'> </span><span style='font-size:18.0pt;font-family:
-黑体'>单</span></p>
-    <volist name="lists" id="one">
-    <p class=MsoNormal align=left style='text-align:center;text-indent:-300pt'><span lang=EN-US>&nbsp;SJ－4－25 &nbsp;&nbsp;
-    中心编号：<span lang=EN-US style='mso-bidi-font-size:10.5pt'>{$one.centreno}</span>
-    
-    </span></p>
-
-			<input type="hidden" name="centreno" value="{$one.centreno}">
-    <table align=center class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=670
-           style='width:502.55pt;border-collapse:collapse;
- border:none'>
-
-        <tr style='height:22.6pt' align=center>
-            <td align=center width=120 style='width:89.95pt;border:solid black 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;
-  height:22.6pt'>
-                <p align=center class=MsoNormal align=center style='text-align:center'><span
-                        style='font-family:宋体'>企业名称</span></p>
-            </td>
-            <td align=center width=550 colspan=4 style='width:412.6pt;border:solid black 1.0pt;
-  border-left:none;padding:0cm 5.4pt 0cm 5.4pt;height:22.6pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span lang=EN-US style='mso-bidi-font-size:10.5pt'>{$one.productunit}<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr align=center style='height:22.6pt'>
-            <td width=120 style='width:89.95pt;border:solid black 1.0pt;border-top:none;
-  padding:0cm 5.4pt 0cm 5.4pt;height:22.6pt' align=center>
-                <p class=MsoNormal align=center style='text-align:center'><span
-                        style='font-family:宋体'>产品名称</span></p>
-            </td>
-            <td align=center width=550 colspan=4 style='width:412.6pt;border-top:none;border-left:
-  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
-  padding:0cm 5.4pt 0cm 5.4pt;height:22.6pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span lang=EN-US>{$one.samplename}</span></p>
-            </td>
-        </tr>
-        <tr style='height:23.75pt'>
-            <td width=120 style='width:89.95pt;border:solid black 1.0pt;border-top:none;
-  padding:0cm 5.4pt 0cm 5.4pt;height:23.75pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span
-                        style='font-family:宋体'>规格型号</span></p>
-            </td>
-            <td width=214 style='width:160.4pt;border-top:none;border-left:none;
-  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;
-  height:23.75pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span lang=EN-US>&nbsp;{$one.specification}</span></p>
-            </td>
-            <td width=91 colspan=2 style='width:67.95pt;border-top:none;border-left:none;
-  border-bottom:solid black 1.0pt;border-right:solid windowtext 1.0pt;
-  padding:0cm 5.4pt 0cm 5.4pt;height:23.75pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span
-                        style='font-family:宋体'>产品批号</span></p>
-            </td>
-            <td width=246 style='width:184.25pt;border-top:none;border-left:none;
-  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;
-  height:23.75pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span lang=EN-US>
-                <input type="text" name="batchno" value="{$one.batchno}" style="border:none; text-align:center"/>
-                </span></p>
-            </td>
-        </tr>
-        <tr style='height:22.6pt'>
-            <td width=120 style='width:89.95pt;border:solid black 1.0pt;border-top:none;
-  padding:0cm 5.4pt 0cm 5.4pt;height:22.6pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span
-                        style='font-family:宋体'>执行标准</span></p>
-            </td>
-            <td width=214 style='width:160.4pt;border-top:none;border-left:none;
-  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;
-  height:22.6pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span lang=EN-US>{$one.testcriteria}</span></p>
-            </td>
-            <td width=91 colspan=2 style='width:67.95pt;border-top:none;border-left:none;
-  border-bottom:solid black 1.0pt;border-right:solid windowtext 1.0pt;
-  padding:0cm 5.4pt 0cm 5.4pt;height:22.6pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span
-                        style='font-family:宋体'>产品商标</span></p>
-            </td>
-            <td width=246 style='width:184.25pt;border-top:none;border-left:none;
-  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;
-  height:22.6pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span lang=EN-US>&nbsp;{$one.trademark}</span></p>
-            </td>
-        </tr>
-        <tr style='height:23.75pt'>
-            <td width=120 style='width:89.95pt;border:solid black 1.0pt;border-top:none;
-  padding:0cm 5.4pt 0cm 5.4pt;height:23.75pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span
-                        style='font-family:宋体'>抽样数量</span></p>
-            </td>
-            <td width=214 style='width:160.4pt;border-top:none;border-left:none;
-  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;
-  height:23.75pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span lang=EN-US>&nbsp;{$one.samplequantity}</span></p>
-            </td>
-            <td width=91 colspan=2 style='width:67.95pt;border-top:none;border-left:none;
-  border-bottom:solid black 1.0pt;border-right:solid windowtext 1.0pt;
-  padding:0cm 5.4pt 0cm 5.4pt;height:23.75pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span
-                        style='font-family:宋体'>抽样基数</span></p>
-            </td>
-            <td width=246 style='width:184.25pt;border-top:none;border-left:none;
-  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;
-  height:23.75pt'>
-                <p class=MsoNormal align=center style='text-align:center'>
-                <span lang=EN-US>
-                	
-                    	<input type="text" name="samplebase" value="{$one.samplebase}" style="border:none; text-align:center"/>
-                    
-                
-                </span></p>
-            </td>
-        </tr>
-        <tr style='height:22.6pt'>
-            <td width=120 style='width:89.95pt;border:solid black 1.0pt;border-top:none;
-  padding:0cm 5.4pt 0cm 5.4pt;height:22.6pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span
-                        style='font-family:宋体'>抽样日期</span></p>
-            </td>
-            <td width=214 style='width:160.4pt;border-top:none;border-left:none;
-  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;
-  height:22.6pt'>
-                <p class=MsoNormal align=center style='text-align:center'>
-                <span lang=EN-US>
-                <input type="text" name="sampledate"  value="{$one.sampledate}" style="border:none; text-align:center" class="f-datetime input-sm"/>
-                </span></p>
-            </td>
-            <td width=91 colspan=2 style='width:67.95pt;border-top:none;border-left:none;
-  border-bottom:solid black 1.0pt;border-right:solid windowtext 1.0pt;
-  padding:0cm 5.4pt 0cm 5.4pt;height:22.6pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span
-                        style='font-family:宋体'>生产日期</span></p>
-            </td>
-            <td width=246 style='width:184.25pt;border-top:none;border-left:none;
-  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;
-  height:22.6pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span lang=EN-US>
-                <!--<if condition="$one[productiondate]">{$one.productiondate|strtotime|date=Y年m月d日,###}<else/></if>-->
-                <input type="text" name="productiondate" value="{$one.productiondate}" style="border:none; text-align:center" class="f-datetime input-sm"/>
-                </span></p>
-            </td>
-        </tr>
-        <tr style='height:23.75pt'>
-            <td width=120 style='width:89.95pt;border-top:none;border-left:solid black 1.0pt;
-  border-bottom:solid black 1.0pt;border-right:solid windowtext 1.0pt;
-  padding:0cm 5.4pt 0cm 5.4pt;height:23.75pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span
-                        style='font-family:宋体'>抽样地点</span></p>
-            </td>
-            <td width=214 style='width:160.4pt;border-top:none;border-left:none;
-  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;
-  height:23.75pt'>
-                <p class=MsoNormal align=center style='text-align:center'>
-                <span lang=EN-US>
-                <input type="text" name="sampleplace" value="{$one.sampleplace}" style="border:none; text-align:center"/>
-                </span></p>
-            </td>
-            <td width=91 colspan=2 style='width:67.95pt;border-top:none;border-left:none;
-  border-bottom:solid black 1.0pt;border-right:solid windowtext 1.0pt;
-  padding:0cm 5.4pt 0cm 5.4pt;height:23.75pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span
-                        style='font-family:宋体'>封样方式</span></p>
-            </td>
-            <td width=246 style='width:184.25pt;border-top:none;border-left:none;
-  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;
-  height:23.75pt'>
-                <p class=MsoNormal align=center style='text-align:center'>
-                <span lang=EN-US>
-                <input type="text" name="samplemethod" value="{$one.samplemethod}" style="border:none; text-align:center"/>
-                </span></p>
-            </td>
-        </tr>
-        <tr style='height:80.05pt'>
-            <td width=120 style='width:89.95pt;border-top:none;border-left:solid black 1.0pt;
-  border-bottom:solid black 1.0pt;border-right:solid windowtext 1.0pt;
-  padding:0cm 5.4pt 0cm 5.4pt;height:80.05pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span
-                        style='font-family:宋体'>检验内容</span></p>
-            </td>
-            <td width=550 colspan=4 style='width:412.6pt;border-top:none;border-left:
-  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
-  padding:0cm 5.4pt 0cm 5.4pt;height:80.05pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span lang=EN-US>{$one.testitem}</span></p>
-            </td>
-        </tr>
-        <tr style='height:23.75pt'>
-            <td width=334 colspan=2 style='width:250.35pt;border-top:none;border-left:
-  solid black 1.0pt;border-bottom:solid black 1.0pt;border-right:solid windowtext 1.0pt;
-  padding:0cm 5.4pt 0cm 5.4pt;height:23.75pt'>
-                <p class=MsoNormal><span style='font-family:宋体'>是否同意在网上发表</span></p>
-            </td>
-            <td width=336 colspan=3 style='width:252.2pt;border-top:none;border-left:
-  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
-  padding:0cm 5.4pt 0cm 5.4pt;height:23.75pt'>
-                <p class=MsoNormal style='text-indent:21.0pt'>
-                    <if condition="$one.ifonline == 1"><span style='font-family:宋体'>是</span><else /><span style='font-family:宋体'>否</span></if>
-                </p>
-            </td>
-        </tr>
-        <tr style='height:20.6pt'>
-            <td width=334 colspan=2 style='width:250.35pt;border-top:none;border-left:
-  solid black 1.0pt;border-bottom:solid black 1.0pt;border-right:solid windowtext 1.0pt;
-  padding:0cm 5.4pt 0cm 5.4pt;height:20.6pt'>
-                <p class=MsoNormal><span style='font-family:宋体'>对于本中心不能检验的项目是否同意安排分包</span></p>
-            </td>
-            <td width=336 colspan=3 style='width:252.2pt;border-top:none;border-left:
-  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
-  padding:0cm 5.4pt 0cm 5.4pt;height:20.6pt'>
-                <p class=MsoNormal style='text-indent:21.0pt'>
-                    <if condition="$one.ifsubpackage == 1"><span style='font-family:宋体'>是</span><else /><span style='font-family:宋体'>否</span></if>
-                </p>
-            </td>
-        </tr>
-        <tr style='mso-yfti-irow:10;height:39.2pt'>
-            <td width=334 colspan=2 valign=top style='width:250.35pt;border:solid black 1.0pt;
-  border-top:none;mso-border-top-alt:solid black .5pt;mso-border-alt:solid black .5pt;
-  padding:0cm 5.4pt 0cm 5.4pt;height:39.2pt'>
-                <p class=MsoNormal align=left style='text-align:left'><span style='mso-bidi-font-size:
-  10.5pt;font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:
-  Calibri'>抽样人（签名）</span><span lang=EN-US style='mso-bidi-font-size:10.5pt'><o:p></o:p></span></p>
-              
-                <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
-                                                                            style='mso-bidi-font-size:10.5pt'><o:p>
-                    <input type="text" name="simplerSign" value="{$one.simplersign}" style="border:none; text-align:center"/>            
-                                                                            </o:p></span></p>
-                <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
-                                                                            style='mso-bidi-font-size:10.5pt'><o:p>&nbsp;</o:p></span></p>
-                <p class=MsoNormal align=right style='text-align:right;word-break:break-all'><span
-                        lang=EN-US style='mso-bidi-font-size:10.5pt'>
-                        <input type="text" name="simplerYear" value="{$one.0}" style="border:none; text-align:center"/> 
-                        </span><span
-                        style='mso-bidi-font-size:10.5pt;font-family:宋体;mso-ascii-font-family:Calibri;
-  mso-hansi-font-family:Calibri'>年</span><span lang=EN-US style='mso-bidi-font-size:
-  10.5pt'><span style='mso-spacerun:yes'>&nbsp;&nbsp; </span>
-  <input type="text" name="simplerMonth" value="{$one.1}" style="border:none; text-align:center"/> <span
-                        style='mso-spacerun:yes'>&nbsp;&nbsp; </span></span><span style='mso-bidi-font-size:
-  10.5pt;font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:
-  Calibri'>月</span><span lang=EN-US style='mso-bidi-font-size:10.5pt'><span
-                        style='mso-spacerun:yes'>&nbsp;&nbsp; </span>
-                        <input type="text" name="simplerDay" value="{$one.2}" style="border:none; text-align:center"/> 
-                        <span
-                        style='mso-spacerun:yes'>&nbsp; </span></span><span style='mso-bidi-font-size:
-  10.5pt;font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:
-  Calibri'>日</span><span lang=EN-US style='mso-bidi-font-size:10.5pt'><o:p></o:p></span></p>
-            </td>
-            <td width=336 colspan=3 valign=top style='width:252.2pt;border-top:none;
-  border-left:none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
-  mso-border-top-alt:solid black .5pt;mso-border-left-alt:solid black .5pt;
-  mso-border-alt:solid black .5pt;padding:0cm 5.4pt 0cm 5.4pt;height:39.2pt'>
-                <p class=MsoNormal align=left style='text-align:left'><span style='mso-bidi-font-size:
-  10.5pt;font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:
-  Calibri'>封样人（签名）</span><span lang=EN-US style='mso-bidi-font-size:10.5pt'><o:p></o:p></span></p>
-  				<p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
-                                                                            style='mso-bidi-font-size:10.5pt'><o:p>
-                             <input type="text" name="sealerSign" value="{$one.sealersign}" style="border:none; text-align:center"/> 
-                                                                            </o:p></span></p>
-                <p class=MsoNormal align=left style='text-align:left'><span lang=EN-US
-                                                                            style='mso-bidi-font-size:10.5pt'><o:p>&nbsp;</o:p></span></p>
-                <p class=MsoNormal align=right style='text-align:right'><span lang=EN-US
-                                                                              style='mso-bidi-font-size:10.5pt'>
-                                            <input type="text" name="sealerYear" value="{$one.3}" style="border:none; text-align:center"/> 
-                                                                              </span><span style='mso-bidi-font-size:
-  10.5pt;font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:
-  Calibri'>年</span><span lang=EN-US style='mso-bidi-font-size:10.5pt'><span
-                        style='mso-spacerun:yes'>&nbsp; </span>
-                       <input type="text" name="sealerMonth" value="{$one.4}" style="border:none; text-align:center"/> 
-                        <span
-                        style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span></span><span
-                        style='mso-bidi-font-size:10.5pt;font-family:宋体;mso-ascii-font-family:Calibri;
-  mso-hansi-font-family:Calibri'>月</span><span lang=EN-US style='mso-bidi-font-size:
-  10.5pt'><span style='mso-spacerun:yes'>&nbsp;&nbsp; </span>
-  <input type="text" name="sealerDay" value="{$one.5}" style="border:none; text-align:center"/> 
-  <span
-                        style='mso-spacerun:yes'>&nbsp; </span></span><span style='mso-bidi-font-size:
-  10.5pt;font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:
-  Calibri'>日</span><span lang=EN-US style='mso-bidi-font-size:10.5pt'><o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style='mso-yfti-irow:11;height:47.8pt'>
-            <td width=670 colspan=5 valign=top style='width:502.55pt;border:solid black 1.0pt;
-  border-top:none;mso-border-top-alt:solid black .5pt;mso-border-alt:solid black .5pt;
-  padding:0cm 5.4pt 0cm 5.4pt;height:47.8pt'>
-                <p class=MsoNormal align=left style='text-align:left'><span style='mso-bidi-font-size:
-  10.5pt;font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:
-  Calibri'>被抽检企业有关人员（签名）</span><span lang=EN-US style='mso-bidi-font-size:10.5pt'><o:p></o:p></span></p>
-                <p class=MsoNormal align=center style='margin-right:21.0pt;text-align:center'><span
-                        lang=EN-US style='mso-bidi-font-size:10.5pt'><span
-                        style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  </span><o:p></o:p></span></p>
-                <p class=MsoNormal align=center style='margin-right:21.0pt;text-align:center'><span
-                        lang=EN-US style='mso-bidi-font-size:10.5pt'>
-                        <input type="text" name="enterpriseSign" value="{$one.enterprisesign}" style="border:none; text-align:center"/> 
-                        <o:p></o:p></span></p>
-                <p class=MsoNormal align=center style='margin-right:21.0pt;text-align:center'><span
-                        lang=EN-US style='mso-bidi-font-size:10.5pt'><span
-                        style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  </span><span style='mso-spacerun:yes'>&nbsp;</span><span
-                        style='mso-spacerun:yes'>&nbsp;</span></span><span style='mso-bidi-font-size:
-  10.5pt;font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:
-  Calibri'>（单</span><span style='mso-bidi-font-size:10.5pt'> </span><span
-                        style='mso-bidi-font-size:10.5pt;font-family:宋体;mso-ascii-font-family:Calibri;
-  mso-hansi-font-family:Calibri'>位</span><span style='mso-bidi-font-size:10.5pt'>
-  </span><span style='mso-bidi-font-size:10.5pt;font-family:宋体;mso-ascii-font-family:
-  Calibri;mso-hansi-font-family:Calibri'>盖</span><span style='mso-bidi-font-size:
-  10.5pt'> </span><span style='mso-bidi-font-size:10.5pt;font-family:宋体;
-  mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri'>章）</span><span
-                        lang=EN-US style='mso-bidi-font-size:10.5pt'><o:p></o:p></span></p>
-                <p class=MsoNormal style='margin-right:21.0pt;text-indent:315.0pt;mso-char-indent-count:
-  30.0'><span lang=EN-US style='mso-bidi-font-size:10.5pt'>
-  <input type="text" name="enterpriseYear" value="{$one.6}" style="border:none; text-align:center"/> 
-  </span><span
-                        style='mso-bidi-font-size:10.5pt;font-family:宋体;mso-ascii-font-family:Calibri;
-  mso-hansi-font-family:Calibri'>年</span><span lang=EN-US style='mso-bidi-font-size:
-  10.5pt'><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span>
-  <input type="text" name="enterpriseMonth" value="{$one.7}" style="border:none; text-align:center"/> 
-  <span
-                        style='mso-spacerun:yes'>&nbsp; </span></span><span style='mso-bidi-font-size:
-  10.5pt;font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:
-  Calibri'>月</span><span lang=EN-US style='mso-bidi-font-size:10.5pt'><span
-                        style='mso-spacerun:yes'>&nbsp;&nbsp; </span>
-                        <input type="text" name="enterpriseDay" value="{$one.8}" style="border:none; text-align:center"/> 
-                        <span
-                        style='mso-spacerun:yes'>&nbsp; </span></span><span style='mso-bidi-font-size:
-  10.5pt;font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:
-  Calibri'>日</span><span lang=EN-US style='mso-bidi-font-size:10.5pt'><o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style='mso-yfti-irow:12;height:23.75pt'>
-            <td width=120 style='width:89.95pt;border-top:none;border-left:solid black 1.0pt;
-  border-bottom:solid black 1.0pt;border-right:solid windowtext 1.0pt;
-  mso-border-top-alt:solid black .5pt;mso-border-alt:solid black .5pt;
-  mso-border-right-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;
-  height:23.75pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span
-                        style='mso-bidi-font-size:10.5pt;font-family:宋体;mso-ascii-font-family:Calibri;
-  mso-hansi-font-family:Calibri'>联系电话</span><span lang=EN-US style='mso-bidi-font-size:
-  10.5pt'><o:p></o:p></span></p>
-            </td>
-            <td width=214 style='width:160.4pt;border-top:none;border-left:none;
-  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
-  solid black .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:
-  solid black .5pt;mso-border-left-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;
-  height:23.75pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span lang=EN-US
-                                                                                style='mso-bidi-font-size:10.5pt'>
-              <input type="text" name="telephone" value="{$one.telephone}" style="border:none; text-align:center"/>
-              <o:p></o:p></span></p>
-            </td>
-            <td width=89 style='width:67.1pt;border-top:none;border-left:none;border-bottom:
-  solid black 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:
-  solid black .5pt;mso-border-left-alt:solid black .5pt;mso-border-alt:solid black .5pt;
-  mso-border-right-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;
-  height:23.75pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span
-                        style='mso-bidi-font-size:10.5pt;font-family:宋体;mso-ascii-font-family:Calibri;
-  mso-hansi-font-family:Calibri'>传</span><span lang=EN-US style='mso-bidi-font-size:
-  10.5pt'><span style='mso-spacerun:yes'>&nbsp;&nbsp; </span></span><span
-                        style='mso-bidi-font-size:10.5pt;font-family:宋体;mso-ascii-font-family:Calibri;
-  mso-hansi-font-family:Calibri'>真</span><span lang=EN-US style='mso-bidi-font-size:
-  10.5pt'><o:p></o:p></span></p>
-            </td>
-            <td width=247 colspan=2 style='width:185.1pt;border-top:none;
-  border-left:none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
-  mso-border-top-alt:solid black .5pt;mso-border-left-alt:solid windowtext .5pt;
-  mso-border-alt:solid black .5pt;mso-border-left-alt:solid windowtext .5pt;
-  padding:0cm 5.4pt 0cm 5.4pt;height:23.75pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span lang=EN-US
-                                                                                style='mso-bidi-font-size:10.5pt'>
-                <input type="text" name="tax" value="{$one.tax}" style="border:none; text-align:center"/>                                                                
-                                                                               <o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style='mso-yfti-irow:13;height:23.75pt'>
-            <td width=120 style='width:89.95pt;border-top:none;border-left:solid black 1.0pt;
-  border-bottom:solid black 1.0pt;border-right:solid windowtext 1.0pt;
-  mso-border-top-alt:solid black .5pt;mso-border-alt:solid black .5pt;
-  mso-border-right-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;
-  height:23.75pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span
-                        style='mso-bidi-font-size:10.5pt;font-family:宋体;mso-ascii-font-family:Calibri;
-  mso-hansi-font-family:Calibri'>通讯地址</span><span lang=EN-US style='mso-bidi-font-size:
-  10.5pt'><o:p></o:p></span></p>
-            </td>
-            <td width=550 colspan=4 style='width:412.6pt;border-top:none;border-left:
-  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
-  mso-border-top-alt:solid black .5pt;mso-border-left-alt:solid windowtext .5pt;
-  mso-border-alt:solid black .5pt;mso-border-left-alt:solid windowtext .5pt;
-  padding:0cm 5.4pt 0cm 5.4pt;height:23.75pt'>
-                <p class=MsoNormal align=center style='text-align:center'><span lang=EN-US
-                                                                                style='mso-bidi-font-size:10.5pt'>
-                <input type="text" name="address" value="{$one.address}" style="border:none; text-align:center"/>
-                <o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style='height:25.65pt'>
-            <td width=670 colspan=5 valign=top style='width:502.55pt;border:solid black 1.0pt;
-  border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:25.65pt'>
-                <p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
-            </td>
-        </tr>
-        <tr height=0>
-            <td width=120 style='border:none'></td>
-            <td width=214 style='border:none'></td>
-            <td width=89 style='border:none'></td>
-            <td width=1 style='border:none'></td>
-            <td width=246 style='border:none'></td>
-        </tr>
-    </table>
-
-    <p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
-    </volist>
-</div>
-</div>
-
-<button class="btn btn-success" type="button" id="check_list" onClick="doEditSample()">提交</button>
-<button class="btn btn-success" type="button" id="up_sample" onClick="doUpSample('sample')">上传抽样单</button>
-<button class="btn btn-success" type="button" id="up_check" onClick="doUpSample('work')">上传检测图片</button>
-<input id="biuuu_button" type="button" value="打印" >
-</form>
-	<script src="__PUBLIC__/script/jquery.min.js" type="text/JavaScript"></script>
-    <script src="__PUBLIC__/static/js/jquery.PrintArea.js" type="text/JavaScript"></script>
-    
-    <script type="text/javascript">
-		
-        $(document).ready(function(){
-			if($("#role")==0){
-				$('input').prop('readonly','readonly');
+	<head>
+		<meta charset="UTF-8">
+		<title>抽样单</title>
+        <link rel="stylesheet" type="text/css" href="__PUBLIC__/static/css/bootstrap.min.css" />
+        <script src="__PUBLIC__/static/js/jquery-2.1.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			* {
+				font-family: "宋体";
+				font-size: 10.5pt;
 			}
-			$('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,	autoclose:true });
-            $("input#biuuu_button").click(function(){
-				var samplebase=$.trim($('input[name="samplebase"]').val());
-				var sampledate=$.trim($('input[name="sampledate"]').val());
-				var sampleplace=$.trim($('input[name="sampleplace"]').val());
-				var samplemethod=$.trim($('input[name="samplemethod"]').val());
-				if(samplebase=="" || sampledate=="" || sampleplace=="" || samplemethod==""){
-					alert("信息不完整,请完善信息后打印");
-					return;	
-				}else{
-					$("div#myPrintArea").printArea();
-				} 
-            });
-        });
+			
+			.sam {
+				margin: 0 auto;
+				width: 90%;
+				height: 88%;
+			}
+			
+			.middle {
+				margin: 0 auto;
+				width: 80%;
+			}
+			
+			.en {
+				font-family: "times new roman";
+			}
+			
+			.cn {
+				font-family: "宋体";
+				font-size: 10.5pt;
+			}
+			
+			.txt_left {
+				text-align: left;
+			}
+			
+			.gone_bottom {
+				border-bottom: none;
+			}
+			
+			.sample_one_col,
+			.sample_two_col {
+				width: 20%;
+			}
+			.sample_three_col{
+				width: 30%;
+			}
+			
+			#sam_content,
+			#sam_person,
+			#sam_close,
+			#sam_company_person {
+				width: 100%;
+				height: 90%;
+				font-size: 1.5em;
+				resize: none;
+				border-style: none;
+			}
+			
+			#sam_close_year,
+			#sam_close_month,
+			#sam_close_day,
+			#sam_person_year,
+			#sam_person_month,
+			#sam_person_day {
+				width: 13%;
+			}
+			
+			#sam_company_year,
+			#sam_company_month,
+			#sam_company_day {
+				width: 7%;
+			}
+			
+			.head_title {
+				margin: 0 auto;
+				width: 80%;
+				height: 20%;
+				margin-top: -8%;
+				margin-bottom: -7%;
+			}
+			
+			td {
+				text-align: center;
+			}
+			
+			.logo {
+				width: 10%;
+			}
+			
+			.img_logo {
+				margin-left: 20%;
+				width: 40pt;
+			}
+			
+			.sample_title_txt {
+				font-family: "黑体";
+				font-size: 18pt;
+				text-align: center;
+			}
+			
+			.sam_sign {
+				height: 5%;
+			}
+			
+			.gone_two {
+				border-top: none;
+				border-bottom: none;
+			}
+			
+			.txt_right {
+				text-align: right;
+			}
+			
+			.page {
+				width: 210mm;
+				height: 29.7cm;
+				padding: 0.5cm;
+				margin: 1cm auto;
+				border: 1px #1B6D85 solid;
+				border-radius: 5px;
+				background: white;
+				box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+			}
+			
+			.sample_txt {
+				font-family: "宋体";
+				font-size: 10.5pt;
+			}
+		</style>
+		<style type="text/css" media="print">
+			/*以下是打印格式*/
+			
+			* {
+				box-sizing: border-box;
+				-moz-box-sizing: border-box;
+			}
+			
+			.img_logo {
+				width: 40pt;
+			}
+			
+			@page {
+				size: A4;
+				margin: 0.3cm;
+			}
+			
+			.Noprint {
+				display: none;
+			}
+			
+			.page {
+				margin: 0;
+				border: initial;
+				padding: initial;
+				border-radius: initial;
+				/*width: initial;*/
+				min-height: 29.7cm;
+				box-shadow: initial;
+				background: initial;
+				/*page-break-after: always;*/
+			}
+		</style>
+	</head>
 
-		function doEditSample(){
-			var centreno=$('input[name="centreno"]').val();
-			var samplebase=$.trim($('input[name="samplebase"]').val());
-			var sampledate=$.trim($('input[name="sampledate"]').val());
-			var sampleplace=$.trim($('input[name="sampleplace"]').val());
-			var samplemethod=$.trim($('input[name="samplemethod"]').val());
-			var batchno=$.trim($('input[name="batchno"]').val());
-			var productiondate=$.trim($('input[name="productiondate"]').val());
-			var simplerSign=$.trim($('input[name="simplerSign"]').val());
-			var simplerYear=$.trim($('input[name="simplerYear"]').val());
-			var simplerMonth=$.trim($('input[name="simplerMonth"]').val());
-			var simplerDay=$.trim($('input[name="simplerDay"]').val());
-			var sealerSign=$.trim($('input[name="sealerSign"]').val());
-			var sealerYear=$.trim($('input[name="sealerYear"]').val());
-			var sealerMonth=$.trim($('input[name="sealerMonth"]').val());
-			var sealerDay=$.trim($('input[name="sealerDay"]').val());
-			var enterpriseSign=$.trim($('input[name="enterpriseSign"]').val());
-			var enterpriseYear=$.trim($('input[name="enterpriseYear"]').val());
-			var enterpriseMonth=$.trim($('input[name="enterpriseMonth"]').val());
-			var enterpriseDay=$.trim($('input[name="enterpriseDay"]').val());
-			var telephone=$.trim($('input[name="telephone"]').val());
-			var tax=$.trim($('input[name="tax"]').val());
-			var address=$.trim($('input[name="address"]').val());
-			if(samplebase=="" || sampledate=="" || productiondate=="" || sampleplace=="" || samplemethod=="" || simplerSign=="" || sealerSign=="" || simplerYear=="" || simplerMonth=="" || simplerDay=="" ||sealerYear=="" ||sealerMonth==""||sealerDay==""||enterpriseSign==""||enterpriseYear==""||enterpriseMonth==""||enterpriseDay==""){
-				alert("信息填写不完整，请完善信息");
-				return false;
-			}
-			var data = {
-				'centreno':centreno,
-				'samplebase':samplebase,
-				'sampledate':sampledate,
-				'sampleplace':sampleplace,
-				'samplemethod':samplemethod,
-				'batchno':batchno,
-				'productiondate':productiondate,
-				'simplerSign':simplerSign,
-				'simplerYear':simplerYear,
-				'simplerMonth':simplerMonth,
-				'simplerDay':simplerDay,
-				'sealerSign':sealerSign,
-				'sealerYear':sealerYear,
-				'sealerMonth':sealerMonth,
-				'sealerDay':sealerDay,
-				'enterpriseSign':enterpriseSign,
-				'enterpriseYear':enterpriseYear,
-				'enterpriseMonth':enterpriseMonth,
-				'enterpriseDay':enterpriseDay,
-				'telephone':telephone,
-				'tax':tax,
-				'address':address,
-			}
-			$.ajax({
-				url: "{:U('/admin/contract/doEditSample')}",
-				dataType: 'json',
-				data:data,
-				beforeSubmit: function(){
-					return true;
-				},
-				success: function (res) {
-					alert(res.msg);
-					window.location.reload();
-				}				
-			})
-		}
-		
-		function  doUpSample(type){
-			var centreno=$('input[name="centreno"]').val();
-			var samplebase=$.trim($('input[name="samplebase"]').val());
-			var sampledate=$.trim($('input[name="sampledate"]').val());
-			var sampleplace=$.trim($('input[name="sampleplace"]').val());
-			var samplemethod=$.trim($('input[name="samplemethod"]').val());
-			if(samplebase=="" || sampledate=="" || sampleplace=="" || samplemethod==""){
-				alert("信息不完整,请完善信息");
-				return;	
-			}
-			window.location.href="/admin/contract/doUploadSampleImage?centreno="+centreno+"&type="+type;			
-		}
-		
+	<body>
+		<div class="page">
 
-    </script>
-</body>
+			<input type="hidden" id="role" value="{$if_edit}" />
+            <input type="hidden" name="centreno" value="{$one.centreno}">
+			<table class="head_title">
+				<tr>
+					<td class="logo" align="center"><img class="img_logo" src="__PUBLIC__/imgs/logo.png" /></td>
+					<td style="padding-top: 17pt; padding-right: 13pt;">
+						<p class="sample_title_txt">(国家)建筑材料工业技术监督研究中心</p>
+						<p class="sample_title_txt">抽 样 单</p>
+					</td>
+				</tr>
+			</table>
+			<table class="middle">
+				<tr>
+					<td style="width: 60%;text-align: left;">
+						<font class="en">SJ－4－25</font>
+					</td>
+					<td style="text-align: left;">
+						<font class="cn">中心编号: </font><span class="sample_txt">
+							{$one.centreno}
+						</span></td>
+				</tr>
+			</table>
+			<table border="3" class="sam">
+				<tr>
+					<td class="sample_one_col cn">企业名称</td>
+					<td colspan="3"><span class="sample_txt">
+						{$one.productunit}
+					</span></td>
+				</tr>
+				<tr>
+					<td class="cn">产品名称</td>
+					<td colspan="3"><span class="sample_txt">
+						{$one.samplename}
+					</span></td>
+				</tr>
+				<tr>
+					<td class="cn">规格型号</td>
+					<td class="sample_three_col"><span class="sample_txt">
+						{$one.specification}
+					</span></td>
+					<td class="sample_two_col cn">产品批号</td>
+					<td><span class="sample_txt">
+						{$one.batchno}
+					</span></td>
+				</tr>
+				<tr>
+					<td class="cn">执行标准</td>
+					<td><span class="sample_txt">
+						{$one.testcriteria}
+					</span></td>
+					<td class="cn">产品商标</td>
+					<td><span class="sample_txt">
+						{$one.trademark}
+					</span></td>
+				</tr>
+				<tr>
+					<td class="cn">抽样数量</td>
+					<td><span class="sample_txt">
+						{$one.samplequantity}
+					</span></td>
+					<td class="cn">抽样基数</td>
+					<td><span class="sample_txt">
+						{$one.samplebase}
+					</span></td>
+				</tr>
+				<tr>
+					<td class="cn">抽样日期</td>
+					<td><span class="sample_txt">
+						<if condition="$one[sampledate]">{$one.sampledate|strtotime|date=Y年m月d日,###}<else/></if>
+					</span></td>
+					<td class="cn">生产日期</td>
+					<td><span class="sample_txt">
+						<if condition="$one[productiondate]">{$one.productiondate|strtotime|date=Y年m月d日,###}<else/></if>
+					</span></td>
+				</tr>
+				<tr>
+					<td class="cn">抽样地点</td>
+					<td><span class="sample_txt">
+						{$one.sampleplace}
+					</span></td>
+					<td class="cn">封样方式</td>
+					<td><span class="sample_txt">
+						{$one.samplemethod}
+					</span></td>
+				</tr>
+				<tr>
+					<td class="cn" style="height: 20%;">检验内容</td>
+					<td colspan="3"><span class="sample_txt">
+                    	{$one.testitem}
+					</span></td>
+				</tr>
+				<tr>
+					<td class="txt_left cn" colspan="2">是否同意在网上发表</td>
+					<td colspan="2" class="cn">
+                    	<if condition="$one.ifonline == 1">是<else />否</if>
+					</td>
+				</tr>
+				<tr>
+					<td class="txt_left cn" colspan="2">对于本中心不能检验的项目是否同意安排分包</td>
+					<td colspan="2" class="cn">
+                    	<if condition="$one.ifsubpackage == 1">是<else />否</if>               
+                    </td>
+				</tr>
+
+				<tr>
+					<td colspan="2" class="gone_bottom txt_left cn">抽样人（签名）</td>
+					<td colspan="2" class="gone_bottom txt_left cn">封样人（签名）</td>
+				</tr>
+				<tr>
+					<td colspan="2" class="gone_two sam_sign"><span class="sample_txt">
+						{$one.simplersign}
+					</span>
+					</td>
+					<td colspan="2" class="gone_two sam_sign"><span class="sample_txt">
+						{$one.sealersign}
+					</span>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" class="gone_two txt_right"><span class="sample_txt">{$one.0}</span>年<span class="sample_txt">{$one.1}</span>月<span class="sample_txt">{$one.2}</span>日 </td>
+					<td colspan="2" class="gone_two txt_right"><span class="sample_txt">{$one.3}</span>年<span class="sample_txt">{$one.4}</span>月<span class="sample_txt">{$one.5}</span>日 </td>
+				</tr>
+
+				<tr>
+					<td class="gone_bottom txt_left cn" colspan="4">被抽检企业有关人员（签名）</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="gone_two"><span class="sample_txt">
+						{$one.enterprisesign}
+					</span>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="gone_two">
+						<font class="cn" style="padding-left: 45%;">（单 位 盖 章）</font>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="gone_two cn" style="padding-left: 44%;"><span class="sample_txt">{$one.6}</span>年<span class="sample_txt">{$one.7}</span>月<span class="sample_txt">{$one.8}</span>日 </td>
+				</tr>
+
+				<tr>
+					<td class="cn">联系电话</td>
+					<td><span class="sample_txt">
+						{$one.telephone}
+					</span></td>
+					<td class="cn">传 真</td>
+					<td><span class="sample_txt">
+						{$one.tax}
+					</span></td>
+				</tr>
+				<tr>
+					<td class="cn">通讯地址</td>
+					<td colspan="3"><span class="sample_txt">
+						{$one.address}
+					</span></td>
+				</tr>
+				<tr>
+					<td colspan="4" style="height: 9%;"></td>
+				</tr>
+
+			</table>
+			<button onclick="window.print()" class="Noprint">打印</button>
+            
+		</div>
+	</body>
+
 </html>

@@ -83,10 +83,10 @@
             },
             success: function (data) {
                 if(data.msg=='succ'){
-                    var _options = {"text":"修改成功！","action":function(){window.location.reload();}};
+                    var _options = {"text":"保存成功！","action":function(){window.location.reload();}};
                     doAlertDialog(_options);
                 }else{
-                    var _options = {"text":"修改失败！"};
+                    var _options = {"text":"保存失败！"};
                     if(data.msg) _options.text = data.msg;
                     doAlertDialog(_options);
                 }
@@ -95,7 +95,7 @@
         $("#myform").ajaxForm(options);
         return false;
     }
-//上传完毕按钮
+    //上传完毕按钮
     function allSave(centreno) {
         if(!centreno) return false;
         var _options = {"flag":"error","text":"您确定已经上传完所有的记录吗？","buttons":{"ok":{"action":function(){doneAllSave(centreno);}},"cancel":{}}};

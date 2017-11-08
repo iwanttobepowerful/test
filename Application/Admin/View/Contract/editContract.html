@@ -34,7 +34,8 @@
           </tr>
           <tr >
             <td><p align="center" >生产日期/批号 </p></td>
-            <td colspan="2"><input type="text" readonly class="form-control f-datetime input-sm" name="productionDate" value="{$contract.productiondate}"/>
+            <td colspan="2"><input type="text" class="form-control" name="productionDate" value="{$contract.productiondate}"/>
+            <!--<input type="text" readonly class="form-control f-datetime input-sm" name="productionDate" value="{$contract.productiondate}"/>-->
            					<!--<input type="text" class="form-control" name="productionDate"/>-->
             <td colspan="1"><p align="center" >样品数量 </p></td>
             <td colspan="5" >
@@ -183,7 +184,29 @@
             <td  ><p align="center" >检验费用 </p></td>
             <td  colspan="4" >
               <div class="col-xs-6">
-              	<input name="testCost1" type="text" class="form-control"  id="myCost" size="5" placeholder="本部门" readonly onChange="computeSum()"  onClick="myCost1()" value="{$feeItem.testfee}"/>
+                  <input name="Arecord" type="text" class="form-control"  id="Arecord" size="5" placeholder="A部门" readonly   onClick="Cost('A')" value="{$feeItem.arecord}"/>
+                  +
+                  <input name="Brecord" type="text" class="form-control"  id="Brecord" size="5" placeholder="B部门" readonly  onClick="Cost('B')" value="{$feeItem.brecord}"/>
+                  +
+                  <input name="Crecord" type="text" class="form-control"  id="Crecord" size="5" placeholder="C部门" readonly  onClick="Cost('C')" value="{$feeItem.crecord}"/>
+                  +
+                  <input name="Drecord" type="text" class="form-control"  id="Drecord" size="5" placeholder="D部门" readonly  onClick="Cost('D')" value="{$feeItem.drecord}"/>
+                  +
+                  <input name="Erecord" type="text" class="form-control"  id="Erecord" size="5" placeholder="E部门" readonly  onClick="Cost('E')" value="{$feeItem.erecord}"/>
+                  +
+                  <input name="Frecord" type="text" class="form-control"  id="Frecord" size="5" placeholder="F部门" readonly  onClick="Cost('F')" value="{$feeItem.frecord}"/>
+                  +
+                  <input name="Dcopy" type="text" class="form-control"  id="Dcopy" placeholder="副本" onKeyUp="computeSum()" value="{$feeItem.dcopy}"/>
+                  +
+                  <input name="Drevise" type="text" class="form-control"  id="Drevise" placeholder="项目修改" onKeyUp="computeSum()" value="{$feeItem.drevise}" />
+                  +
+                  <input name="Dother" type="text" class="form-control"  id="Dother" placeholder="其他"  onKeyUp="computeSum()" value="{$feeItem.dother}"/>
+                  =
+                  <input name="testCost" type="text" class="form-control"  id="sumCost" placeholder="总计"  size="8" readonly value="{$contract.testcost}"/>
+              
+              
+              
+              	<!--<input name="testCost1" type="text" class="form-control"  id="myCost" size="5" placeholder="本部门" readonly onChange="computeSum()"  onClick="myCost1()" value="{$feeItem.testfee}"/>
                 +
               <input name="testCost2" type="text" class="form-control"  id="dCost" size="5" placeholder="D部门" readonly onChange="computeSum()"  onClick="dCost1()" value="{$feeItem.drecord}"/>
               +
@@ -191,9 +214,9 @@
               +
               <input name="testCost4" type="text" class="form-control"  id="editCost" placeholder="项目修改" onKeyUp="computeSum()" size="6"  value="{$feeItem.drevise}"/>
               =
-              <input name="testCost" type="text" class="form-control"  id="sumCost" placeholder="总计"  size="8" readonly  value="{$contract.testcost}"/></td>
+              <input name="testCost" type="text" class="form-control"  id="sumCost" placeholder="总计"  size="8" readonly  value="{$contract.testcost}"/>-->
               </div>
-              
+              </td>
           </tr>
           <tr >
             <td  ><p align="center" >收样日期 </p></td>
@@ -228,12 +251,10 @@
 
 
 
-<div>
-    <!-- 模态框（Modal) -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+   <div class="modal fade" id="editModal_A" tabindex="-1" role="dialog" aria-labelledby="editModal_A" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-            <form class="form-horizontal" id="myform" action="" method="post">
+            <form class="form-horizontal" id="aform" action="" method="post">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="createModalLabel">本部门费用</h4>
@@ -241,7 +262,7 @@
                 <div class="form-group form-group-sm">
                         <label class="col-sm-3 control-label talign-right fz13">类别</label>
                         <div class="col-sm-7">
-                            <select name="meterial" class="form-control" id="meterial" onchange="setProOption()">
+                            <select name="meterial_A" class="form-control" id="meterial_A" onchange="setProOption('A')">
                                 <option value=0>请选择</option>
                             </select>
                         </div>
@@ -250,7 +271,7 @@
                 <div class="form-group form-group-sm">
                         <label class="col-sm-3 control-label talign-right fz13">产品名称/标准号</label>
                         <div class="col-sm-7">
-                            <select name="productname" class="form-control" id="productname" onchange="setItemOption()">
+                            <select name="productname_A" class="form-control" id="productname_A" onchange="setItemOption('A')">
                                 <option value=0>请选择</option>
                             </select>
                         </div>
@@ -258,21 +279,21 @@
                 </div>
                 <div class="form-group form-group-sm">
                         <label class="col-sm-3 control-label talign-right fz13">测试项目</label>
-                        <div class="col-sm-7" id="items">
+                        <div class="col-sm-7" id="items_A">
                             
                         </div>
                         <div class="clearfix"></div>
                 </div>
                 <div class="form-group form-group-sm">
                         <label class="col-sm-3 control-label talign-right fz13">金额</label>
-                        <div class="col-sm-7" id='t_fee'>
+                        <div class="col-sm-7" id='fee_A'>
                             
                         </div>
                         <div class="clearfix"></div>
                 </div>
                 <div class="modal-footer">
                     <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
-                    <button type="button" class="btn btn-primary" onclick="returnCost()" data-dismiss="modal">确定</button>
+                    <button type="button" class="btn btn-primary" onclick="returnCost('A')" data-dismiss="modal">确定</button>
                 </div>
             </form>
             </div><!-- /.modal-content -->
@@ -280,7 +301,7 @@
 </div>
 <div>
     <!-- 模态框（Modal) -->
-    <div class="modal fade" id="editDModal" tabindex="-1" role="dialog" aria-labelledby="editDModal" aria-hidden="true">
+    <div class="modal fade" id="editModal_B" tabindex="-1" role="dialog" aria-labelledby="editModal_B" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
             <form class="form-horizontal" id="myform" action="" method="post">
@@ -291,7 +312,7 @@
                 <div class="form-group form-group-sm">
                         <label class="col-sm-3 control-label talign-right fz13">类别</label>
                         <div class="col-sm-7">
-                            <select name="meterial" class="form-control" id="dmeterial" onchange="setDProOption()">
+                            <select name="meterial_B" class="form-control" id="meterial_B" onchange="setProOption('B')">
                                 <option value=0>请选择</option>
                             </select>
                         </div>
@@ -300,7 +321,7 @@
                 <div class="form-group form-group-sm">
                         <label class="col-sm-3 control-label talign-right fz13">产品名称/标准号</label>
                         <div class="col-sm-7">
-                            <select name="productname" class="form-control" id="dproductname" onchange="setDItemOption()">
+                            <select name="productname_B" class="form-control" id="productname_B" onchange="setItemOption('B')">
                                 <option value=0>请选择</option>
                             </select>
                         </div>
@@ -308,21 +329,225 @@
                 </div>
                 <div class="form-group form-group-sm">
                         <label class="col-sm-3 control-label talign-right fz13">测试项目</label>
-                        <div class="col-sm-7" id="ditems">
+                        <div class="col-sm-7" id="items_B">
                             
                         </div>
                         <div class="clearfix"></div>
                 </div>
                 <div class="form-group form-group-sm">
                         <label class="col-sm-3 control-label talign-right fz13">金额</label>
-                        <div class="col-sm-7" id='d_fee'>
+                        <div class="col-sm-7" id='fee_B'>
                             
                         </div>
                         <div class="clearfix"></div>
                 </div>
                 <div class="modal-footer">
                     <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
-                    <button type="button" class="btn btn-primary" onclick="returnDCost()" data-dismiss="modal">确定</button>
+                    <button type="button" class="btn btn-primary" onclick="returnCost('B')" data-dismiss="modal">确定</button>
+                </div>
+            </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+</div>
+
+<div>
+    <!-- 模态框（Modal) -->
+    <div class="modal fade" id="editModal_C" tabindex="-1" role="dialog" aria-labelledby="editModal_C" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <form class="form-horizontal" id="myform" action="" method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="createModalLabel">本部门费用</h4>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">类别</label>
+                        <div class="col-sm-7">
+                            <select name="meterial_C" class="form-control" id="meterial_C" onchange="setProOption('C')">
+                                <option value=0>请选择</option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">产品名称/标准号</label>
+                        <div class="col-sm-7">
+                            <select name="productname_C" class="form-control" id="productname_C" onchange="setItemOption('C')">
+                                <option value=0>请选择</option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">测试项目</label>
+                        <div class="col-sm-7" id="items_C">
+                            
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">金额</label>
+                        <div class="col-sm-7" id='fee_C'>
+                            
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
+                    <button type="button" class="btn btn-primary" onclick="returnCost('C')" data-dismiss="modal">确定</button>
+                </div>
+            </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+</div>
+
+<div>
+    <!-- 模态框（Modal) -->
+    <div class="modal fade" id="editModal_D" tabindex="-1" role="dialog" aria-labelledby="editModal_D" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <form class="form-horizontal" id="myform" action="" method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="createModalLabel">本部门费用</h4>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">类别</label>
+                        <div class="col-sm-7">
+                            <select name="meterial_D" class="form-control" id="meterial_D" onchange="setProOption('D')">
+                                <option value=0>请选择</option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">产品名称/标准号</label>
+                        <div class="col-sm-7">
+                            <select name="productname_D" class="form-control" id="productname_D" onchange="setItemOption('D')">
+                                <option value=0>请选择</option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">测试项目</label>
+                        <div class="col-sm-7" id="items_D">
+                            
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">金额</label>
+                        <div class="col-sm-7" id='fee_D'>
+                            
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
+                    <button type="button" class="btn btn-primary" onclick="returnCost('D')" data-dismiss="modal">确定</button>
+                </div>
+            </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+</div>
+
+<div>
+    <!-- 模态框（Modal) -->
+    <div class="modal fade" id="editModal_E" tabindex="-1" role="dialog" aria-labelledby="editModal_E" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <form class="form-horizontal" id="myform" action="" method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="createModalLabel">本部门费用</h4>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">类别</label>
+                        <div class="col-sm-7">
+                            <select name="meterial_E" class="form-control" id="meterial_E" onchange="setProOption('E')">
+                                <option value=0>请选择</option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">产品名称/标准号</label>
+                        <div class="col-sm-7">
+                            <select name="productname_E" class="form-control" id="productname_E" onchange="setItemOption('E')">
+                                <option value=0>请选择</option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">测试项目</label>
+                        <div class="col-sm-7" id="items_E">
+                            
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">金额</label>
+                        <div class="col-sm-7" id='fee_E'>
+                            
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
+                    <button type="button" class="btn btn-primary" onclick="returnCost('E')" data-dismiss="modal">确定</button>
+                </div>
+            </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+</div>
+
+<div>
+    <!-- 模态框（Modal) -->
+    <div class="modal fade" id="editModal_F" tabindex="-1" role="dialog" aria-labelledby="editModal_F" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <form class="form-horizontal" id="myform" action="" method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="createModalLabel">本部门费用</h4>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">类别</label>
+                        <div class="col-sm-7">
+                            <select name="meterial_F" class="form-control" id="meterial_F" onchange="setProOption('F')">
+                                <option value=0>请选择</option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">产品名称/标准号</label>
+                        <div class="col-sm-7">
+                            <select name="productname_F" class="form-control" id="productname_F" onchange="setItemOption('F')">
+                                <option value=0>请选择</option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">测试项目</label>
+                        <div class="col-sm-7" id="items_F">
+                            
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">金额</label>
+                        <div class="col-sm-7" id='fee_F'>
+                            
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
+                    <button type="button" class="btn btn-primary" onclick="returnCost('F')" data-dismiss="modal">确定</button>
                 </div>
             </form>
             </div><!-- /.modal-content -->
@@ -425,11 +650,37 @@
 				
 		//实时计算总费用
 		function computeSum(){
-			if($("#myCost").val()!="" && $("#dCost").val()!="" && $("#copyCost").val()!="" && $("#editCost").val()!="" && $.trim($("#myCost").val()).length>0 && $.trim($("#dCost").val()).length>0 && $.trim($("#copyCost").val()).length>0 && $.trim($("#editCost").val()).length>0){
-				$("#sumCost").val(parseInt($("#myCost").val())+parseInt($("#dCost").val())+parseInt($("#editCost").val())+parseInt($("#copyCost").val()));
+			var sum =0 ;
+			if($("#Arecord").val()!="" && $.trim($("#Arecord").val()).length>0){
+				sum+=parseInt($("#Arecord").val());
 			}
-			
+			if($("#Brecord").val()!="" && $.trim($("#Brecord").val()).length>0){
+				sum+=parseInt($("#Brecord").val());
+			}
+			if($("#Crecord").val()!="" && $.trim($("#Crecord").val()).length>0){
+				sum+=parseInt($("#Crecord").val());
+			}		
+			if($("#Drecord").val()!="" && $.trim($("#Drecord").val()).length>0){
+				sum+=parseInt($("#Drecord").val());
+			}
+			if($("#Erecord").val()!="" && $.trim($("#Erecord").val()).length>0){
+				sum+=parseInt($("#Erecord").val());
+			}
+			if($("#Frecord").val()!="" && $.trim($("#Frecord").val()).length>0){
+				sum+=parseInt($("#Frecord").val());
+			}
+			if($("#Dcopy").val()!="" && $.trim($("#Dcopy").val()).length>0){
+				sum+=parseInt($("#Dcopy").val());
+			}
+			if($("#Drevise").val()!="" && $.trim($("#Drevise").val()).length>0){
+				sum+=parseInt($("#Drevise").val());
+			}
+			if($("#Dother").val()!="" && $.trim($("#Dother").val()).length>0){
+				sum+=parseInt($("#Dother").val());
+			}
+			$("#sumCost").val(sum);
 		}
+
 		
 		//合同修改
 		function doEditContract(){
@@ -441,7 +692,7 @@
 				},
 				success: function (data) {
 					if(data.msg=='succ'){
-						var _options = {"text":"修改成功！","action":function(){window.location.href="/admin/contract/showlist";}};
+						var _options = {"text":"修改成功！","action":function(){window.location.href="/admin/contract/showList";}};
 						doAlertDialog(_options);
 					}else{
 						var _options = {"text":"修改失败！"};
@@ -496,38 +747,40 @@
 		<!-----------------------------------本部门费用 start------------------------------------->
 				
 		//本部门费用选
-		function myCost1(){
-			
-			var modal = $("#editModal");
-			setMetOption();
+		function Cost(de){
+			var modal = $("#editModal_"+de);
+			setMetOption(de);
 			modal.modal();
-			computeSum();
+
 		}
 		
 		//获取费用选项(下面三个函数)
-		function setMetOption(){
-			$.ajax({
-				url: "{:U('/admin/contract/findMetList')}",
-				dataType: 'json',
-				beforeSubmit: function(){
-					return true;
-				},
-				success: function (re) {
-					$('#meterial').find("option").remove();
-					var option = "<option value=0>请选择</option>";
-					$('#meterial').append(option);
-					data = re['meterial_list'];
-					for(var i=0;i<data.length;i++){
-						var meterial = data[i]['meterial'];
-						option = "<option value='"+meterial+"'>"+meterial+"</option>";
-						$('#meterial').append(option);
-					}
-				}	
-			});
+		function setMetOption(de){
+			//alert($('#meterial_'+de+' option').size());
+			if($('#meterial_'+de+' option').size()<=1){
+				$.ajax({
+					url: "{:U('/admin/contract/findMetList')}",
+					dataType: 'json',
+					beforeSubmit: function(){
+						return true;
+					},
+					success: function (re) {
+						$('#meterial_'+de).find("option").remove();
+						var option = "<option value=0>请选择</option>";
+						$('#meterial_'+de).append(option);
+						data = re['meterial_list'];
+						for(var i=0;i<data.length;i++){
+							var meterial = data[i]['meterial'];
+							option = "<option value='"+meterial+"'>"+meterial+"</option>";
+							$('#meterial_'+de).append(option);
+						}
+					}	
+				});
+			}
 		}
 		
-		function setProOption(){
-			m_select = $("#meterial").val();
+		function setProOption(de){
+			m_select = $("#meterial_"+de).val();
 			if(m_select!=0){
 				$.ajax({
 					url: "{:U('/admin/contract/findProList')}",
@@ -537,28 +790,28 @@
 						return true;
 					},
 					success: function (re) {
-						$('#productname').find("option").remove();
+						$('#productname_'+de).find("option").remove();
 						var option = "<option value=0>请选择</option>";
-						$('#productname').append(option);
+						$('#productname_'+de).append(option);
 						data = re['productname_list'];
 						for(var i=0;i<data.length;i++){
 							var productname = data[i]['productname'];
 							var criteria = data[i]['criteria'];
 							option = "<option value='"+productname+"'>"+productname+" "+criteria+"</option>";
-							$('#productname').append(option);
+							$('#productname_'+de).append(option);
 						}
 					}	
 				});
 			}else{
-				$('#productname').find("option").remove();
+				$('#productname_'+de).find("option").remove();
 				var option = "<option value=0>请选择</option>";
-				$('#productname').append(option);
+				$('#productname_'+de).append(option);
 			}
 		}
 
-		function setItemOption(){
-			m_select = $("#meterial").val();
-			p_select = $("#productname").val();
+		function setItemOption(de){
+			m_select = $("#meterial_"+de).val();
+			p_select = $("#productname_"+de).val();
 			if(m_select!=0){
 				$.ajax({
 					url: "{:U('/admin/contract/findItemList')}",
@@ -568,18 +821,18 @@
 						return true;
 					},
 					success: function (re) {
-						$("#items").empty();
-						$("#t_fee").empty();
+						$("#items_"+de).empty();
+						$("#fee_"+de).empty();
 						data = re['item_list'];
 						for(var i=0;i<data.length;i++){
 							var items = data[i]['item'];
 							var money = data[i]['fee'];
 							if(items=='全项'){
-								option = "<input type=\"checkbox\" id=\"t_items\" name=\"items_all\" value=\""+money+"\" onclick=checkAllFee(); />&nbsp;&nbsp;"+items+"&nbsp;&nbsp;";
-								$('#items').prepend(option);
+								option = "<input type='checkbox' id='items_all_"+de+"' name='items_all_"+de+"' value='"+money+"' onclick=checkAllFee('"+de+"'); />&nbsp;&nbsp;"+items+"&nbsp;&nbsp;";
+								$('#items_'+de).prepend(option);
 							}else{
-								option = "<input type=\"checkbox\" name=\"items\" value=\""+money+"\" onclick=checkFee();  />&nbsp;&nbsp;"+items+"&nbsp;&nbsp;";
-								$('#items').append(option);
+								option = "<input type='checkbox' name='items_"+de+"' value='"+money+"' onclick=checkFee('"+de+"');  />&nbsp;&nbsp;"+items+"&nbsp;&nbsp;";
+								$('#items_'+de).append(option);
 							}
 							
 						}
@@ -589,10 +842,10 @@
 		}
 			
 		//计算本部门费用--单项选择
-		function checkFee(){
+		function checkFee(de){
 			cash = 0;
 			var allCheck=true;
-			$("input[name='items']").each(function(index, element) {
+			$("input[name='items_"+de+"']").each(function(index, element) {
 				if($(this).prop("checked") == false){
 					allCheck = false;
 				}else{
@@ -600,167 +853,32 @@
 				}		
 			});
 			if(allCheck==false){
-				$("#t_items").prop("checked",false);	
+				$("#items_all_"+de).prop("checked",false);	
 			}else{
-				$("#t_items").prop("checked",true);
-				cash = parseInt($("#t_items").val());
+				$("#items_all_"+de).prop("checked",true);
+				cash = parseInt($("#items_all_"+de).val());
 			}				
-			$("#t_fee").html(cash);
+			$("#fee_"+de).html(cash);
 		}
 		//计算本部门费用--全项选择
-		function checkAllFee(){
+		function checkAllFee(de){
 			var cash=0;
-			$("#t_items").prop("checked",$("#t_items").prop("checked"));
-			if($("#t_items").prop("checked")){
-				$("input[name=items]").prop("checked",true);
-				cash = parseInt($("#t_items").val());
+			$("#items_all_"+de).prop("checked",$("#items_all_"+de).prop("checked"));
+			if($("#items_all_"+de).prop("checked")){
+				$("input[name=items_"+de+"]").prop("checked",true);
+				cash = parseInt($("#items_all_"+de).val());
 			}else{
-				$("input[name=items]").prop("checked",false);
+				$("input[name=items_"+de+"]").prop("checked",false);
 			}
-			$("#t_fee").html(cash);
+			$("#fee_"+de).html(cash);
 		}
 		
-		function returnCost(){
-			$("#myCost").val($("#t_fee").html());
-		}
-
-		<!-----------------------------------本部门费用 end------------------------------------->
-		
-		
-		
-		<!-----------------------------------D部门费用 start------------------------------------->
-		
-		//D部门费用选择函数--测试
-		function dCost1(){
-			var modal = $("#editDModal");
-			setDMetOption();
-			modal.modal();
+		function returnCost(de){
+			$("#"+de+"record").val($("#fee_"+de).html());
 			computeSum();
 		}
-		
-		//获取费用选项(下面三个函数)
-		function setDMetOption(){
-			$.ajax({
-				url: "{:U('/admin/contract/findMetList')}",
-				dataType: 'json',
-				beforeSubmit: function(){
-					return true;
-				},
-				success: function (re) {
-					$('#dmeterial').find("option").remove();
-					var option = "<option value=0>请选择</option>";
-					$('#dmeterial').append(option);
-					data = re['meterial_list'];
-					for(var i=0;i<data.length;i++){
-						var meterial = data[i]['meterial'];
-						option = "<option value='"+meterial+"'>"+meterial+"</option>";
-						$('#dmeterial').append(option);
-					}
-				}	
-			});
-		}
-		
-		function setDProOption(){
-			m_select = $("#dmeterial").val();
-			if(m_select!=0){
-				$.ajax({
-					url: "{:U('/admin/contract/findProList')}",
-					dataType: 'json',
-					data:{'m_select':m_select},
-					beforeSubmit: function(){
-						return true;
-					},
-					success: function (re) {
-						$('#dproductname').find("option").remove();
-						var option = "<option value=0>请选择</option>";
-						$('#dproductname').append(option);
-						data = re['productname_list'];
-						for(var i=0;i<data.length;i++){
-							var productname = data[i]['productname'];
-							var criteria = data[i]['criteria'];
-							option = "<option value='"+productname+"'>"+productname+" "+criteria+"</option>";
-							$('#dproductname').append(option);
-						}
-					}	
-				});
-			}else{
-				$('#dproductname').find("option").remove();
-				var option = "<option value=0>请选择</option>";
-				$('#dproductname').append(option);
-			}
-		}
 
-		function setDItemOption(){
-			m_select = $("#dmeterial").val();
-			p_select = $("#dproductname").val();
-			if(m_select!=0){
-				$.ajax({
-					url: "{:U('/admin/contract/findItemList')}",
-					dataType: 'json',
-					data:{'m_select':m_select,'p_select':p_select},
-					beforeSubmit: function(){
-						return true;
-					},
-					success: function (re) {
-						$("#ditems").empty();
-						$("#d_fee").empty();
-						data = re['item_list'];
-						for(var i=0;i<data.length;i++){
-							var items = data[i]['item'];
-							var money = data[i]['fee'];
-							if(items=='全项'){
-								option = "<input type=\"checkbox\" id=\"d_items\" name=\"ditems_all\" value=\""+money+"\" onclick=checkDAllFee() />&nbsp;&nbsp;"+items+"&nbsp;&nbsp;";
-								$('#ditems').prepend(option);
-							}else{
-								option = "<input type=\"checkbox\" name=\"ditems\" value=\""+money+"\" onclick=checkDFee() />&nbsp;&nbsp;"+items+"&nbsp;&nbsp;";
-								$('#ditems').append(option);
-							}
-							
-						}
-					}	
-				});
-			}
-		}
-			
-		//计算本部门费用--单项选择
-		function checkDFee(){
-			cash = 0;
-			var allCheck=true;
-			$("input[name='ditems']").each(function(index, element) {
-				if($(this).prop("checked") == false){
-					allCheck = false;
-				}else{
-					cash+=parseInt(element.value);
-				}		
-			});
-			if(allCheck==false){
-				$("#d_items").prop("checked",false);	
-			}else{
-				$("#d_items").prop("checked",true);
-				cash = parseInt($("#d_items").val());
-			}				
-			$("#d_fee").html(cash);
-		}
-		//计算本部门费用--全项选择
-		function checkDAllFee(){
-			var cash=0;
-			$("#d_items").prop("checked",$("#d_items").prop("checked"));
-			if($("#d_items").prop("checked")){
-				$("input[name=ditems]").prop("checked",true);
-				cash = parseInt($("#d_items").val());
-			}else{
-				$("input[name=ditems]").prop("checked",false);
-			}
-			$("#d_fee").html(cash);
-		}
-		
-		//返回费用
-		function returnDCost(){
-			$("#dCost").val($("#d_fee").html());
-		}
-		<!-----------------------------------D部门费用 end------------------------------------->
-		
-
+		<!-----------------------------------费用 end------------------------------------->
 		
 		
 		
