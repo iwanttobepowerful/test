@@ -3,7 +3,7 @@ namespace Wap\Controller;
 use Think\Controller;
 class ContractController extends Controller {
     public $user = array();
-    public $statusArr = array(2,3,5,6);
+    public $statusArr = array(2,3,4,5,6);
     //初始化方法
     public function _initialize(){
         load('@.functions');
@@ -20,12 +20,37 @@ class ContractController extends Controller {
         $this->display();
     }
     public function wait(){
+        $status = I("status",0,'intval');
+        if($stats==2){
+            $pagetitle = "待提交审核报告";
+        }elseif($status==3){
+            $pagetitle = "待审核报告";
+        }elseif($status==4){
+            $pagetitle = "待审批报告";
+        }elseif($status==5){
+            $pagetitle = "待签发报告";
+        }elseif($status==6){
+            $pagetitle = "已出报告";
+        }
         $body = array(
-            "pagetitle"=>"待审核报告",
+            "pagetitle"=>$pagetitle,
             'backed'=>true,
+            'status'=>$status,
         );
         $this->assign($body);
         $this->display();
+    }
+    public function contractDetail(){
+        $centreno = I("centreno");
+        $body = array(
+            'pagetitle'=>"合同详情",
+        );
+        if($centreno){
+            $contract = D("contract")->where("centreno='{$centreno}'")->find();
+            $body['contract'] = $contract;
+        }
+        $this->assign($body);
+        $this->display("Contract/chouyangdan");
     }
 	
 	    public function need(){
@@ -64,12 +89,12 @@ class ContractController extends Controller {
 			$this->display();}
     //报告审批
     public function reportList(){
-        $rs = array("msg"=>"","status"=>"fail");
+        $rs = array("msg"=>"","status"=>"succ","list"=>array());
         $if_admin = $this->user['super_admin'];
         if(!$this->user['super_admin'] && $this->user['gid']){
             $role = D('common_role')->where('id='.$this->user['gid'])->find();
         }
-        list($offset,$pagesize,$page) = pageOffset();
+        list($offset,$pagesize,$page) = pageOffset(1);
         $status = I("status",0,'intval');
         $where = " 1=1";
         if($status) $where .= " and status=".$status;
@@ -92,18 +117,19 @@ class ContractController extends Controller {
                 $list[$key] = $value;
             }
             $rs['list'] = $list;
-            $rs['status'] = "succ";
             $rs['page'] = $page;
         }
+
         $this->ajaxReturn($rs);
     }
+
     //状态操作
     public function doUpdate(){
         $rs = array("msg"=>"","status"=>"fail");
         $status = I("status",0,'intval');
         if($status && in_array($status, $this->statusArr)){
             $centreno = I("centreno");//中心编号
-            M()->M()->startTrans();
+            M()->startTrans();
             if($contract = D("contract_flow")->where("centreno='{$centreno}'")->find()){
                 //if condition 强制状态不能任意修改
                 $data = array(
@@ -115,6 +141,7 @@ class ContractController extends Controller {
                 }elseif($status==4){
                     $data['approve_time'] = date("Y-m-d H:i:s");
                     $data['approve_user_id'] = $this->user['id'];
+
                 }elseif($status==5){
                     $data['inner_sign_time'] = date("Y-m-d H:i:s");
                     $data['inner_sign_user_id'] = $this->user['id'];
@@ -124,8 +151,19 @@ class ContractController extends Controller {
                 }
                 if(D("contract_flow")->where("id=".$contract['id'])->save($data)){
                     //如果有其它同步更新则加入
-                    $rs['status'] = 'succ';
-                    M()->commit();
+                    if($status==4){
+                        //同步修改其它表
+                        if(D("contract")->where("centreno='{$centreno}'")->save(array("ifedit"=>1))){
+                            $rs['status'] = 'succ';
+                            M()->commit();
+                        }else{
+                            M()->rollback();
+                        }
+                    }else{
+                        $rs['status'] = 'succ';
+                        M()->commit();
+                    }
+                    
                 }else{
                     M()->rollback();
                 }

@@ -1,6 +1,8 @@
 /* 附加css类 */
 @charset "UTF-8";
 html,body{background-color: #f5f5f5;}
+.kt-background-gray{background-color: #f5f5f5 !important;}
+
 .kt-list-item{}
 .kt-list-item:active,.kt-list-item-active:active{background-color: #f5f5f5 !important;}
 .kt-clearfix:after,.kt-clearfix:before{clear:both;content:" ";display:block;font-size:0;height:0;visibility:hidden;}
