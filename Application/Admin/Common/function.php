@@ -204,3 +204,16 @@ function createQRcode($filename,$save_path,$qr_data='PHP QR Code :)',$qr_level='
     else
         return FALSE;
 }
+if(!function_exists('convert2Word')){
+    function convert2Word($data,$srcFile,$distFile){
+       vendor("PhpWord.bootstrap");
+        ///require_once $vendorDirPath.'/bootstrap.php';
+        $templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor($srcFile);
+        if($data && $srcFile && $distFile){
+            foreach ($data as $key => $value) {
+                $templateProcessor->setValue($key, $value);
+            }
+            $templateProcessor->saveAs($distFile);
+        }
+    }
+}
