@@ -99,7 +99,10 @@
 				font-size: 12pt;
 				font-family: "楷体";
 			}
-			
+			.page_num{
+				display: inline-block;
+				margin-left:7.1cm;
+			}
 			.bottom_line {
 				margin-top: 10pt;
 				border-bottom: solid 1px #000000;
@@ -311,6 +314,25 @@
 				left: 90%;
 				bottom: 77pt;
 			}
+			
+			.ma{
+				position: absolute;
+				width: 4cm;
+				margin-top: 0.5cm;
+				margin-left: 0.3cm;
+			}
+			.sealB{
+				position: absolute;
+				width: 4cm;
+				margin-top: 23cm;
+				margin-left: 5.5cm;
+			}
+			.sealA{
+				position: absolute;
+				width: 4cm;
+				margin-top: 23cm;
+				margin-left: 10.5cm;
+			}
 		</style>
 		<style type="text/css" media="print">
 			/*以下是打印格式*/
@@ -357,6 +379,9 @@
 <body>
 <include file="Common:header" title="后台首页"/>   <!--加上！！！！！-->
 <div class="page">
+    <img src="__PUBLIC__/static/images/sign.png" class="ma Noprint" />
+	<img src="__PUBLIC__/static/images/sealB.png" class="sealB Noprint"/>
+	<img src="__PUBLIC__/static/images/sealA.png" class="sealA Noprint"/>
 	<div class="a_cover_head">
 		<p class="a_cover_title">
 			检&nbsp;&nbsp;验&nbsp;&nbsp;报&nbsp;&nbsp;告
@@ -416,7 +441,7 @@
 		</tr>
 	</table>
 	<div class="a_middle">
-		<span class="table_txt">中心编号(No.):</span><span class="a_content_key">131313CC13</span>
+		<span class="table_txt">中心编号(No.):</span><span class="a_content_key">131313CC13</span><span class="page_num table_txt">第&nbsp;1&nbsp;页&nbsp;第<span>&nbsp;2&nbsp;</span>页</span>
 	</div>
 	<table border="3" class="a_test">
 		<tr>
