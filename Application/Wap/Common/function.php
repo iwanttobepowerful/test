@@ -428,3 +428,14 @@ if(!function_exists("SHA256Hex")){
         return md5(bin2hex($re));
     }
 }
+if(!function_exists("pageOffset")){
+    function pageOffset($maxsize=10){
+        $page = I("page",0,'intval');
+        $pagesize = I("size",0,'intval');
+        if($page<=0) $page = 1;
+        if(!$pagesize) $pagesize = $maxsize;
+        if($pagesize>$maxsize) $pagesize = $maxsize; 
+        $offset = ( $page-1 ) * $pagesize;
+        return array($offset,$pagesize,$page);
+    }
+}
