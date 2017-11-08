@@ -249,11 +249,21 @@ class TestController extends Controller{
     }
 
     public function record(){
+        $page = I("p",'int');
+        $pagesize = 20;
+        if($page<=0) $page = 1;
+        $offset = ( $page-1 ) * $pagesize;
         $where['status']=1;
         $result=D("contract_flow")->where($where)
-            ->join('contract ON contract_flow.centreno=contract.centreno')->select();
+            ->join('contract ON contract_flow.centreno=contract.centreno')
+            ->order('report_time desc,contract.id desc')->limit("{$offset},{$pagesize}")->select();
             //当已经生成报告，状态为1的时候，才能上传检测报告
+        $count = D("contract_flow")->where($where)->count();//!!!!!!!!!!!!!!
+        $Page       = new \Think\Page($count,$pagesize);
+        $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
+        $pagination       = $Page->show();// 分页显示输出
             $body=array(
+                'pagination'=>$pagination,
                 'lists'=>$result,
             );
             $this->assign($body);
