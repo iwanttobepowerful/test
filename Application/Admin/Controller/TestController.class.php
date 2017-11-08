@@ -251,12 +251,16 @@ class TestController extends Controller{
     public function record(){
         $centreno = I("centreno");//获取参数
         $where= "centreno='{$centreno}'";
-        $result=M('contract')->where($where)->select();//从合同表!!!!里取出对应中心编号的信息     ->field("centreno")
-        $body=array(
-            'lists'=>$result,
+        $result=M("contract")->where($where)->select();
+        $data=D("contract_flow")->where($where)->find();
+        if($data['status']==1){
+            //当已经生成报告，状态为1的时候，才能上传检测报告
+            $body=array(
+                'lists'=>$result,
+            );
+            $this->assign($body);
+        }
 
-        );
-        $this->assign($body);
         $this->display();
     }
 
