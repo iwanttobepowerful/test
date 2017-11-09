@@ -4,7 +4,7 @@ use Think\Controller;
 class AccountController extends Controller {
 	public $user = null;
 	public function _initialize(){ 
-		//D("account")->checkLogin();
+		
 	}	
 	/**
 	 * [login 用户登录界面]

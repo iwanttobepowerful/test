@@ -1,7 +1,9 @@
 .htaccess
+*.DS_Store
 */.DS_Store
 *.DS_Store
 */Runtime/
 */Uploads/
 */Application/Runtime/
+Application/Runtime/*
 */Public/attached/

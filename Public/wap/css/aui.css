@@ -641,6 +641,7 @@ button, .aui-btn {
 			box-sizing: border-box;
 	-webkit-user-select: none;
 	      	user-select: none;
+	      	border: none;
 }
 .aui-btn:active {
 	color: #212121;
