@@ -25,7 +25,6 @@
 			td {
 				text-align: center;
 			}
-			
 			.a_cover_title {
 				text-align: center;
 				font-family: "黑体";
@@ -163,6 +162,9 @@
 				font-family: "黑体";
 				font-weight: 600;
 			}
+            .a_left_txt{
+                text-align: left;
+            }
 			
 			.a_two_report {
 				margin-top: 13pt;
@@ -465,62 +467,62 @@
 	<table border="3" class="a_test">
 		<tr>
 			<td class="table_txt" style="width: 17%;">产品名称</td>
-			<td style="width: 38%;"><span class="test_txt">{$con.samplename}</span></td>
+			<td style="width: 38%;" class="a_left_txt"><span class="test_txt">{$con.samplename}</span></td>
 			<td class="table_txt" style="width: 17%;">检验类别</td>
-			<td><span class="test_txt">{$one.testcategory}</span></td>
+			<td class="a_left_txt"><span class="test_txt">{$one.testcategory}</span></td>
 		</tr>
 		<tr>
 			<td class="table_txt">受检单位</td>
-			<td><span class="test_txt">{$one.clientname}</span></td>
+			<td class="a_left_txt"><span class="test_txt">{$one.clientname}</span></td>
 			<td class="table_txt">生产日期</td>
-			<td><span class="test_txt"><if condition="$con['productiondate']">{$con.productiondate|strtotime|date=Y年m月d日,###}</if></span></td>
+			<td class="a_left_txt"><span class="test_txt"><if condition="$con['productiondate']">{$con.productiondate|strtotime|date=Y年m月d日,###}</if></span></td>
 		</tr>
 		<tr>
 			<td class="table_txt">生产单位</td>
-			<td><span class="test_txt">{$con.productunit}</span></td>
+			<td class="a_left_txt"><span class="test_txt">{$con.productunit}</span></td>
 			<td class="table_txt">规格型号</td>
-			<td><span class="test_txt">{$con.specification}</span></td>
+			<td class="a_left_txt"><span class="test_txt">{$con.specification}</span></td>
 		</tr>
 		<tr>
 			<td class="table_txt">抽样地点</td>
-			<td><span class="test_txt">{$con.sampleplace}</span></td>
+			<td class="a_left_txt"><span class="test_txt">{$con.sampleplace}</span></td>
 			<td class="table_txt">商&nbsp;&nbsp;&nbsp;&nbsp;标</td>
-			<td><span class="test_txt">{$con.trademark}</span></td>
+			<td class="a_left_txt"><span class="test_txt">{$con.trademark}</span></td>
 		</tr>
 		<tr>
 			<td class="table_txt">抽 样 人</td>
-			<td><span class="test_txt">{$con.simplersign}</span></td>
+			<td class="a_left_txt"><span class="test_txt">{$con.simplersign}</span></td>
 			<td class="table_txt">等&nbsp;&nbsp;&nbsp;&nbsp;级</td>
-			<td><span class="test_txt">{$one.grade}</span></td>
+			<td class="a_left_txt"><span class="test_txt">{$one.grade}</span></td>
 		</tr>
 		<tr>
 			<td class="table_txt">抽样日期</td>
-			<td><span class="test_txt"><if condition="$con['sampledate']">{$con.sampledate|strtotime|date=Y年m月d日,###}</if>
+			<td class="a_left_txt"><span class="test_txt"><if condition="$con['sampledate']">{$con.sampledate|strtotime|date=Y年m月d日,###}</if>
 			</span></td>
 			<td class="table_txt">抽样数量</td>
-			<td><span class="test_txt">{$con.samplequantity}</span></td>
+			<td class="a_left_txt"><span class="test_txt">{$con.samplequantity}</span></td>
 		</tr>
 		<tr>
 			<td class="table_txt">样品状态</td>
-			<td><span class="test_txt">{$one.samplestaquan}</span></td>
+			<td class="a_left_txt"><span class="test_txt">{$one.samplestaquan}</span></td>
 			<td class="table_txt">抽样基数</td>
-			<td><span class="test_txt">{$con.samplebase}</span></td>
+			<td class="a_left_txt"><span class="test_txt">{$con.samplebase}</span></td>
 		</tr>
 		<tr>
 			<td class="table_txt">抽样单位</td>
-			<td colspan="3"><span class="test_txt"></span></td>
+			<td class="a_left_txt" colspan="3"><span class="test_txt"></span></td>
 		</tr>
 		<tr>
 			<td class="table_txt">抽样依据</td>
-			<td colspan="3"><span class="test_txt">{$con.testcriteria}</span></td>
+			<td class="a_left_txt" colspan="3"><span class="test_txt">{$con.testcriteria}</span></td>
 		</tr>
 		<tr>
 			<td class="table_txt">检验项目</td>
-			<td colspan="3"><span class="test_txt">{$con.testitem}</span></td>
+			<td class="a_left_txt" colspan="3"><span class="test_txt">{$con.testitem}</span></td>
 		</tr>
 		<tr>
 			<td class="table_txt" rowspan="3">检验结论</td>
-			<td colspan="3" class="a_gone_bor test_result">
+			<td colspan="3" class="a_gone_bor test_result a_left_txt">
 					<textarea class="form-control" name="a_result" id="a_result" {$zhidu}>{$one.conclusion}</textarea>
 			</td>
 		</tr>
@@ -531,8 +533,7 @@
 			<td colspan="3" style="text-align: right;padding-right: 40pt;" class="a_gone_bor table_txt">(检验测试章)</td>
 		</tr>
 		<tr>
-			<td colspan="2" class="a_dis_bor table_txt">备注:</td>
-			<td colspan="2" class="a_dis_bor"><span class="test_txt">{$one.remark}</span></td>
+			<td colspan="4" class="a_dis_bor table_txt">备注: <span class="test_txt">{$one.remark}</span></td>
 		</tr>
 		<table class="a_foot">
 			<tr>
