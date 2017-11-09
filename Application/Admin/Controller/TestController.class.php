@@ -301,7 +301,6 @@ class TestController extends Controller{
         if($id){
             $report = D('test_report')->where("id=" . $id)->find();
         }
-var_dump($centreno);//有centreno
         $body = array(
             'report' => $report,
             'centreno'=>$centreno,
@@ -337,18 +336,15 @@ var_dump($centreno);//有centreno
         $pic = D("test_report")->where("id=".$id)->find();
         if($pic){
             if(D("test_report")->where("id=".$pic['id'])->save($data)){
+                D("contract_flow")->where($where)->save($data1);
                 $result['msg'] = 'succ';
             }
         }else {
             if (D("test_report")->data($data)->add()) {
+                D("contract_flow")->where($where)->save($data1);
                 $result['msg'] = 'succ';
             }
         }
-                //if(D("test_report")->where("id=" . $id)->save($data)){
-                   // D("contract_flow")->where($where)->save($data1);
-                   // $result['msg'] = 'succ';
-
-          //  }
             $this->ajaxReturn($result);
         }
         //删除（不用改）
