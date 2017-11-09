@@ -3,13 +3,14 @@
     <include file="Common:breadcrumb" />
     <div id="page-inner" class="container">
         <div class="search-form">
-            <a href="{:U('/admin/test/record')}" class="btn btn-success">返回</a>
-            <a href="{:U('/admin/test/recordUpload')}?centreno={$centreno}" class="btn btn-success">上传</a>
+            <a href="{:U('/admin/test/record')}" class="btn btn-primary">返回</a>
+            <a href="{:U('/admin/test/recordUpload')}?centreno={$centreno}" class="btn btn-primary">上传</a>
         </div>
         <table class="table table-bordered table-striped table-hover">
             <thead>
             <th>ID</th>
             <th>中心编号</th>
+            <th>上传文件名称（备注）</th>
             <th>操作</th>
             </thead>
             <tbody>
@@ -17,6 +18,7 @@
                 <tr>
                     <td>{$one.id}</td>
                     <td>{$one.centreno}</td>
+                    <td>{$one.remark}</td>
                     <td>
                         <a href="javascript:void(0);" onclick="onDelete({$one.id})" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> 删除</a>
                     </td>
