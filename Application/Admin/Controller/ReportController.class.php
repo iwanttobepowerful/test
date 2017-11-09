@@ -129,7 +129,8 @@ class ReportController extends Controller
             'approve_time'=>date("Y-m-d H:i:s"),
             'approve_user_id'=>$userid,
         );
-        if((D("contract_flow")->where("id=".$id)->save($data)) && (D("contract")->where($where)->save($data1))){
+           $result= D("contract")->where($where)->save($data1);
+        if((D("contract_flow")->where("id=".$id)->save($data)) && ($result!==false)){
             $rs['msg'] = 'succ';
         }}
         $this->ajaxReturn($rs);
@@ -293,7 +294,6 @@ class ReportController extends Controller
         }
         $this->ajaxReturn($result);
     }
-//修改
     public function updateReport()
     {
 

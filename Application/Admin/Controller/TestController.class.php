@@ -247,7 +247,9 @@ class TestController extends Controller{
         }
         $this->ajaxReturn($rs);
     }
+//以上是检测记录的图片上传
 
+//上传检测报告显示页面
     public function record(){
         $page = I("p",'int');
         $pagesize = 20;
@@ -269,16 +271,13 @@ class TestController extends Controller{
             $this->assign($body);
         $this->display();
     }
-
+//上传检测报告显示列表
     public function recordList(){
         $page = I("p",'int');
-        $pagesize = 20;
+        $pagesize = 10;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
-        $orderby = "create_time desc";
-
         $centreno = I("id");//获取中心编号
-
         $where= "centreno='{$centreno}'";
         $result=M('test_report')->limit("{$offset},{$pagesize}")->where($where)->select();
         $count = M("test_report")->where($where)->count();//!!!!!!!!!!!!!!
@@ -295,32 +294,64 @@ class TestController extends Controller{
         $this->display();
     }
 
-
+//上传检测报告页面
     public function recordUpload(){
         $id =I("id",0,'intval');
-        $centreno=I("centreno");//!!!!!!!!!!!!!!!!!!!!!!!
+        $centreno=I("centreno");
         if($id){
-            $pic = D('test_report')->where("id=".$id)->find();
+            $report = D('test_report')->where("id=" . $id)->find();
         }
+var_dump($centreno);//有centreno
         $body = array(
-            'pic' => $pic,
-            'centreno'=>$centreno,//!!!!!!!!!!!!!!!!!!!!!!!
+            'report' => $report,
+            'centreno'=>$centreno,
         );
         $this->assign($body);
         $this->display();
     }
 
+//上传检测报告提交word
     public function doUp(){
-        //$id = I("record_id",0,'intval');//获取参数
-        $centreNo = I("centreno");//获取参数
-        $str =I("str");
-        $data = array("centreNo"=>$centreNo,"htmltable"=>$str);
-        if(M("test_report")->add($data)){
-            $rs = array("msg"=>"succ");
+        $id =I("id",0,'intval');//test_report的id
+        $centreno=I("centreno");
+        $where= "centreno='{$centreno}'";
+            $fileurl = I("fileurl");
+            $remark = I("remark");
+            $result = array("msg"=>"fail");
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $userid=$admin_auth['id'];
+            if(empty($fileurl)){
+                $result['msg'] = "无效的提交！";
+                $this->ajaxReturn($result);
+            }
+            $data = array(
+                "centreNo"=>$centreno,
+                "path"=>$fileurl,
+                "remark"=>$remark,
+                );
+            $data1=array(
+                'status'=>2,
+                'uploadreport_user_id'=>$userid,
+                'uploadreport_time'=>date("Y-m-d H:i:s"),
+            );
+        $pic = D("test_report")->where("id=".$id)->find();
+        if($pic){
+            if(D("test_report")->where("id=".$pic['id'])->save($data)){
+                $result['msg'] = 'succ';
+            }
+        }else {
+            if (D("test_report")->data($data)->add()) {
+                $result['msg'] = 'succ';
+            }
         }
-        $this->ajaxReturn($rs);
-    }
+                //if(D("test_report")->where("id=" . $id)->save($data)){
+                   // D("contract_flow")->where($where)->save($data1);
+                   // $result['msg'] = 'succ';
 
+          //  }
+            $this->ajaxReturn($result);
+        }
+        //删除（不用改）
     public function doDeleteReport(){
         $id =I("id",0,'intval');
         $rs = array("msg"=>"fail");

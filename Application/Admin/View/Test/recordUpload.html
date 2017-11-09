@@ -1,63 +1,101 @@
 <include file="Common:header" title="后台首页"/>
 <div id="page-wrapper">
     <include file="Common:breadcrumb" />
-
     <div id="page-inner" class="container">
+        <form class="form-horizontal" id="myform" action="" method="post">
+            <input type="hidden" name="id" value="{$report['id']}" />
+            <input type="hidden" name="centreno" value="{$centreno}" /><!--!!!!!!!!-->
+            <div class="form-group">
+                <label class="col-sm-2 control-label talign-center fz13">上传检测报告</label>
+                <div class="col-sm-10">
+                    <div class="face" id="attachment" onclick="onFileUpload()"><a href="{$report['path']}" style="height: 100%;" ></a></div>
+                    <input type="hidden" name="fileurl" value="{$report['path']}" />
+                    <input type="file" name="file" onchange="ajaxFileUpload()" id="addfile"/>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label talign-center fz13">备注</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" name="remark" style="width: 300px">{$report['remark']}</textarea>
+                    <p class="help-block">（选填）</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
 
-           <input type="hidden" id="record_id" value="{$pic['id']}" />
-            <input type="hidden" id="centreno" value="{$centreno}" />
-            <!--加载编辑器的容器 -->
-            <script id="container" name="content" type="text/plain">
-
-            </script>
-            <!-- 配置文件 -->
-            <script type="text/javascript" src="__PUBLIC__/static/ueditor/utf8-php/ueditor.config.js"></script>
-            <!-- 编辑器源码文件 -->
-            <script type="text/javascript" src="__PUBLIC__/static/ueditor/utf8-php/ueditor.all.js"></script>
-            <script type="text/javascript" charset="utf-8" src="../ueditor/lang/zh-cn/zh-cn.js"></script>
-            <script type="text/javascript" charset="utf-8" src="../ueditor/lang/en/en.js"></script>
-
-            <!-- 实例化编辑器 -->
-            <script type="text/javascript">
-                var ue=UE.getEditor('container');
-            </script>
+            <div class="form-group">
+                <label class="col-sm-2 control-label talign-center">&nbsp;</label>
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-success" onclick="onSave()">保 存</button>
+                </div>
+            </div>
+        </form>
 
     </div>
 
-    <a href="javascript:void(0);" onclick="getContent()" class="btn btn-success btn-xs"><i class="glyphicon glyphicon-ok-circle"></i> 上传检测记录</a>
+<!--<a href="javascript:void(0);" onclick="getContent()" class="btn btn-success btn-xs"><i class="glyphicon glyphicon-ok-circle"></i> 上传检测记录</a>-->
 
 </div>
+<script src="__PUBLIC__/static/js/jquery.form.js"></script>
+<script src="__PUBLIC__/static/js/ajaxfileupload.js"></script>
 <script type="text/javascript">
-    ue.ready(function(){
-        ue.focus();
-    });
+    function ajaxFileUpload(){
+        var file = $("#addfile").val();
+        if(file){
+            $.ajaxFileUpload({
+                url: "{:U('Uploader/word')}",
+                secureuri: false,
+                fileElementId: 'addfile',
+                dataType: 'JSON',
+                success: function (data, status) {
+                    var ret = JSON.parse(data);
+                    $("#addfile").val("");
 
-    function getContent(){
-        var _options = {"flag":"error","text":"您确定上传该检测记录吗！","buttons":{"ok":{"action":function(){doneUpd();}},"cancel":{}}};
-        doConfirmDialog(_options);
+                    if(ret.info=='succ'){
+                        $("input[name='fileurl']").val(ret.url);
+
+                        $("#attachment a").attr("href",ret.url);
+
+                    }else{
+                        var _options = {"text":"上传失败","flag":"error"};
+                        if(ret.info) _options.text = ret.info;
+                        doAlertDialog(_options);
+                    }
+                },
+                error: function (data, status, e){
+                    var _options = {"text":"上传失败","flag":"error"};
+                    doAlertDialog(_options);
+                }
+            });
+        }
+        return false;
     }
-    function doneUpd(){
-        var str=ue.getContent();
-        //var id=document.getElementById("record_id").value;
-        var centreno=document.getElementById("centreno").value;
-        //alert(str+id+centreno);
-        $.ajax({
-            type:"post",
-            url:"{:U('/admin/test/doUp')}",
-            //data:{"str":str,"centreno":centreno,"id":id},//
-            data:{"str":str,"centreno":centreno},
-            dataType:"json",
-            success:function(ret){
-                if(ret.msg=='succ'){
-                    var _options = {"text":"上传成功！","action":function(){window.location.reload();}};
+
+    function onFileUpload() {
+        $('#addfile').click();
+        return false;
+    }
+
+    function onSave(){
+        var options = {
+            url: "{:U('/admin/test/doUp')}",
+            dataType: 'json',
+            beforeSubmit: function(){
+                return true;
+            },
+            success: function (data) {
+                if(data.msg=='succ'){
+                    var _options = {"text":"保存成功！","action":function(){window.location.reload();}};
                     doAlertDialog(_options);
                 }else{
-                    var _options = {"text":"上传失败！"};
+                    var _options = {"text":"保存失败！"};
                     if(data.msg) _options.text = data.msg;
                     doAlertDialog(_options);
                 }
             }
-        });
+        };
+        $("#myform").ajaxForm(options);
+        return false;
     }
 </script>
-<include file="Common:footer" />
+    <include file="Common:footer" />
