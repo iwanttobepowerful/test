@@ -132,6 +132,7 @@ class ContractController extends Controller
 		$collectDate = I("collectDate");
 		$reportDate = I("reportDate");
 		$ifHighQuantity = I("ifHighQuantity");
+		$package_remark = I("package_remark");
 		
 		//费用详情
 		$Arecord = I("Arecord",0,'intval');
@@ -141,6 +142,7 @@ class ContractController extends Controller
 		$Erecord = I("Erecord",0,'intval');
 		$Frecord = I("Frecord",0,'intval');
 		$Dcopy = I("Dcopy",0,'intval');
+		$Donline = I("Donline",0,'intval');
 		$Drevise = I("Drevise",0,'intval');
 		$Dother = I("Dother",0,'intval');
 		
@@ -173,6 +175,7 @@ class ContractController extends Controller
 			"ifOnline"=>$ifOnline,
 			"postMethod"=>$postMethod,
 			"ifSubpackage"=>$ifSubpackage,
+			"package_remark"=>$package_remark,
 			"clientSign"=>$clientSign,
 			"telephone"=>$telephone,
 			"tax"=>$tax,
@@ -186,7 +189,8 @@ class ContractController extends Controller
 			"testCost"=>$testCost,
 			"collectDate"=>$collectDate,
 			"reportDate"=>$reportDate,
-			"ifHighQuantity"=>$ifHighQuantity
+			"ifHighQuantity"=>$ifHighQuantity,
+			'input_time'=>Date("Y-m-d H:i:s"),
 		);
 		$de = substr($centreNo,6,1);
 		$admin_auth = session("admin_auth");
@@ -219,6 +223,7 @@ class ContractController extends Controller
 			"Erecord"=>$Erecord,
 			"Frecord"=>$Frecord,
 			"Dcopy"=>$Dcopy,
+			"Donline"=>$Donline,
 			"Drevise"=>$Drevise,
 			"Dother"=>$Dother,
 			'costDate'=>Date("Y-m-d H:i:s")
@@ -282,6 +287,7 @@ class ContractController extends Controller
 					"testItem"=>$testItem,
 					"ifOnline"=>$ifOnline,
 					"ifSubpackage"=>$ifSubpackage,
+					"package_remark"=>$package_remark,
 				);
 				D("sampling_form")->data($data_sample)->add();				
 			}else{
@@ -341,6 +347,7 @@ class ContractController extends Controller
 		$ifOnline = I("ifOnline");
 		$postMethod = I("postMethod");
 		$ifSubpackage = I("ifSubpackage");
+		$package_remark = I("package_remark");
 		$clientSign = I("clientSign");
 		$telephone = I("telephone");
 		$tax = I("tax");
@@ -364,6 +371,7 @@ class ContractController extends Controller
 		$Erecord = I("Erecord",0,'intval');
 		$Frecord = I("Frecord",0,'intval');
 		$Dcopy = I("Dcopy",0,'intval');
+		$Donline = I("Donline",0,'intval');
 		$Drevise = I("Drevise",0,'intval');
 		$Dother = I("Dother",0,'intval');
 		
@@ -392,6 +400,7 @@ class ContractController extends Controller
 			"ifOnline"=>$ifOnline,
 			"postMethod"=>$postMethod,
 			"ifSubpackage"=>$ifSubpackage,
+			"package_remark"=>$package_remark,
 			"clientSign"=>$clientSign,
 			"telephone"=>$telephone,
 			"tax"=>$tax,
@@ -439,6 +448,7 @@ class ContractController extends Controller
 			"Erecord"=>$Erecord,
 			"Frecord"=>$Frecord,
 			"Dcopy"=>$Dcopy,
+			"Donline"=>$Donline,
 			"Drevise"=>$Drevise,
 			"Dother"=>$Dother,
 			'costDate'=>Date("Y-m-d H:i:s")
@@ -472,6 +482,7 @@ class ContractController extends Controller
 					"testItem"=>$testItem,
 					"ifOnline"=>$ifOnline,
 					"ifSubpackage"=>$ifSubpackage,
+					"package_remark"=>$package_remark
 				);
 				D("sampling_form")->where($where)->save($data_sample);	
 			}
@@ -795,8 +806,8 @@ class ContractController extends Controller
         $offset = ( $page-1 ) * $pagesize;
 		
 		//判断是接单还是签发
-		$ifstatus = 
-		$list = D("contract as c")->field('if(r.status is null,-1,r.status) as sub_status,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN report_feedback r on r.centreNo = c.centreNo')->where($where)->order('c.collectDate desc,c.id desc')->limit("{$offset},{$pagesize}")->select();
+		//$ifstatus = 
+		$list = D("contract as c")->field('if(r.status is null,-1,r.status) as sub_status,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN report_feedback r on r.centreNo = c.centreNo')->where($where)->order('c.input_time DESC')->limit("{$offset},{$pagesize}")->select();
 		$count = D("contract as c")->where($where)->count();
 		$Page= new \Think\Page($count,$pagesize);
 		$Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
