@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>抽样单</title>
+		<title>检验工作通知单</title>
         <link rel="stylesheet" type="text/css" href="__PUBLIC__/static/css/bootstrap.min.css" />
         <script src="__PUBLIC__/static/js/jquery-2.1.3.min.js" type="text/javascript" charset="utf-8"></script>
 		<style type="text/css">
@@ -52,7 +52,7 @@
 			}
             .other_txt{
                 font-family: "宋体";
-				font-size: 24pt;
+				font-size: 17pt;
             }
 			.other{
 				border-bottom-style: none;
@@ -121,7 +121,7 @@
 				min-height: 29.7cm;
 				box-shadow: initial;
 				background: initial;
-				/*page-break-after: always;*/
+				page-break-after: avoid;
 			}
 		</style>
 
@@ -204,14 +204,14 @@
 				</tr>
 				<tr>
 					<td colspan="4" class="contract_txt_detail"><span class="other_txt">
-						{$one.othercomments}
+						&nbsp;&nbsp;{$one.othercomments}
 					</span></td>
 				</tr>
 				<tr>
-					<td colspan="2" class="cn right_gone left_txt">填表人：<span class="notice_txt">
+					<td colspan="2" class="cn right_gone left_txt">&nbsp;&nbsp;填表人：<span class="notice_txt">
 						{$one.filler}
 					</span></td>
-					<td colspan="2" class="cn left_gone right_gone left_txt">填表日期：<span class="notice_txt">
+					<td colspan="2" class="cn left_gone right_gone left_txt">&nbsp;&nbsp;填表日期：<span class="notice_txt">
 						<if condition="$one[filldate]">{$one.filldate|strtotime|date=Y年m月d日,###}<else/></if>
 					</span></td>
 				</tr>
