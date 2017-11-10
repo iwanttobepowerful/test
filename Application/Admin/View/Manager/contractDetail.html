@@ -305,7 +305,7 @@
             <td class="test_txt">报告提交方式</td>
             <td colspan="2">{$one.postmethod}</td>
             <td colspan="2" class="test_txt">是否同意分包</td>
-            <td colspan="2"><php>if($one['ifsubpackage']==1){echo '是';}else{echo '否';}</php></td>
+            <td colspan="2"><php>if($one['ifsubpackage']==1){echo '是'."(".$one["package_remark"].")";}else{echo '否';}</php></td>
         </tr>
         <tr>
             <td class="test_txt">委 托 人（签字）</td>
@@ -380,7 +380,7 @@
 
 					</span></td>
                 <td class="test_txt">检验费用</td>
-                <td><span class="contract_txt">{$cost.arecord}(A)+{$cost.brecord}(B)+{$cost.crecord}(C)+{$cost.drecord}(D)+{$cost.erecord}(E)+{$cost.frecord}(F)+{$cost.dcopy}(副本)+{$cost.drevise}(修改)+{$cost.dother}(其他)={$one.testcost}
+                <td><span class="contract_txt">{$cost.arecord}(A)+{$cost.brecord}(B)+{$cost.crecord}(C)+{$cost.drecord}(D)+{$cost.erecord}(E)+{$cost.frecord}(F)+{$cost.dcopy}(副本)+{$cost.donline}(上网费)+{$cost.drevise}(修改)+{$cost.dother}(其他)={$one.testcost}
 
 					</span></td>
             </tr>
