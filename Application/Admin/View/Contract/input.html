@@ -7,6 +7,7 @@
         <table class="table table-bordered table-striped table-hover">
           <tr >
             <td  colspan="9" ><p align="center" >委 托 人 填 写 </p></td>
+            <input name="department" type="hidden"  id="department" value="{$department}" />  
           </tr> 
           <tr > 
             <td><p align="center" ><span style="color:red; font-size:15px">*</span>委托单位 </p></td>
@@ -79,9 +80,9 @@
           <tr >
             <td valign="center" colspan="6" ><p >检验报告是否在本中心网站可查询真伪 ?（www.dmtc.org.cn） </p></td>
             <td valign="center" colspan="3" ><p >是
-              <input type="radio" name="ifOnline" id="testCategory13" value="1"  checked="checked"/>
-              否
-              <input type="radio" name="ifOnline" id="testCategory14" value="0" />
+             <input type="hidden" name="ifOnline" value="1"/>
+               <!--否
+              <input type="radio" name="ifOnline" id="testCategory14" value="0" readonly="readonly" />-->
             </p></td>
           </tr>
           <tr >
@@ -534,7 +535,7 @@
 			var year = nowDate.getFullYear();
 			var month = nowDate.getMonth()+1;
 			month = month<10?'0'+month:month;
-			var department = 'B';
+			var department = $('#department').val()==''?'D':$('#department').val();
 			var type = $('input:radio[name="testCategory"]:checked').val();
 			type = (type == '委托检验')?'W':'C';
 			var code= '101';

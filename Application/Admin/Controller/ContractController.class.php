@@ -89,8 +89,10 @@ class ContractController extends Controller
 	public function input(){
 		$admin_auth = session("admin_auth");
 		$collector = $admin_auth['name'];
+		$department = $admin_auth['department'];
 		$body=array(
-			'collector'=>$collector
+			'collector'=>$collector,
+			'department'=>$department
 		);
 		$this->assign($body);
 		$this->display();	
@@ -109,7 +111,7 @@ class ContractController extends Controller
 		$sampleQuantity = I("sampleQuantity");
 		//$sampleunti = I("sampleunti");
 		$sampleStatus = I("sampleStatus");
-		$ration = I("ration",0,'intval');
+		$ration = I("ration");
 		$testCriteria = I("testCriteria");
 		$testItem = I("testItem");
 		$testCategory = I("testCategory");
@@ -336,7 +338,7 @@ class ContractController extends Controller
 		$testCriteria = I("testCriteria");
 		$testItem = I("testItem");
 		$testCategory = I("testCategory");
-		$ifOnline = I("ifOnline",0);
+		$ifOnline = I("ifOnline");
 		$postMethod = I("postMethod");
 		$ifSubpackage = I("ifSubpackage");
 		$clientSign = I("clientSign");

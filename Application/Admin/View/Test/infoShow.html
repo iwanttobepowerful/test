@@ -18,12 +18,6 @@
 				width: 90%;
 			}
 			
-			input[type="text"] {
-				width: 100%;
-				height: 100%;
-				font-size: 1.5em;
-				border-style: none;
-			}
 			
 			td {
 				text-align: center;
@@ -52,13 +46,22 @@
 			
 			.contract_txt_detail {
 				height: 56%;
+                text-align: left;
+                vertical-align: top;
 				border-top-style: none;
 			}
+            .other_txt{
+                font-family: "宋体";
+				font-size: 24pt;
+            }
 			.other{
 				border-bottom-style: none;
 				font-family: "宋体";
 				font-size: 15pt;
 			}
+            .left_txt{
+                text-align: left;
+            }
 			.head_title {
 				margin: 0 auto;
 				width: 90%;
@@ -196,17 +199,15 @@
 					<td colspan="4" class="other">其&nbsp;&nbsp;&nbsp;它&nbsp;&nbsp;&nbsp;说&nbsp;&nbsp;&nbsp;明</td>
 				</tr>
 				<tr>
-					<td colspan="4" class="contract_txt_detail"><span class="notice_txt">
+					<td colspan="4" class="contract_txt_detail"><span class="other_txt">
 						{$one.othercomments}
 					</span></td>
 				</tr>
 				<tr>
-					<td class="cn right_gone">填表人：</td>
-					<td class="left_gone right_gone"><span class="notice_txt">
+					<td colspan="2" class="cn right_gone left_txt">填表人：<span class="notice_txt">
 						{$one.filler}
 					</span></td>
-					<td class="cn left_gone right_gone">填表日期：</td>
-					<td class="left_gone"><span class="notice_txt">
+					<td colspan="2" class="cn left_gone right_gone left_txt">填表日期：<span class="notice_txt">
 						<if condition="$one[filldate]">{$one.filldate|strtotime|date=Y年m月d日,###}<else/></if>
 					</span></td>
 				</tr>
