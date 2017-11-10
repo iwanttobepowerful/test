@@ -5,11 +5,12 @@
         <!-- 主要模板 starting -->
         <table class="table table-bordered table-striped table-hover">
             <thead>
-            <th width="10%">序号</th>
-            <th >中心编号</th>
-            <th width="20%">审核</th>
-            <th width="30%">报告生成人/操作时间</th>
-            <th width="20%">审核状态</th>
+            <th width="6%">序号</th>
+            <th width="12%">中心编号</th>
+            <th>详情</th>
+            <th width="15%">报告生成人/操作时间</th>
+            <th width="13%">审核</th>
+            <th width="10%">审核状态</th>
             </thead>
             <tbody>
             <volist name="rs" id="vo">
@@ -17,10 +18,19 @@
                     <td>{$vo.id}</td>
                     <td>{$vo.centreno}</td>
                     <td>
-                        <if condition="$vo['status'] eq 2"><button name="btn_change" onclick="onUpdate({$vo.id})" class="btn btn-success btn-xs" {$view}><i class="glyphicon glyphicon-ok-circle"></i>通过</button>
-                        </if>
+                        <a href="/admin/manager/contractDetail?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检验受理合同</a>
+                        <a href="{:U('/admin/test/infoShow')}?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检测工作通知单</a>
+                        <a href="{:U('/admin/test/sampleShow')}?id={$vo.centreno}" class="btn btn-info btn-xs" style="display:none"><i class="glyphicon glyphicon-search"></i>抽样单</a>
+                        <a href="" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检测记录</a>
+                        <a href="" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>报告预览</a>
                     </td>
                     <td>{$vo.name}/{$vo.report_time}</td>
+                    <td>
+                        <if condition="$vo['status'] eq 2">
+                            <button name="btn_change" onclick="onUpdate({$vo.id})" class="btn btn-success btn-xs" {$view}><i class="glyphicon glyphicon-ok-circle"></i>通过</button>
+                            <button name="btn_change" onclick="onUpdate({$vo.id})" class="btn btn-danger btn-xs" {$view}><i class="glyphicon glyphicon-backward"></i>退回</button>
+                        </if>
+                    </td>
                     <td><if condition="$vo['status'] eq 2">
                         <span>未审核</span>
                         </if>
@@ -38,6 +48,15 @@
 </div>
 </div>
 <script type="text/javascript">
+    $(function(){
+        $("#tb tr").each(function(){
+            var text = $(this).children("td").eq(1).text();
+            if (text.substr(7,1)=='C'){
+                $(this).children("td").eq(5).children("a:last").css("display","inline-block");
+            }
+        });
+
+    });
     function onUpdate(id){
         if(!id) return false;
         var _options = {"flag":"error","text":"该项目将通过审核","buttons":{"ok":{"action":function(){pass(id);}},"cancel":{}}};
