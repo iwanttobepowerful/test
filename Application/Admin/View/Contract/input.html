@@ -93,10 +93,13 @@
               <input type="radio" name="postMethod" id="testCategory16" value="邮寄" />
             </p></td>
             <td colspan="3"><p align="center" >是否同意分包 </p></td>
-            <td  colspan="3"><p >是
-              <input type="radio" name="ifSubpackage" id="testCategory17" value="1"  checked="checked"/>
+            <td  colspan="2"><p >是
+              <input type="radio" name="ifSubpackage" id="ifSubpackage" value="1"  checked="checked" onclick="pack_remark()" />
               否
-              <input type="radio" name="ifSubpackage" id="testCategory18" value="0" />
+              <input type="radio" name="ifSubpackage" id="ifSubpackage" value="0" onclick="pack_remark()"/>
+            </p></td>
+            <td  colspan="2"><p >
+              <input type="text" name="package_remark" id="package_remark" value="" class="form-control" placeholder="分包备注" />
             </p></td>
           </tr>
           <tr >
@@ -166,11 +169,13 @@
               +
               <input name="Dcopy" type="text" class="form-control"  id="Dcopy" placeholder="副本" onKeyUp="computeSum()" size="5" />
               +
+              <input name="Donline" type="text" class="form-control"  id="Donline" placeholder="上网费" onKeyUp="computeSum()" value="100" />
+              +
               <input name="Drevise" type="text" class="form-control"  id="Drevise" placeholder="项目修改" onKeyUp="computeSum()" size="6" />
               +
               <input name="Dother" type="text" class="form-control"  id="Dother" placeholder="其他"  onKeyUp="computeSum()"/>
               =
-              <input name="testCost" type="text" class="form-control"  id="sumCost" placeholder="总计"  size="8" readonly />
+              <input name="testCost" type="text" class="form-control"  id="sumCost" placeholder="总计"  value="100" readonly />
               </div>
             </td>
           </tr>
@@ -631,6 +636,9 @@
 			if($("#Dcopy").val()!="" && $.trim($("#Dcopy").val()).length>0){
 				sum+=parseInt($("#Dcopy").val());
 			}
+			if($("#Donline").val()!="" && $.trim($("#Donline").val()).length>0){
+				sum+=parseInt($("#Donline").val());
+			}
 			if($("#Drevise").val()!="" && $.trim($("#Drevise").val()).length>0){
 				sum+=parseInt($("#Drevise").val());
 			}
@@ -707,6 +715,16 @@
 			var code = $("#spec_li_"+id+" #code").html();
 			var remain_code = $("#spec_li_"+id+" #remain_code").html();
 			$("#centreNo").val(code);
+		}
+		
+		//分包备注是否显示
+		function pack_remark(){
+			if($("input:radio[name='ifSubpackage']:checked").val()==1){
+				$("#package_remark").attr('type','text');	
+			}else{
+				$("#package_remark").val("");
+				$("#package_remark").attr('type','hidden');	
+			}
 		}
 		
 		

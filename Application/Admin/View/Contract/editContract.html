@@ -110,18 +110,25 @@
               
             </p></td>
             <td colspan="3"><p align="center" >是否同意分包 </p></td>
-            <td  colspan="3"><p >
+            <td  colspan="2"><p >
               <if condition="$contract.ifsubpackage == 1">
                   是
-                  <input type="radio" name="ifSubpackage" id="testCategory17" value="1" checked/>
+                  <input type="radio" name="ifSubpackage" id="testCategory17" value="1" checked onclick="pack_remark()" />
                   否
-                  <input type="radio" name="ifSubpackage" id="testCategory18" value="0" />
+                  <input type="radio" name="ifSubpackage" id="testCategory18" value="0" onclick="pack_remark()" />
               <else />
               	  是
-                  <input type="radio" name="ifSubpackage" id="testCategory17" value="1" />
+                  <input type="radio" name="ifSubpackage" id="testCategory17" value="1" onclick="pack_remark()" />
                   否
-                  <input type="radio" name="ifSubpackage" id="testCategory18" value="0" checked/>
+                  <input type="radio" name="ifSubpackage" id="testCategory18" value="0" checked onclick="pack_remark()" />
               </if>
+            </p></td>
+            <td  colspan="2"><p >
+            <if condition="$contract.ifsubpackage == 1">
+              <input type="text" name="package_remark" id="package_remark" value="{$contract.package_remark}" class="form-control" placeholder="分包备注" />
+            <else />
+              <input type="hidden" name="package_remark" id="package_remark" value="{$contract.package_remark}" class="form-control" placeholder="分包备注" />
+            </if>
             </p></td>
           </tr>
           <tr >
@@ -189,6 +196,8 @@
                   +
                   <input name="Dcopy" type="text" class="form-control"  id="Dcopy" placeholder="副本" onKeyUp="computeSum()" value="{$feeItem.dcopy}"/>
                   +
+                  <input name="Donline" type="text" class="form-control"  id="Donline" placeholder="上网费" onKeyUp="computeSum()" value="{$feeItem.donline}" />
+              	  +
                   <input name="Drevise" type="text" class="form-control"  id="Drevise" placeholder="项目修改" onKeyUp="computeSum()" value="{$feeItem.drevise}" />
                   +
                   <input name="Dother" type="text" class="form-control"  id="Dother" placeholder="其他"  onKeyUp="computeSum()" value="{$feeItem.dother}"/>
@@ -660,6 +669,9 @@
 			if($("#Frecord").val()!="" && $.trim($("#Frecord").val()).length>0){
 				sum+=parseInt($("#Frecord").val());
 			}
+			if($("#Donline").val()!="" && $.trim($("#Donline").val()).length>0){
+				sum+=parseInt($("#Donline").val());
+			}
 			if($("#Dcopy").val()!="" && $.trim($("#Dcopy").val()).length>0){
 				sum+=parseInt($("#Dcopy").val());
 			}
@@ -734,6 +746,15 @@
 			$("#centreNo").val(code);
 		}
 		
+		//分包备注是否显示
+		function pack_remark(){
+			if($("input:radio[name='ifSubpackage']:checked").val()==1){
+				$("input[name=package_remark]").attr('type','text');	
+			}else{
+				$("input[name=package_remark]").val("");
+				$("input[name=package_remark]").attr('type','hidden');	
+			}
+		}
 		
 		<!-----------------------------------本部门费用 start------------------------------------->
 				

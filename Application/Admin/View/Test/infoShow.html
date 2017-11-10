@@ -172,7 +172,11 @@
 					</span></td>
 					<td class="cn">水料比</td>
 					<td><span class="notice_txt">
-						{$one.ration}
+                    	<if condition="$one[ration]">
+                        	{$one.ration}
+                        <else />
+							<span>——</span>
+                        </if>
 					</span></td>
 				</tr>
 				<tr>
