@@ -152,15 +152,22 @@ class TestReportController extends Controller
         $qr_level = 'L';
         $qr_size = '4';
         $save_prefix = '';
-        $distimg = $save_path.md5($centreno).'.png';
-        unlink($distimg);
-        if(file_exists($distimg)){
+        if(file_exists($save_path.md5($centreno).'.png')){
             $img = $save_path.md5($centreno).'.png';
-            //
+            //unlink($img);
         }elseif($filename = createQRcode($centreno,$save_path,$qr_data,$qr_level,$qr_size,$save_prefix)){
             $img = $save_path.$filename;
         }
         return substr($img,1);
+        //$distimg = $save_path.md5($centreno).'.png';
+       // unlink($distimg);
+        //if(file_exists($distimg)){
+            //$img = $save_path.md5($centreno).'.png';
+            //
+        //}elseif($filename = createQRcode($centreno,$save_path,$qr_data,$qr_level,$qr_size,$save_prefix)){
+           // $img = $save_path.$filename;
+        //}
+       // return substr($img,1);
         //echo "<img src='".$pic."'>";
     }
 
