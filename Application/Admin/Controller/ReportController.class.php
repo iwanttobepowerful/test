@@ -155,14 +155,14 @@ class ReportController extends Controller
         }}
         $this->ajaxReturn($rs);
     }
-
-    //盖章人员签发
+//盖章签发
     public function internalIssue(){
+        $keyword = I("keyword");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
-        $role = D('common_role')->where('id='.$user)->find();
-        if($if_admin==1 || $role['rolename']=="盖章人员") {
+        //$role = D('common_role')->where('id='.$user)->find();
+        if($if_admin==1 || $user==15) {
             $view="";
         }else{
             $view="disabled";
@@ -172,11 +172,11 @@ class ReportController extends Controller
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
         $contract_flow=M("contract_flow");//实例化对象
-        $where['contract_flow.status']=4;
+        $where="contract_flow.centreno like '%{$keyword}%' and contract_flow.status=4";
         $rs=$contract_flow->where($where)
             ->join('common_system_user ON contract_flow.approve_user_id = common_system_user.id')
             ->join('test_report ON contract_flow.centreno=test_report.centreno')
-            ->field('contract_flow.id,contract_flow.centreNo,contract_flow.approve_time,common_system_user.name,test_report.tplno')
+            ->field('contract_flow.id,contract_flow.status,contract_flow.centreNo,contract_flow.approve_time,common_system_user.name,test_report.tplno')
             ->limit("{$offset},{$pagesize}")
             ->order('contract_flow.approve_time desc,contract_flow.id desc')->select();
         //查找条件为已经批准并且内部尚未签发的报告
@@ -202,19 +202,38 @@ class ReportController extends Controller
         $userid=$admin_auth['id'];
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
-        $role = D('common_role')->where('id='.$user)->find();
-        if($if_admin==1 || $role['rolename']=="盖章人员") {
-        $data=array(
-            'status'=>5,
-            'inner_sign_time'=>date("Y-m-d H:i:s"),
-            'inner_sign_user_id'=>$userid,
-        );
-        if(D("contract_flow")->where("id=".$id)->save($data)){
-            $rs['msg'] = 'succ';
-        }}
+        //$role = D('common_role')->where('id='.$user)->find();
+        if($if_admin==1 || $user==15) {
+            $data=array(
+                'status'=>5,
+                'inner_sign_time'=>date("Y-m-d H:i:s"),
+                'inner_sign_user_id'=>$userid,
+            );
+            if(D("contract_flow")->where("id=".$id)->save($data)){
+                $rs['msg'] = 'succ';
+            }}
         $this->ajaxReturn($rs);
     }
-
+    //签发不通过，退回修改
+    public function doneBack(){
+        $id =I("id",0,'intval');
+        $rs = array("msg"=>"fail");
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $userid=$admin_auth['id'];
+        $user=$admin_auth['gid'];//判断是哪个角色
+        $if_admin = $admin_auth['super_admin'];
+        //$role = D('common_role')->where('id='.$user)->find();
+        if($if_admin==1 || $user==15) {
+            $data=array(
+                'status'=>7,
+                'inner_sign_time'=>date("Y-m-d H:i:s"),
+                'inner_sign_user_id'=>$userid,
+            );
+            if(D("contract_flow")->where("id=".$id)->save($data)){
+                $rs['msg'] = 'succ';
+            }}
+        $this->ajaxReturn($rs);
+    }
     //外部签发
     public function externalIssue(){
         $admin_auth = session("admin_auth");//获取当前登录用户信息

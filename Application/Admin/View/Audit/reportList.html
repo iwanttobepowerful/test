@@ -2,33 +2,50 @@
 <div id="page-wrapper">
 	<include file="Common:breadcrumb" />
 	<div id="page-inner" class="container">
+		<div class="search-form">
+			<form class="form-inline" method="GET" action="">
+				<div class="form-group">
+					<label>中心编号：</label>
+					<input type="text" class="form-control input-sm" name="keyword" />
+				</div>
+				<button type="submit" class="btn btn-primary btn-sm" >查询</button>
+			</form>
+		</div>
 		<table class="table table-bordered table-striped table-hover">
 			<thead>
-			<th>合同编号</th>
-			<th>审核时间</th>
-			<th>修改内容</th>
-			<th>状态</th>
+			<th>中心编号</th>
+			<th>委托单位</th>
+			<th>样品名称</th>
+			<th>检验依据</th>
+			<th>检验项目</th>
+			<th>修改原因</th>
+			<th>申请时间</th>
 			<th>操作</th>
+			<th>状态</th>
 			</thead>
 			<tbody>
-			<volist name="lists" id="one">
+			<volist name="lists" id="one" key="i">
 				<tr>
 					<td>{$one.contractno}</td>
-					<td>{$one.modify_time}</td>
+					<td>{$one.clientname}</td>
+					<td>{$one.samplename}</td>
+					<td>{$one.testcriteria}</td>
+					<td>{$one.testitem}</td>
 					<td>{$one.reason}</td>
-					<td><if condition="$one[status] eq 0">
-						<span>未处理</span>
-						<elseif condition="$one[status] eq 1" />
-						<span style="color: green">允许</span>
-						<else />
-						<span style="color: red">拒绝</span></if>
-					</td>
+					<td>{$one.create_time}</td>
 					<td>
 						<if condition="$one[status] eq 0">
 							<button class="btn btn-success btn-xs" onclick="onUpdate({$one.id})" {$view}><i class="glyphicon glyphicon-ok-circle"></i>允许</button>
 							<button class="btn btn-danger btn-xs" onclick="update({$one.id})" {$view}><i class="glyphicon glyphicon-remove-circle"></i>拒绝</button>
 							<else />
 						</if>
+					</td>
+					<td><if condition="$one[status] eq 0">
+						<span>未处理</span>
+						<elseif condition="$one[status] eq 1" />
+						<span style="color: green">允许</span>
+						<else />
+						<span style="color: red">拒绝</span></if>
 					</td>
 				</tr>
 			</volist>
