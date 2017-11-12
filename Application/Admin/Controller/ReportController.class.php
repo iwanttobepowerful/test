@@ -23,8 +23,8 @@ class ReportController extends Controller
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
-        $role = D('common_role')->where('id='.$user)->find();
-        if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="审核员") {//只有领导，审核人员，超级管理员才能审核
+        //$role = D('common_role')->where('id='.$user)->find();
+        if($user==8 || $if_admin==1 || $user==13) {//只有领导，审核人员，超级管理员才能审核
             $view="";
         }else{
             $view="disabled";
@@ -61,8 +61,8 @@ class ReportController extends Controller
         $userid=$admin_auth['id'];
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
-        $role = D('common_role')->where('id='.$user)->find();
-        if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="审核员") {
+        //$role = D('common_role')->where('id='.$user)->find();
+        if($user==8 || $if_admin==1 || $user==13) {
         $data=array(
             'status'=>3,
             'verify_user_id'=>$userid,
@@ -71,6 +71,26 @@ class ReportController extends Controller
         if(D("contract_flow")->where("id=".$id)->save($data)){
             $rs['msg'] = 'succ';
         }}
+        $this->ajaxReturn($rs);
+    }
+    //审核不通过，退回
+    public function notApprove(){
+        $id =I("id",0,'intval');
+        $rs = array("msg"=>"fail");
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $userid=$admin_auth['id'];
+        $user=$admin_auth['gid'];//判断是哪个角色
+        $if_admin = $admin_auth['super_admin'];
+        //$role = D('common_role')->where('id='.$user)->find();
+        if($user==8 || $if_admin==1 || $user==13) {
+            $data=array(
+                'status'=>7,
+                'verify_user_id'=>$userid,
+                'verify_time'=>date("Y-m-d H:i:s"),
+            );
+            if(D("contract_flow")->where("id=".$id)->save($data)){
+                $rs['msg'] = 'succ';
+            }}
         $this->ajaxReturn($rs);
     }
     //报告审批
@@ -135,6 +155,7 @@ class ReportController extends Controller
         }}
         $this->ajaxReturn($rs);
     }
+
     //盖章人员签发
     public function internalIssue(){
         $admin_auth = session("admin_auth");//获取当前登录用户信息

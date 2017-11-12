@@ -18,9 +18,9 @@
                 <th>操作</th>
             </thead>
             <tbody>
-            <volist name="lists" id="one">
+            <volist name="lists" id="one" key="i">
                 <tr>
-                    <td>{$one.id}</td>
+                    <td>{$i}</td>
                     <td>{$one.centreno}</td>
                     <td><a href="javascript:void(0);" name="{$one.path}" onclick="return Check(this);"><img src="{$one.path}" onerror="this.src='__PUBLIC__/static/images/default-timg.gif'" style="width: 90px;" /></a></td>
                     <td>{$one.lastmodifytime}</td>
