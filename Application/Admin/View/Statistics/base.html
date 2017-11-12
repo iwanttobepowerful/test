@@ -6,12 +6,12 @@
             <form class="form-inline" method="GET" action="">
                 <div class="form-group">
                     <label>中心编号：</label>
-                    <input type="text" class="form-control input-sm" name="keyword" />
+                    <input type="text" class="form-control input-sm" name="centreno" value="{$centreno}" />
 
-                    开始时间：<input type="text" readonly class="form-control f-datetime input-sm" name="begin_time"> 结束时间<input type="text" readonly class="form-control f-datetime input-sm" name="end_time" />
-                    排序规则：<select class="form-control input-sm">
-                        <option value="1">盖章日期</option>
-                        <option value="2">来样日期</option>
+                    开始时间：<input type="text" readonly class="form-control f-datetime input-sm" name="begin_time" value="{$begin_time}"> 结束时间<input type="text" readonly class="form-control f-datetime input-sm" name="end_time" value="{$end_time}" />
+                    排序规则：<select class="form-control input-sm" name="sortby">
+                        <option value="1" <php>if($sortby==1){echo 'selected';}</php>>盖章日期</option>
+                        <option value="2" <php>if($sortby==2){echo 'selected';}</php>>来样日期</option>
                     </select>
                 </div>
 
@@ -21,77 +21,71 @@
       
 		<table class="table table-bordered table-striped table-hover">
 			<thead>
-            
-            <th>盖章日期</th>
-            <th>中心编号</th>
-            <th>委托单位</th>
-            <th>生产单位</th>
-            <th>样品名称</th>
-            <th>规格型号</th>
-            <th>检验内容及要求</th>
-            <th>应收金额(元)</th>
-            <th>A记录(元)</th>
-            <th>B记录(元)</th>
-            <th>C记录(元)</th>
-            <th>D记录(元)</th>
-            <th>E记录(元)</th>
-            <th>F记录(元)</th>
-            <th>副本(元)</th>
-            <th>项目修改(元)</th>
-            <th>其它(元)</th>
-            <th>备注</th>
-            <th>检验依据</th>
-            <th>来样日期</th>
-            <th>报告日期</th>
-            <th>样品数量</th>
-            <th>实验员</th>
-            <th>收样人</th>
-
-
-			
+                <th>盖章日期</th>
+                <th>中心编号</th>
+                <th>委托单位</th>
+                <th>生产单位</th>
+                <th>样品名称</th>
+                <th>规格型号</th>
+                <th>检验内容及要求</th>
+                <th>应收金额(元)</th>
+                <th>A记录(元)</th>
+                <th>B记录(元)</th>
+                <th>C记录(元)</th>
+                <th>D记录(元)</th>
+                <th>E记录(元)</th>
+                <th>F记录(元)</th>
+                <th>副本(元)</th>
+                <th>项目修改(元)</th>
+                <th>其它(元)</th>
+                <th>备注</th>
+                <th>检验依据</th>
+                <th>来样日期</th>
+                <th>样品数量</th>
+                <th>实验员</th>
+                <th>收样人</th>			
 			</thead>
 			<tbody>
                 <tr>
                 <td colspan="7">小计
                 </td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
+                <td>{$sum.testcost|floatval}</td>
+                <td>{$sum.arecord|floatval}</td>
+                <td>{$sum.brecord|floatval}</td>
+                <td>{$sum.crecord|floatval}</td>
+                <td>{$sum.drecord|floatval}</td>
+                <td>{$sum.erecord|floatval}</td>
+                <td>{$sum.frecord|floatval}</td>
+                <td>{$sum.dcopy|floatval}</td>
+                <td>{$sum.drevise|floatval}</td>
+                <td>{$sum.dother|floatval}</td>
                 <td colspan="7"></td>
                 </tr>
 			<volist name="lists" id="one">
 				<tr>
-					<td>{$one.external_sign_time}</td>
+					<td>{$one.inner_sign_time|strtotime|date='Y年m月d日',###}</td>
                     <td>{$one.centreno}</td>
-                    <td>{$one.contract.clientname}</td>
-                    <td>{$one.contract.productunit}</td>
-                    <td>{$one.contract.samplename}</td>
-                    <td>{$one.contract.samplecode}</td>
-                    <td>{$one.contract.testitem}</td>
-                    <td>{$one.contract.testcost}</td>
-                    <td>{$one.test_cost.arecord}</td>
-                    <td>{$one.test_cost.brecord}</td>
-                    <td>{$one.test_cost.crecord}</td>
-                    <td>{$one.test_cost.drecord}</td>
-                    <td>{$one.test_cost.erecord}</td>
-                    <td>{$one.test_cost.frecord}</td>
-                    <td>{$one.test_cost.dcopy}</td>
-                    <td>{$one.test_cost.drevise}</td>
-                    <td>{$one.test_cost.dother}</td>
-                    <td>{$one.contract.remark}</td>
-                    <td>{$one.contract.testcriteria}</td>
-                    <td>{$one.contract.collectdate}</td>
-                    <td>{$one.inner_sign_time}</td>
-                    <td>{$one.contract.samplequantity}</td>
-                    <td>{$one.takelist_user_id}</td>
-                    <td>{$one.contract.collector}</td>
+                    <td>{$one.clientname}</td>
+                    <td>{$one.productunit}</td>
+                    <td>{$one.samplename}</td>
+                    <td>{$one.samplecode}</td>
+                    <td>{$one.testitem}</td>
+                    <td>{$one.testcost|floatval}</td>
+                    <td>{$one.arecord|floatval}</td>
+                    <td>{$one.brecord|floatval}</td>
+                    <td>{$one.crecord|floatval}</td>
+                    <td>{$one.drecord|floatval}</td>
+                    <td>{$one.erecord|floatval}</td>
+                    <td>{$one.frecord|floatval}</td>
+                    <td>{$one.dcopy|floatval}</td>
+                    <td>{$one.drevise|floatval}</td>
+                    <td>{$one.dother|floatval}</td>
+                    <td>{$one.remark}</td>
+                    <td>{$one.testcriteria}</td>
+                    <td>{$one.collectdate|strtotime|date='Y年m月d日',###}</td>
+                    <td>{$one.samplequantity}</td>
+                    <td>{$one.takelist_user}</td>
+                    <td>{$one.collector}</td>
 				</tr>
 			</volist>
 			</tbody>
