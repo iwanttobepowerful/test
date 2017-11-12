@@ -145,7 +145,11 @@ class TestController extends Controller{
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
+        $user=$admin_auth['gid'];
         $where= "centreno='{$centreno}'";
+        $if_admin = $admin_auth['super_admin'];//是否是超级管理员
+        $role = D('common_role')->where('id='.$user)->find();
+        if ($role['rolename']=="检测员" || $if_admin ==1) {
         $data=array(
             'status'=>7,
             'takelist_time'=>date("Y-m-d H:i:s"),
@@ -153,7 +157,7 @@ class TestController extends Controller{
         );
         if(D("contract_flow")->where($where)->save($data)){
             $rs['msg'] = 'succ';
-        }
+        }}
         $this->ajaxReturn($rs);
     }
 //上传完毕

@@ -245,6 +245,12 @@ class ReportController extends Controller
     }
     //外部签发
     public function externalIssue(){
+        $keyword = I("keyword");
+        $where = "contract_flow.status=5";
+        if(!empty($keyword)){
+            //查询合同编号
+            $where .=" and contract_flow.centreno='{$keyword}'";
+        }
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
@@ -259,7 +265,6 @@ class ReportController extends Controller
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
         $contract_flow=M("contract_flow");//实例化对象
-        $where['contract_flow.status']=5;
         $rs=$contract_flow->where($where)
             ->join('common_system_user ON contract_flow.inner_sign_user_id = common_system_user.id')
             ->join('contract ON contract_flow.centreNo = contract.centreNo')
