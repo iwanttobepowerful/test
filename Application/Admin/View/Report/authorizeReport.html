@@ -19,8 +19,10 @@
                     <td>{$vo.inner_sign_time}</td>
                     <td>{$vo.external_sign_time}</td>
                     <td>
-                        <button onclick="" class="btn btn-success btn-xs" {$view}><i class="glyphicon glyphicon-ok-circle"></i>批准</button>
-                        <button onclick="" class="btn btn-danger btn-xs" {$view}><i class="glyphicon glyphicon-remove-circle"></i>拒绝</button>
+                        <if condition="$vo['sub_status'] ==0">
+                        <button onclick="onUpdate('{$vo.centreno}')" class="btn btn-success btn-xs" {$view}><i class="glyphicon glyphicon-ok-circle"></i>批准</button>
+                        <button onclick="doUpdate('{$vo.centreno}')" class="btn btn-danger btn-xs" {$view}><i class="glyphicon glyphicon-remove-circle"></i>拒绝</button>
+                        </if>
                     </td>
                 </tr>
             </volist>
@@ -36,21 +38,43 @@
 </div>
 </div>
 <script type="text/javascript">
-    function onUpdate(id){
-        if(!id) return false;
-        var _options = {"flag":"error","text":"将批准该报告","buttons":{"ok":{"action":function(){pass(id);}},"cancel":{}}};
+    function onUpdate(centreno){
+        if(!centreno) return false;
+        var _options = {"flag":"error","text":"将批准该修改申请！","buttons":{"ok":{"action":function(){pass(centreno);}},"cancel":{}}};
         doConfirmDialog(_options);
     }
-    function pass(id){
-        id.onclick = function() {};
+    function pass(centreno){
         $.ajax({
             type:"post",
             url:"{:U('/admin/Report/isAuthorize')}",
-            data:{"id":id},
+            data:{"centreno":centreno},
             dataType:"json",
             success:function(ret){
                 if(ret.msg=='succ'){
                     var _options = {"text":"批准成功！","action":function(){window.location.reload();}};
+                    doAlertDialog(_options);
+                }else{
+                    var _options = {"text":"Error！"};
+                    if(data.msg) _options.text = data.msg;
+                    doAlertDialog(_options);
+                }
+            }
+        });
+    }
+    function doUpdate(centreno){
+        if(!centreno) return false;
+        var _options = {"flag":"error","text":"将拒绝该修改申请！","buttons":{"ok":{"action":function(){notPass(centreno);}},"cancel":{}}};
+        doConfirmDialog(_options);
+    }
+    function notPass(centreno){
+        $.ajax({
+            type:"post",
+            url:"{:U('/admin/Report/notAuthorize')}",
+            data:{"centreno":centreno},
+            dataType:"json",
+            success:function(ret){
+                if(ret.msg=='succ'){
+                    var _options = {"text":"操作成功！","action":function(){window.location.reload();}};
                     doAlertDialog(_options);
                 }else{
                     var _options = {"text":"Error！"};
