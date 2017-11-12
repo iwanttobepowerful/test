@@ -7,17 +7,20 @@
             <thead>
             <th width="10%">序号</th>
             <th >中心编号</th>
-            <th>检验报告</th>
-            <th width="20%">操作</th>
-            <th width="30%">审批人/操作时间</th>
+            <th>详情</th>
+            <th width="15%">操作</th>
+            <th width="20%">审批人/操作时间</th>
             </thead>
             <tbody>
             <volist name="rs" id="vo">
                 <tr>
                     <td>{$vo.id}</td>
                     <td>{$vo.centreno}</td>
-                    <td><a href="/admin/TestReport/seleteTemp?mod={$vo.tplno}&conNo={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>查看检测报告</a></td>
-                    <td><button name="btn_change" onclick="onUpdate({$vo.id})" class="btn btn-success btn-xs" {$view}><i class="glyphicon glyphicon-ok-circle"></i>待签发</button></td>
+                    <td>
+                        <a href="/admin/manager/contractDetail?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检验受理合同</a>
+                        <a href="/admin/TestReport/seleteTemp?mod={$vo.tplno}&conNo={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检测报告</a>
+                    </td>
+                    <td><button name="btn_change" onclick="onUpdate({$vo.id})" class="btn btn-success btn-xs" {$view}><i class="glyphicon glyphicon-ok-circle"></i>签发</button></td>
                     <td>{$vo.name}/{$vo.approve_time}</td>
                 </tr>
             </volist>
