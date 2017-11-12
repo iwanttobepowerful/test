@@ -12,37 +12,60 @@ class StatisticsController extends Controller {
     }
 
     public function base(){
-        $keyword = I("keyword");
-        $where = " status=6";
-        if(!empty($keyword)){
+        $centreno = I("centreno");
+        $begin_time = I("begin_time");
+        $end_time = I("end_time");
+        $sortby = I("sortby");
+        $where = " a.status in(5,6)";
+        if(!empty($centreno)){
             //查询合同编号
-            $where .=" and centreno='{$keyword}'";
+            $where .=" and a.centreno='{$centreno}'";
         }
-        $list = D("contract_flow")->where($where)->order("external_sign_time desc")->select();
-        if($list){
+        if($sortby==1){
+            //盖章日期
+            $orderby = "a.inner_sign_time desc";
+            $begin_time && $where .=" and date_format(a.inner_sign_time,'%Y-%m-%d') >='{$begin_time}'";
+            $end_time && $where .=" and date_format(a.inner_sign_time,'%Y-%m-%d') <='{$end_time}'";
+
+        }elseif($sortby==2){
+            //来样日期
+            $orderby = "b.collectdate desc";
+            $begin_time && $where .=" and date_format(b.collectdate,'%Y-%m-%d') >='{$begin_time}'";
+            $end_time && $where .=" and date_format(b.collectdate,'%Y-%m-%d') <='{$end_time}'";
+        }
+        //小计
+        $sumlist = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->join(C("DB_PREFIX")."test_cost c on a.centreno=c.centreno","LEFT")->where($where)->field("sum(b.testcost) as testcost,sum(c.arecord) as arecord,sum(c.brecord) as brecord,sum(c.crecord) as crecord,sum(c.drecord) as drecord,sum(c.erecord) as erecord,sum(c.frecord) as frecord,sum(c.dcopy) as dcopy,sum(c.drevise) as drevise,sum(c.dother) as dother")->find();
+       
+
+        $list = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->join(C("DB_PREFIX")."test_cost c on a.centreno=c.centreno","LEFT")->where($where)->order($orderby)->field("a.id,a.status,a.external_sign_time,a.inner_sign_time,a.centreno,a.takelist_user_id,b.clientname,b.productunit,b.samplename,b.samplecode,b.testitem,b.testcost,b.remark,b.testcriteria,b.collectdate,b.samplequantity,b.collector,c.arecord,c.brecord,c.crecord,c.drecord,c.erecord,c.frecord,c.dcopy,c.drevise,c.dother")->select();
+        
+        if($list){            
         	$centrenoIds = array();
+            $userIds = array();
         	foreach ($list as $value) {
         		$centrenoIds[] = "'".$value['centreno']."'";
+                $value['takelist_user_id'] && $userIds[] = $value['takelist_user_id'];
         	}
-        	$cost = D("test_cost")->where("centreno in(".implode(",", $centrenoIds).")")->select();
-        	$contract = D("contract")->where("centreno in(".implode(",", $centrenoIds).")")->select();
-        	$cost && $cost = assColumn($cost,'centreno');
-        	$contract && $contract = assColumn($contract,'centreno');
-
+        	$userIds && $user = D("common_system_user")->where("id in(".implode(',', $userIds).")")->field("id,name")->select();
+            $user && $user = assColumn($user);
         	foreach ($list as $key => $value) {
-        		$value['test_cost'] = $cost[$value['centreno']] ? $cost[$value['centreno']]:array();
-        		$value['contract'] = $contract[$value['centreno']] ? $contract[$value['centreno']]:array();
-        		$list[$key] = $value;
-        	}
+                $value['takelist_user'] = $value['takelist_user_id'] ? $user[$value['takelist_user_id']]['name']:"";
+                $list[$key] = $value;
+            }
         }
-        $count = D("contract_flow")->where($where)->count();
-        $Page= new \Think\Page($count,$pagesize);
+        $count = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->join(C("DB_PREFIX")."test_cost c on a.centreno=c.centreno","LEFT")->where($where)->field("count(*) as total")->select();
+        $Page= new \Think\Page(intval($count[0]['total']),$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
         $pagination= $Page->show();// 分页显示输出
 
         $body = array(
         	 'pagination'=>$pagination,
         	'lists'=>$list,
+            'sum'=>$sumlist,
+            'centreno'=>$centreno,
+            'begin_time'=>$begin_time,
+            'end_time'=>$end_time,
+            'sortby'=>$sortby,
         );
         $this->assign($body);
         $this->display();
