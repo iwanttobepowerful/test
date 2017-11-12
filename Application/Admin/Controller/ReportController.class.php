@@ -64,7 +64,8 @@ class ReportController extends Controller
         //$role = D('common_role')->where('id='.$user)->find();
         if($user==8 || $if_admin==1 || $user==13) {
         $data=array(
-            'status'=>3,
+            'status'=>4,
+            'isaudit'=>1,
             'verify_user_id'=>$userid,
             'verify_time'=>date("Y-m-d H:i:s"),
         );
@@ -109,12 +110,12 @@ class ReportController extends Controller
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
         $contract_flow=M("contract_flow");//实例化对象
-        $where['contract_flow.status'] = 3;
+        $where['internalpass'] = 1;
         $rs=$contract_flow->where($where)
-            ->join('common_system_user ON contract_flow.verify_user_id = common_system_user.id')
-            ->field('contract_flow.id,contract_flow.centreNo,contract_flow.status,contract_flow.verify_time,common_system_user.name')
+            //->join('common_system_user ON contract_flow.verify_user_id = common_system_user.id')
+           // ->field('contract_flow.id,contract_flow.centreNo,contract_flow.status,contract_flow.inner_sign_time,contract_flow.external_sign_time')
             ->limit("{$offset},{$pagesize}")
-            ->order('contract_flow.verify_time desc,contract_flow.id desc')->select();
+            ->order('inner_sign_time desc,id desc')->select();
         //查找条件为已经批准并且内部尚未签发的报告
         $count = D("contract_flow")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
@@ -172,13 +173,13 @@ class ReportController extends Controller
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
         $contract_flow=M("contract_flow");//实例化对象
-        $where="contract_flow.centreno like '%{$keyword}%' and contract_flow.status=4";
+        $where="contract_flow.centreno like '%{$keyword}%' and isaudit=1";
         $rs=$contract_flow->where($where)
-            ->join('common_system_user ON contract_flow.approve_user_id = common_system_user.id')
+            ->join('common_system_user ON contract_flow.verify_user_id = common_system_user.id')
             ->join('test_report ON contract_flow.centreno=test_report.centreno')
-            ->field('contract_flow.id,contract_flow.status,contract_flow.centreNo,contract_flow.approve_time,common_system_user.name,test_report.tplno')
+            ->field('contract_flow.id,contract_flow.status,contract_flow.internalpass,contract_flow.centreNo,contract_flow.inner_sign_time,common_system_user.name,test_report.tplno')
             ->limit("{$offset},{$pagesize}")
-            ->order('contract_flow.approve_time desc,contract_flow.id desc')->select();
+            ->order('contract_flow.verify_time desc,contract_flow.id desc')->select();
         //查找条件为已经批准并且内部尚未签发的报告
         $count = D("contract_flow")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
@@ -206,6 +207,7 @@ class ReportController extends Controller
         if($if_admin==1 || $user==15) {
             $data=array(
                 'status'=>5,
+                'internalpass'=>1,
                 'inner_sign_time'=>date("Y-m-d H:i:s"),
                 'inner_sign_user_id'=>$userid,
             );
