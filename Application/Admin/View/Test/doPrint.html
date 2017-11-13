@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Print</title>
+    <p><button onclick="window.print()" class="Noprint">打印</button></p>
+</head>
+<body>
+<table class="table table-bordered table-striped table-hover">
+    <volist name="list" id="one">
+        <div><p><img src="{$one['path']}" name="" id="imgurl" style="height: 100%;" />
+        <!--<script>var url=document.getElementById('imgurl').name ;
+        var newurl=url.replace(/_thumb/g,"");//重写
+        document.getElementById('imgurl').src=newurl;</script>-->
+        </p></div>
+    </volist>
+    </tbody>
+</table>
+</body>
+<script language="javascript">
+
+</script>
+</html>

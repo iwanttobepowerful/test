@@ -251,6 +251,15 @@ class TestController extends Controller{
         }
         $this->ajaxReturn($rs);
     }
+    //批量打印
+    public function doPrint(){
+        $id=I("id");//获取勾选的id值
+        $data=explode(',',$id);
+        $where['id'] = array('in', $data);
+        $rs=D("test_record")->where($where)->field('path')->select();
+        $this->assign('list',$rs);
+        $this->display();
+    }
 //以上是检测记录的图片上传
 
 //上传检测报告显示页面
