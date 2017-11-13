@@ -1,51 +1,34 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
-<meta name="format-detection" content="telephone=no,email=no,date=no,aItemress=no">
-<title></title>
-<link rel="stylesheet" type="text/css" href="__PUBLIC__/wap/css/aui.css" />
-<link rel="stylesheet" type="text/css" href="__PUBLIC__/wap/css/aui-append.css" />
-<script type="text/javascript" src="__PUBLIC__/wap/script/jquery-2.1.3.min.js"></script>
-<script type="text/javascript" src="__PUBLIC__/wap/script/jquery.form.js"></script>
-<!--end -->
-</head>
-<body>
-<!-- <header class="aui-bar aui-bar-nav aui-font-size-12">我的控制台</header> -->
-<php>if(session('admin_auth')){</php>
-<header class="aui-bar aui-bar-nav">
-    <a class="aui-pull-left aui-btn aui-font-size-12" href="javascript:history.go(-1);">
-        <span class="aui-iconfont aui-icon-left"></span>返回
-    </a>
-    <div class="aui-title aui-font-size-14"> 实际收入</div>
-	     <a class="aui-pull-right aui-btn" href="{:U('account/logout')}">
-        <span class="aui-iconfont aui-icon-my aui-font-size-12">退出登录</span>
-    </a>
-</header>
-<php>}else{</php>
-
-<php>}</php>
+<include file="Common:header"/>
+<link rel="stylesheet" type="text/css" href="/Public/static/css/bootstrap-datetimepicker.css">
+<script type="text/javascript" src="/Public/static/js/jquery.placeholder.js"></script>
+<script type="text/javascript" src="/Public/static/js/bootstrap-datetimepicker.min.3.0.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/Public/static/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 
 
 <!--以下是模板-->
-<div class="aui-list aui-select-list">
+<div class="aui-list aui-select-list ">
 <div class="aui-list">
-<div class="aui-list-item-label ">
+<div class="aui-list-item-label aui-margin-l-15 aui-padded-t-0">
 
-    <div class="aui-margin-l-15 aui-margin-r-15"> 
-    <div class="aui-input"> <input type="text" name="fname" placeholder="起始时间"/></div>
-    <div class="aui-input"> <input type="text" name="fname" placeholder="结束时间"/></div>
-    </div>
+<div class="search-form">
+            <form class="form-inline" method="GET" action="">
+            <div class="form-group">
+
+
+                    开始时间：<input type="text" readonly="" class="form-control f-datetime input-sm" name="begin_time" value=""> 结束时间<input type="text" readonly="" class="form-control f-datetime input-sm" name="end_time" value="">
+            </form>
+            </div>
+	
+	
 	
 </div> 
 
-  <div class="aui-list-item-inner ">
+  <div class="aui-list-item ">  </div>
   <div class="aui-btn aui-btn-info aui-pull-right ">搜索</div>
+
   </div>
   
-  
-</div>
+
 <div class="aui-list-item  aui-margin-r-15 aui-margin-t-15 aui-margin-b-15">
 
 				
@@ -99,8 +82,15 @@
   </table>
   </div>
 </tbody>
+</div>
+</div>
+</div>
 
-</div>
-</div>
-</div>
+<script type="text/javascript">
+$('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true });
+</script>
+
+<div class="datetimepicker datetimepicker-dropdown-bottom-right dropdown-menu" style="left: 36px; z-index: 1020; display: none; top: 232px;"><div class="datetimepicker-minutes" style="display: none;"><table class=" table-condensed"><thead><tr><th class="prev" style="visibility: visible;"><span class="glyphicon glyphicon-arrow-left"></span> </th><th colspan="5" class="switch">13 十月 2017</th><th class="next" style="visibility: visible;"><span class="glyphicon glyphicon-arrow-right"></span> </th></tr></thead><tbody><tr><td colspan="7"><span class="minute">14:00</span><span class="minute">14:05</span><span class="minute">14:10</span><span class="minute active">14:15</span><span class="minute">14:20</span><span class="minute">14:25</span><span class="minute">14:30</span><span class="minute">14:35</span><span class="minute">14:40</span><span class="minute">14:45</span><span class="minute">14:50</span><span class="minute">14:55</span></td></tr></tbody><tfoot><tr><th colspan="7" class="today" style="display: none;">今天</th></tr><tr><th colspan="7" class="clear" style="display: none;">Clear</th></tr></tfoot></table></div><div class="datetimepicker-hours" style="display: none;"><table class=" table-condensed"><thead><tr><th class="prev" style="visibility: visible;"><span class="glyphicon glyphicon-arrow-left"></span> </th><th colspan="5" class="switch">13 十月 2017</th><th class="next" style="visibility: visible;"><span class="glyphicon glyphicon-arrow-right"></span> </th></tr></thead><tbody><tr><td colspan="7"><span class="hour">0:00</span><span class="hour">1:00</span><span class="hour">2:00</span><span class="hour">3:00</span><span class="hour">4:00</span><span class="hour">5:00</span><span class="hour">6:00</span><span class="hour">7:00</span><span class="hour">8:00</span><span class="hour">9:00</span><span class="hour">10:00</span><span class="hour">11:00</span><span class="hour">12:00</span><span class="hour">13:00</span><span class="hour active">14:00</span><span class="hour">15:00</span><span class="hour">16:00</span><span class="hour">17:00</span><span class="hour">18:00</span><span class="hour">19:00</span><span class="hour">20:00</span><span class="hour">21:00</span><span class="hour">22:00</span><span class="hour">23:00</span></td></tr></tbody><tfoot><tr><th colspan="7" class="today" style="display: none;">今天</th></tr><tr><th colspan="7" class="clear" style="display: none;">Clear</th></tr></tfoot></table></div><div class="datetimepicker-days" style="display: block;"><table class=" table-condensed"><thead><tr><th class="prev" style="visibility: visible;"><span class="glyphicon glyphicon-arrow-left"></span> </th><th colspan="5" class="switch">十月 2017</th><th class="next" style="visibility: visible;"><span class="glyphicon glyphicon-arrow-right"></span> </th></tr><tr><th class="dow">日</th><th class="dow">一</th><th class="dow">二</th><th class="dow">三</th><th class="dow">四</th><th class="dow">五</th><th class="dow">六</th></tr></thead><tbody><tr><td class="day old">24</td><td class="day old">25</td><td class="day old">26</td><td class="day old">27</td><td class="day old">28</td><td class="day old">29</td><td class="day old">30</td></tr><tr><td class="day">1</td><td class="day">2</td><td class="day">3</td><td class="day">4</td><td class="day">5</td><td class="day">6</td><td class="day">7</td></tr><tr><td class="day">8</td><td class="day">9</td><td class="day">10</td><td class="day">11</td><td class="day">12</td><td class="day">13</td><td class="day">14</td></tr><tr><td class="day">15</td><td class="day">16</td><td class="day">17</td><td class="day">18</td><td class="day">19</td><td class="day">20</td><td class="day">21</td></tr><tr><td class="day">22</td><td class="day">23</td><td class="day">24</td><td class="day">25</td><td class="day">26</td><td class="day">27</td><td class="day">28</td></tr><tr><td class="day">29</td><td class="day">30</td><td class="day">31</td><td class="day new">1</td><td class="day new">2</td><td class="day new">3</td><td class="day new">4</td></tr></tbody><tfoot><tr><th colspan="7" class="today" style="display: none;">今天</th></tr><tr><th colspan="7" class="clear" style="display: none;">Clear</th></tr></tfoot></table></div><div class="datetimepicker-months" style="display: none;"><table class="table-condensed"><thead><tr><th class="prev" style="visibility: visible;"><span class="glyphicon glyphicon-arrow-left"></span> </th><th colspan="5" class="switch">2017</th><th class="next" style="visibility: visible;"><span class="glyphicon glyphicon-arrow-right"></span> </th></tr></thead><tbody><tr><td colspan="7"><span class="month">一月</span><span class="month">二月</span><span class="month">三月</span><span class="month">四月</span><span class="month">五月</span><span class="month">六月</span><span class="month">七月</span><span class="month">八月</span><span class="month">九月</span><span class="month">十月</span><span class="month active">十一月</span><span class="month">十二月</span></td></tr></tbody><tfoot><tr><th colspan="7" class="today" style="display: none;">今天</th></tr><tr><th colspan="7" class="clear" style="display: none;">Clear</th></tr></tfoot></table></div><div class="datetimepicker-years" style="display: none;"><table class="table-condensed"><thead><tr><th class="prev" style="visibility: visible;"><span class="glyphicon glyphicon-arrow-left"></span> </th><th colspan="5" class="switch">2010-2019</th><th class="next" style="visibility: visible;"><span class="glyphicon glyphicon-arrow-right"></span> </th></tr></thead><tbody><tr><td colspan="7"><span class="year ">2009</span><span class="year">2010</span><span class="year">2011</span><span class="year">2012</span><span class="year">2013</span><span class="year">2014</span><span class="year">2015</span><span class="year">2016</span><span class="year active">2017</span><span class="year">2018</span><span class="year">2019</span><span class="year ">2020</span></td></tr></tbody><tfoot><tr><th colspan="7" class="today" style="display: none;">今天</th></tr><tr><th colspan="7" class="clear" style="display: none;">Clear</th></tr></tfoot></table></div></div>
+</body>
+</html>
 <include file="Common:footer" />

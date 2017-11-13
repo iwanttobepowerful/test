@@ -53,9 +53,9 @@ class ContractController extends Controller {
         $this->display("Contract/chouyangdan");
     }
 	
-	    public function need(){
+	    public function shiji(){
         $body = array(
-            "pagetitle"=>"需修改报告",
+            "pagetitle"=>"实际收入",
             'backed'=>true,
         );
         $this->assign($body);
