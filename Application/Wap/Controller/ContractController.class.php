@@ -53,9 +53,9 @@ class ContractController extends Controller {
         $this->display("Contract/chouyangdan");
     }
 	
-	    public function need(){
+	    public function shiji(){
         $body = array(
-            "pagetitle"=>"需修改报告",
+            "pagetitle"=>"实际收入",
             'backed'=>true,
         );
         $this->assign($body);
@@ -64,7 +64,7 @@ class ContractController extends Controller {
 	
 	    public function over(){
         $body = array(
-            "pagetitle"=>"已出报告",
+            "pagetitle"=>"合同收入",
             'backed'=>true,
         );
         $this->assign($body);
@@ -80,9 +80,9 @@ class ContractController extends Controller {
         $this->display();
     }
 	
-		    public function finance(){
+		    public function sp(){
         $body = array(
-            "pagetitle"=>"财务汇总",
+            "pagetitle"=>"特殊编号申请",
             'backed'=>true,
         );
         $this->assign($body);
