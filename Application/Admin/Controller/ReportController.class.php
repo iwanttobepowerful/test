@@ -166,29 +166,41 @@ class ReportController extends Controller
 //盖章签发
     public function internalIssue(){
         $keyword = I("keyword");
+        $begin_time = I("begin_time");
+        $end_time = I("end_time");
+        $sortby=I("sortby");
+        $page = I("p",'int');
+        $pagesize = 10;
+        if($page<=0) $page = 1;
+        $offset = ( $page-1 ) * $pagesize;
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
-        //$role = D('common_role')->where('id='.$user)->find();
+        $where="a.isaudit=1";
+        $orderby = "a.verify_time desc";
+        if(!empty($keyword)){
+            $where .=" and a.centreno='{$keyword}'";
+        }
+        if($sortby==1){
+            $begin_time && $where .=" and date_format(a.verify_time,'%Y-%m-%d') >='{$begin_time}'";
+            $end_time && $where .=" and date_format(a.verify_time,'%Y-%m-%d') <='{$end_time}'";
+        }
+        elseif($sortby==2){
+            $begin_time && $where .=" and date_format(a.inner_sign_time,'%Y-%m-%d') >='{$begin_time}'";
+            $end_time && $where .=" and date_format(a.inner_sign_time,'%Y-%m-%d') <='{$end_time}'";
+        }
         if($if_admin==1 || $user==15) {
             $view="";
         }else{
             $view="disabled";
         }
-        $page = I("p",'int');
-        $pagesize = 10;
-        if($page<=0) $page = 1;
-        $offset = ( $page-1 ) * $pagesize;
-        $contract_flow=M("contract_flow");//实例化对象
-        $where="contract_flow.centreno like '%{$keyword}%' and isaudit=1";
-        $rs=$contract_flow->where($where)
-            ->join('common_system_user ON contract_flow.verify_user_id = common_system_user.id')
-            ->join('test_report ON contract_flow.centreno=test_report.centreno')
-            ->field('contract_flow.id,contract_flow.status,contract_flow.internalpass,contract_flow.centreNo,contract_flow.inner_sign_time,common_system_user.name,test_report.tplno')
+
+        $rs = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."common_system_user b on a.verify_user_id=b.id","LEFT")->join(C("DB_PREFIX")."test_report c on a.centreno=c.centreno","LEFT")
+            ->where($where)
+            ->field('a.id,a.status,a.internalpass,a.centreNo,a.inner_sign_time,a.inner_sign_user_id,a.verify_user_id,a.verify_time,b.name,c.tplno')
             ->limit("{$offset},{$pagesize}")
-            ->order('contract_flow.verify_time desc,contract_flow.id desc')->select();
-        //查找条件为已经批准并且内部尚未签发的报告
-        $count = D("contract_flow")->where($where)->count();
+            ->order($orderby)->select();
+        $count = D("contract_flow")->alias("a")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
         $pagination= $Page->show();// 分页显示输出
@@ -196,6 +208,9 @@ class ReportController extends Controller
             'rs'=>$rs,
             'pagination'=>$pagination,
             'view'=>$view,
+            'begin_time'=>$begin_time,
+            'end_time'=>$end_time,
+            'sortby'=>$sortby,
         );
         $this->assign($body);
         $this->display();
@@ -245,6 +260,12 @@ class ReportController extends Controller
     }
     //外部签发
     public function externalIssue(){
+        $keyword = I("keyword");
+        $where = "contract_flow.status=5";
+        if(!empty($keyword)){
+            //查询合同编号
+            $where .=" and contract_flow.centreno='{$keyword}'";
+        }
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
@@ -259,7 +280,6 @@ class ReportController extends Controller
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
         $contract_flow=M("contract_flow");//实例化对象
-        $where['contract_flow.status']=5;
         $rs=$contract_flow->where($where)
             ->join('common_system_user ON contract_flow.inner_sign_user_id = common_system_user.id')
             ->join('contract ON contract_flow.centreNo = contract.centreNo')

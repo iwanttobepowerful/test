@@ -6,13 +6,13 @@
             <form class="form-inline" method="GET" action="">
                 <div class="form-group">
                     <label>中心编号：</label>
-                    <input type="text" class="form-control input-sm" name="keyword" />
+                    <input type="text" class="form-control input-sm" name="centreno" value="{$centreno}" />
 
-                    开始时间：<input type="text" readonly class="form-control f-datetime input-sm" name="begin_time"> 结束时间<input type="text" readonly class="form-control f-datetime input-sm" name="end_time" />
-                    <!--排序规则：<select class="form-control input-sm">
-                    <option value="1">盖章日期</option>
-                    <option value="2">来样日期</option>
-                </select>-->
+                    开始时间：<input type="text" readonly class="form-control f-datetime input-sm" name="begin_time" value="{$begin_time}"> 结束时间<input type="text" readonly class="form-control f-datetime input-sm" name="end_time" value="{$end_time}" />
+                    查找方式：<select class="form-control input-sm" name="sortby">
+                    <option value="1" <php>if($sortby==1){echo 'selected';}</php>>按审核日期查找</option>
+                    <option value="2" <php>if($sortby==2){echo 'selected';}</php>>按盖章日期查找</option>
+                </select>
                 </div>
                 <button type="submit" class="btn btn-primary btn-sm" >查询</button>
             </form>
@@ -65,8 +65,7 @@
 </div>
 </div>
 <script type="text/javascript">
-    $('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true });
-    function onUpdate(id){
+    $('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true });    function onUpdate(id){
         if(!id) return false;
         var _options = {"flag":"error","text":"您确定要签发此项目吗！","buttons":{"ok":{"action":function(){doneUpd(id);}},"cancel":{}}};
         doConfirmDialog(_options);
