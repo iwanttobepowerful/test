@@ -80,9 +80,9 @@ class ContractController extends Controller {
         $this->display();
     }
 	
-		    public function finance(){
+		    public function sp(){
         $body = array(
-            "pagetitle"=>"财务汇总",
+            "pagetitle"=>"特殊编号申请",
             'backed'=>true,
         );
         $this->assign($body);
