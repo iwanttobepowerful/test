@@ -64,7 +64,7 @@ class ContractController extends Controller {
 	
 	    public function over(){
         $body = array(
-            "pagetitle"=>"已出报告",
+            "pagetitle"=>"合同收入",
             'backed'=>true,
         );
         $this->assign($body);
