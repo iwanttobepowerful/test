@@ -1,42 +1,52 @@
 <include file="Common:header"/>
-<link rel="stylesheet" type="text/css" href="/Public/static/css/bootstrap-datetimepicker.css">
-<script type="text/javascript" src="/Public/static/js/jquery.placeholder.js"></script>
-<script type="text/javascript" src="/Public/static/js/bootstrap-datetimepicker.min.3.0.js" charset="UTF-8"></script>
-<script type="text/javascript" src="/Public/static/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 
 
 <!--以下是模板-->
 <div class="aui-list aui-select-list ">
-<div class="aui-list">
-<div class="aui-list-item-label aui-margin-l-15 aui-padded-t-0">
-
-<div class="search-form">
+<div class="aui-list-label">
+<div class="aui-list-item-label">
+    <section class="aui-grid ">
+        <div class="aui-row ">
+		
+            <div class="aui-col-xs-4"  >
+         开始时间：
+		 </div>
+		        
+            <div class="aui-col-xs-8"  >
             <form class="form-inline" method="GET" action="">
             <div class="form-group">
-
-
-                    开始时间：<input type="text" readonly="" class="form-control f-datetime input-sm" name="begin_time" value=""> 结束时间<input type="text" readonly="" class="form-control f-datetime input-sm" name="end_time" value="">
+                    <input type="text" readonly="" class="form-control f-datetime input-sm" name="begin_time" value=""> 
             </form>
             </div>
-	
-	
+			</div>
+	     
+            <div class="aui-col-xs-4"  >
+         开始时间：
+		 </div>
+		 
+	        <div class="aui-col-xs-8"  >
+            <form class="form-inline" method="GET" action="">
+            <div class="form-group">
+                    <input type="text" readonly="" class="form-control f-datetime input-sm" name="begin_time" value=""> 
+            </form>
+            </div>
+			</div>
 	
 </div> 
+</section>
 
-  <div class="aui-list-item ">  </div>
-  <div class="aui-btn aui-btn-info aui-pull-right ">搜索</div>
-
-  </div>
-  
+</div>
+<div class="aui-margin-r-15 aui-margin-l-15">
+    <a class="aui-btn aui-btn-primary aui-btn-block aui-btn-outlined aui-btn-sm " >搜索</a></div>
 
 <div class="aui-list-item  aui-margin-r-15 aui-margin-t-15 aui-margin-b-15">
 
 				
 
-		<table width="100%" border="1px" bordercolor="#000000" cellspacing="0px" style="border-collapse:collapse " height="300" class=" aui-margin-r-15 aui-margin-b-15">
+		<table width="100%" border="1px" bordercolor="#A9A9A9" cellspacing="0px" style="border-collapse:collapse " height="300" class=" aui-margin-r-15 aui-margin-b-15">
   <tbody th class="aui-font-size-16 aui-text-center" >
   
-<tr class=" aui-bg-purple aui-text-white">
+<tr class=" aui-bg-primary aui-text-white">
     <td >部门</td>
     <td>份数</td>
     <td>金额</td>
