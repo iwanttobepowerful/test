@@ -39,11 +39,13 @@ class AuditController extends Controller {
     }
     //申请列表
     public function reportList(){
+        $keyword = I("keyword");
+        $where="contractno like '%{$keyword}%'";
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
-        $role = D('common_role')->where('id='.$user)->find();
-        if($role['rolename']=="领导" || $if_admin==1){//只有领导，超级管理员才能审核
+        //$role = D('common_role')->where('id='.$user)->find();
+        if($user==8 || $if_admin==1){//只有领导，超级管理员才能审核
             $view="";
         }else{
             $view="disabled";
@@ -53,8 +55,10 @@ class AuditController extends Controller {
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
         $audit_report=M("audit_report");//实例化对象
-        $rs=$audit_report->order('create_time desc,id desc')->limit("{$offset},{$pagesize}")->select();
-        $count = D("audit_report")->count();
+        $rs=$audit_report->where($where)
+            ->join('contract ON audit_report.contractno=contract.centreno')
+            ->order('create_time desc,audit_report.id desc')->limit("{$offset},{$pagesize}")->select();
+        $count = D("audit_report")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
         $pagination= $Page->show();// 分页显示输出

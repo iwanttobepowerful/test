@@ -2,26 +2,55 @@
 <div id="page-wrapper">
     <include file="Common:breadcrumb" />
     <div id="page-inner" class="container">
+        <div class="search-form">
+            <form class="form-inline" method="GET" action="">
+                <div class="form-group">
+                    <label>中心编号：</label>
+                    <input type="text" class="form-control input-sm" name="centreno" value="{$centreno}" />
+
+                    开始时间：<input type="text" readonly class="form-control f-datetime input-sm" name="begin_time" value="{$begin_time}"> 结束时间<input type="text" readonly class="form-control f-datetime input-sm" name="end_time" value="{$end_time}" />
+                    查找方式：<select class="form-control input-sm" name="sortby">
+                    <option value="1" <php>if($sortby==1){echo 'selected';}</php>>按审核日期查找</option>
+                    <option value="2" <php>if($sortby==2){echo 'selected';}</php>>按盖章日期查找</option>
+                </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm" >查询</button>
+            </form>
+        </div>
         <!-- 主要模板 starting -->
         <table class="table table-bordered table-striped table-hover">
             <thead>
-            <th width="10%">序号</th>
+            <th width="5%">序号</th>
             <th >中心编号</th>
-            <th>详情</th>
+            <th width="20%">审核人/操作时间</th>
+            <th width="22%">详情</th>
             <th width="15%">操作</th>
-            <th width="20%">审批人/操作时间</th>
+            <th width="15%">签发状态</th>
             </thead>
             <tbody>
-            <volist name="rs" id="vo">
+            <volist name="rs" id="vo" key="i">
                 <tr>
-                    <td>{$vo.id}</td>
+                    <td>{$i}</td>
                     <td>{$vo.centreno}</td>
+                    <td>{$vo.name}/{$vo.verify_time}</td>
                     <td>
                         <a href="/admin/manager/contractDetail?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检验受理合同</a>
                         <a href="/admin/TestReport/seleteTemp?mod={$vo.tplno}&conNo={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检测报告</a>
                     </td>
-                    <td><button name="btn_change" onclick="onUpdate({$vo.id})" class="btn btn-success btn-xs" {$view}><i class="glyphicon glyphicon-ok-circle"></i>签发</button></td>
-                    <td>{$vo.name}/{$vo.approve_time}</td>
+                    <td>
+                        <if condition="$vo[status] eq 4">
+                            <button name="btn_change" onclick="onUpdate({$vo.id})" class="btn btn-success btn-xs" {$view}><i class="glyphicon glyphicon-ok-circle"></i>签发</button>
+                            <button name="btn_change" onclick="onBack({$vo.id})" class="btn btn-danger btn-xs" {$view}><i class="glyphicon glyphicon-backward"></i>退回</button>
+                        </if>
+                    </td>
+                    <td>
+                        <if condition="$vo['status'] eq 4">
+                            <span>未签发</span>
+                            <else />
+                            <if condition="$vo['internalpass'] eq 1">
+                            <span style="color: green">{$vo.name}已签发/{$vo.inner_sign_time}</span></if>
+                        </if>
+                    </td>
                 </tr>
             </volist>
             </tbody>
@@ -36,7 +65,7 @@
 </div>
 </div>
 <script type="text/javascript">
-    function onUpdate(id){
+    $('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true });    function onUpdate(id){
         if(!id) return false;
         var _options = {"flag":"error","text":"您确定要签发此项目吗！","buttons":{"ok":{"action":function(){doneUpd(id);}},"cancel":{}}};
         doConfirmDialog(_options);
@@ -54,6 +83,30 @@
                     doAlertDialog(_options);
                 }else{
                     var _options = {"text":"签发失败！"};
+                    if(data.msg) _options.text = data.msg;
+                    doAlertDialog(_options);
+                }
+            }
+        });
+    }
+    function onBack(id){
+        if(!id) return false;
+        var _options = {"flag":"error","text":"该项目将被退回修改","buttons":{"ok":{"action":function(){notPass(id);}},"cancel":{}}};
+        doConfirmDialog(_options);
+    }
+    function notPass(id){
+        id.onclick = function() {};
+        $.ajax({
+            type:"post",
+            url:"{:U('/admin/Report/doneBack')}",
+            data:{"id":id},
+            dataType:"json",
+            success:function(ret){
+                if(ret.msg=='succ'){
+                    var _options = {"text":"操作成功！","action":function(){window.location.reload();}};
+                    doAlertDialog(_options);
+                }else{
+                    var _options = {"text":"Error！"};
                     if(data.msg) _options.text = data.msg;
                     doAlertDialog(_options);
                 }

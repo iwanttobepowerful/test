@@ -1,0 +1,117 @@
+<include file="Common:header"/>
+<script type="text/javascript" src="__PUBLIC__/wap/script/aui-tab.js" ></script>
+
+
+<div id="t" class="aui-bar aui-bar-btn aui-bar-btn-full">
+    <div class="aui-bar-btn-item aui-active">A</div>
+    <div class="aui-bar-btn-item">B</div>
+    <div class="aui-bar-btn-item">C</div>
+	<div class="aui-bar-btn-item">D</div>
+	<div class="aui-bar-btn-item">E</div>
+	<div class="aui-bar-btn-item">F</div>
+</div>
+
+
+<div class="aui-margin-15">
+		<table width="100%" border="0px"  cellspacing="0px" style="border-collapse:collapse "  class=" aui-margin-r-15 aui-margin-b-15">
+  <tbody th class="aui-font-size-16 aui-text-center" >
+  
+<tr class=" aui-bg-primary aui-text-white  ">
+ <td width="25%">年</td>
+  <td width="25%">月</td>
+   <td width="25%">使用量</td>
+  <td width="25%">总数</td>
+ </tr>
+ 
+ <tr>
+ <td>2017</td>
+  <td>11</td>
+   <td>111</td>
+  <td>11111</td>
+ </tr>
+ 
+  <tr  bgcolor="#E6E6FA">
+ <td>2017</td>
+  <td>11</td>
+   <td>111</td>
+  <td>11111</td>
+ </tr>
+ 
+  <tr>
+ <td>2017</td>
+  <td>11</td>
+   <td>111</td>
+  <td>11111</td>
+ </tr>
+ 
+   <tr bgcolor="	#E6E6FA">
+ <td>2017</td>
+  <td>11</td>
+   <td>111</td>
+  <td>11111</td>
+ </tr>
+ 
+   <tr>
+ <td>2017</td>
+  <td>11</td>
+   <td>111</td>
+  <td>11111</td>
+ </tr>
+ 
+   <tr bgcolor="	#E6E6FA">
+ <td>2017</td>
+  <td>11</td>
+   <td>111</td>
+  <td>11111</td>
+ </tr>
+ 
+   <tr>
+ <td>2017</td>
+  <td>11</td>
+   <td>111</td>
+  <td>11111</td>
+ </tr>
+    <tr bgcolor="	#E6E6FA">
+ <td>2017</td>
+  <td>11</td>
+   <td>111</td>
+  <td>11111</td>
+ </tr>
+ 
+   <tr>
+ <td>2017</td>
+  <td>11</td>
+   <td>111</td>
+  <td>11111</td>
+ </tr>
+    <tr bgcolor="	#E6E6FA">
+ <td>2017</td>
+  <td>11</td>
+   <td>111</td>
+  <td>11111</td>
+ </tr>
+ 
+   <tr>
+ <td>2017</td>
+  <td>11</td>
+   <td>111</td>
+  <td>11111</td>
+ </tr>
+ </table>
+ 
+ <div class="aui-padded-10">
+    <button  class="aui-btn aui-btn-block aui-btn-outlined aui-btn-outlined2 aui-btn-sm" onclick="javascript:window.open('/contract/add.html','_self')">搜索</button>
+</div>
+
+</div>
+<script type="text/javascript">
+    var tab = new auiTab({
+        element:document.getElementById("t"),
+        index:1,
+        repeatClick:false
+    },function(ret){
+        console.log(ret);
+    });
+</script>
+
+<include file="Common:footer" />

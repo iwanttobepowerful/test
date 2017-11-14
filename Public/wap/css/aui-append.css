@@ -124,3 +124,6 @@ html,body{background-color: #f5f5f5;}
 .aui-kt-maxheight-15{max-height: 10rem !important;overflow: hidden;}
 .aui-kt-maxheight-16{max-height: 11rem !important;overflow: hidden;}
 .aui-kt-maxheight-17{max-height: 12rem !important;overflow: hidden;}
+
+.aui-btn-outlined2:active{	color: #212121;background-color: #C0C0C0 !important;}
+

@@ -217,3 +217,94 @@ if(!function_exists('convert2Word')){
         }
     }
 }
+if(!function_exists('http_request')){
+    function http_request( $url , $params = array(), $method = 'GET' , $multi = false, $extheaders = array()){
+        if(!function_exists('curl_init')) exit('Need to open the curl extension');
+        $method = strtoupper($method);
+        $ci = curl_init();
+        curl_setopt($ci, CURLOPT_CONNECTTIMEOUT, 3);
+        curl_setopt($ci, CURLOPT_TIMEOUT, 3);
+        curl_setopt($ci, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ci, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ci, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ci, CURLOPT_FAILONERROR, false);
+        $headers = (array)$extheaders;
+        switch ($method)
+        {
+            case 'POST':
+                curl_setopt($ci, CURLOPT_POST, TRUE);
+                if (!empty($params))
+                {
+                    if($multi)
+                    {
+                        foreach($multi as $key => $file)
+                        {
+                            $params[$key] = '@' . $file;
+                        }
+                        curl_setopt($ci, CURLOPT_POSTFIELDS, $params);
+                        $headers[] = 'Expect: ';
+                    }
+                    else
+                    {
+                        curl_setopt($ci, CURLOPT_POSTFIELDS, http_build_query($params));
+                    }
+                }
+                break;
+            case 'DELETE':
+            case 'GET':
+                $method == 'DELETE' && curl_setopt($ci, CURLOPT_CUSTOMREQUEST, 'DELETE');
+                if (!empty($params))
+                {
+                    $url = $url . (strpos($url, '?') ? '&' : '?')
+                        . (is_array($params) ? http_build_query($params) : $params);
+                }
+                break;
+        }
+        curl_setopt($ci, CURLINFO_HEADER_OUT, TRUE );
+        curl_setopt($ci, CURLOPT_URL, $url);
+        if($headers)
+        {
+            curl_setopt($ci, CURLOPT_HTTPHEADER, $headers );
+            curl_setopt($ci, CURLOPT_HEADER, true);
+        }else{
+            curl_setopt($ci, CURLOPT_HEADER, false);
+        }
+        if (FALSE === strpos("$".$url, "https://"))
+        {
+            curl_setopt($ci, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ci, CURLOPT_SSL_VERIFYHOST, false);
+        }
+        $response = curl_exec($ci);
+        curl_close ($ci);
+        return $response;
+    }
+}
+/** user the thirdpart api */
+if(!function_exists('convert2Pdf')){
+    function convert2Pdf($docUrl){
+        $url = "https://api.9yuntu.cn/execute/Convert";
+        $appcode = "d61ead3bea9c46e8a7026aabb2eb1b19";
+        $headers = array();
+        $method = "GET";
+        $headers = array();
+        array_push($headers, "Authorization:APPCODE " . $appcode);
+        $querys = "docURL=".urlencode($docUrl)."&outputType=pdf";
+        $bodys = "";
+        $url = $url . "?" . $querys;
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl, CURLOPT_FAILONERROR, false);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        if (1 == strpos("$".$host, "https://"))
+        {
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        }
+        $response = curl_exec($curl);
+        curl_close ($curl);
+        return $response;
+    }
+}

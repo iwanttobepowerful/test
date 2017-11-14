@@ -145,7 +145,11 @@ class TestController extends Controller{
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
+        $user=$admin_auth['gid'];
         $where= "centreno='{$centreno}'";
+        $if_admin = $admin_auth['super_admin'];//是否是超级管理员
+        $role = D('common_role')->where('id='.$user)->find();
+        if ($role['rolename']=="检测员" || $if_admin ==1) {
         $data=array(
             'status'=>7,
             'takelist_time'=>date("Y-m-d H:i:s"),
@@ -153,7 +157,7 @@ class TestController extends Controller{
         );
         if(D("contract_flow")->where($where)->save($data)){
             $rs['msg'] = 'succ';
-        }
+        }}
         $this->ajaxReturn($rs);
     }
 //上传完毕
@@ -246,6 +250,26 @@ class TestController extends Controller{
             $rs['msg'] = 'succ';
         }
         $this->ajaxReturn($rs);
+    }
+    //批量打印
+    public function doPrint(){
+        $id=I("id");//获取勾选的id值
+        $data=explode(',',$id);
+        $where['id'] = array('in', $data);
+        $rs=D("test_record")->where($where)->field('path')->select();
+        //换成字符串后再替换
+        foreach ($rs as $v){
+            $v = join(",",$v); //可以用implode将一维数组转换为用逗号连接的字符串，join是别名
+            $temp[] = $v;
+        }
+        foreach($temp as $v){
+            $s .=$v.",";
+        }
+        $s=substr($s,0,-1);//利用字符串截取函数消除最后一个逗号
+        $list=str_replace("_thumb","",$s);
+        $path=explode(',',$list);
+        $this->assign('list',$path);
+        $this->display();
     }
 //以上是检测记录的图片上传
 

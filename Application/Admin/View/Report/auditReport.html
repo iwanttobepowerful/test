@@ -13,9 +13,9 @@
             <th width="10%">审核状态</th>
             </thead>
             <tbody>
-            <volist name="rs" id="vo">
+            <volist name="rs" id="vo" key="i">
                 <tr>
-                    <td>{$vo.id}</td>
+                    <td>{$i}</td>
                     <td>{$vo.centreno}</td>
                     <td>
                         <a href="/admin/manager/contractDetail?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检验受理合同</a>
@@ -28,7 +28,7 @@
                     <td>
                         <if condition="$vo['status'] eq 2">
                             <button name="btn_change" onclick="onUpdate({$vo.id})" class="btn btn-success btn-xs" {$view}><i class="glyphicon glyphicon-ok-circle"></i>通过</button>
-                            <button name="btn_change" onclick="onUpdate({$vo.id})" class="btn btn-danger btn-xs" {$view}><i class="glyphicon glyphicon-backward"></i>退回</button>
+                            <button name="btn_change" onclick="onBack({$vo.id})" class="btn btn-danger btn-xs" {$view}><i class="glyphicon glyphicon-backward"></i>退回</button>
                         </if>
                     </td>
                     <td><if condition="$vo['status'] eq 2">
@@ -57,6 +57,7 @@
         });
 
     });
+
     function onUpdate(id){
         if(!id) return false;
         var _options = {"flag":"error","text":"该项目将通过审核","buttons":{"ok":{"action":function(){pass(id);}},"cancel":{}}};
@@ -81,5 +82,30 @@
             }
         });
     }
+    function onBack(id){
+        if(!id) return false;
+        var _options = {"flag":"error","text":"该项目将被退回修改","buttons":{"ok":{"action":function(){notPass(id);}},"cancel":{}}};
+        doConfirmDialog(_options);
+    }
+    function notPass(id){
+        id.onclick = function() {};
+        $.ajax({
+            type:"post",
+            url:"{:U('/admin/Report/notApprove')}",
+            data:{"id":id},
+            dataType:"json",
+            success:function(ret){
+                if(ret.msg=='succ'){
+                    var _options = {"text":"操作成功！","action":function(){window.location.reload();}};
+                    doAlertDialog(_options);
+                }else{
+                    var _options = {"text":"Error！"};
+                    if(data.msg) _options.text = data.msg;
+                    doAlertDialog(_options);
+                }
+            }
+        });
+    }
+
 </script>
 <include file="Common:footer" />

@@ -6,10 +6,14 @@
             <a href="{:U('/admin/test/recordPicture')}" class="btn btn-primary">返回</a>
             <if condition="$view eq 7">
            <a href="{:U('/admin/test/picUp')}?centreno={$centreno}" class="btn btn-primary">上传</a>
+                <else />
+                <a href="javascript:void (0)" class="btn btn-primary" onclick="data()"><i class=" glyphicon glyphicon-download"></i>批量打印</a>
             </if>
         </div>
         <table class="table table-bordered table-striped table-hover">
             <thead>
+                <if condition="$view neq 7">
+                <th><input type="checkbox" id="selectall" /><label>全选</label></th></if>
                 <th>序号</th>
                 <th>中心编号</th>
                 <th>检验照片</th>
@@ -18,9 +22,11 @@
                 <th>操作</th>
             </thead>
             <tbody>
-            <volist name="lists" id="one">
+            <volist name="lists" id="one" key="i">
                 <tr>
-                    <td>{$one.id}</td>
+                    <if condition="$view neq 7">
+                        <td><input type="checkbox" name="print" class="qx" value="{$one['id']}"/> </td></if>
+                    <td>{$i}</td>
                     <td>{$one.centreno}</td>
                     <td><a href="javascript:void(0);" name="{$one.path}" onclick="return Check(this);"><img src="{$one.path}" onerror="this.src='__PUBLIC__/static/images/default-timg.gif'" style="width: 90px;" /></a></td>
                     <td>{$one.lastmodifytime}</td>
@@ -78,6 +84,28 @@
         var newurl=url.replace("_thumb","");//重写
         window.open(newurl).window.print();
     }
-
+//全选
+    $("#selectall").click(function(){
+        var xz = $(this).prop("checked");//判断全选按钮的选中状态
+        var ck = $(".qx").prop("checked",xz); //让class名为qx的选项的选中状态和全选按钮的选中状态一致。
+    });
+    //批量打印
+    function data() {
+        var obj=document.getElementsByName('print');  //选择所有name="'print'"的对象，返回数组
+        //取到对象数组后，我们来循环检测它是不是被选中
+        var s='';
+        for(var i=0; i<obj.length; i++) {
+            if (obj[i].checked) {
+                s+= obj[i].value+',';
+                var newurl='/admin/test/doPrint.html?id='+s;
+            }
+        }
+        //alert(newurl);
+        window.open(newurl);
+        if(!s){
+            alert('您还没有选择任何内容！');
+            return false;
+        }
+    }
 </script>
 <include file="Common:footer" />
