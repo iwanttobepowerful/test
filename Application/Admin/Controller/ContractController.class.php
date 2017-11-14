@@ -791,6 +791,7 @@ class ContractController extends Controller
 		$admin_auth = session("admin_auth");
 		$if_admin = $admin_auth['super_admin'];
 		$roleid = $admin_auth['gid'];
+		$department = $admin_auth['department'];
 		
 		$role = D('common_role')->where('id='.$roleid)->find();
 		if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
@@ -799,7 +800,11 @@ class ContractController extends Controller
 			$if_edit = 0;	
 		}
 		$keyword = I("keyword");//获取参数
-        $where= "c.centreNo like '%{$keyword}%'";
+		if($role['rolename']=="领导" || $role['rolename']=="审核员" || $role['rolename']=="盖章人员" || $role['rolename']=="超级管理员"){
+			$where= "c.centreNo like '%{$keyword}%'";
+		}else{
+			$where= "c.centreNo like '%{$keyword}%' and SUBSTR(c.centreNo,7,1) = '{$department}'";
+		}
 		$page = I("p",'int');
         $pagesize = 10;
         if($page<=0) $page = 1;
@@ -808,7 +813,7 @@ class ContractController extends Controller
 		//判断是接单还是签发
 		//$ifstatus = 
 		$list = D("contract as c")->field('if(r.status is null,-1,r.status) as sub_status,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN report_feedback r on r.centreNo = c.centreNo')->where($where)->order('c.input_time DESC')->limit("{$offset},{$pagesize}")->select();
-		$count = D("contract as c")->where($where)->count();
+		$count = D("contract as c")->field('if(r.status is null,-1,r.status) as sub_status,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN report_feedback r on r.centreNo = c.centreNo')->where($where)->order('c.input_time DESC')->count();
 		$Page= new \Think\Page($count,$pagesize);
 		$Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
 		$pagination= $Page->show();// 分页显示输出
