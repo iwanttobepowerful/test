@@ -169,7 +169,7 @@ input:-webkit-autofill {-webkit-box-shadow: 0 0 0px 1000px white inset;outline:n
 /**登陆**/
 .loginbox {padding-top: 78px;}
 .loginbox .top {height:78px;width:100%;overflow:hidden;}
-.loginbox .bg {background:url(../images/loginbg.jpg) no-repeat center center;height:520px;width:100%;}
+.loginbox .bg {background:url(../images/index.png) no-repeat center center;height:520px;width:100%;}
 .loginbox .box {width:334px;height:334px;margin-top:95px;margin-right:75px;float:right;position:relative;}
 .loginbox .box .loginbg{background:#fff;width:334px;height:304px;border-radius:10px;opacity:0.2;filter:alpha(opacity=60);position:absolute;z-index:0;}
 .loginbox .box .loginform{background:#fff;width:317px;width:317px\0;width:317px\9;*width:317px;height:288px;height:317px\0;height:288px\9;*height:288px;margin:8px;border-radius:10px;position:absolute;z-index:1;padding:30px 28px 0 28px;}
