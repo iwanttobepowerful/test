@@ -284,7 +284,17 @@
 				<tr>
 					<td class="txt_left cn" colspan="2">对于本中心不能检验的项目是否同意安排分包</td>
 					<td colspan="2" class="cn">
-                    	<if condition="$one.ifsubpackage == 1">是<else />否</if>               
+                        <php>
+                            if($one['ifsubpackage']==1){
+                                if($one["package_remark"]){
+                                    echo '是'."(".$one["package_remark"].")";
+                                }else{
+                                    echo '是';
+                                }
+                            }else{
+                                echo '否';
+                            }   
+                       </php>          
                     </td>
 				</tr>
 

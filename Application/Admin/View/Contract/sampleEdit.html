@@ -211,7 +211,17 @@
           <tr >
             <td width="499" valign="center" colspan="2" ><p >对于本中心不能检验的项目是否同意安排分包 </p></td>
             <td width="505" valign="center" colspan="3" ><p >
-            	<if condition="$one.ifsubpackage == 1"><span style='font-family:宋体'>是</span><else /><span style='font-family:宋体'>否</span></if>
+            	<php>
+                	if($one['ifsubpackage']==1){
+                    	if($one["package_remark"]){
+                        	echo '是'."(".$one["package_remark"].")";
+                        }else{
+                        	echo '是';
+                        }
+                    }else{
+                    	echo '否';
+                    }       
+                </php>
              </p></td>
           </tr>
           <tr >
