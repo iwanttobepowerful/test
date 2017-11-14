@@ -21,7 +21,7 @@ class ContractController extends Controller {
     }
     public function wait(){
         $status = I("status",0,'intval');
-        if($stats==2){
+        if($status==2){
             $pagetitle = "待提交审核报告";
         }elseif($status==3){
             $pagetitle = "待审核报告";
@@ -52,17 +52,8 @@ class ContractController extends Controller {
         $this->assign($body);
         $this->display("Contract/chouyangdan");
     }
-	
-	    public function shiji(){
-        $body = array(
-            "pagetitle"=>"实际收入",
-            'backed'=>true,
-        );
-        $this->assign($body);
-        $this->display();
-    }
-	
-		    public function add(){
+
+    public function add(){
         $body = array(
             "pagetitle"=>"新增",
             'backed'=>true,
@@ -70,8 +61,8 @@ class ContractController extends Controller {
         $this->assign($body);
         $this->display();
     }
-	
-	    public function over(){
+
+    public function over(){
         $body = array(
             "pagetitle"=>"合同收入",
             'backed'=>true,
@@ -79,8 +70,8 @@ class ContractController extends Controller {
         $this->assign($body);
         $this->display();
     }
-	
-	    public function updatePassword(){
+
+    public function updatePassword(){
         $body = array(
             "pagetitle"=>"修改密码",
             'backed'=>true,
@@ -88,14 +79,14 @@ class ContractController extends Controller {
         $this->assign($body);
         $this->display();
     }
-	
-		    public function sp(){
+
+    public function sp(){
         $body = array(
             "pagetitle"=>"特殊编号申请",
             'backed'=>true,
         );
         $this->assign($body);
-			$this->display();}
+        $this->display();}
     //报告审批
     public function reportList(){
         $rs = array("msg"=>"","status"=>"succ","list"=>array());
@@ -109,7 +100,7 @@ class ContractController extends Controller {
         if($status) $where .= " and status=".$status;
         //status:2,待审，3，待审批，5，已内部签发，6，已外部签发
         //$where['contract_flow.status'] = 3;
-         $list = D("contract_flow")->where($where)->order("external_sign_time desc")->limit("{$offset},{$pagesize}")->select();
+        $list = D("contract_flow")->where($where)->order("external_sign_time desc")->limit("{$offset},{$pagesize}")->select();
         if($list){
             $centrenoIds = array();
             foreach ($list as $value) {
@@ -172,7 +163,7 @@ class ContractController extends Controller {
                         $rs['status'] = 'succ';
                         M()->commit();
                     }
-                    
+
                 }else{
                     M()->rollback();
                 }
@@ -180,4 +171,149 @@ class ContractController extends Controller {
         }
         $this->ajaxReturn($rs);
     }
+
+    //特殊号段列表
+    public function specialCodeList(){
+        $id = I("id");
+        switch ($id)
+        {
+            case '1':
+                $department='A';
+                break;
+            case '2':
+                $department='B';
+                break;
+            case '3':
+                $department='C';
+                break;
+            case '4':
+                $department='D';
+                break;
+            case '5':
+                $department='E';
+                break;
+            case '6':
+                $department='F';
+                break;
+        }
+
+        $where['department']=$department;
+        $list = D("special_centre_code")->where($where)->field('*,getNum-remainNum as useNum')->select();
+        $body = array(
+            "special_list"=>$list,
+        );
+        $this->assign($body);
+        $this->display();
+    }
+
+
+    //特殊号段添加
+    public function doAddSpecialCode(){
+        $department = I("department");
+        $year = I("year");
+        $month = I("month");
+        $getNum = I("getNum");
+        $remark = I("remark",'');
+
+        $rs = array("msg"=>'fail');
+        if(empty($year)||$year==''||empty($getNum)||$getNum==''){
+            $rs['msg'] = '信息填写不完整!';
+            $this->ajaxReturn($rs);
+        }
+        $where['department']=$department;
+        $where['year']=$year;
+        $where['month']=$month;
+        $list = D("special_centre_code")->field('id,getNum,remainNum,count(*) as count')->where($where)->find();
+        $count = $list['count'];
+        $remainNumOld =  $list['remainnum'];
+        $getNumOld =  $list['getnum'];
+        $id = $list['id'];
+        $data = array(
+            "department"=>$department,
+            "year"=>$year,
+            "month"=>$month,
+            //"getNum"=>$getNum,
+            //'remainNum'=>$getNum,
+            "remark"=>$remark,
+            'getDate'=>Date("Y-m-d H:i:s")
+        );
+        M()->startTrans();
+        if($count>0){
+            $remainNumNew = $remainNumOld + $getNum;
+            $getNumNew = $getNumOld +$getNum;
+            $data['getNum'] = $getNumNew;
+            $data['remainNum'] = $remainNumNew;
+            if(D("special_centre_code")->where("id=".$id)->save($data)){
+                $rs['msg'] = 'succ';
+                M()->commit();
+            }
+            else{
+                $rs['msg'] = '输入信息有误';
+                M()->rollback();
+            }
+        }else{
+            $data['getNum'] = $getNum;
+            $data['remainNum'] = $getNum;
+            if(D("special_centre_code")->data($data)->add()){
+                $rs['msg'] = 'succ';
+                M()->commit();
+            }
+            else{
+                $rs['msg'] = '输入信息有误';
+                M()->rollback();
+            }
+        }
+
+        $this->ajaxReturn($rs);
+    }
+
+
+    public function hetong(){//按收样日期算
+        $begin_time = I("begin_time");
+        $end_time = I("end_time");
+        $where = " a.status in(5,6)";
+
+        //来样日期(在contract表中)
+        $begin_time && $where .=" and date_format(b.collectdate,'%Y-%m-%d') >='{$begin_time}'";
+        $end_time && $where .=" and date_format(b.collectdate,'%Y-%m-%d') <='{$end_time}'";
+
+        //份数
+        //$countlist = ;
+        //金额
+        $sumlist = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->join(C("DB_PREFIX")."test_cost c on a.centreno=c.centreno","LEFT")->where($where)->field("sum(b.testcost) as testcost,sum(c.arecord) as arecord,sum(c.brecord) as brecord,sum(c.crecord) as crecord,sum(c.drecord) as drecord,sum(c.erecord) as erecord,sum(c.frecord) as frecord,sum(c.dcopy) as dcopy,sum(c.drevise) as drevise,sum(c.dother) as dother")->find();
+
+        $body = array(
+            'sum'=>$sumlist,
+            'begin_time'=>$begin_time,
+            'end_time'=>$end_time,
+        );
+        $this->assign($body);
+        $this->display();
+    }
+
+    //contract_flow: a   |  contract: b   |  test_cost: c
+    public function shiji(){//按盖样日期算
+        $begin_time = I("begin_time");
+        $end_time = I("end_time");
+        $where = " a.status in(5,6)";
+
+        $begin_time && $where .=" and date_format(a.inner_sign_time,'%Y-%m-%d') >='{$begin_time}'";
+        $end_time && $where .=" and date_format(a.inner_sign_time,'%Y-%m-%d') <='{$end_time}'";
+
+        //份数
+        $countlist =  D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->where($where)->field('collector_partment,count(collector_partment)')->group('collector_partment')->select();//->field('testdepartment,count(testdepartment)')->group('testdepartment')->select()
+        dump($countlist);
+        //$countlist->query("select fileformat, count(fileformat) as icount from gallery group by fileformat");
+        //金额
+        $sumlist = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->join(C("DB_PREFIX")."test_cost c on a.centreno=c.centreno","LEFT")->where($where)->field("sum(b.testcost) as testcost,sum(c.arecord) as arecord,sum(c.brecord) as brecord,sum(c.crecord) as crecord,sum(c.drecord) as drecord,sum(c.erecord) as erecord,sum(c.frecord) as frecord,sum(c.dcopy) as dcopy,sum(c.drevise) as drevise,sum(c.dother) as dother")->find();
+
+        $body = array(
+            'sum'=>$sumlist,
+            'begin_time'=>$begin_time,
+            'end_time'=>$end_time,
+        );
+        $this->assign($body);
+        $this->display();
+    }
+
 }
