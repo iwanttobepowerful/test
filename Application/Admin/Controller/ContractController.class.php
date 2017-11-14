@@ -795,6 +795,8 @@ class ContractController extends Controller
 		$if_admin = $admin_auth['super_admin'];
 		$roleid = $admin_auth['gid'];
 		$department = $admin_auth['department'];
+		$begin_time = I("begin_time");
+        $end_time = I("end_time");
 		
 		$role = D('common_role')->where('id='.$roleid)->find();
 		if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
@@ -807,6 +809,12 @@ class ContractController extends Controller
 			$where= "c.centreNo like '%{$keyword}%'";
 		}else{
 			$where= "c.centreNo like '%{$keyword}%' and SUBSTR(c.centreNo,7,1) = '{$department}'";
+		}
+		if(!empty($begin_time)){
+			$where.=" and date_format(c.collectDate,'%Y-%m-%d') >='{$begin_time}'";
+		}
+		if(!empty($end_time)){
+			$where.=" and date_format(c.collectDate,'%Y-%m-%d') <='{$end_time}'";
 		}
 		$page = I("p",'int');
         $pagesize = 10;
@@ -824,7 +832,9 @@ class ContractController extends Controller
 		$body = array(
 			"list"=>$list,
 			'pagination'=>$pagination,
-			'if_edit'=>$if_edit
+			'if_edit'=>$if_edit,
+			'begin_time'=>$begin_time,
+			'end_time'=>$end_time
 		);
 		//dump($body);
 		$this->assign($body);
@@ -900,7 +910,6 @@ class ContractController extends Controller
 		}else{
 			$if_leader = 0;	
 		}
-		$page = I("p",'int');
         $pagesize = 10;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;

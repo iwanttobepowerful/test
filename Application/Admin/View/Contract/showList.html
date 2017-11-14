@@ -8,6 +8,9 @@
                 <div class="form-group">
                     <label>中心编号：</label>
                     <input type="text" class="form-control input-sm" name="keyword" />
+                    收样日期：
+                    <input type="text" readonly class="form-control f-datetime input-sm" name="begin_time" value="{$begin_time}" placeholder="开始日期" /> 
+                    —&nbsp;<input type="text" readonly class="form-control f-datetime input-sm" name="end_time" value="{$end_time}" placeholder="结束日期"/> 
                 </div>
                 <button type="submit" class="btn btn-primary btn-sm" >查询</button>
             </form>
@@ -63,11 +66,11 @@
                     	<if condition="$con['status']==7">
                         	<span style="color:green">{$con.takename}已接单<br/>{$con.takelist_time}</span>
                         <elseif condition="$con['status']==5"/>
-                        	<span style="color:red">{$con.innername}已内部签发&nbsp;&nbsp;&nbsp;<a href="#" class="btn btn-info btn-xs" onclick="externalSign('{$con.centreno}')" >外部签发完毕</a>
+                        	<span style="color:green">{$con.innername}已内部签发&nbsp;&nbsp;&nbsp;<a href="#" class="btn btn-info btn-xs" onclick="externalSign('{$con.centreno}')" >外部签发完毕</a>
                             <br/>
                             {$con.inner_sign_time}</span>
                         <elseif condition="$con['status']==6"/>
-                        	<span style="color:red">已外部签发</span>   
+                        	<span style="color:green">已外部签发</span>   
                         </if>
                     </td>
                 </tr>
@@ -123,6 +126,7 @@
 <script src="__PUBLIC__/static/js/jquery.form.js"></script>
 <script type="text/javascript">
 	$(function(){
+		$('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true });
 		$("#tb tr").each(function(){
             var text = $(this).children("td").eq(1).text();
 			//alert(text+":"+text.substr(6,1))
