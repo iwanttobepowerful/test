@@ -210,11 +210,19 @@
 				<tr>
 					<td class="cn">规格型号</td>
 					<td class="sample_three_col"><span class="sample_txt">
-						{$one.specification}
+						<if condition="$one[specification]">
+                        	{$one.specification}
+                        <else />
+							<span>——</span>
+                        </if> 
 					</span></td>
 					<td class="sample_two_col cn">产品批号</td>
 					<td><span class="sample_txt">
-						{$one.batchno}
+                            <if condition="$one[batchno]">
+                                {$one.batchno}
+                            <else />
+                                <span>——</span>
+                            </if>
 					</span></td>
 				</tr>
 				<tr>
@@ -224,7 +232,11 @@
 					</span></td>
 					<td class="cn">产品商标</td>
 					<td><span class="sample_txt">
-						{$one.trademark}
+                        <if condition="$one[trademark]">
+                        	{$one.trademark}
+                        <else />
+							<span>——</span>
+                        </if>
 					</span></td>
 				</tr>
 				<tr>
@@ -316,17 +328,29 @@
 				<tr>
 					<td class="cn">联系电话</td>
 					<td><span class="sample_txt">
-						{$one.telephone}
+                        <if condition="$one[telephone]">
+                        	{$one.telephone}
+                        <else />
+							<span>——</span>
+                        </if>
 					</span></td>
 					<td class="cn">传 真</td>
 					<td><span class="sample_txt">
-						{$one.tax}
+                        <if condition="$one[tax]">
+                        	{$one.tax}
+                        <else />
+							<span>——</span>
+                        </if>
 					</span></td>
 				</tr>
 				<tr>
 					<td class="cn">通讯地址</td>
 					<td colspan="3"><span class="sample_txt">
-						{$one.address}
+                        <if condition="$one[address]">
+                        	{$one.address}
+                        <else />
+							<span>——</span>
+                        </if>
 					</span></td>
 				</tr>
 				<tr>

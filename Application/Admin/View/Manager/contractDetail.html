@@ -304,7 +304,18 @@
             <td class="test_txt">报告提交方式</td>
             <td colspan="2">{$one.postmethod}</td>
             <td colspan="2" class="test_txt">是否同意分包</td>
-            <td colspan="2"><php>if($one['ifsubpackage']==1){echo '是'."(".$one["package_remark"].")";}else{echo '否';}</php></td>
+            <td colspan="2">
+            	<php>
+                	if($one['ifsubpackage']==1){
+                    	if($one["package_remark"]){
+                        	echo '是'."(".$one["package_remark"].")";
+                        }else{
+                        	echo '是';
+                        }
+                    }else{
+                    	echo '否';
+                    }       
+                </php></td>
         </tr>
         <tr>
             <td class="test_txt">委 托 人（签字）</td>
@@ -357,7 +368,14 @@
         </tr>
         <tr>
             <td class="test_txt">备注</td>
-            <td colspan="6" class="contract_other"> <span class="contract_txt">这是最新的备注{$one.remark}</span></td>
+            <td colspan="6" class="contract_other"> 
+            <span class="contract_txt">
+                <if condition="$one[remark]">
+                    {$one.remark}
+                <else />
+                    <span>——</span>
+                </if>
+            </span></td>
         </tr>
         <table border="2" class="test_content_two">
             <tr>
