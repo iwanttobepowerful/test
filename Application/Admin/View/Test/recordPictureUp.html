@@ -96,11 +96,11 @@
         var s='';
         for(var i=0; i<obj.length; i++) {
             if (obj[i].checked) {
-                s+= obj[i].value+'&';
-                var newurl='/admin/test/print.html?id='+s;
+                s+= obj[i].value+',';
+                var newurl='/admin/test/doPrint.html?id='+s;
             }
         }
-        alert(newurl);
+        //alert(newurl);
         window.open(newurl);
         if(!s){
             alert('您还没有选择任何内容！');

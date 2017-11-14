@@ -218,29 +218,51 @@
 
 					</span></td>
             <td class="three_col test_txt">样品编号</td>
-            <td class="four_col"><span class="contract_txt">{$one.samplecode}
-
-					</span></td>
+            <td class="four_col">
+            	<span class="contract_txt">
+                    <if condition="$one[samplecode]">
+                        {$one.samplecode}
+                    <else />
+                        <span>——</span>
+                    </if>
+				</span>
+            </td>
             <td class="rate" class="five_col test_txt">等级</td>
-            <td class="six_col"><span class="contract_txt">{$one.grade}
-
-					</span></td>
+            <td class="six_col"><span class="contract_txt">
+                <if condition="$one[grade]">
+                    {$one.grade}
+                <else />
+                    <span>——</span>
+                </if>
+            </span></td>
         </tr>
         <tr>
             <td class="test_txt">规格型号</td>
-            <td colspan="2"><span class="contract_txt">{$one.specification}
-
-					</span></td>
+            <td colspan="2"><span class="contract_txt">
+                <if condition="$one[specification]">
+                    {$one.specification}
+                <else />
+                    <span>——</span>
+                </if>
+			</span></td>
             <td class="test_txt">商标</td>
-            <td colspan="3"><span class="contract_txt">{$one.trademark}
-
-					</span></td>
+            <td colspan="3"><span class="contract_txt">
+                <if condition="$one[trademark]">
+                    {$one.trademark}
+                <else />
+                    <span>——</span>
+                </if>
+			</span></td>
         </tr>
         <tr>
             <td class="test_txt">生产日期/批号</td>
-            <td colspan="2"><span class="contract_txt">{$one.productiondate}
-
-					</span></td>
+            <td colspan="2"><span class="contract_txt">
+                <if condition="$one[productiondate]">
+                    {$one.productiondate}
+                <else />
+                    <span>——</span>
+                </if>
+			</span></td>
             <td class="test_txt">样品数量</td>
             <td colspan="3"><span class="contract_txt">{$one.samplequantity}
 
@@ -252,9 +274,13 @@
 
 					</span></td>
             <td class="test_txt">粉（料）水比</td>
-            <td colspan="3"><span class="contract_txt">{$one.ration}
-
-					</span></td>
+            <td colspan="3"><span class="contract_txt">
+                <if condition="$one[ration]">
+                    {$one.ration}
+                <else />
+                    <span>——</span>
+                </if>
+			</span></td>
         </tr>
         <tr>
             <td class="test_txt">检验依据</td>
@@ -278,40 +304,78 @@
             <td class="test_txt">报告提交方式</td>
             <td colspan="2">{$one.postmethod}</td>
             <td colspan="2" class="test_txt">是否同意分包</td>
-            <td colspan="2"><php>if($one['ifsubpackage']==1){echo '是';}else{echo '否';}</php></td>
+            <td colspan="2">
+            	<php>
+                	if($one['ifsubpackage']==1){
+                    	if($one["package_remark"]){
+                        	echo '是'."(".$one["package_remark"].")";
+                        }else{
+                        	echo '是';
+                        }
+                    }else{
+                    	echo '否';
+                    }       
+                </php></td>
         </tr>
         <tr>
             <td class="test_txt">委 托 人（签字）</td>
             <td class="two_one_col"><span class="contract_txt">{$one.clientsign}
 					</span></td>
             <td class="tel_col test_txt">联系电话</td>
-            <td><span class="contract_txt">{$one.telephone}
-
+            <td><span class="contract_txt">
+                <if condition="$one[telephone]">
+                    {$one.telephone}
+                <else />
+                    <span>——</span>
+                </if>
 					</span></td>
             <td class="test_txt">传真</td>
-            <td colspan="2"><span class="contract_txt">{$one.tax}
-
+            <td colspan="2"><span class="contract_txt">
+                <if condition="$one[tax]">
+                    {$one.tax}
+                <else />
+                    <span>——</span>
+                </if>
 					</span></td>
         </tr>
         <tr>
             <td class="test_txt">邮政编码</td>
-            <td><span class="contract_txt">{$one.postcode}
-
+            <td><span class="contract_txt">
+                <if condition="$one[postcode]">
+                    {$one.postcode}
+                <else />
+                    <span>——</span>
+                </if>
 					</span></td>
             <td>E-mail</td>
-            <td colspan="4"><span class="contract_txt">{$one.email}
-
+            <td colspan="4"><span class="contract_txt">
+                <if condition="$one[email]">
+                    {$one.email}
+                <else />
+                    <span>——</span>
+                </if>
 					</span></td>
         </tr>
         <tr>
             <td class="test_txt">通讯地址</td>
-            <td colspan="6"> <span class="contract_txt">{$one.address}
-
+            <td colspan="6"> <span class="contract_txt">
+                <if condition="$one[address]">
+                    {$one.address}
+                <else />
+                    <span>——</span>
+                </if>
 					</span></td>
         </tr>
         <tr>
             <td class="test_txt">备注</td>
-            <td colspan="6" class="contract_other"> <span class="contract_txt">这是最新的备注{$one.remark}</span></td>
+            <td colspan="6" class="contract_other"> 
+            <span class="contract_txt">
+                <if condition="$one[remark]">
+                    {$one.remark}
+                <else />
+                    <span>——</span>
+                </if>
+            </span></td>
         </tr>
         <table border="2" class="test_content_two">
             <tr>
@@ -333,7 +397,7 @@
 
 					</span></td>
                 <td class="test_txt">检验费用</td>
-                <td><span class="contract_txt">{$cost.arecord}(A)+{$cost.brecord}(B)+{$cost.crecord}(C)+{$cost.drecord}(D)+{$cost.erecord}(E)+{$cost.frecord}(F)+{$cost.dcopy}(副本)+{$cost.drevise}(修改)+{$cost.dother}(其他)={$one.testcost}
+                <td><span class="contract_txt">{$cost.arecord}(A)+{$cost.brecord}(B)+{$cost.crecord}(C)+{$cost.drecord}(D)+{$cost.erecord}(E)+{$cost.frecord}(F)+{$cost.dcopy}(副本)+{$cost.donline}(上网费)+{$cost.drevise}(修改)+{$cost.dother}(其他)={$one.testcost}
 
 					</span></td>
             </tr>
