@@ -62,6 +62,15 @@ class ContractController extends Controller {
         $this->display();
     }
 	
+		    public function add(){
+        $body = array(
+            "pagetitle"=>"新增",
+            'backed'=>true,
+        );
+        $this->assign($body);
+        $this->display();
+    }
+	
 	    public function over(){
         $body = array(
             "pagetitle"=>"合同收入",

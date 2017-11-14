@@ -1037,15 +1037,15 @@ class ContractController extends Controller
 	public function updateFee(){
 		$rs['msg'] = 'fail';
 		$id = I('id');
-		$meterial = I('meterial');
-		$criteria = I('criteria');
-		$productname = I('productname');
-		$item = I('item');
-		$samplequantity = I('samplequantity');
-		$testperiod = I('testperiod');
-		$remark = I('remark');
-		$fee = I('fee');
-		$quantity = I('quantity');
+		$meterial = I('meterial_edit');
+		$criteria = I('criteria_edit');
+		$productname = I('productname_edit');
+		$item = I('item_edit');
+		$samplequantity = I('samplequantity_edit');
+		$testperiod = I('testperiod_edit');
+		$remark = I('remark_edit');
+		$fee = I('fee_edit');
+		$quantity = I('quantity_edit');
 		
 		$where['meterial']=$meterial;
 		$where['criteria']=$criteria;

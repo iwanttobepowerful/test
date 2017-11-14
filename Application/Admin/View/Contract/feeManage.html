@@ -79,74 +79,75 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="createModalLabel">费用修改</h4>
+                    <input type="hidden" name="edit_id" value="" />
                 </div>
                 <div class="form-group form-group-sm">
                         <label class="col-sm-3 control-label talign-right fz13">类别</label>
                         <div class="col-sm-7">
-                            <input type="text" name="meterial" value="{$con.meterial}" class="form-control">
+                            <input type="text" name="meterial_edit" value="{$con.meterial}" class="form-control">
                         </div>
                         <div class="clearfix"></div>
                 </div>
                 <div class="form-group form-group-sm">
                         <label class="col-sm-3 control-label talign-right fz13">执行标准</label>
                         <div class="col-sm-7">
-                             <input type="text" name="criteria" value="{$con.criteria}" class="form-control">
+                             <input type="text" name="criteria_edit" value="{$con.criteria}" class="form-control">
                         </div>
                         <div class="clearfix"></div>
                 </div>
                 <div class="form-group form-group-sm">
                         <label class="col-sm-3 control-label talign-right fz13">产品名称</label>
                         <div class="col-sm-7" id="items">
-                             <input type="text" name="productname" value="{$con.productname}" class="form-control">
+                             <input type="text" name="productname_edit" value="{$con.productname}" class="form-control">
                         </div>
                         <div class="clearfix"></div>
                 </div>
                 <div class="form-group form-group-sm">
                         <label class="col-sm-3 control-label talign-right fz13">测试项目</label>
                         <div class="col-sm-7" id='t_fee'>
-                             <input type="text" name="item" value="{$con.item}" class="form-control">
+                             <input type="text" name="item_edit" value="{$con.item}" class="form-control">
                         </div>
                         <div class="clearfix"></div>
                 </div>
                 <div class="form-group form-group-sm">
                         <label class="col-sm-3 control-label talign-right fz13">样品数量</label>
                         <div class="col-sm-7" id='t_fee'>
-                             <input type="text" name="samplequantity" value="{$con.samplequantity}" class="form-control">
+                             <input type="text" name="samplequantity_edit" value="{$con.samplequantity}" class="form-control">
                         </div>
                         <div class="clearfix"></div>
                 </div>
                 <div class="form-group form-group-sm">
                         <label class="col-sm-3 control-label talign-right fz13">试验周期</label>
                         <div class="col-sm-7" id='t_fee'>
-                             <input type="text" name="testperiod" value="{$con.testperiod}" class="form-control">
+                             <input type="text" name="testperiod_edit" value="{$con.testperiod}" class="form-control">
                         </div>
                         <div class="clearfix"></div>
                 </div>
                 <div class="form-group form-group-sm">
                         <label class="col-sm-3 control-label talign-right fz13">备注</label>
                         <div class="col-sm-7" id='t_fee'>
-                             <input type="text" name="remark" value="{$con.remark}" class="form-control">
+                             <input type="text" name="remark_edit" value="{$con.remark}" class="form-control">
                         </div>
                         <div class="clearfix"></div>
                 </div>
                 <div class="form-group form-group-sm">
                         <label class="col-sm-3 control-label talign-right fz13">单项费用</label>
                         <div class="col-sm-7" id='t_fee'>
-                             <input type="text" name="fee" value="{$con.fee}" class="form-control">
+                             <input type="text" name="fee_edit" value="{$con.fee}" class="form-control">
                         </div>
                         <div class="clearfix"></div>
                 </div>
                 <div class="form-group form-group-sm">
                         <label class="col-sm-3 control-label talign-right fz13">样品数量</label>
                         <div class="col-sm-7" id='t_fee'>
-                             <input type="text" name="quantity" value="{$con.quantity}" class="form-control">
+                             <input type="text" name="quantity_edit" value="{$con.quantity}" class="form-control">
                         </div>
                         <div class="clearfix"></div>
                 </div>
                 <div class="modal-footer">
                     <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="submit" class="btn btn-primary" onclick="updateFee({$con.id})">确定</button>
+                    <button type="submit" class="btn btn-primary" onclick="updateFee()">确定</button>
                 </div>
             </form>
             </div><!-- /.modal-content -->
@@ -162,7 +163,8 @@
             <form class="form-horizontal" id="myform1" action="" method="post">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="createModalLabel">费用修改</h4>
+                    <h4 class="modal-title" id="createModalLabel">费用添加</h4>
+                    
                 </div>
                 <div class="form-group form-group-sm">
                         <label class="col-sm-3 control-label talign-right fz13">类别</label>
@@ -248,15 +250,16 @@
 				return true;
 			},
 			success: function (re) {
-				$("input[name=meterial]").val(re.meterial);
-				$("input[name=criteria]").val(re.criteria);
-				$("input[name=productname]").val(re.productname);
-				$("input[name=item]").val(re.item);
-				$("input[name=samplequantity]").val(re.samplequantity);
-				$("input[name=testperiod]").val(re.testperiod);
-				$("input[name=remark]").val(re.remark);
-				$("input[name=fee]").val(re.fee);
-				$("input[name=quantity]").val(re.quantity);
+				$("input[name=meterial_edit]").val(re.meterial);
+				$("input[name=criteria_edit]").val(re.criteria);
+				$("input[name=productname_edit]").val(re.productname);
+				$("input[name=item_edit]").val(re.item);
+				$("input[name=samplequantity_edit]").val(re.samplequantity);
+				$("input[name=testperiod_edit]").val(re.testperiod);
+				$("input[name=remark_edit]").val(re.remark);
+				$("input[name=fee_edit]").val(re.fee);
+				$("input[name=quantity_edit]").val(re.quantity);
+				$("input[name=edit_id]").val(re.id);
 			}
 		});
 		modal.modal();
@@ -280,7 +283,8 @@
 
 	}
 	
-	function updateFee(id){
+	function updateFee(){
+		var id = $("input[name=edit_id]").val();
 		var options = {
 			url: "{:U('/admin/contract/updateFee')}",
 			dataType: 'json',
