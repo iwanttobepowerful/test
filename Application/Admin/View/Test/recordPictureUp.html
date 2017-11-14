@@ -4,11 +4,12 @@
     <div id="page-inner" class="container">
         <div class="search-form">
             <a href="{:U('/admin/test/recordPicture')}" class="btn btn-primary">返回</a>
-            <if condition="$view eq 7">
-           <a href="{:U('/admin/test/picUp')}?centreno={$centreno}" class="btn btn-primary">上传</a>
+            <if condition="$view eq 7" >
+            <a href="{:U('/admin/test/picUp')}?centreno={$centreno}" class="btn btn-primary">上传</a>
                 <else />
                 <a href="javascript:void (0)" class="btn btn-primary" onclick="data()"><i class=" glyphicon glyphicon-download"></i>批量打印</a>
             </if>
+            <a href="{:U('/admin/test/picUp')}?centreno={$centreno}" class="btn btn-primary">上传</a>
         </div>
         <table class="table table-bordered table-striped table-hover">
             <thead>
@@ -33,7 +34,7 @@
                     <td>{$one.remark}</td>
                     <td>
                         <a href="javascript:void(0);" onclick="onDelete({$one.id})" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> 删除</a>
-                        <a href="javascript:void(0);" name="{$one.path}" onclick="onPrint(this);" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-print"></i> 打印</a>
+                        <a href="javascript:void(0);" name="{$one.path}" onclick="onPrint({$one.id});" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-print"></i> 打印</a>
                     </td>
                 </tr>
             </volist>
@@ -77,13 +78,11 @@
         window.open(newurl);
     }
     
-    //打印上传图片
-    function onPrint(path) {
-        var url=path.name;
-        if(!url) return false;//获取缩略图url
-        var newurl=url.replace("_thumb","");//重写
-        window.open(newurl).window.print();
+    function onPrint(num) {
+        var newurl='/admin/test/doPrint.html?id='+num;
+        window.open(newurl);  
     }
+    
 //全选
     $("#selectall").click(function(){
         var xz = $(this).prop("checked");//判断全选按钮的选中状态
@@ -93,6 +92,7 @@
     function data() {
         var obj=document.getElementsByName('print');  //选择所有name="'print'"的对象，返回数组
         //取到对象数组后，我们来循环检测它是不是被选中
+        console.log(obj);
         var s='';
         for(var i=0; i<obj.length; i++) {
             if (obj[i].checked) {
@@ -100,6 +100,7 @@
                 var newurl='/admin/test/doPrint.html?id='+s;
             }
         }
+        console.log(newurl)
         //alert(newurl);
         window.open(newurl);
         if(!s){
