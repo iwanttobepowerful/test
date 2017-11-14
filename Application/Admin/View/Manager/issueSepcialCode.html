@@ -10,9 +10,13 @@
 
 
 			<ul class="nav nav-tabs">
-			  <li role="presentation" class="active"><a href=" ">会员增长</a></li>
-			  <li role="presentation"><a href="/Citypartner/userProperty">会员属性</a></li>
-			  <li role="presentation"><a href="/Citypartner/userArea">会员地区</a></li>
+			  <li role="presentation" class="active" id="de_A" name="de"><a href="/admin/manager/issueSepcialCode?de=A" onclick="special_list('A')">A</a></li>
+			  <li role="presentation" id="de_B" name="de"><a href="/admin/manager/issueSepcialCode?de=B">B</a></li>
+			  <li role="presentation" id="de_C" name="de"><a href="/admin/manager/issueSepcialCode?de=C">C</a></li>
+              <li role="presentation" id="de_D" name="de"><a href="/admin/manager/issueSepcialCode?de=D">D</a></li>
+			  <li role="presentation" id="de_E" name="de"><a href="/admin/manager/issueSepcialCode?de=E">E</a></li>
+			  <li role="presentation" id="de_F" name="de"><a href="/admin/manager/issueSepcialCode?de=F">F</a></li>
+              <input hidden id="de_choose" value="{$de}">
 			</ul>
 
 
@@ -22,8 +26,8 @@
             <th>部门</th>
             <th>年</th>
             <th>月</th>
-            <!--<th>数量</th>-->
-            <th>使用量</th>
+            <th>总量</th>
+            <!--<th>使用量</th>-->
             <th>剩余量</th>
             <th>备注</th>
             </thead>
@@ -33,8 +37,8 @@
                     <td>{$special.department}</td>
                     <td>{$special.year}</td>
                     <td>{$special.month}</td>
-                    <!--<td>{$special.getnum}</td>-->
-                    <td>{$special.usenum}</td>
+                    <td>{$special.getnum}</td>
+                    <!--<td>{$special.usenum}</td>-->
                     <td>{$special.remainnum}</td>
                     <td>{$special.remark}</td>
                 </tr>
@@ -128,6 +132,11 @@
 </div>
 <script src="__PUBLIC__/static/js/jquery.form.js"></script>
 <script type="text/javascript">
+	$(function(){
+		var de = $("#de_choose").val();
+		$("li[name='de']").removeClass("active");
+		$("#de_"+de).addClass("active");	
+	});
 	//显示新增弹框
 	function addSpecicalCode(){
 		var modal = $("#editModal");
@@ -154,6 +163,11 @@
 		return false;
 	}
 	
+	//分部门查询
+	function special_list(){
+		
+		
+	}
 	
 </script>
 <include file="Common:footer" />

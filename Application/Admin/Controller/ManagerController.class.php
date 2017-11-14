@@ -98,10 +98,14 @@ class ManagerController extends Controller
 	
 	//特殊号段签发
 	public function issueSepcialCode(){
-		$list = D("special_centre_code")->field('*,getNum-remainNum as useNum')->select();
+		
+		//$de = I('de_choose','A');
+		$de = I('de','A');
+		$list = D("special_centre_code")->where('department="'.$de.'"')->order('year desc,month desc')->select();
 		
 		$body = array(
 			"special_list"=>$list,
+			"de"=>$de
 		);
 	    $this->assign($body);
 		$this->display();
