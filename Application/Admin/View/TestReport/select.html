@@ -70,7 +70,8 @@
                 dataType:"json",
                 success:function(ret){
                     if(ret.msg=='succ'){
-                        alert("操作成功");
+                        var _options = {"text":"操作成功！","action":function(){window.location.reload();}};
+                        doAlertDialog(_options);
                     }else{
                         var _options = {"text":"Error！"};
 
