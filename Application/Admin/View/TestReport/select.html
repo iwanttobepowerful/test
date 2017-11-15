@@ -28,7 +28,7 @@
 					 <volist name="tpl" id="one">
 						 <td>
 							 <img src="{$one.path}" class="img-rounded" />
-                             <a class="btn btn-primary" href="/admin/TestReport/seleteTemp?mod={$one.id}&conNo={$contactNo}">select</a>
+                             <a class="btn btn-primary" href="javascript:void(0);" onclick="selectMod('{$one.id}','{$contactNo}')">select</a>
 						 </td>
 					 </volist>
 			     <tr>
@@ -36,5 +36,23 @@
       
 		<script src="__PUBLIC__/static/js/index.js" type="text/javascript" charset="utf-8"></script>
 	</body>
+	<script type="text/javascript">
+        function selectMod(id,contractno){
+            $.ajax({
+                type:"post",
+                url:"{:U('/admin/TestReport/selectTemp')}",
+                data:{"id":id,"contractno":contractno},
+                dataType:"json",
+                success:function(ret){
+                    if(ret.msg=='succ'){
+                        alert("YES");
+                    }else{
+                        var _options = {"text":"Error！"};
+
+                    }
+                }
+            });
+        }
+	</script>
 
 </html>
