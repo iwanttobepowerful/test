@@ -345,12 +345,13 @@ class ReportController extends Controller
         $id = I("id", 0, 'intval');
         $imgurl = I("imgurl");
         $filename = I("filename");
+        $type = I("type",1,'intval');
         $result = array("msg" => "fail");
         if (empty($imgurl)) {
             $result['msg'] = "无效的提交！";
             $this->ajaxReturn($result);
         }
-        $data = array("path" => $imgurl, "filename" => $filename);
+        $data = array("path" => $imgurl, "filename" => $filename,"type"=>$type);
         $report = D("tpl")->where("id=" . $id)->find();
         if ($report) {
             if (D("tpl")->where("id=" . $report['id'])->save($data)) {
