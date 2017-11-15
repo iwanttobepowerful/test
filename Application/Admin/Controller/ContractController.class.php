@@ -892,7 +892,81 @@ class ContractController extends Controller
 		$this->assign($body);
 		$this->display();
 	}
-	
+	//报告管理下的合同列表
+    public function showReportList(){
+        //判断角色，确定是否可以修改
+        $admin_auth = session("admin_auth");
+        $if_admin = $admin_auth['super_admin'];
+        $roleid = $admin_auth['gid'];
+        $department = $admin_auth['department'];
+        $begin_time = I("begin_time");
+        $end_time = I("end_time");
+
+        $role = D('common_role')->where('id='.$roleid)->find();
+        if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
+            $if_edit = 1;
+        }else{
+            $if_edit = 0;
+        }
+        $keyword = I("keyword");//获取参数
+        $where['f.status']= array('in','8,1,2,4,5,6');
+        $keyword && $where .= " and c.centreNo like '%{$keyword}%'";
+
+        if($role['rolename']=="领导" || $role['rolename']=="审核员" || $role['rolename']=="盖章人员" || $if_admin==1){
+            //
+        }else{
+            $where .= " and SUBSTR(c.centreNo,7,1) = '{$department}'";
+        }
+        if(!empty($begin_time)){
+            $where.=" and date_format(c.collectDate,'%Y-%m-%d') >='{$begin_time}'";
+        }
+        if(!empty($end_time)){
+            $where.=" and date_format(c.collectDate,'%Y-%m-%d') <='{$end_time}'";
+        }
+
+        $page = I("p",'int');
+        $pagesize = 10;
+        if($page<=0) $page = 1;
+        $offset = ( $page-1 ) * $pagesize;
+
+        //判断是接单还是签发
+        //$ifstatus =
+        $list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,if(r.status is null,-1,r.status) as sub_status,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername,v.doc_path')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN report_feedback r on r.centreNo = c.centreNo left join test_report as v on c.centreNo=v.centreNo' )->where($where)->order('c.input_time DESC')->limit("{$offset},{$pagesize}")->select();
+        $count = D("contract as c")->field('if(r.status is null,-1,r.status) as sub_status,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN report_feedback r on r.centreNo = c.centreNo')->where($where)->order('c.input_time DESC')->count();
+        $Page= new \Think\Page($count,$pagesize);
+        $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
+        $pagination= $Page->show();// 分页显示输出
+
+        $body = array(
+            "list"=>$list,
+            'pagination'=>$pagination,
+            'if_edit'=>$if_edit,
+            'begin_time'=>$begin_time,
+            'end_time'=>$end_time
+        );
+        //dump($body);
+        $this->assign($body);
+        $this->display();
+    }
+    //确认生成报告
+    public function doneConfirm(){
+        $rs = array('msg'=>'fail');
+        $centreno=I("centreno");
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $userid=$admin_auth['id'];
+        $user=$admin_auth['gid'];//判断是哪个角色
+        $if_admin = $admin_auth['super_admin'];
+        $where= "centreno='{$centreno}'";
+        $data=array(
+            'status'=>1,
+            'report_time'=>date("Y-m-d H:i:s"),
+            'report_user_id'=>$userid,
+        );
+        if(D("contract_flow")->where($where)->save($data)){
+            $rs['msg'] = 'succ';
+        }
+        $this->ajaxReturn($rs);
+    }
 	//申请修改
 	public function doSubmitFeedback(){
 		$rs = array('msg'=>'fail');

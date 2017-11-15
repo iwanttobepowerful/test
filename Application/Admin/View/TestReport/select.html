@@ -6,6 +6,17 @@
 		<title></title>
         <link rel="stylesheet" type="text/css" href="__PUBLIC__/static/css/bootstrap.min.css" />
         <script src="__PUBLIC__/static/js/jquery-2.1.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="__PUBLIC__/static/js/core.min.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="__PUBLIC__/static/js/jquery-confirm.min.js" charset="UTF-8"></script>
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/css/jquery-confirm.min.css" />
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/css/bootstrap-datetimepicker.css" />
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/css/style-append.css" />
+		<script type="text/javascript" src="__PUBLIC__/static/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="__PUBLIC__/static/js/bootstrap-transition.js"></script>
+		<script type="text/javascript" src="__PUBLIC__/static/js/bootstrap-modal.js"></script>
+		<script type="text/javascript" src="__PUBLIC__/static/js/jquery.placeholder.js"></script>
+		<script type="text/javascript" src="__PUBLIC__/static/js/bootstrap-datetimepicker.min.3.0.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="__PUBLIC__/static/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 		<style type="text/css">
 			.sel_img{
 				width: 88%;
@@ -28,7 +39,10 @@
 					 <volist name="tpl" id="one">
 						 <td>
 							 <img src="{$one.path}" class="img-rounded" />
-                             <a class="btn btn-primary" href="/admin/TestReport/seleteTemp?mod={$one.id}&conNo={$contactNo}">select</a>
+							 <if condition="($type eq 2) and (($one[id] == 34) or ($one[id] == 35))">
+                             <a class="btn btn-primary" href="javascript:void(0);" onclick="select('{$one.id}','{$contactNo}')">选择</a></if>
+							 <if condition="($type eq 1) and (($one[id] == 36) or ($one[id] == 37) or ($one[id] == 38) or ($one[id] == 39) or ($one[id] == 40))">
+								 <a class="btn btn-primary" href="javascript:void(0);" onclick="select('{$one.id}','{$contactNo}')">选择</a></if>
 						 </td>
 					 </volist>
 			     <tr>
@@ -36,5 +50,30 @@
       
 		<script src="__PUBLIC__/static/js/index.js" type="text/javascript" charset="utf-8"></script>
 	</body>
+	<script type="text/javascript">
+
+
+		function select(id,contractno) {
+            if((!id)||(!contractno)) return false;
+            var _options = {"flag":"error","text":"您确定要生成报告吗！","buttons":{"ok":{"action":function(){selectMod(id,contractno);}},"cancel":{}}};
+            doConfirmDialog(_options);
+        }
+        function selectMod(id,contractno){
+            $.ajax({
+                type:"post",
+                url:"{:U('/admin/TestReport/selectTemp')}",
+                data:{"id":id,"contractno":contractno},
+                dataType:"json",
+                success:function(ret){
+                    if(ret.msg=='succ'){
+                        alert("操作成功");
+                    }else{
+                        var _options = {"text":"Error！"};
+
+                    }
+                }
+            });
+        }
+	</script>
 
 </html>
