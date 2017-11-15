@@ -98,7 +98,7 @@
 
 <script src="__PUBLIC__/static/js/jquery.form.js"></script>
 <script type="text/javascript">
-    /*$(function(){
+    $(function(){
         $('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true });
         $("#tb tr").each(function(){
             var text = $(this).children("td").eq(1).text();
@@ -111,7 +111,7 @@
 
     });
 
-    function externalSign(centreno){
+   /* function externalSign(centreno){
         if(confirm('确认已外部签发？')){
             $.ajax({
                 url: "{:U('/admin/contract/externalSign')}",
