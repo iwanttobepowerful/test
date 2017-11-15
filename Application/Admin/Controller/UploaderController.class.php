@@ -17,15 +17,16 @@ class UploaderController extends Controller {
         $upload = new \Think\Upload();
         $upload->maxSize   =    0;//不限制上传大小
         $upload->exts      =     array('doc','docx','docm','dotm','txt','dot');
-        $upload->rootPath  =     './Public/attached/word/'; // 设置附件上传根目录
+        $upload->rootPath  =     './Public/attached/'; // 设置附件上传根目录
         $upload->savePath  =     '';
         $upload->saveName = 'time';
         $info   =   $upload->upload();
+
         $array = array("info"=>"fail");
         if(!$info) {// 上传错误提示错误信息
-            
+            $array['info'] = $upload->getError();
         }else{// 上传成功 获取上传文件信息
-            $saveUrl = './Public/attached/word/'.$info['file']['savepath'].$info['file']['savename'];
+            $saveUrl = './Public/attached/'.$info['file']['savepath'].$info['file']['savename'];
              $base = pathinfo($saveUrl);
             $thumb = $base['dirname'] .'/'. $base['filename'].'.'.$base['extension'];
             $array = array(

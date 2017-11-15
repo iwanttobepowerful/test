@@ -135,6 +135,9 @@ class TestReportController extends Controller
                 'sampleStatus'=>$contract['sampleStatus'] ? $contract['sampleStatus']:"————",
                 'testCriteria'=>$contract['testCriteria'],
                 'testItem'=>$contract['testItem'],
+                'collectDate'=>$contract['collectdate'] ? $contract['collectdate']:"————",
+                'sampleCode'=>$contract['samplecode'] ? $contract['samplecode']:"————",
+                'sampleQuantity'=>$contract['samplequantity'] ? $contract['samplequantity']:"",
             );
 
             if($contract['testCategory']=="抽样检验"){
@@ -164,12 +167,12 @@ class TestReportController extends Controller
             if($testReport){
                 $result=D("test_report")->where("centreno='{$centreNo}'")->save($update);
                 if($result!==false){
-                    $rs['status']='succ';
+                    $rs['msg']='succ';
                 }
             }else{
                 $update['centreNo']=$centreNo;
                 if(D("test_report")->data($update)->add()){
-                    $rs['status'] = 'succ';
+                    $rs['msg'] = 'succ';
 
                 }
             }

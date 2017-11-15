@@ -903,7 +903,7 @@ class ContractController extends Controller
         $end_time = I("end_time");
 
         $role = D('common_role')->where('id='.$roleid)->find();
-        if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
+        if($role['rolename']=="报告编制员" || $if_admin==1 ){
             $if_edit = 1;
         }else{
             $if_edit = 0;
@@ -912,7 +912,7 @@ class ContractController extends Controller
         $where['f.status']= array('in','8,1,2,4,5,6');
         $keyword && $where .= " and c.centreNo like '%{$keyword}%'";
 
-        if($role['rolename']=="领导" || $role['rolename']=="审核员" || $role['rolename']=="盖章人员" || $if_admin==1){
+        if($role['rolename']=="领导" || $role['rolename']=="审核员" || $role['rolename']=="盖章人员" || $if_admin==1||$role['rolename']=="报告编制员"){
             //
         }else{
             $where .= " and SUBSTR(c.centreNo,7,1) = '{$department}'";

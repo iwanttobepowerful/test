@@ -48,8 +48,9 @@
 
 
                         </if>
+                        <if condition="$if_edit==1">
                         <if condition="$con['status'] eq 8">
-                            <a href="/admin/TestReport/seleteKey?mod={$con.centreno}" class="btn btn-primary btn-xs">生成报告</a></if>
+                            <a href="/admin/TestReport/seleteKey?mod={$con.centreno}" class="btn btn-primary btn-xs">生成报告</a></if></if>
                     </td>
                     <td>
                         <if condition="$con['doc_path']">
@@ -74,8 +75,9 @@
                             <elseif condition="$con['status']==6"/>
                             <span style="color:green">已外部签发</span>
                         </if>
+                        <if condition="$if_edit==1">
                         <if condition="$con['status']==8">
-                            <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="confirmReport('{$con.centreno}')" >确认</a></if>
+                            <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="confirmReport('{$con.centreno}')" >确认</a></if></if>
                     </td>
                 </tr>
             </volist>
