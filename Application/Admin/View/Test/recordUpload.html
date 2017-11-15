@@ -9,11 +9,13 @@
             <input type="hidden" name="id" value="{$report['id']}" />
             <input type="hidden" name="centreno" value="{$centreno}" /><!--!!!!!!!!-->
             <div class="form-group">
-                <label class="col-sm-2 control-label talign-center fz13">上传检测报告</label>
+                <label class="col-sm-2 control-label talign-center fz13">上传报告</label>
                 <div class="col-sm-10">
-                    <div class="face" id="attachment" onclick="onFileUpload()"><a href="{$report['path']}" style="height: 100%;" ></a></div>
-                    <input type="hidden" name="fileurl" value="{$report['path']}" />
+                    
+                    <input type="hidden" name="fileurl" />
                     <input type="file" name="file" onchange="ajaxFileUpload()" id="addfile"/>
+                    <p class="help-block" id="attachment"></p>
+
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -52,18 +54,20 @@
                 dataType: 'JSON',
                 success: function (data, status) {
                     var ret = JSON.parse(data);
+                    
                     $("#addfile").val("");
 
                     if(ret.info=='succ'){
                         $("input[name='fileurl']").val(ret.url);
 
-                        $("#attachment a").attr("href",ret.url);
+                        $("#attachment").html(ret.url);
 
                     }else{
                         var _options = {"text":"上传失败","flag":"error"};
                         if(ret.info) _options.text = ret.info;
                         doAlertDialog(_options);
                     }
+                    
                 },
                 error: function (data, status, e){
                     var _options = {"text":"上传失败","flag":"error"};
@@ -80,6 +84,7 @@
     }
 
     function onSave(){
+        
         var options = {
             url: "{:U('/admin/test/doUp')}",
             dataType: 'json',
@@ -99,6 +104,7 @@
         };
         $("#myform").ajaxForm(options);
         return false;
+       
     }
 </script>
     <include file="Common:footer" />
