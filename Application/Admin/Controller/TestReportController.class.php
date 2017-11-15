@@ -167,12 +167,12 @@ class TestReportController extends Controller
             if($testReport){
                 $result=D("test_report")->where("centreno='{$centreNo}'")->save($update);
                 if($result!==false){
-                    $rs['status']='succ';
+                    $rs['msg']='succ';
                 }
             }else{
                 $update['centreNo']=$centreNo;
                 if(D("test_report")->data($update)->add()){
-                    $rs['status'] = 'succ';
+                    $rs['msg'] = 'succ';
 
                 }
             }
