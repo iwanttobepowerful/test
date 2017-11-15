@@ -121,6 +121,7 @@ class TestReportController extends Controller
    	    if(!empty($modid) and !empty($centreNo)){
             $tpl = D("tpl")->where("id=".$modid)->find();
             $contract = D("contract")->where("centreno='{$centreNo}'")->find();
+            //dump($contract);
             $data = array(
                 'centreNo'=>$contract['centreno'],
                 'sampleName'=>$contract['samplename'],
@@ -154,13 +155,15 @@ class TestReportController extends Controller
             }
             convert2Word($data,$src,$dst);
             $testReport = D("test_report")->where("centreno='{$centreNo}'")->find();
+
             $update = array(
                 'tplno'=>$modid,
                 'doc_path'=>substr($dst,1),
             );
 
             if($testReport){
-                if(D("test_report")->where("centreno='{$centreNo}'")->save($update)){
+                $result=D("test_report")->where("centreno='{$centreNo}'")->save($update);
+                if($result!==false){
                     $rs['status']='succ';
                 }
             }else{

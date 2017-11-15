@@ -45,20 +45,22 @@
                         <a href="{:U('/admin/contract/sampleEdit')}?id={$con.centreno}" style="display:none" class="btn btn-info btn-xs" >抽样单</a>
                         <if condition="$con.flow_id != -1">
                             <a href="/admin/test/infoShow?id={$con.centreno}"  class="btn btn-info btn-xs" >检验工作通知单</a>
-                            <if condition="$con['status'] eq 8">
-                            <a href="/admin/TestReport/seleteKey?mod={$con.centreno}" class="btn btn-primary btn-xs">生成报告</a></if>
+
 
                         </if>
+                        <if condition="$con['status'] eq 8">
+                            <a href="/admin/TestReport/seleteKey?mod={$con.centreno}" class="btn btn-primary btn-xs">生成报告</a></if>
                     </td>
                     <td>
-                        <a href="{$con.doc_path}"  class="btn btn-primary btn-xs" >报告预览</a>
+                        <if condition="$con['doc_path']">
+                        <a href="{$con.doc_path}"  class="btn btn-primary btn-xs" >报告预览</a></if>
 
                         <if condition="$if_edit==1">
                             <if condition="($con['ifedit'] == 1) and ($con['sub_status'] == 0)">
                                 <span style="color:green">申请中</span>
                                 <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == 1)" />
                                 <span style="color:green">申请通过</span>
-                                <a href="#" class="btn btn-info btn-xs"  onclick="doUpdateEditState('{$con.centreno}')" >修改完毕</a>
+                                <!--<a href="#" class="btn btn-info btn-xs"  onclick="doUpdateEditState('{$con.centreno}')" >修改完毕</a>-->
                                 <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == 2)" />
                                 <span style="color:red">申请拒绝</span>
                             </if>
@@ -66,7 +68,7 @@
                         <if condition="$con['status']==7">
                             <span style="color:green">{$con.takename}已接单<br/>{$con.takelist_time}</span>
                             <elseif condition="$con['status']==5"/>
-                            <span style="color:green">{$con.innername}已内部签发&nbsp;&nbsp;&nbsp;<a href="#" class="btn btn-info btn-xs" onclick="externalSign('{$con.centreno}')" >外部签发完毕</a>
+                            <span style="color:green">{$con.innername}已内部签发&nbsp;&nbsp;&nbsp;<!--<a href="#" class="btn btn-info btn-xs" onclick="externalSign('{$con.centreno}')" >外部签发完毕</a>-->
                             <br/>
                             {$con.inner_sign_time}</span>
                             <elseif condition="$con['status']==6"/>
@@ -94,7 +96,7 @@
 
 <script src="__PUBLIC__/static/js/jquery.form.js"></script>
 <script type="text/javascript">
-    $(function(){
+    /*$(function(){
         $('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true });
         $("#tb tr").each(function(){
             var text = $(this).children("td").eq(1).text();
@@ -161,7 +163,7 @@
                 }
             });
         }
-    }
+    }*/
     function confirmReport(centreno) {
         if(!centreno) return false;
         var _options = {"flag":"error","text":"您确认生成报告吗！","buttons":{"ok":{"action":function(){doConfirm(centreno);}},"cancel":{}}};
