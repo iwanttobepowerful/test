@@ -21,7 +21,7 @@ class UploaderController extends Controller {
         $upload->savePath  =     '';
         $upload->saveName = 'time';
         $info   =   $upload->upload();
-        pr($info);
+        
         $array = array("info"=>"fail");
         if(!$info) {// 上传错误提示错误信息
             $array['info'] = $upload->getError();
