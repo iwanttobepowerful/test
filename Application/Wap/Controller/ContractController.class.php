@@ -304,7 +304,7 @@ class ContractController extends Controller {
 
         //份数
         $countlist =  D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->where($where)->field('collector_partment,count(collector_partment)')->group('collector_partment')->select();//->field('testdepartment,count(testdepartment)')->group('testdepartment')->select()
-        dump($countlist);
+        //dump($countlist);
         //if($countlist[0])
         //$countlist->query("select fileformat, count(fileformat) as icount from gallery group by fileformat");
         //金额
