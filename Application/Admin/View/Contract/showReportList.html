@@ -38,11 +38,8 @@
                     <td>{$con.testcriteria}</td>
 
                     <td width="33%">
-                        <!--<a href="{:U('/admin/contract/editContract')}?id={$con.centreno}" id="editContract" target="_blank" class="btn btn-info btn-xs" ><i class="glyphicon glyphicon-search"></i>修改</a>-->
                         <a href="/admin/manager/contractDetail?id={$con.centreno}"  class="btn btn-info btn-xs" >检验受理合同</a>
-
-                        <!--<a href="{:U('/admin/test/sampleShow')}?id={$con.centreno}" style="display:none" class="btn btn-info btn-xs" >抽样单</a>-->
-                        <a href="{:U('/admin/contract/sampleEdit')}?id={$con.centreno}" style="display:none" class="btn btn-info btn-xs" >抽样单</a>
+                        <a href="/admin/test/sampleShow?id={$con.centreno}" style="display:none" class="btn btn-info btn-xs" >抽样单</a>
                         <if condition="$con.flow_id != -1">
                             <a href="/admin/test/infoShow?id={$con.centreno}"  class="btn btn-info btn-xs" >检验工作通知单</a>
 
@@ -105,7 +102,7 @@
             //alert(text+":"+text.substr(6,1))
             if (text.substr(7,1)=='C'){
                 //alert($(this).children("td:last").children("a:last").html());
-                $(this).children("td").eq(5).children("a").eq(2).css("display","inline-block");
+                $(this).children("td").eq(5).children("a").eq(1).css("display","inline-block");
             }
         });
 

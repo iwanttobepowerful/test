@@ -41,7 +41,7 @@
         $.ajax({
             type:"post",
             url:"{:U('/admin/Test/doUpd')}",
-            data:{"id":id},
+            data:{"centreno":centreno},
             dataType:"json",
             success:function(ret){
                 if(ret.msg=='succ'){
