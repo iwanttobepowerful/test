@@ -990,6 +990,33 @@ class ContractController extends Controller
 		}
 		$this->ajaxReturn($rs);
 	}
+	
+	//更改补充检验报告单
+	public function addorEditReport(){
+		$centreNo = I('id');
+		$body = array(
+			'centreNo'=>$centreNo
+		);
+		$this->assign($body);
+		$this->display();
+	}
+	
+	//检验报告单录入
+	public function saveInspecReport(){
+		$edit_No = I('edit_No');
+		$centreNo = I('centreNo');
+		$sampleName = I('sampleName');
+		$clientName = I('clientName');
+		$update_item = I('update_item');
+		$update_item_list = "";
+		for($i = 0;$i < 6;$i++){
+			$update_item_list.=$update_item[$i]." ";
+		}
+		$update_reason = I('update_reason');
+		$applicant = I('applicant');
+		$handler = I('handler');
+		$handleDate = I('handleDate');
+	}
 
 	//获取最中心编号
 	public function getLastCode(){
