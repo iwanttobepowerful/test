@@ -115,10 +115,62 @@ class TestReportController extends Controller
 	}
 	//生成报告word下载模板选择
 	public function selectTemp(){
-   	    $id=I("id");
-   	    $contractno=I("contractno");
-   	    if(!empty($id) and !empty($contractno)){
-            $rs['msg'] = 'succ';
+   	    $modid=I("id");
+   	    $centreNo=I("contractno");
+        $rs = array("msg"=>"","status"=>"fail");
+   	    if(!empty($modid) and !empty($centreNo)){
+            $tpl = D("tpl")->where("id=".$modid)->find();
+            $contract = D("contract")->where("centreno='{$centreNo}'")->find();
+            $data = array(
+                'centreNo'=>$contract['centreno'],
+                'sampleName'=>$contract['samplename'],
+                'testCategory'=>$contract['testcategory'],
+                'clientName'=>$contract['clientname'],
+                'productionDate'=>$contract['productiondate'] ? $contract['productiondate']:"————",
+                'productUnit'=>$contract['productunit'] ? $contract['productunit']:"————",
+                'trademark'=>$contract['trademark'] ? $contract['trademark']:"————",
+                'grade'=>$contract['grade'] ? $contract['grade']:"————",
+                'specification'=>$contract['specification'] ? $contract['specification']:"————",
+                'sampleStatus'=>$contract['sampleStatus'] ? $contract['sampleStatus']:"————",
+                'testCriteria'=>$contract['testCriteria'],
+                'testItem'=>$contract['testItem'],
+            );
+
+            if($contract['testCategory']=="抽样检验"){
+                $samplingForm = D("sampling_form")->where("centreno='{$centreNo}'")->find();
+                if($samplingForm){
+                    $data['samplePlace'] = $samplingForm['samplePlace'] ? $samplingForm['samplePlace'] : "————";
+                    $data['simplerSign'] = $samplingForm['simplerSign'];
+                    $data['sampleDate'] = $samplingForm['sampledate'] ? $samplingForm['sampledate']:"————";
+                    $data['sampleQuantity'] = $samplingForm['samplequantity'] ? $samplingForm['samplequantity']:"————";
+                    $data['sampleBase'] = $samplingForm['samplebase'] ? $samplingForm['samplebase']:"————";
+
+                }
+            }
+            $src = "./Public/{$tpl['filename']}";
+            $dst = "./Public/attached/report/{$centreNo}.docx";
+            if(file_exists($dst)){
+                unlink($dst);
+            }
+            convert2Word($data,$src,$dst);
+            $testReport = D("test_report")->where("centreno='{$centreNo}'")->find();
+            $update = array(
+                'tplno'=>$modid,
+                'doc_path'=>substr($dst,1),
+            );
+
+            if($testReport){
+                if(D("test_report")->where("centreno='{$centreNo}'")->save($update)){
+                    $rs['status']='succ';
+                }
+            }else{
+                $update['centreNo']=$centreNo;
+                if(D("test_report")->data($update)->add()){
+                    $rs['status'] = 'succ';
+
+                }
+            }
+
         }
         $this->ajaxReturn($rs);
     }
@@ -182,12 +234,18 @@ class TestReportController extends Controller
 
     //选择编号
     public function seleteKey(){
-	   $mod = I("mod");
+	   $centreno = I("mod");
         $tpl=D("tpl")->select();
-
+        $contract = D('contract')->where("centreno='{$centreno}'")->find();
+        if($contract['testcategory']=='抽样检验'){
+            $type = 2;
+        }elseif($contract['testcategory']=='委托检验'){
+            $type = 1;
+        }
         $body = array(
-           'contactNo'=>$mod,
+           'contactNo'=>$centreno,
             'tpl'=>$tpl,
+            'type'=>$type,
        );
        $this->assign($body);
        $this->display(select);
