@@ -45,11 +45,14 @@
                         <a href="{:U('/admin/contract/sampleEdit')}?id={$con.centreno}" style="display:none" class="btn btn-info btn-xs" >抽样单</a>
                         <if condition="$con.flow_id != -1">
                             <a href="/admin/test/infoShow?id={$con.centreno}"  class="btn btn-info btn-xs" >检验工作通知单</a>
-                            <a href="/admin/TestReport/seleteKey?mod={$con.centreno}" class="btn btn-primary btn-xs">生成报告</a>
+                            <if condition="$con['status'] eq 8">
+                            <a href="/admin/TestReport/seleteKey?mod={$con.centreno}" class="btn btn-primary btn-xs">生成报告</a></if>
 
                         </if>
                     </td>
                     <td>
+                        <a href=""  class="btn btn-primary btn-xs" >报告预览</a>
+
                         <if condition="$if_edit==1">
                             <if condition="($con['ifedit'] == 1) and ($con['sub_status'] == 0)">
                                 <span style="color:green">申请中</span>
@@ -69,6 +72,8 @@
                             <elseif condition="$con['status']==6"/>
                             <span style="color:green">已外部签发</span>
                         </if>
+                        <if condition="$con['status']==8">
+                            <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="confirmReport('{$con.centreno}')" >确认</a></if>
                     </td>
                 </tr>
             </volist>
@@ -189,6 +194,27 @@
                 }
             });
         }
+    }
+    function confirmReport(centreno) {
+        if(!centreno) return false;
+        var _options = {"flag":"error","text":"您确认生成报告吗！","buttons":{"ok":{"action":function(){doConfirm(centreno);}},"cancel":{}}};
+        doConfirmDialog(_options);
+    }
+    function doConfirm(centreno) {
+        $.ajax({
+            type:"post",
+            url:"{:U('/admin/Contract/doneConfirm')}",
+            data:{"centreno":centreno},
+            dataType:"json",
+            success:function(ret){
+                if(ret.msg=='succ'){
+                    alert("操作成功");
+                }else{
+                    var _options = {"text":"Error！"};
+
+                }
+            }
+        });
     }
 </script>
 

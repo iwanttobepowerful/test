@@ -910,6 +910,25 @@ class ContractController extends Controller
         $this->assign($body);
         $this->display();
     }
+    //确认生成报告
+    public function doneConfirm(){
+        $rs = array('msg'=>'fail');
+        $centreno=I("centreno");
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $userid=$admin_auth['id'];
+        $user=$admin_auth['gid'];//判断是哪个角色
+        $if_admin = $admin_auth['super_admin'];
+        $where= "centreno='{$centreno}'";
+        $data=array(
+            'status'=>1,
+            'report_time'=>date("Y-m-d H:i:s"),
+            'report_user_id'=>$userid,
+        );
+        if(D("contract_flow")->where($where)->save($data)){
+            $rs['msg'] = 'succ';
+        }
+        $this->ajaxReturn($rs);
+    }
 	//申请修改
 	public function doSubmitFeedback(){
 		$rs = array('msg'=>'fail');
