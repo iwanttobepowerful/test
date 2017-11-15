@@ -320,11 +320,11 @@ class TestController extends Controller{
 
 //上传检测报告页面
     public function recordUpload(){
-        $id =I("id",0,'intval');
+        //$id =I("id",0,'intval');
         $centreno=I("centreno");
-        if($id){
-            $report = D('test_report')->where("id=" . $id)->find();
-        }
+        //if($id){
+        $report = D('test_report')->where("centreno='{$centreno}'")->find();
+        //}
         $body = array(
             'report' => $report,
             'centreno'=>$centreno,
@@ -338,39 +338,52 @@ class TestController extends Controller{
         $id =I("id",0,'intval');//test_report的id
         $centreno=I("centreno");
         $where= "centreno='{$centreno}'";
-            $fileurl = I("fileurl");
-            $remark = I("remark");
-            $result = array("msg"=>"fail");
+        $fileurl = I("fileurl");
+        $remark = I("remark");
+        $result = array("msg"=>"fail");
+
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
-            if(empty($fileurl)){
-                $result['msg'] = "无效的提交！";
-                $this->ajaxReturn($result);
-            }
-            $data = array(
-                "centreNo"=>$centreno,
-                "path"=>$fileurl,
-                "remark"=>$remark,
-                );
-            $data1=array(
-                'status'=>2,
-                'uploadreport_user_id'=>$userid,
-                'uploadreport_time'=>date("Y-m-d H:i:s"),
-            );
-        $pic = D("test_report")->where("id=".$id)->find();
-        if($pic){
-            if(D("test_report")->where("id=".$pic['id'])->save($data)){
-                D("contract_flow")->where($where)->save($data1);
-                $result['msg'] = 'succ';
-            }
-        }else {
-            if (D("test_report")->data($data)->add()) {
-                D("contract_flow")->where($where)->save($data1);
-                $result['msg'] = 'succ';
-            }
-        }
+        if(empty($fileurl)){
+            $result['msg'] = "无效的提交！";
             $this->ajaxReturn($result);
         }
+        $data = array(
+            //"centreNo"=>$centreno,
+            "path"=>$fileurl,
+            "remark"=>$remark,
+        );
+        //pdf转换
+        $docUrl = getCurrentHost().$data['path'];
+        //$docUrl = "http://adm.qooce.cn/Public/attached/word/2017-11-15/1510741227.docx";
+        $res = convert2Pdf($docUrl);
+        $res = json_decode($res,true);
+        if($res['retCode']===0){
+            $outputURLs = $res['outputURLs'];
+            $pdfUrl = $outputURLs[0];
+            $data['pdf_path'] = $pdfUrl;
+        }else{
+            $result['msg'] = "转换pdf失败";
+            $this->ajaxReturn($rs);
+        }
+        $data1=array(
+            'status'=>2,
+            'uploadreport_user_id'=>$userid,
+            'uploadreport_time'=>date("Y-m-d H:i:s"),
+        );
+        M()->startTrans();
+        if(D("test_report")->where("centreno='{$centreno}'")->save($data)){
+            if(D("contract_flow")->where("centreno='{$centreno}'")->save($data1)){
+                $result['msg'] = "succ";
+                M()->commit();
+            }else{
+                M()->rollback();
+            }
+        }else{
+            M()->rollback();
+        }
+        $this->ajaxReturn($result);
+    }
         //删除（不用改）
     public function doDeleteReport(){
         $id =I("id",0,'intval');

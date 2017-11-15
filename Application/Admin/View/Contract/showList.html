@@ -41,9 +41,9 @@
                     	<!--<a href="{:U('/admin/contract/editContract')}?id={$con.centreno}" id="editContract" target="_blank" class="btn btn-info btn-xs" ><i class="glyphicon glyphicon-search"></i>修改</a>-->
                         <if condition="$if_edit==1">
                         	<if condition="($con['ifedit'] == 0) OR (($con['ifedit'] == 1) and ($con['sub_status'] == 1)) ">
-                       	 		<a href="{:U('/admin/contract/editContract')}?id={$con.centreno}" class="btn btn-info btn-xs" >修改</a>
+                       	 		<a href="{:U('/admin/contract/editContract')}?id={$con.centreno}&type_status={$con.status}" class="btn btn-info btn-xs" >修改</a>
                             <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == -1)" />
-                            	<a href="#" class="btn btn-info btn-xs" onclick="applyBack('{$con.centreno}')" >申请修改</a>
+                            	<a href="#" class="btn btn-info btn-xs" onclick="applyBack('{$con.centreno}',{$con.status})" >申请修改</a>
       
                             </if>
                         </if>
@@ -61,7 +61,7 @@
                             	<span style="color:green">申请中</span>
                             <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == 1)" />
                             	<span style="color:green">申请通过</span>
-                                <a href="#" class="btn btn-info btn-xs"  onclick="doUpdateEditState('{$con.centreno}')" >修改完毕</a>
+                                <a href="#" class="btn btn-info btn-xs"  onclick="doUpdateEditState('{$con.centreno}','{$con.status}')" >修改完毕</a>
                             <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == 2)" />
                             	<span style="color:red">申请拒绝</span>
                             </if>
@@ -105,6 +105,7 @@
                                 <label class="col-sm-3 control-label talign-right fz13">中心编号</label>
                                 <div class="col-sm-7">
                                     <input type="text" readonly="readonly" id="back_centreno" name="back_centreno" class="form-control"/>
+                                    <input type="hidden" id="type_status" name="type_status" value="" />
                                 </div>
                                 <div class="clearfix"></div>
                         </div>
@@ -156,20 +157,22 @@
 		}
 	}
 	
-	function applyBack(centreno){
+	function applyBack(centreno,status){
 		$("#back_reason").val("");
 		var modal = $("#editModal");
 		$("#back_centreno").val(centreno);
+		$("#type_status").val(status);
 		modal.modal();
 	}
 	
 	function subFeedback(){
 		var centreno = $("#back_centreno").val();
 		var reason = $("#back_reason").val();
+		var type_status = $("#type_status").val();
 		$.ajax({
 			url: "{:U('/admin/contract/doSubmitFeedback')}",
 			dataType: 'json',
-			data:{'centreno':centreno,'reason':reason},
+			data:{'centreno':centreno,'reason':reason,'type_status':type_status},
 			beforeSubmit: function(){
 				return true;
 			},
@@ -180,12 +183,12 @@
 		});
 	}
 	
-	function doUpdateEditState(centreno){
+	function doUpdateEditState(centreno,type_status){
 		if(confirm('确认后合同和抽样单均不可修改，是否已修改完毕？')){
 			$.ajax({
 				url: "{:U('/admin/contract/doUpdateEditState')}",
 				dataType: 'json',
-				data:{'centreno':centreno},
+				data:{'centreno':centreno,'type_status':type_status},
 				beforeSubmit: function(){
 					return true;
 				},

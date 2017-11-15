@@ -17,30 +17,27 @@ class UploaderController extends Controller {
         $upload = new \Think\Upload();
         $upload->maxSize   =    0;//不限制上传大小
         $upload->exts      =     array('doc','docx','docm','dotm','txt','dot');
-        $upload->rootPath  =     './Public/word/'; // 设置附件上传根目录
+        $upload->rootPath  =     './Public/attached/'; // 设置附件上传根目录
         $upload->savePath  =     '';
         $upload->saveName = 'time';
         $info   =   $upload->upload();
+
+        $array = array("info"=>"fail");
         if(!$info) {// 上传错误提示错误信息
-            if($return){
-                return $upload->getError();
-            }else{
-                $this->error($upload->getError());
-            }
+            $array['info'] = $upload->getError();
         }else{// 上传成功 获取上传文件信息
-            $saveUrl = './Public/word/'.$info['file']['savepath'].$info['file']['savename'];
+            $saveUrl = './Public/attached/'.$info['file']['savepath'].$info['file']['savename'];
              $base = pathinfo($saveUrl);
             $thumb = $base['dirname'] .'/'. $base['filename'].'.'.$base['extension'];
             $array = array(
                 'info'=>'succ',
                 'url'=>substr($thumb, 1),
             );
-            if($return){
-                return $array;
-            }else{
-                echo json_encode($array);
-            }
+            echo json_encode($array);
+            return true;
         }
+        echo json_encode($array);
+
     }
     /**
      * [upload_img 图片上传]

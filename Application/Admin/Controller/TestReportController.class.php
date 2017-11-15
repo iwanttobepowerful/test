@@ -121,6 +121,7 @@ class TestReportController extends Controller
    	    if(!empty($modid) and !empty($centreNo)){
             $tpl = D("tpl")->where("id=".$modid)->find();
             $contract = D("contract")->where("centreno='{$centreNo}'")->find();
+            //dump($contract);
             $data = array(
                 'centreNo'=>$contract['centreno'],
                 'sampleName'=>$contract['samplename'],
@@ -134,6 +135,9 @@ class TestReportController extends Controller
                 'sampleStatus'=>$contract['sampleStatus'] ? $contract['sampleStatus']:"————",
                 'testCriteria'=>$contract['testCriteria'],
                 'testItem'=>$contract['testItem'],
+                'collectDate'=>$contract['collectdate'] ? $contract['collectdate']:"————",
+                'sampleCode'=>$contract['samplecode'] ? $contract['samplecode']:"————",
+                'sampleQuantity'=>$contract['samplequantity'] ? $contract['samplequantity']:"",
             );
 
             if($contract['testCategory']=="抽样检验"){
@@ -154,24 +158,27 @@ class TestReportController extends Controller
             }
             convert2Word($data,$src,$dst);
             $testReport = D("test_report")->where("centreno='{$centreNo}'")->find();
+
             $update = array(
                 'tplno'=>$modid,
                 'doc_path'=>substr($dst,1),
             );
 
             if($testReport){
-                if(D("test_report")->where("centreno='{$centreNo}'")->save($update)){
-                    $rs['status']='succ';
+                $result=D("test_report")->where("centreno='{$centreNo}'")->save($update);
+                if($result!==false){
+                    $rs['msg']='succ';
                 }
             }else{
                 $update['centreNo']=$centreNo;
                 if(D("test_report")->data($update)->add()){
-                    $rs['status'] = 'succ';
+                    $rs['msg'] = 'succ';
 
                 }
             }
 
         }
+
         $this->ajaxReturn($rs);
     }
     //修改status
