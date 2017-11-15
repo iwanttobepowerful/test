@@ -39,7 +39,10 @@
 					 <volist name="tpl" id="one">
 						 <td>
 							 <img src="{$one.path}" class="img-rounded" />
-                             <a class="btn btn-primary" href="javascript:void(0);" onclick="select('{$one.id}','{$contactNo}')">选择</a>
+							 <if condition="($type eq 2) and (($one[id] == 34) or ($one[id] == 35))">
+                             <a class="btn btn-primary" href="javascript:void(0);" onclick="select('{$one.id}','{$contactNo}')">选择</a></if>
+							 <if condition="($type eq 1) and (($one[id] == 36) or ($one[id] == 37) or ($one[id] == 38) or ($one[id] == 39) or ($one[id] == 40))">
+								 <a class="btn btn-primary" href="javascript:void(0);" onclick="select('{$one.id}','{$contactNo}')">选择</a></if>
 						 </td>
 					 </volist>
 			     <tr>
