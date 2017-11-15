@@ -83,14 +83,14 @@
 
 </div>
  <div class="aui-margin-15">
-    <button type="submit" onclick="doAddSpecicalCode()" class="aui-btn aui-btn-block aui-btn-outlined aui-btn-outlined2 aui-btn-sm ">保存</button>
+    <button type="submit" onclick="doaddspecicalcode()" class="aui-btn aui-btn-block aui-btn-outlined aui-btn-outlined2 aui-btn-sm ">保存</button>
 </div>
 </form>
 <script src="__PUBLIC__/static/js/jquery.form.js"></script>
 <script type="text/javascript" src="__PUBLIC__/wx/script/aui-dialog.js" ></script>
 <script type="text/javascript">
     //新增特殊编号
-    function doAddSpecicalCode(){
+    function doaddspecicalcode(){
         var options = {
             url: "{:U('/wap/contract/addsp')}",
             dataType: 'json',
@@ -113,7 +113,7 @@
                     buttons:['取消','确定']
                 },function(ret){
                     //console.log(ret)
-                    window.location.href="/contract/specialCodeList";
+                    //window.location.href="/contract/specialCodeList";
                 })
             }
         }
