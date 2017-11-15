@@ -652,31 +652,34 @@
 		function doInputContract(){
 			//alert('start');
 			//查找是否是特殊编码
-			if($("#spec_checkbox").is(":checked")){
-				ifspecial=1;	
-			}else{
-				ifspecial=0;	
-			}
-			var options = {
-				url: "{:U('/admin/contract/doAddContract')}",
-				dataType: 'json',
-				data:{'ifspecial':ifspecial},
-				beforeSubmit: function(){
-					return true;
-				},
-				success: function (data) {
-					if(data.msg=='succ'){
-						var _options = {"text":"录入成功！","action":function(){window.location.reload();}};
-						doAlertDialog(_options);
-					}else{
-						var _options = {"text":"录入失败！"};
-						if(data.msg) _options.text = data.msg;
-						doAlertDialog(_options);
-					}
+			if(confirm('若是委托检验提交后不可更改，确认提交吗？')){
+				if($("#spec_checkbox").is(":checked")){
+					ifspecial=1;	
+				}else{
+					ifspecial=0;	
 				}
-			};
-			$("#form2").ajaxForm(options);
-			return false;
+				var options = {
+					url: "{:U('/admin/contract/doAddContract')}",
+					dataType: 'json',
+					data:{'ifspecial':ifspecial},
+					beforeSubmit: function(){
+						return true;
+					},
+					success: function (data) {
+						if(data.msg=='succ'){
+							var _options = {"text":"录入成功！","action":function(){window.location.reload();}};
+							doAlertDialog(_options);
+						}else{
+							var _options = {"text":"录入失败！"};
+							if(data.msg) _options.text = data.msg;
+							doAlertDialog(_options);
+						}
+					}
+				};
+				$("#form2").ajaxForm(options);
+				return false;
+			}
+			
 		}
 		
 		

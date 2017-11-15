@@ -159,7 +159,13 @@
           </tr>
           <tr >
             <td width="179" valign="center" ><p align="center" >规格型号 </p></td>
-            <td width="319" valign="center" ><p align="center" >{$one.specification}</p></td>
+            <td width="319" valign="center" ><p align="center" >
+            			<if condition="$one[specification]">
+                        	{$one.specification}
+                        <else />
+							<span>——</span>
+                        </if> 
+            </p></td>
             <td width="138" valign="center" colspan="2" ><p align="center" >产品批号 </p></td>
             <td width="367" valign="center" ><p align="center" >
             <input type="text" name="batchno" value="{$one.batchno}" class="form-control"/></p></td>
@@ -168,7 +174,13 @@
             <td width="179" valign="center" ><p align="center" >执行标准 </p></td>
             <td width="319" valign="center" ><p align="center" >{$one.testcriteria}</p></td>
             <td width="138" valign="center" colspan="2" ><p align="center" >产品商标 </p></td>
-            <td width="367" valign="center" ><p align="center" >{$one.trademark}</p></td>
+            <td width="367" valign="center" ><p align="center" >
+                <if condition="$one[trademark]">
+                    {$one.trademark}
+                <else />
+                    <span>——</span>
+                </if> 
+            </p></td>
           </tr>
           <tr >
             <td width="179" valign="center" ><p align="center" >抽样数量 </p></td>
@@ -274,7 +286,7 @@
           </tr>
         </table>
         <if condition="($ifedit['ifedit'] == 0) OR (($ifedit['ifedit'] == 1) and ($sub_status['status'] == 1))">
-        	<button class="btn btn-success edit" type="button" id="check_list" onClick="doEditSample()">修改</button>
+        	<button class="btn btn-success edit" type="button" id="check_list" onClick="doEditSample()">提交</button>
         </if>
         <!--<if condition="$ifedit['ifedit'] == 0">
         	<button class="btn btn-success edit" type="button" id="check_list" onClick="doEditSample()">修改</button>
@@ -292,7 +304,7 @@
         <!--<button class="btn btn-success" type="button" id="up_sample" onClick="doUpSample('sample')">上传抽样单</button>
 		<button class="btn btn-success" type="button" id="up_check" onClick="doUpSample('work')">上传检测图片</button>-->
         <a class="btn btn-success edit" href="/admin/contract/doUploadSampleImage?centreno={$one.centreno}&type=sample">上传抽样单</a>
-		<a class="btn btn-success edit" href="/admin/contract/doUploadSampleImage?centreno={$one.centreno}&type=work">上传现场图片</a>
+		<a class="btn btn-success edit" href="/admin/contract/doUploadSampleImage?centreno={$one.centreno}&type=work">上传现场照片</a>
        	
        
         <a class="btn btn-success" href="/admin/test/sampleShow?id={$one.centreno}" onClick="return checkFinish()">打印</a>
