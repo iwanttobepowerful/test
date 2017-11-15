@@ -815,10 +815,13 @@ class ContractController extends Controller
 			$if_edit = 0;	
 		}
 		$keyword = I("keyword");//获取参数
-		if($role['rolename']=="领导" || $role['rolename']=="审核员" || $role['rolename']=="盖章人员" || $role['rolename']=="超级管理员"){
-			$where= "c.centreNo like '%{$keyword}%'";
+        $where = "1=1";
+        $keyword && $where .= " and c.centreNo like '%{$keyword}%'";
+
+		if($role['rolename']=="领导" || $role['rolename']=="审核员" || $role['rolename']=="盖章人员" || $if_admin==1){
+			//
 		}else{
-			$where= "c.centreNo like '%{$keyword}%' and SUBSTR(c.centreNo,7,1) = '{$department}'";
+			$where .= " and SUBSTR(c.centreNo,7,1) = '{$department}'";
 		}
 		if(!empty($begin_time)){
 			$where.=" and date_format(c.collectDate,'%Y-%m-%d') >='{$begin_time}'";
@@ -826,6 +829,7 @@ class ContractController extends Controller
 		if(!empty($end_time)){
 			$where.=" and date_format(c.collectDate,'%Y-%m-%d') <='{$end_time}'";
 		}
+
 		$page = I("p",'int');
         $pagesize = 10;
         if($page<=0) $page = 1;
