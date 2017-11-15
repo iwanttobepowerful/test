@@ -172,6 +172,7 @@ class TestReportController extends Controller
             }
 
         }
+
         $this->ajaxReturn($rs);
     }
     //修改status
