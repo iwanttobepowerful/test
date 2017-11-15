@@ -319,6 +319,7 @@ class ContractController extends Controller
     //合同修改页面
     public function editContract(){
         $contreno = I('id');
+		$type_status = I('type_status');
         $where['centreNo']=$contreno;
         //$testCategory = substr($contreno,7,1);
         $contractItem = D('contract')->where($where)->find();
@@ -326,6 +327,7 @@ class ContractController extends Controller
         $body = array(
             'contract'=>$contractItem,
             'feeItem'=>$feeItem,
+			'type_status'=>$type_status,
             //'$testCategory'=>$testCategory
         );
 
@@ -335,182 +337,218 @@ class ContractController extends Controller
 
     //合同修改入库
     public function doEditContract(){
-
-        $clientName = I("clientName");
-        $productUnit = I("productUnit");
-        $sampleName = I("sampleName");
-        $sampleCode = I("sampleCode");
-        $grade = I("grade");
-        $specification = I("specification");
-        $trademark = I("trademark");
-        $productionDate = I("productionDate");
-        $sampleQuantity = I("sampleQuantity");
-        //$sampleunti = I("sampleunti");
-        $sampleStatus = I("sampleStatus");
-        $ration = I("ration",0,'intval');
-        $testCriteria = I("testCriteria");
-        $testItem = I("testItem");
-        //$testCategory = I("testCategory");
-        $ifOnline = I("ifOnline");
-        $postMethod = I("postMethod");
-        $ifSubpackage = I("ifSubpackage");
-        $package_remark = I("package_remark");
-        $clientSign = I("clientSign");
-        $telephone = I("telephone");
-        $tax = I("tax");
-        $postcode = I("postcode");
-        $email = I("email");
-        $address = I("address");
-        $remark = I("remark");
-        $sampleStaQuan = I("sampleStaQuan");
-        $collector = I("collector");
-        $centreNo = I("centreNo");
-        $testCost = I("testCost",0,'intval');
-        $collectDate = I("collectDate");
-        $reportDate = I("reportDate");
-        $ifHighQuantity = I("ifHighQuantity");
-
-        //费用详情
-        $Arecord = I("Arecord",0,'intval');
-        $Brecord = I("Brecord",0,'intval');
-        $Crecord = I("Crecord",0,'intval');
-        $Drecord = I("Drecord",0,'intval');
-        $Erecord = I("Erecord",0,'intval');
-        $Frecord = I("Frecord",0,'intval');
-        $Dcopy = I("Dcopy",0,'intval');
-        $Donline = I("Donline",0,'intval');
-        $Drevise = I("Drevise",0,'intval');
-        $Dother = I("Dother",0,'intval');
-
-
-        if(empty($clientName)||empty($productUnit)||empty($sampleName)||empty($testCriteria)||empty($testItem)||empty($sampleQuantity)||empty($sampleStatus)||empty($sampleStaQuan)||empty($collector)||empty($testCost)||empty($collectDate)||empty($reportDate)){
-            $rs['msg'] = '信息填写不完整!';
-            $this->ajaxReturn($rs);
-        }
-
-        $data = array(
-            "clientName"=>$clientName,
-            "productUnit"=>$productUnit,
-            "sampleName"=>$sampleName,
-            "sampleCode"=>$sampleCode,
-            "grade"=>$grade,
-            "specification"=>$specification,
-            "trademark"=>$trademark,
-            "productionDate"=>$productionDate,
-            "sampleQuantity"=>$sampleQuantity,
-            //"sampleunti"=>$sampleunti,
-            "sampleStatus"=>$sampleStatus,
-            "ration"=>$ration,
-            "testCriteria"=>$testCriteria,
-            "testItem"=>$testItem,
-            //"testCategory"=>$testCategory,
-            "ifOnline"=>$ifOnline,
-            "postMethod"=>$postMethod,
-            "ifSubpackage"=>$ifSubpackage,
-            "package_remark"=>$package_remark,
-            "clientSign"=>$clientSign,
-            "telephone"=>$telephone,
-            "tax"=>$tax,
-            "postcode"=>$postcode,
-            "email"=>$email,
-            "address"=>$address,
-            "remark"=>$remark,
-            "sampleStaQuan"=>$sampleStaQuan,
-            "collector"=>$collector,
-            "centreNo"=>$centreNo,
-            "testCost"=>$testCost,
-            "collectDate"=>$collectDate,
-            "reportDate"=>$reportDate,
-            "ifHighQuantity"=>$ifHighQuantity
-        );
-        $de = substr($centreNo,6,1);
-        $admin_auth = session("admin_auth");
-        $filler = $admin_auth['name'];
-        //检验工作通知单入库
-        $data_work = array(
-            "centreNo"=>$centreNo,
-            "sampleName"=>$sampleName,
-            "testCreiteria"=>$testCriteria,
-            "testItem"=>$testItem,
-            'testDepartment'=>$de,
-            "ration"=>$ration,
-            'workDate'=>$collectDate,
-            'finishDate'=>$reportDate,
-            "sampleAuantity"=>$sampleQuantity,
-            "sampleStatus"=>$sampleStatus,
-            'otherComments'=>$remark,
-            'filler'=>$filler,
-            'fillDate'=>Date("Y-m-d H:i:s"),
-            //"sampleunti"=>$sampleunti,
-        );
-
-
-        //费用表
-        $date_cost =array(
-            "centreNo"=>$centreNo,
-            "Arecord"=>$Arecord,
-            "Brecord"=>$Brecord,
-            "Crecord"=>$Crecord,
-            "Drecord"=>$Drecord,
-            "Erecord"=>$Erecord,
-            "Frecord"=>$Frecord,
-            "Dcopy"=>$Dcopy,
-            "Donline"=>$Donline,
-            "Drevise"=>$Drevise,
-            "Dother"=>$Dother,
-            'costDate'=>Date("Y-m-d H:i:s")
-        );
-        M()->startTrans();
-        try{
-            $where['centreNo']=$centreNo;
-            //合同入库
-            D("contract")->where($where)->save($data);
-
-            //费用入库
-            D("test_cost")->where($where)->save($date_cost);
-
-            //通知单入库
-            D("work_inform_form")->where($where)->save($data_work);
-
-            //抽样单入库
-            $type = substr($centreNo,7,1);
-            if($type=='C'){
-                $data_sample = array(
-                    "centreNo"=>$centreNo,
-                    "productUnit"=>$clientName,
-                    "sampleName"=>$sampleName,
-                    "specification"=>$specification,
-                    //缺产品批号
-                    "testCriteria"=>$testCriteria,
-                    "trademark"=>$trademark,
-                    "sampleQuantity"=>$sampleQuantity,
-                    //"sampleUnit"=>$sampleunti,
-                    //"productionDate"=>$productionDate,
-                    "testItem"=>$testItem,
-                    "ifOnline"=>$ifOnline,
-                    "ifSubpackage"=>$ifSubpackage,
-                    "package_remark"=>$package_remark
-                );
-                D("sampling_form")->where($where)->save($data_sample);
-            }
-
-            M()->commit();
-            $rs['msg'] = 'succ';
-        }catch(Exception $e){
-            $rs['msg'] = '信息有误，修改不成功';
-            M()->rollback();
-        }
+		//是否为外部签发后的修改
+		$type_status = I('type_status');
+		if($type_status==6){	
+			$centreNo = I("centreNo");
+			$testCost = I("testCost",0,'intval');
+			$Dcopy = I("Dcopy",0,'intval');
+			$Drevise = I("Drevise",0,'intval');
+			$Dother = I("Dother",0,'intval');
+			
+			$data = array(
+				"testCost"=>$testCost,
+			);
+			//费用表
+			$date_cost =array(
+				"Dcopy"=>$Dcopy,
+				"Drevise"=>$Drevise,
+				"Dother"=>$Dother,
+			);
+			M()->startTrans();
+			try{
+				$where['centreNo']=$centreNo;
+				//合同入库
+				D("contract")->where($where)->save($data);
+	
+				//费用入库
+				D("test_cost")->where($where)->save($date_cost);
+	
+				M()->commit();
+				$rs['msg'] = 'succ';
+			}catch(Exception $e){
+				$rs['msg'] = '信息有误，修改不成功';
+				M()->rollback();
+			}
+		}else{
+			$clientName = I("clientName");
+			$productUnit = I("productUnit");
+			$sampleName = I("sampleName");
+			$sampleCode = I("sampleCode");
+			$grade = I("grade");
+			$specification = I("specification");
+			$trademark = I("trademark");
+			$productionDate = I("productionDate");
+			$sampleQuantity = I("sampleQuantity");
+			//$sampleunti = I("sampleunti");
+			$sampleStatus = I("sampleStatus");
+			$ration = I("ration",0,'intval');
+			$testCriteria = I("testCriteria");
+			$testItem = I("testItem");
+			//$testCategory = I("testCategory");
+			$ifOnline = I("ifOnline");
+			$postMethod = I("postMethod");
+			$ifSubpackage = I("ifSubpackage");
+			$package_remark = I("package_remark");
+			$clientSign = I("clientSign");
+			$telephone = I("telephone");
+			$tax = I("tax");
+			$postcode = I("postcode");
+			$email = I("email");
+			$address = I("address");
+			$remark = I("remark");
+			$sampleStaQuan = I("sampleStaQuan");
+			$collector = I("collector");
+			$centreNo = I("centreNo");
+			$testCost = I("testCost",0,'intval');
+			$collectDate = I("collectDate");
+			$reportDate = I("reportDate");
+			$ifHighQuantity = I("ifHighQuantity");
+	
+			//费用详情
+			$Arecord = I("Arecord",0,'intval');
+			$Brecord = I("Brecord",0,'intval');
+			$Crecord = I("Crecord",0,'intval');
+			$Drecord = I("Drecord",0,'intval');
+			$Erecord = I("Erecord",0,'intval');
+			$Frecord = I("Frecord",0,'intval');
+			$Dcopy = I("Dcopy",0,'intval');
+			$Donline = I("Donline",0,'intval');
+			$Drevise = I("Drevise",0,'intval');
+			$Dother = I("Dother",0,'intval');
+	
+	
+			if(empty($clientName)||empty($productUnit)||empty($sampleName)||empty($testCriteria)||empty($testItem)||empty($sampleQuantity)||empty($sampleStatus)||empty($sampleStaQuan)||empty($collector)||empty($testCost)||empty($collectDate)||empty($reportDate)){
+				$rs['msg'] = '信息填写不完整!';
+				$this->ajaxReturn($rs);
+			}
+	
+			$data = array(
+				"clientName"=>$clientName,
+				"productUnit"=>$productUnit,
+				"sampleName"=>$sampleName,
+				"sampleCode"=>$sampleCode,
+				"grade"=>$grade,
+				"specification"=>$specification,
+				"trademark"=>$trademark,
+				"productionDate"=>$productionDate,
+				"sampleQuantity"=>$sampleQuantity,
+				//"sampleunti"=>$sampleunti,
+				"sampleStatus"=>$sampleStatus,
+				"ration"=>$ration,
+				"testCriteria"=>$testCriteria,
+				"testItem"=>$testItem,
+				//"testCategory"=>$testCategory,
+				"ifOnline"=>$ifOnline,
+				"postMethod"=>$postMethod,
+				"ifSubpackage"=>$ifSubpackage,
+				"package_remark"=>$package_remark,
+				"clientSign"=>$clientSign,
+				"telephone"=>$telephone,
+				"tax"=>$tax,
+				"postcode"=>$postcode,
+				"email"=>$email,
+				"address"=>$address,
+				"remark"=>$remark,
+				"sampleStaQuan"=>$sampleStaQuan,
+				"collector"=>$collector,
+				"centreNo"=>$centreNo,
+				"testCost"=>$testCost,
+				"collectDate"=>$collectDate,
+				"reportDate"=>$reportDate,
+				"ifHighQuantity"=>$ifHighQuantity
+			);
+			$de = substr($centreNo,6,1);
+			$admin_auth = session("admin_auth");
+			$filler = $admin_auth['name'];
+			//检验工作通知单入库
+			$data_work = array(
+				"centreNo"=>$centreNo,
+				"sampleName"=>$sampleName,
+				"testCreiteria"=>$testCriteria,
+				"testItem"=>$testItem,
+				'testDepartment'=>$de,
+				"ration"=>$ration,
+				'workDate'=>$collectDate,
+				'finishDate'=>$reportDate,
+				"sampleAuantity"=>$sampleQuantity,
+				"sampleStatus"=>$sampleStatus,
+				'otherComments'=>$remark,
+				'filler'=>$filler,
+				'fillDate'=>Date("Y-m-d H:i:s"),
+				//"sampleunti"=>$sampleunti,
+			);
+	
+			//费用表
+			$date_cost =array(
+				"centreNo"=>$centreNo,
+				"Arecord"=>$Arecord,
+				"Brecord"=>$Brecord,
+				"Crecord"=>$Crecord,
+				"Drecord"=>$Drecord,
+				"Erecord"=>$Erecord,
+				"Frecord"=>$Frecord,
+				"Dcopy"=>$Dcopy,
+				"Donline"=>$Donline,
+				"Drevise"=>$Drevise,
+				"Dother"=>$Dother,
+				'costDate'=>Date("Y-m-d H:i:s")
+			);
+			M()->startTrans();
+			try{
+				$where['centreNo']=$centreNo;
+				//合同入库
+				D("contract")->where($where)->save($data);
+	
+				//费用入库
+				D("test_cost")->where($where)->save($date_cost);
+	
+				//通知单入库
+				D("work_inform_form")->where($where)->save($data_work);
+	
+				//抽样单入库
+				$type = substr($centreNo,7,1);
+				if($type=='C'){
+					$data_sample = array(
+						"centreNo"=>$centreNo,
+						"productUnit"=>$clientName,
+						"sampleName"=>$sampleName,
+						"specification"=>$specification,
+						//缺产品批号
+						"testCriteria"=>$testCriteria,
+						"trademark"=>$trademark,
+						"sampleQuantity"=>$sampleQuantity,
+						//"sampleUnit"=>$sampleunti,
+						//"productionDate"=>$productionDate,
+						"testItem"=>$testItem,
+						"ifOnline"=>$ifOnline,
+						"ifSubpackage"=>$ifSubpackage,
+						"package_remark"=>$package_remark
+					);
+					D("sampling_form")->where($where)->save($data_sample);
+				}
+	
+				M()->commit();
+				$rs['msg'] = 'succ';
+			}catch(Exception $e){
+				$rs['msg'] = '信息有误，修改不成功';
+				M()->rollback();
+			}
+		}
         $this->ajaxReturn($rs);
     }
 
     //申请修改完毕
     public function doUpdateEditState(){
         $centreno = I('centreno');
+		$type_status = I('type_status')==6?1:0;
+		
         $rs = array('msg'=>'fail');
         $where['centreNo']=$centreno;
         $data_apply = array(
-            "status"=>2
+            "status"=>0
         );
+		if($type_status == 1) $data_apply['status']=8;
         //M()->startTrans();
         D("contract_flow")->where($where)->save($data_apply);
         D("report_feedback")->where($where)->delete();
@@ -861,9 +899,12 @@ class ContractController extends Controller
 		$centreno = I('centreno');
 		$reason = I('reason');
 		
+		$type_status = I('type_status',0,'intval')== 6?1:0;
+		//pr($type_status);
 		$data = array(
 			'centreNo'=>$centreno,
 			'reason'=>$reason,
+			'if_outer'=>$type_status
 		);
 		M()->startTrans();
 		if(D('report_feedback')->add($data)){

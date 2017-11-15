@@ -7,6 +7,7 @@
         <table class="table table-bordered table-striped table-hover">
           <tr >
             <td  colspan="9" ><p align="center" >委 托 人 填 写 </p></td>
+            <input type="hidden" id="type_status" name="type_status" value="{$type_status}">
           </tr> 
           <tr > 
             <td><p align="center" ><span style="color:red; font-size:15px">*</span>委托单位 </p></td>
@@ -195,13 +196,13 @@
                   +
                   <input name="Frecord" type="text" class="form-control"  id="Frecord" size="5" placeholder="F部门" readonly  onClick="Cost('F')" value="{$feeItem.frecord}"/>
                   +
-                  <input name="Dcopy" type="text" class="form-control"  id="Dcopy" placeholder="副本" onKeyUp="computeSum()" value="{$feeItem.dcopy}"/>
+                  <input name="Dcopy" type="text" class="form-control fee"  id="Dcopy" placeholder="副本" onKeyUp="computeSum()" value="{$feeItem.dcopy}"/>
                   +
                   <input name="Donline" type="text" class="form-control"  id="Donline" placeholder="上网费" onKeyUp="computeSum()" value="{$feeItem.donline}" />
               	  +
-                  <input name="Drevise" type="text" class="form-control"  id="Drevise" placeholder="项目修改" onKeyUp="computeSum()" value="{$feeItem.drevise}" />
+                  <input name="Drevise" type="text" class="form-control fee"  id="Drevise" placeholder="项目修改" onKeyUp="computeSum()" value="{$feeItem.drevise}" />
                   +
-                  <input name="Dother" type="text" class="form-control"  id="Dother" placeholder="其他"  onKeyUp="computeSum()" value="{$feeItem.dother}"/>
+                  <input name="Dother" type="text" class="form-control fee"  id="Dother" placeholder="其他"  onKeyUp="computeSum()" value="{$feeItem.dother}"/>
                   =
                   <input name="testCost" type="text" class="form-control"  id="sumCost" placeholder="总计"  size="8" readonly value="{$contract.testcost}"/>
               
@@ -228,7 +229,7 @@
 				  	</div>
             </p></td>
             <td valign="center" ><p align="center" ><span style="color:red; font-size:15px">*</span>报告日期<u> </u></p></td>
-            <td  colspan="4" ><p ><input type="text" readonly class="form-control f-datetime input-sm" name="reportDate" value="{$contract.reportdate}"></p></td>
+            <td  colspan="4" ><p><input type="text" readonly class="form-control f-datetime" name="reportDate" value="{$contract.reportdate}"></p></td>
           </tr>
           <tr >
             <td valign="center" ><p >说明 </p></td>
@@ -567,7 +568,16 @@
 		$(document).ready(function(){
 			$('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,	autoclose:true });
 					//计算费用
-					
+			var type_status = $('#type_status').val();
+			
+			if(type_status == 6){
+				$('input,select,textarea').prop('disabled',true);
+				$('.fee').prop('disabled',false);
+				$('#sumCost').prop('disabled',false);
+				$('#centreNo').prop('disabled',false);	
+				$('#sumCost').prop('readonly',true);
+				$('#centreNo').prop('readonly',true);
+			}		
 					
 
 		});	
@@ -688,9 +698,11 @@
 		
 		//合同修改
 		function doEditContract(){
+			var type_status = $('#type_status').val();		
 			var options = {
 				url: "{:U('/admin/contract/doEditContract')}",
 				dataType: 'json',
+				data:{'type_status':type_status},
 				beforeSubmit: function(){
 					return true;
 				},
