@@ -113,6 +113,15 @@ class TestReportController extends Controller
         $tplfile = $tpl['filename'];
         $this->display($tplfile);
 	}
+	//生成报告word下载模板选择
+	public function selectTemp(){
+   	    $id=I("id");
+   	    $contractno=I("contractno");
+   	    if(!empty($id) and !empty($contractno)){
+            $rs['msg'] = 'succ';
+        }
+        $this->ajaxReturn($rs);
+    }
     //修改status
 	public function doneCreate(){
         $conclusion= I("a_result");//填写的结论
