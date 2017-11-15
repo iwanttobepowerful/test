@@ -387,7 +387,7 @@ class TestController extends Controller{
     }
     //提交审核按钮
     public function doUpd(){
-        $centreno=I("centerno");
+        $centreno=I("centreno");
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
