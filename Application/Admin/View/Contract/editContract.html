@@ -69,8 +69,9 @@
           </tr>
           <tr >
             <td valign="center" ><p align="center" ><span style="color:red; font-size:15px">*</span>检验类别 </p></td>
-            <td colspan="8" ><p align="center" >
-            <if condition="$contract.testcategory == 委托检验">
+            <td colspan="8" ><p align="center">
+            	{$contract.testcategory}
+            <!--<if condition="$contract.testcategory == 委托检验">
             	<input type="radio" name="testCategory" id="testCategory10" value="委托检验" checked="checked"/>委托检验
                 <input type="radio" name="testCategory" id="testCategory11" value="抽样检验" />抽样检验
                 <input type="radio" name="testCategory" id="testCategory12" value="形式检验" />型式检验
@@ -82,7 +83,7 @@
             	<input type="radio" name="testCategory" id="testCategory10" value="委托检验" />委托检验
                 <input type="radio" name="testCategory" id="testCategory11" value="抽样检验" />抽样检验
                 <input type="radio" name="testCategory" id="testCategory12" value="形式检验" checked="checked"/>型式检验
-            </if>
+            </if>-->
             </p></td>
           </tr>
           <tr >

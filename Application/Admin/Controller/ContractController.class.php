@@ -194,6 +194,7 @@ class ContractController extends Controller
             "ifHighQuantity"=>$ifHighQuantity,
             'input_time'=>Date("Y-m-d H:i:s"),
             'collector_partment'=>$collector_partment,
+			'ifedit'=>0
         );
         $de = substr($centreNo,6,1);
 
@@ -240,7 +241,10 @@ class ContractController extends Controller
             'contract_time'=>Date("Y-m-d H:i:s"),
         );
 
-
+		$type = substr($centreNo,7,1);
+		if($type=='W'){
+			$data['ifedit']=1;
+		}
         M()->startTrans();
         try{
 
@@ -274,11 +278,11 @@ class ContractController extends Controller
             if(!D("work_inform_form")->data($data_work)->add()) $flag=false;
 
             //抽样单入库
-            $type = substr($centreNo,7,1);
+           
             if($type=='C'){
                 $data_sample = array(
                     "centreNo"=>$centreNo,
-                    "productUnit"=>$productUnit,
+                    "productUnit"=>$clientName,
                     "sampleName"=>$sampleName,
                     "specification"=>$specification,
                     //缺产品批号
@@ -346,7 +350,7 @@ class ContractController extends Controller
         $ration = I("ration",0,'intval');
         $testCriteria = I("testCriteria");
         $testItem = I("testItem");
-        $testCategory = I("testCategory");
+        //$testCategory = I("testCategory");
         $ifOnline = I("ifOnline");
         $postMethod = I("postMethod");
         $ifSubpackage = I("ifSubpackage");
@@ -399,7 +403,7 @@ class ContractController extends Controller
             "ration"=>$ration,
             "testCriteria"=>$testCriteria,
             "testItem"=>$testItem,
-            "testCategory"=>$testCategory,
+            //"testCategory"=>$testCategory,
             "ifOnline"=>$ifOnline,
             "postMethod"=>$postMethod,
             "ifSubpackage"=>$ifSubpackage,
@@ -473,7 +477,7 @@ class ContractController extends Controller
             if($type=='C'){
                 $data_sample = array(
                     "centreNo"=>$centreNo,
-                    "productUnit"=>$productUnit,
+                    "productUnit"=>$clientName,
                     "sampleName"=>$sampleName,
                     "specification"=>$specification,
                     //缺产品批号
@@ -674,6 +678,7 @@ class ContractController extends Controller
             'list'=>$list,
             'ifedit'=>$ifedit,
             'sub_status'=>$sub_status,
+			'type'=>$type,
         );
         $this->assign($body);
         $this->display();
@@ -726,74 +731,138 @@ class ContractController extends Controller
             M()->rollback();
         }
         $this->ajaxReturn($result);
-    }
+	}
+	
+	//抽样单提交
+	public function doUpdateState(){
+		$rs = array('msg'=>'fail');
+		$centreNo = I('centreno');
+		$admin_auth = session("admin_auth");
+		$contract_user_id = $admin_auth['id'];
+		$where['centreNo']=$centreNo;
+		//pr($centreNo);
+		$data_flow = array(
+			"centreNo"=>$centreNo,
+			'contract_user_id'=>$contract_user_id,
+			'contract_time'=>Date("Y-m-d H:i:s"),
+		);
+		$data_contract = array(
+			'ifedit'=>1
+		);
+		M()->startTrans();	
+		if(D("contract_flow")->data($data_flow)->add()){
+			D("contract")->where($where)->save($data_contract);
+			M()->commit();
+			$rs['msg']='已提交';
+		}else{
+			$rs['msg']='提交失败';
+			M()->rollback();	
+		}
+		$this->ajaxReturn($rs);
+	}
 
-    //抽样单提交
-    public function doUpdateState(){
-        $rs = array('msg'=>'fail');
-        $centreNo = I('centreno');
-        $admin_auth = session("admin_auth");
-        $contract_user_id = $admin_auth['id'];
-        //pr($centreNo);
-        $data_flow = array(
-            "centreNo"=>$centreNo,
-            'contract_user_id'=>$contract_user_id,
-            'contract_time'=>Date("Y-m-d H:i:s"),
-        );
-        M()->startTrans();
-        if(D("contract_flow")->data($data_flow)->add()){
-            M()->commit();
-            $rs['msg']='已提交';
-        }else{
-            $rs['msg']='提交失败';
-            M()->rollback();
-        }
-        $this->ajaxReturn($rs);
-    }
+	//特殊号段查询
+	public function specialCodeSelect(){
+		$list = D("special_centre_code")->where('remainNum>0')->select();
+		
+		$body = array(
+			"special_list"=>$list,
+		);
+		//dump($body);
+	    $this->assign($body);
+		$this->display();
+	}
+	
+	//外部签发
+	public function externalSign(){
+		$rs = array('msg'=>'fail');
+		$centreNo = I('centreno');
+		//pr($centreNo);
+		$admin_auth = session("admin_auth");
+		$external_sign_user_id = $admin_auth['id'];
+		//pr($centreNo);
+		$data_flow = array(		
+			'status'=>6,
+			'external_sign_user_id'=>$external_sign_user_id,
+			'contract_time'=>Date("Y-m-d H:i:s"),
+		);
+		$where['centreNo']=$centreNo;
+		M()->startTrans();	
+		if(D("contract_flow")->where($where)->save($data_flow)){
+			M()->commit();
+			$rs['msg']='已外部签发';
+		}else{
+			$rs['msg']='签发失败';
+			M()->rollback();	
+		}
+		$this->ajaxReturn($rs);
+	}
 
-    //特殊号段查询
-    public function specialCodeSelect(){
-        $list = D("special_centre_code")->where('remainNum>0')->select();
+	//合同列表
+	public function showList(){
+		//判断角色，确定是否可以修改
+		$admin_auth = session("admin_auth");
+		$if_admin = $admin_auth['super_admin'];
+		$roleid = $admin_auth['gid'];
+		$department = $admin_auth['department'];
+		$begin_time = I("begin_time");
+        $end_time = I("end_time");
+		
+		$role = D('common_role')->where('id='.$roleid)->find();
+		if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
+			$if_edit = 1;	
+		}else{
+			$if_edit = 0;	
+		}
+		$keyword = I("keyword");//获取参数
+        $where = "1=1";
+        $keyword && $where .= " and c.centreNo like '%{$keyword}%'";
 
-        $body = array(
-            "special_list"=>$list,
-        );
-        //dump($body);
-        $this->assign($body);
-        $this->display();
-    }
+		if($role['rolename']=="领导" || $role['rolename']=="审核员" || $role['rolename']=="盖章人员" || $if_admin==1){
+			//
+		}else{
+			$where .= " and SUBSTR(c.centreNo,7,1) = '{$department}'";
+		}
+		if(!empty($begin_time)){
+			$where.=" and date_format(c.collectDate,'%Y-%m-%d') >='{$begin_time}'";
+		}
+		if(!empty($end_time)){
+			$where.=" and date_format(c.collectDate,'%Y-%m-%d') <='{$end_time}'";
+		}
 
-    //外部签发
-    public function externalSign(){
-        $rs = array('msg'=>'fail');
-        $centreNo = I('centreno');
-        //pr($centreNo);
-        $admin_auth = session("admin_auth");
-        $external_sign_user_id = $admin_auth['id'];
-        //pr($centreNo);
-        $data_flow = array(
-            'status'=>6,
-            'external_sign_user_id'=>$external_sign_user_id,
-            'contract_time'=>Date("Y-m-d H:i:s"),
-        );
-        $where['centreNo']=$centreNo;
-        M()->startTrans();
-        if(D("contract_flow")->where($where)->save($data_flow)){
-            M()->commit();
-            $rs['msg']='已外部签发';
-        }else{
-            $rs['msg']='签发失败';
-            M()->rollback();
-        }
-        $this->ajaxReturn($rs);
-    }
-
-    //合同列表
-    public function showList(){
+		$page = I("p",'int');
+        $pagesize = 10;
+        if($page<=0) $page = 1;
+        $offset = ( $page-1 ) * $pagesize;
+		
+		//判断是接单还是签发
+		//$ifstatus = 
+		$list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,if(r.status is null,-1,r.status) as sub_status,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN report_feedback r on r.centreNo = c.centreNo')->where($where)->order('c.input_time DESC')->limit("{$offset},{$pagesize}")->select();
+		$count = D("contract as c")->field('if(r.status is null,-1,r.status) as sub_status,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN report_feedback r on r.centreNo = c.centreNo')->where($where)->order('c.input_time DESC')->count();
+		$Page= new \Think\Page($count,$pagesize);
+		$Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
+		$pagination= $Page->show();// 分页显示输出
+		
+		$body = array(
+			"list"=>$list,
+			'pagination'=>$pagination,
+			'if_edit'=>$if_edit,
+			'begin_time'=>$begin_time,
+			'end_time'=>$end_time
+		);
+		//dump($body);
+		$this->assign($body);
+		$this->display();
+	}
+	//报告管理下的合同列表
+    public function showReportList(){
         //判断角色，确定是否可以修改
         $admin_auth = session("admin_auth");
         $if_admin = $admin_auth['super_admin'];
         $roleid = $admin_auth['gid'];
+        $department = $admin_auth['department'];
+        $begin_time = I("begin_time");
+        $end_time = I("end_time");
 
         $role = D('common_role')->where('id='.$roleid)->find();
         if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
@@ -802,7 +871,21 @@ class ContractController extends Controller
             $if_edit = 0;
         }
         $keyword = I("keyword");//获取参数
-        $where= "c.centreNo like '%{$keyword}%'";
+        $where['f.status']= array('in','8,1,2,4,5,6');
+        $keyword && $where .= " and c.centreNo like '%{$keyword}%'";
+
+        if($role['rolename']=="领导" || $role['rolename']=="审核员" || $role['rolename']=="盖章人员" || $if_admin==1){
+            //
+        }else{
+            $where .= " and SUBSTR(c.centreNo,7,1) = '{$department}'";
+        }
+        if(!empty($begin_time)){
+            $where.=" and date_format(c.collectDate,'%Y-%m-%d') >='{$begin_time}'";
+        }
+        if(!empty($end_time)){
+            $where.=" and date_format(c.collectDate,'%Y-%m-%d') <='{$end_time}'";
+        }
+
         $page = I("p",'int');
         $pagesize = 10;
         if($page<=0) $page = 1;
@@ -810,8 +893,8 @@ class ContractController extends Controller
 
         //判断是接单还是签发
         //$ifstatus =
-        $list = D("contract as c")->field('if(r.status is null,-1,r.status) as sub_status,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN report_feedback r on r.centreNo = c.centreNo')->where($where)->order('c.input_time DESC')->limit("{$offset},{$pagesize}")->select();
-        $count = D("contract as c")->where($where)->count();
+        $list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,if(r.status is null,-1,r.status) as sub_status,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN report_feedback r on r.centreNo = c.centreNo')->where($where)->order('c.input_time DESC')->limit("{$offset},{$pagesize}")->select();
+        $count = D("contract as c")->field('if(r.status is null,-1,r.status) as sub_status,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN report_feedback r on r.centreNo = c.centreNo')->where($where)->order('c.input_time DESC')->count();
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
         $pagination= $Page->show();// 分页显示输出
@@ -819,83 +902,83 @@ class ContractController extends Controller
         $body = array(
             "list"=>$list,
             'pagination'=>$pagination,
-            'if_edit'=>$if_edit
+            'if_edit'=>$if_edit,
+            'begin_time'=>$begin_time,
+            'end_time'=>$end_time
         );
         //dump($body);
         $this->assign($body);
         $this->display();
     }
+	//申请修改
+	public function doSubmitFeedback(){
+		$rs = array('msg'=>'fail');
+		$centreno = I('centreno');
+		$reason = I('reason');
+		
+		$data = array(
+			'centreNo'=>$centreno,
+			'reason'=>$reason,
+		);
+		M()->startTrans();
+		if(D('report_feedback')->add($data)){
+			$rs['msg']='申请成功';
+			M()->commit();	
+		}else{
+			$rs['msg']='申请失败';
+			M()->rollback();		
+		}
+		$this->ajaxReturn($rs);
+	}
 
-    //申请修改
-    public function doSubmitFeedback(){
-        $rs = array('msg'=>'fail');
-        $centreno = I('centreno');
-        $reason = I('reason');
-
-        $data = array(
-            'centreNo'=>$centreno,
-            'reason'=>$reason,
-        );
-        M()->startTrans();
-        if(D('report_feedback')->add($data)){
-            $rs['msg']='申请成功';
-            M()->commit();
-        }else{
-            $rs['msg']='申请失败';
-            M()->rollback();
-        }
-        $this->ajaxReturn($rs);
-    }
-
-    //获取最中心编号
-    public function getLastCode(){
-        $centreNo['re']='none';
-        $year=I("year");
-        $month=I("month");
-        $centreHead=$year.$month;
-        $list = D("contract")->field('centreNo',SUBSTR(centreNo,9,3))->where('centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)>100')->order('SUBSTR(centreNo,9,3) desc')->select();
-        //pr(D("contract")->getLastSql());
-        if(count($list)>0){
-            $centreNo['re']= $list[0]['centreno'];
-        }
-
-        //dump($list[0]['centreno']);
-        $this->ajaxReturn($centreNo);
-    }
-
-    //获取新最优质中心编号
-    public function getHighCode(){
-        $centreNo['re']='none';
-        $year=I("year");
-        $month=I("month");
-        $centreHead=$year.$month;
-        $list = D("contract")->field('centreNo',SUBSTR(centreNo,9,3))->where('centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)<100')->order('SUBSTR(centreNo,9,3) desc')->select();
-        //$count = D("contract")->field('count(*) as num')->where('centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)<100')->order('SUBSTR(centreNo,9,3) desc')->select();
-        //pr(D("contract")->getLastSql());
-        if(count($list)>0){
-            $centreNo['re']= $list[0]['centreno'];
-        }
-        //$centreNo['count'] = $count[0]['num'];
-        //pr($centreNo['count']);
-        //dump($list[0]['centreno']);
-        $this->ajaxReturn($centreNo);
-    }
-
-    //费用查询
-    public function feeManage(){
-        $criteria = I('criteria');
-        //$test_fee_list = D("test_fee")->where('criteria like %'.$criteria.'%')->select();
-        $admin_auth = session("admin_auth");
-        $if_admin = $admin_auth['super_admin'];
-        $roleid = $admin_auth['gid'];
-
-        $role = D('common_role')->where('id='.$roleid)->find();
-        if($role['rolename']=="领导" || $if_admin==1){
-            $if_leader = 1;
-        }else{
-            $if_leader = 0;
-        }
-        $page = I("p",'int');
+	//获取最中心编号
+	public function getLastCode(){
+		$centreNo['re']='none';
+		$year=I("year");
+		$month=I("month");
+		$centreHead=$year.$month;
+		$list = D("contract")->field('centreNo',SUBSTR(centreNo,9,3))->where('centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)>100')->order('SUBSTR(centreNo,9,3) desc')->select();
+		//pr(D("contract")->getLastSql());
+		if(count($list)>0){
+			$centreNo['re']= $list[0]['centreno'];	
+		}
+		
+		//dump($list[0]['centreno']);
+		$this->ajaxReturn($centreNo);
+	}
+	
+		//获取新最优质中心编号
+	public function getHighCode(){
+		$centreNo['re']='none';
+		$year=I("year");
+		$month=I("month");
+		$centreHead=$year.$month;
+		$list = D("contract")->field('centreNo',SUBSTR(centreNo,9,3))->where('centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)<100')->order('SUBSTR(centreNo,9,3) desc')->select();
+		//$count = D("contract")->field('count(*) as num')->where('centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)<100')->order('SUBSTR(centreNo,9,3) desc')->select();
+		//pr(D("contract")->getLastSql());
+		if(count($list)>0){
+			$centreNo['re']= $list[0]['centreno'];	
+		}
+		//$centreNo['count'] = $count[0]['num'];
+		//pr($centreNo['count']);
+		//dump($list[0]['centreno']);
+		$this->ajaxReturn($centreNo);
+	}
+	
+	//费用查询
+	public function feeManage(){
+		$criteria = I('criteria');
+		//$test_fee_list = D("test_fee")->where('criteria like %'.$criteria.'%')->select();
+		$admin_auth = session("admin_auth");
+		$if_admin = $admin_auth['super_admin'];
+		$roleid = $admin_auth['gid'];
+		
+		$role = D('common_role')->where('id='.$roleid)->find();
+		if($role['rolename']=="领导" || $if_admin==1){
+			$if_leader = 1;	
+		}else{
+			$if_leader = 0;	
+		}
         $pagesize = 10;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;

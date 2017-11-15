@@ -6,15 +6,14 @@
             <a href="{:U('/admin/test/recordPicture')}" class="btn btn-primary">返回</a>
             <if condition="$view eq 7" >
             <a href="{:U('/admin/test/picUp')}?centreno={$centreno}" class="btn btn-primary">上传</a>
-                <else />
-                <a href="javascript:void (0)" class="btn btn-primary" onclick="data()"><i class=" glyphicon glyphicon-download"></i>批量打印</a>
             </if>
-            <a href="{:U('/admin/test/picUp')}?centreno={$centreno}" class="btn btn-primary">上传</a>
+                <a href="javascript:void (0)" class="btn btn-primary" onclick="data()"><i class=" glyphicon glyphicon-download"></i>批量打印</a>
+
         </div>
         <table class="table table-bordered table-striped table-hover">
             <thead>
-                <if condition="$view neq 7">
-                <th><input type="checkbox" id="selectall" /><label>全选</label></th></if>
+
+                <th><input type="checkbox" id="selectall" /><label>全选</label></th>
                 <th>序号</th>
                 <th>中心编号</th>
                 <th>检验照片</th>
@@ -25,8 +24,7 @@
             <tbody>
             <volist name="lists" id="one" key="i">
                 <tr>
-                    <if condition="$view neq 7">
-                        <td><input type="checkbox" name="print" class="qx" value="{$one['id']}"/> </td></if>
+                        <td><input type="checkbox" name="print" class="qx" value="{$one['id']}"/> </td>
                     <td>{$i}</td>
                     <td>{$one.centreno}</td>
                     <td><a href="javascript:void(0);" name="{$one.path}" onclick="return Check(this);"><img src="{$one.path}" onerror="this.src='__PUBLIC__/static/images/default-timg.gif'" style="width: 90px;" /></a></td>

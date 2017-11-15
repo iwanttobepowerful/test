@@ -6,7 +6,11 @@
 				<input type="hidden" name="id" value="{$centreno}" />
                 <input type="hidden" name="type" value="{$type}" />
 			  	<div class="form-group">
-			    	<label class="col-sm-2 control-label talign-center fz13">抽样单图片</label>
+                	<if condition="$type=='sample'">
+			    	<label class="col-sm-2 control-label talign-center fz13">抽样单照片</label>
+                    <else />
+                    <label class="col-sm-2 control-label talign-center fz13">抽样现场照片</label>
+                    </if>
 				    <div class="col-sm-10">
 				      	<div class="face" id="attachment" style="width: 120px;height: 80px;" onclick="onFileUpload()"><img src="{$stamp['offcial_seal']}" onerror="this.src='__PUBLIC__/static/images/default-timg.gif'" style="height: 100%;" /></div>
 				      	<input type="hidden" name="imgurl" value="{$stamp['offcial_seal']}" />
@@ -39,7 +43,7 @@
                 	<thead>
                     	<th>序号</th>
                         <th>中心编号</th>
-                        <th>缩列图</th>
+                        <th>抽样照片</th>
                         <th>备注</th>
                         <th>操作</th>
                     </thead>
