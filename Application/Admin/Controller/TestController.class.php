@@ -357,6 +357,7 @@ class TestController extends Controller{
         $docUrl = getCurrentHost().$data['path'];
         //$docUrl = "http://adm.qooce.cn/Public/attached/word/2017-11-15/1510741227.docx";
         $res = convert2Pdf($docUrl);
+        pr($res);
         $res = json_decode($res,true);
         if($res['retCode']===0){
             $outputURLs = $res['outputURLs'];
