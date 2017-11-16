@@ -74,7 +74,7 @@
               
               <input type="radio" name="testCategory" id="testCategory11" value="抽样检验" />抽样检验
               
-              <input type="radio" name="testCategory" id="testCategory12" value="形式检验" />型式检验
+              <input type="radio" name="testCategory" id="testCategory12" value="型式检验" />型式检验
             </p></td>
           </tr>
           <tr >
@@ -577,7 +577,7 @@
 				var year = nowDate.getFullYear();
 				var month = nowDate.getMonth()+1;
 				month = month<10?'0'+month:month;
-				var department = 'B';
+				var department = $('#department').val()==''?'D':$('#department').val();
 				var type = $('input:radio[name="testCategory"]:checked').val();
 				type = (type == '委托检验')?'W':'C';
 				var code='001';
