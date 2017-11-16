@@ -254,9 +254,15 @@ class TestController extends Controller{
     //批量打印
     public function doPrint(){
         $id=I("id");//获取勾选的id值
+        $type=I("type");//获取type
         $data=explode(',',$id);
         $where['id'] = array('in', $data);
-        $rs=D("test_record")->where($where)->field('path')->select();
+        if($type == 1){
+            $rs=D("sample_picture")->where($where)->field('picture_name')->select();
+        }
+        else{
+            $rs=D("test_record")->where($where)->field('path')->select();
+        }
         //换成字符串后再替换
         foreach ($rs as $v){
             $v = join(",",$v); //可以用implode将一维数组转换为用逗号连接的字符串，join是别名
