@@ -577,7 +577,7 @@
 				var year = nowDate.getFullYear();
 				var month = nowDate.getMonth()+1;
 				month = month<10?'0'+month:month;
-				var department = 'B';
+				var department = $('#department').val()==''?'D':$('#department').val();
 				var type = $('input:radio[name="testCategory"]:checked').val();
 				type = (type == '委托检验')?'W':'C';
 				var code='001';
