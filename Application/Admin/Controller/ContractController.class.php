@@ -937,7 +937,7 @@ class ContractController extends Controller
             $if_edit = 0;
         }
         $keyword = I("keyword");//获取参数
-        $where['f.status']= array('in','8,1,2,4,5,6');
+        $where= "f.status != 7";
         $keyword && $where .= " and c.centreNo like '%{$keyword}%'";
 
         if($role['rolename']=="领导" || $role['rolename']=="审核员" || $role['rolename']=="盖章人员" || $if_admin==1||$role['rolename']=="报告编制员"){
@@ -970,7 +970,8 @@ class ContractController extends Controller
             'pagination'=>$pagination,
             'if_edit'=>$if_edit,
             'begin_time'=>$begin_time,
-            'end_time'=>$end_time
+            'end_time'=>$end_time,
+            'keyword'=>$keyword,
         );
         //dump($body);
         $this->assign($body);
