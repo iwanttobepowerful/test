@@ -199,6 +199,8 @@ class ReportController extends Controller
             ->field('a.id,a.status,a.internalpass,a.centreNo,a.inner_sign_time,a.inner_sign_user_id,a.verify_user_id,a.verify_time,b.name,c.tplno,c.pdf_path,c.path')
             ->limit("{$offset},{$pagesize}")
             ->order($orderby)->select();
+        $data = $admin_auth['name'];
+        dump($data);
         $count = D("contract_flow")->alias("a")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
@@ -211,7 +213,9 @@ class ReportController extends Controller
             'end_time'=>$end_time,
             'sortby'=>$sortby,
             'centreno'=>$centreno,
+            'data'=>$data,
         );
+
         $this->assign($body);
         $this->display();
     }
