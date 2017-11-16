@@ -353,13 +353,14 @@ class TestController extends Controller{
             //"centreNo"=>$centreno,
             "path"=>$fileurl,
             "remark"=>$remark,
+            'modify_time'=>date("Y-m-d H:i:s"),
         );
         //pdf转换
         $docUrl = getCurrentHost().$data['path'];
         //$docUrl = "http://adm.qooce.cn/Public/attached/word/2017-11-15/1510741227.docx";
         $res = convert2Pdf($docUrl);
         $res = json_decode($res,true);
-        if($res['retCode']===0){
+        if($res['retMsg']=='success'){
             $outputURLs = $res['outputURLs'];
             $pdfUrl = $outputURLs[0];
             $data['pdf_path'] = $pdfUrl;
