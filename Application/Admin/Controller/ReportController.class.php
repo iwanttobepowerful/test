@@ -200,7 +200,6 @@ class ReportController extends Controller
             ->limit("{$offset},{$pagesize}")
             ->order($orderby)->select();
         $data = $admin_auth['name'];
-        dump($data);
         $count = D("contract_flow")->alias("a")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
