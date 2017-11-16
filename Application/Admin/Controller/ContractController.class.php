@@ -994,9 +994,14 @@ class ContractController extends Controller
 	//更改补充检验报告单
 	public function addorEditReport(){
 		$centreNo = I('id');
+		$count = D('inspection_report')->where('centreNo="'.$centreNo.'"')->count();
+		$one = D('inspection_report')->where('centreNo="'.$centreNo.'"')->find();
 		$body = array(
-			'centreNo'=>$centreNo
+			'centreNo'=>$centreNo,
+			'count'=>$count,
+			'one'=>$one
 		);
+		
 		$this->assign($body);
 		$this->display();
 	}
@@ -1010,12 +1015,29 @@ class ContractController extends Controller
 		$update_item = I('update_item');
 		$update_item_list = "";
 		for($i = 0;$i < 6;$i++){
-			$update_item_list.=$update_item[$i]." ";
+			$update_item_list.=$update_item[$i]."/&&/";
 		}
 		$update_reason = I('update_reason');
 		$applicant = I('applicant');
 		$handler = I('handler');
 		$handleDate = I('handleDate');
+		$data_list = array(
+			"handler"=>$handler,
+			'handleDate'=>$handleDate,
+			'edit_No'=>$edit_No,
+			'centreNo'=>$centreNo,
+			'sampleName'=>$sampleName,
+			'clientName'=>$clientName,
+			'update_item'=>$update_item_list,
+			'update_reason'=>$update_reason,
+			'applicant'=>$applicant,
+		);
+		$rs['msg']='fail';
+		if(D('inspection_report')->add($data_list)){
+			$rs['msg']='succ';
+		}
+		$this->ajaxReturn($rs);
+		
 	}
 
 	//获取最中心编号
