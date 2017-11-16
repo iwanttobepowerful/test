@@ -138,10 +138,10 @@ class TestReportController extends Controller
                 'collectDate'=>$contract['collectDate'] ? $contract['collectDate']:"————",
                 'sampleCode'=>$contract['sampleCode'] ? $contract['sampleCode']:"————",
                 'sampleQuantity'=>$contract['sampleQuantity'] ? $contract['sampleQuantity']:"————",
-                'testType'=>$contract['testType'] ? $contract['testType']:"————",
+                //'testType'=>$contract['testType'] ? $contract['testType']:"————",
             );
 
-            if($contract['testCategory']=="抽样检验"){
+            //if($contract['testCategory']=="抽样检验"){
                 $samplingForm = D("sampling_form")->where("centreno='{$centreNo}'")->find();
                 if($samplingForm){
                     $data['samplePlace'] = $samplingForm['samplePlace'] ? $samplingForm['samplePlace'] : "————";
@@ -151,18 +151,24 @@ class TestReportController extends Controller
                     $data['sampleBase'] = $samplingForm['samplebase'] ? $samplingForm['samplebase']:"————";
 
                 }
-            }
+            //}
             $src = "./Public/{$tpl['filename']}";
             $dst = "./Public/attached/report/{$centreNo}.docx";
             if(file_exists($dst)){
                 unlink($dst);
             }
-            convert2Word($data,$src,$dst);
+            $qrcode = $this->qrcode($centreNo,getCurrentHost().'/admin/report/pdf?no='.$centreNo);
+            convert2Word($data,$src,$dst,$qrcode);
+
+
+            //setQrcode($dst,$qrcode,'./Public/qrcode/'.time().'.docx');die;
             $testReport = D("test_report")->where("centreno='{$centreNo}'")->find();
 
             $update = array(
                 'tplno'=>$modid,
                 'doc_path'=>substr($dst,1),
+                'qrcode_path'=>$qrcode,
+                'modify_time'=>date("Y-m-d H:i:s"),
             );
 
             if($testReport){
@@ -217,27 +223,17 @@ class TestReportController extends Controller
 //生成二维码
     public function qrcode($centreno,$qr_data){
         $save_path = './Public/qrcode/';  //图片存储的绝对路径
-        $web_path = '/Admin/qrcode/';        //图片在网页上显示的路径
         $qr_level = 'L';
         $qr_size = '4';
         $save_prefix = '';
         if(file_exists($save_path.md5($centreno).'.png')){
-            $img = $save_path.md5($centreno).'.png';
-            //unlink($img);
-        }elseif($filename = createQRcode($centreno,$save_path,$qr_data,$qr_level,$qr_size,$save_prefix)){
+            unlink($save_path.md5($centreno).'.png');
+        }
+        if($filename = createQRcode($centreno,$save_path,$qr_data,$qr_level,$qr_size,$save_prefix)){
             $img = $save_path.$filename;
         }
-        return substr($img,1);
-        //$distimg = $save_path.md5($centreno).'.png';
-       // unlink($distimg);
-        //if(file_exists($distimg)){
-            //$img = $save_path.md5($centreno).'.png';
-            //
-        //}elseif($filename = createQRcode($centreno,$save_path,$qr_data,$qr_level,$qr_size,$save_prefix)){
-           // $img = $save_path.$filename;
-        //}
-       // return substr($img,1);
-        //echo "<img src='".$pic."'>";
+        return $img;
+        //return substr($img,1);
     }
 
     //选择编号
@@ -249,6 +245,8 @@ class TestReportController extends Controller
             $type = 2;
         }elseif($contract['testcategory']=='委托检验'){
             $type = 1;
+        }elseif($contract['testcategory']=='型式检验'){
+            $type = 2;
         }
         $body = array(
            'contactNo'=>$centreno,
