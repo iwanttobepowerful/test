@@ -175,7 +175,8 @@ function createQRcode($filename,$save_path,$qr_data='PHP QR Code :)',$qr_level='
     vendor('PHPQRcode.class#phpqrcode');  //注意这里的大小写哦，不然会出现找不到类，PHPQRcode是文件夹名字，class#phpqrcode就代表class.phpqrcode.php文件名
     //检测并创建生成文件夹
     if (!file_exists($PNG_TEMP_DIR)){
-        mkdir($PNG_TEMP_DIR);
+        //mkdir($PNG_TEMP_DIR);
+        mkdir($PNG_TEMP_DIR,0755,true);
     }
     //$filename = $PNG_TEMP_DIR.'test.png';
     $errorCorrectionLevel = 'L';
@@ -186,6 +187,7 @@ function createQRcode($filename,$save_path,$qr_data='PHP QR Code :)',$qr_level='
     if (isset($qr_size)){
         $matrixPointSize = & min(max((int)$qr_size, 1), 10);
     }
+
     if (isset($qr_data)) {
         if (trim($qr_data) == ''){
             die('data cannot be empty!');
@@ -195,17 +197,17 @@ function createQRcode($filename,$save_path,$qr_data='PHP QR Code :)',$qr_level='
         //开始生成
         QRcode::png($qr_data, $filename, $errorCorrectionLevel, $matrixPointSize, 2);
     } else {
+        echo 'filename:'.$filename;
         //默认生成
         QRcode::png('PHP QR Code :)', $filename, $errorCorrectionLevel, $matrixPointSize, 2);
     }
-
     if(file_exists($PNG_TEMP_DIR.basename($filename)))
         return basename($filename);
     else
         return FALSE;
 }
 if(!function_exists('convert2Word')){
-    function convert2Word($data,$srcFile,$distFile){
+    function convert2Word($data,$srcFile,$distFile,$qrcode=null){
        vendor("PhpWord.bootstrap");
         ///require_once $vendorDirPath.'/bootstrap.php';
         $templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor($srcFile);
@@ -217,6 +219,20 @@ if(!function_exists('convert2Word')){
         }
     }
 }
+if(!function_exists('setQrcode')){
+    function setQrcode($word,$qrcode,$newword){
+        vendor("PhpWord.bootstrap");
+        $phpword = \PhpOffice\PhpWord\IOFactory::load($word);
+        $section = $phpword->addSection();
+        $imageStyle = array('width'=>110, 'height'=>110, 'position' => 'absolute', 'top' => -108, 'left' => 480, 'zIndex' => 4);
+
+        $section->addImage($qrcode,$imageStyle);  
+        //生成文件  
+        $wordWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpword, "Word2007");  
+        $wordWriter->save($newword);
+    }
+}
+
 if(!function_exists('http_request')){
     function http_request( $url , $params = array(), $method = 'GET' , $multi = false, $extheaders = array()){
         if(!function_exists('curl_init')) exit('Need to open the curl extension');

@@ -53,13 +53,21 @@
         </div>
     </volist>
 </body>
-<script language="javascript">
+<!--<script defer language="javascript">
     $(function(){
         var blen=$('.page').height()
         var slen=$('.picture').height()
-        var sta=(blen-slen)/2+''
-        sta=sta+'px'
-        $('.picture').css('margin-top',sta)
+        console.log(blen);
+        console.log(slen);
+        if(slen>blen/1.1){
+            $('.picture').css('margin-top','0px')
+        }
+        else{
+            var sta=(blen-slen)/2+''
+            sta=sta+'px'
+            $('.picture').css('margin-top',sta)
+        }
+        
     })
-</script>
+</script>-->
 </html>
