@@ -38,11 +38,8 @@
                     <td>{$con.testcriteria}</td>
 
                     <td width="33%">
-                        <!--<a href="{:U('/admin/contract/editContract')}?id={$con.centreno}" id="editContract" target="_blank" class="btn btn-info btn-xs" ><i class="glyphicon glyphicon-search"></i>修改</a>-->
                         <a href="/admin/manager/contractDetail?id={$con.centreno}"  class="btn btn-info btn-xs" >检验受理合同</a>
-
-                        <!--<a href="{:U('/admin/test/sampleShow')}?id={$con.centreno}" style="display:none" class="btn btn-info btn-xs" >抽样单</a>-->
-                        <a href="{:U('/admin/contract/sampleEdit')}?id={$con.centreno}" style="display:none" class="btn btn-info btn-xs" >抽样单</a>
+                        <a href="/admin/test/sampleShow?id={$con.centreno}" style="display:none" class="btn btn-info btn-xs" >抽样单</a>
                         <if condition="$con.flow_id != -1">
                             <a href="/admin/test/infoShow?id={$con.centreno}"  class="btn btn-info btn-xs" >检验工作通知单</a>
 
@@ -98,20 +95,20 @@
 
 <script src="__PUBLIC__/static/js/jquery.form.js"></script>
 <script type="text/javascript">
-    /*$(function(){
+    $(function(){
         $('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true });
         $("#tb tr").each(function(){
             var text = $(this).children("td").eq(1).text();
             //alert(text+":"+text.substr(6,1))
             if (text.substr(7,1)=='C'){
                 //alert($(this).children("td:last").children("a:last").html());
-                $(this).children("td").eq(5).children("a").eq(2).css("display","inline-block");
+                $(this).children("td").eq(5).children("a").eq(1).css("display","inline-block");
             }
         });
 
     });
 
-    function externalSign(centreno){
+   /* function externalSign(centreno){
         if(confirm('确认已外部签发？')){
             $.ajax({
                 url: "{:U('/admin/contract/externalSign')}",
@@ -179,7 +176,8 @@
             dataType:"json",
             success:function(ret){
                 if(ret.msg=='succ'){
-                    alert("操作成功");
+                    var _options = {"text":"操作成功！","action":function(){window.location.reload();}};
+                    doAlertDialog(_options);
                 }else{
                     var _options = {"text":"Error！"};
 

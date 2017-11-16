@@ -35,7 +35,7 @@
                     <td>{$vo.name}/{$vo.verify_time}</td>
                     <td>
                         <a href="/admin/manager/contractDetail?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检验受理合同</a>
-                        <a href="/admin/TestReport/seleteTemp?mod={$vo.tplno}&conNo={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检测报告</a>
+                        <a href="{$vo.pdf_path}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检测报告</a>
                     </td>
                     <td>
                         <if condition="$vo[status] eq 4">

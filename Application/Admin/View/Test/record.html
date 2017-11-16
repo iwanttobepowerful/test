@@ -17,6 +17,9 @@
                     <td>{$one.samplename}</td>
                     <td>
                         <a href="{:U('/admin/test/recordList')}?id={$one.centreno}" class="btn btn-primary btn-xs" ><i class="glyphicon glyphicon-open"></i>检测报告上传</a>
+                        <if condition="$one[pdf_path]">
+                        <a href="{$one.pdf_path}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>报告预览</a>
+                        <a href="javascript:void(0);" class="btn btn-success btn-xs" onclick="doUpdate('{$one.centreno}')"><i class="glyphicon glyphicon-ok-circle"></i>提交审核</a></if>
                     </td>
                 </tr>
             </volist>
@@ -28,5 +31,29 @@
     </div>
 </div>
 </div>
-
+<script type="text/javascript">
+    function doUpdate(centreno) {
+        if(!centreno) return false;
+        var _options = {"flag":"error","text":"确定提交审核吗？","buttons":{"ok":{"action":function(){onUpdate(centreno);}},"cancel":{}}};
+        doConfirmDialog(_options);
+    }
+    function onUpdate(centreno) {
+        $.ajax({
+            type:"post",
+            url:"{:U('/admin/Test/doUpd')}",
+            data:{"centreno":centreno},
+            dataType:"json",
+            success:function(ret){
+                if(ret.msg=='succ'){
+                    var _options = {"text":"提交成功！","action":function(){window.location.reload();}};
+                    doAlertDialog(_options);
+                }else{
+                    var _options = {"text":"提交失败！"};
+                    if(data.msg) _options.text = data.msg;
+                    doAlertDialog(_options);
+                }
+            }
+        });
+    }
+    </script>
 <include file="Common:footer" />

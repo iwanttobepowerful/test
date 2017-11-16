@@ -280,9 +280,10 @@ class TestController extends Controller{
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
         $where['status']=1;
-        $result=D("contract_flow")->where($where)
-            ->join('contract ON contract_flow.centreno=contract.centreno')
-            ->order('report_time desc,contract.id desc')->limit("{$offset},{$pagesize}")->select();
+        $result=D("contract_flow as c")->where($where)
+            ->join('left join contract as a on c.centreno=a.centreno left join test_report as t on c.centreno=t.centreno')
+            ->field('c.*,a.*,t.path,t.doc_path,t.pdf_path')
+            ->order('c.report_time desc,a.id desc')->limit("{$offset},{$pagesize}")->select();
             //当已经生成报告，状态为1的时候，才能上传检测报告
         $count = D("contract_flow")->where($where)->count();//!!!!!!!!!!!!!!
         $Page       = new \Think\Page($count,$pagesize);
@@ -364,25 +365,45 @@ class TestController extends Controller{
             $data['pdf_path'] = $pdfUrl;
         }else{
             $result['msg'] = "转换pdf失败";
-            $this->ajaxReturn($rs);
+            $this->ajaxReturn($result);
         }
+       /*$data1=array(
+            'status'=>2,
+            'uploadreport_user_id'=>$userid,
+            'uploadreport_time'=>date("Y-m-d H:i:s"),
+        );*/
+        M()->startTrans();
+        if(D("test_report")->where("centreno='{$centreno}'")->save($data)){
+            //if(D("contract_flow")->where("centreno='{$centreno}'")->save($data1)){
+                $result['msg'] = "succ";
+                M()->commit();
+            }else{
+                M()->rollback();
+          // }
+       // }else{
+           // M()->rollback();
+        }
+        $this->ajaxReturn($result);
+    }
+    //提交审核按钮
+    public function doUpd(){
+        $centreno=I("centreno");
+        $rs = array("msg"=>"fail");
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $userid=$admin_auth['id'];
         $data1=array(
             'status'=>2,
             'uploadreport_user_id'=>$userid,
             'uploadreport_time'=>date("Y-m-d H:i:s"),
         );
         M()->startTrans();
-        if(D("test_report")->where("centreno='{$centreno}'")->save($data)){
-            if(D("contract_flow")->where("centreno='{$centreno}'")->save($data1)){
-                $result['msg'] = "succ";
-                M()->commit();
-            }else{
-                M()->rollback();
-            }
+        if(D("contract_flow")->where("centreno='{$centreno}'")->save($data1)){
+            $rs['msg'] = "succ";
+            M()->commit();
         }else{
             M()->rollback();
         }
-        $this->ajaxReturn($result);
+        $this->ajaxReturn($rs);
     }
         //删除（不用改）
     public function doDeleteReport(){

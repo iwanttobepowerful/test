@@ -36,8 +36,8 @@ class ReportController extends Controller
         $contract_flow=M("contract_flow");//实例化对象
         $where['contract_flow.status'] = 2;
         $rs=$contract_flow->where($where)
-            ->join('common_system_user ON contract_flow.report_user_id = common_system_user.id')
-            ->field('contract_flow.id,contract_flow.centreNo,contract_flow.status,contract_flow.report_time,common_system_user.name')
+            ->join('left join common_system_user ON contract_flow.report_user_id = common_system_user.id left join test_report on contract_flow.centreno=test_report.centreno')
+            ->field('contract_flow.id,contract_flow.centreNo,contract_flow.status,contract_flow.report_time,common_system_user.name,test_report.pdf_path')
             ->limit("{$offset},{$pagesize}")
             ->order('contract_flow.report_time desc,contract_flow.id desc')->select();
         //查找条件为已经批准并且内部尚未签发的报告
@@ -165,7 +165,7 @@ class ReportController extends Controller
     }
 //盖章签发
     public function internalIssue(){
-        $keyword = I("keyword");
+        $centreno = I("centreno");
         $begin_time = I("begin_time");
         $end_time = I("end_time");
         $sortby=I("sortby");
@@ -178,8 +178,8 @@ class ReportController extends Controller
         $if_admin = $admin_auth['super_admin'];
         $where="a.isaudit=1";
         $orderby = "a.verify_time desc";
-        if(!empty($keyword)){
-            $where .=" and a.centreno='{$keyword}'";
+        if(!empty($centreno)){
+            $where .=" and a.centreno='{$centreno}'";
         }
         if($sortby==1){
             $begin_time && $where .=" and date_format(a.verify_time,'%Y-%m-%d') >='{$begin_time}'";
@@ -194,10 +194,9 @@ class ReportController extends Controller
         }else{
             $view="disabled";
         }
-
         $rs = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."common_system_user b on a.verify_user_id=b.id","LEFT")->join(C("DB_PREFIX")."test_report c on a.centreno=c.centreno","LEFT")
             ->where($where)
-            ->field('a.id,a.status,a.internalpass,a.centreNo,a.inner_sign_time,a.inner_sign_user_id,a.verify_user_id,a.verify_time,b.name,c.tplno')
+            ->field('a.id,a.status,a.internalpass,a.centreNo,a.inner_sign_time,a.inner_sign_user_id,a.verify_user_id,a.verify_time,b.name,c.tplno,c.pdf_path,c.path')
             ->limit("{$offset},{$pagesize}")
             ->order($orderby)->select();
         $count = D("contract_flow")->alias("a")->where($where)->count();
@@ -211,6 +210,7 @@ class ReportController extends Controller
             'begin_time'=>$begin_time,
             'end_time'=>$end_time,
             'sortby'=>$sortby,
+            'centreno'=>$centreno,
         );
         $this->assign($body);
         $this->display();

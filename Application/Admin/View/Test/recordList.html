@@ -8,15 +8,15 @@
         </div>
         <table class="table table-bordered table-striped table-hover">
             <thead>
-            <th>ID</th>
+            <th>序号</th>
             <th>中心编号</th>
             <th>上传文件名称（备注）</th>
             <th>操作</th>
             </thead>
             <tbody>
-            <volist name="lists" id="one">
+            <volist name="lists" id="one" key="i">
                 <tr>
-                    <td>{$one.id}</td>
+                    <td>{$i}</td>
                     <td>{$one.centreno}</td>
                     <td>{$one.remark}</td>
                     <td>
