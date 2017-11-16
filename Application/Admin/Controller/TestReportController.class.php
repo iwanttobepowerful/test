@@ -135,9 +135,10 @@ class TestReportController extends Controller
                 'sampleStatus'=>$contract['sampleStatus'] ? $contract['sampleStatus']:"————",
                 'testCriteria'=>$contract['testCriteria'],
                 'testItem'=>$contract['testItem'],
-                'collectDate'=>$contract['collectdate'] ? $contract['collectdate']:"————",
-                'sampleCode'=>$contract['samplecode'] ? $contract['samplecode']:"————",
-                'sampleQuantity'=>$contract['samplequantity'] ? $contract['samplequantity']:"",
+                'collectDate'=>$contract['collectDate'] ? $contract['collectDate']:"————",
+                'sampleCode'=>$contract['sampleCode'] ? $contract['sampleCode']:"————",
+                'sampleQuantity'=>$contract['sampleQuantity'] ? $contract['sampleQuantity']:"————",
+                'testType'=>$contract['testType'] ? $contract['testType']:"————",
             );
 
             if($contract['testCategory']=="抽样检验"){
