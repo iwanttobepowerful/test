@@ -304,12 +304,12 @@ class ContractController extends Controller {
 
         //份数
         $countlist =  D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->where($where)->field('collector_partment,count(collector_partment)')->group('collector_partment')->select();//->field('testdepartment,count(testdepartment)')->group('testdepartment')->select()
-        dump($countlist);
+        //dump($countlist);
         //if($countlist[0])
         //$countlist->query("select fileformat, count(fileformat) as icount from gallery group by fileformat");
         //金额
         $sumlist = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->join(C("DB_PREFIX")."test_cost c on a.centreno=c.centreno","LEFT")->where($where)->field("sum(b.testcost) as testcost,sum(c.arecord) as arecord,sum(c.brecord) as brecord,sum(c.crecord) as crecord,sum(c.drecord) as drecord,sum(c.erecord) as erecord,sum(c.frecord) as frecord,sum(c.dcopy) as dcopy,sum(c.drevise) as drevise,sum(c.dother) as dother")->find();
-        dump($sumlist);
+       // dump($sumlist);
         $body = array(
             'count'=>$countlist[0],
             'sum'=>$sumlist,

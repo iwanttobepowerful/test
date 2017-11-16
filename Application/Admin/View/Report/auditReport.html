@@ -3,7 +3,7 @@
     <include file="Common:breadcrumb" />
     <div id="page-inner" class="container">
         <!-- 主要模板 starting -->
-        <table class="table table-bordered table-striped table-hover">
+        <table class="table table-bordered table-striped table-hover" id="tb">
             <thead>
             <th width="6%">序号</th>
             <th width="12%">中心编号</th>
@@ -21,8 +21,9 @@
                         <a href="/admin/manager/contractDetail?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检验受理合同</a>
                         <a href="{:U('/admin/test/infoShow')}?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检测工作通知单</a>
                         <a href="{:U('/admin/test/sampleShow')}?id={$vo.centreno}" class="btn btn-info btn-xs" style="display:none"><i class="glyphicon glyphicon-search"></i>抽样单</a>
-                        <a href="" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检测记录</a>
-                        <a href="" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>报告预览</a>
+                        <a href="{:U('/admin/test/recordPictureUp')}?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检测记录</a>
+                        <a href="{$vo.pdf_path}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>报告预览</a>
+
                     </td>
                     <td>{$vo.name}/{$vo.report_time}</td>
                     <td>
@@ -52,7 +53,7 @@
         $("#tb tr").each(function(){
             var text = $(this).children("td").eq(1).text();
             if (text.substr(7,1)=='C'){
-                $(this).children("td").eq(5).children("a:last").css("display","inline-block");
+                $(this).children("td").eq(2).children("a").eq(2).css("display","inline-block");
             }
         });
 

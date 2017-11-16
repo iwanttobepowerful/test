@@ -931,7 +931,7 @@ class ContractController extends Controller
 
         //判断是接单还是签发
         //$ifstatus =
-        $list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,if(r.status is null,-1,r.status) as sub_status,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername,v.doc_path')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN report_feedback r on r.centreNo = c.centreNo left join test_report as v on c.centreNo=v.centreNo' )->where($where)->order('c.input_time DESC')->limit("{$offset},{$pagesize}")->select();
+        $list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,if(r.status is null,-1,r.status) as sub_status,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername,v.doc_path')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN report_feedback r on r.centreNo = c.centreNo left join test_report as v on c.centreNo=v.centreNo' )->where($where)->order('f.report_time desc')->limit("{$offset},{$pagesize}")->select();
         $count = D("contract as c")->field('if(r.status is null,-1,r.status) as sub_status,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN report_feedback r on r.centreNo = c.centreNo')->where($where)->order('c.input_time DESC')->count();
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
@@ -989,6 +989,55 @@ class ContractController extends Controller
 			M()->rollback();		
 		}
 		$this->ajaxReturn($rs);
+	}
+	
+	//更改补充检验报告单
+	public function addorEditReport(){
+		$centreNo = I('id');
+		$count = D('inspection_report')->where('centreNo="'.$centreNo.'"')->count();
+		$one = D('inspection_report')->where('centreNo="'.$centreNo.'"')->find();
+		$body = array(
+			'centreNo'=>$centreNo,
+			'count'=>$count,
+			'one'=>$one
+		);
+		
+		$this->assign($body);
+		$this->display();
+	}
+	
+	//检验报告单录入
+	public function saveInspecReport(){
+		$edit_No = I('edit_No');
+		$centreNo = I('centreNo');
+		$sampleName = I('sampleName');
+		$clientName = I('clientName');
+		$update_item = I('update_item');
+		$update_item_list = "";
+		for($i = 0;$i < 6;$i++){
+			$update_item_list.=$update_item[$i]."/&&/";
+		}
+		$update_reason = I('update_reason');
+		$applicant = I('applicant');
+		$handler = I('handler');
+		$handleDate = I('handleDate');
+		$data_list = array(
+			"handler"=>$handler,
+			'handleDate'=>$handleDate,
+			'edit_No'=>$edit_No,
+			'centreNo'=>$centreNo,
+			'sampleName'=>$sampleName,
+			'clientName'=>$clientName,
+			'update_item'=>$update_item_list,
+			'update_reason'=>$update_reason,
+			'applicant'=>$applicant,
+		);
+		$rs['msg']='fail';
+		if(D('inspection_report')->add($data_list)){
+			$rs['msg']='succ';
+		}
+		$this->ajaxReturn($rs);
+		
 	}
 
 	//获取最中心编号
