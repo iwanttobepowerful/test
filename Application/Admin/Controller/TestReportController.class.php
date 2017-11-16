@@ -132,20 +132,20 @@ class TestReportController extends Controller
                 'trademark'=>$contract['trademark'] ? $contract['trademark']:"————",
                 'grade'=>$contract['grade'] ? $contract['grade']:"————",
                 'specification'=>$contract['specification'] ? $contract['specification']:"————",
-                'sampleStatus'=>$contract['sampleStatus'] ? $contract['sampleStatus']:"————",
-                'testCriteria'=>$contract['testCriteria'],
-                'testItem'=>$contract['testItem'],
-                'collectDate'=>$contract['collectDate'] ? $contract['collectDate']:"————",
-                'sampleCode'=>$contract['sampleCode'] ? $contract['sampleCode']:"————",
-                'sampleQuantity'=>$contract['sampleQuantity'] ? $contract['sampleQuantity']:"————",
+                'sampleStatus'=>$contract['samplestatus'] ? $contract['samplestatus']:"————",
+                'testCriteria'=>$contract['testcriteria'],
+                'testItem'=>$contract['testitem'],
+                'collectDate'=>$contract['collectdate'] ? $contract['collectdate']:"————",
+                'sampleCode'=>$contract['samplecode'] ? $contract['samplecode']:"————",
+                'sampleQuantity'=>$contract['samplequantity'] ? $contract['samplequantity']:"————",
                 //'testType'=>$contract['testType'] ? $contract['testType']:"————",
             );
 
             //if($contract['testCategory']=="抽样检验"){
                 $samplingForm = D("sampling_form")->where("centreno='{$centreNo}'")->find();
                 if($samplingForm){
-                    $data['samplePlace'] = $samplingForm['samplePlace'] ? $samplingForm['samplePlace'] : "————";
-                    $data['simplerSign'] = $samplingForm['simplerSign'];
+                    $data['samplePlace'] = $samplingForm['sampleplace'] ? $samplingForm['sampleplace'] : "————";
+                    $data['simplerSign'] = $samplingForm['simplersign'];
                     $data['sampleDate'] = $samplingForm['sampledate'] ? $samplingForm['sampledate']:"————";
                     $data['sampleQuantity'] = $samplingForm['samplequantity'] ? $samplingForm['samplequantity']:"————";
                     $data['sampleBase'] = $samplingForm['samplebase'] ? $samplingForm['samplebase']:"————";
