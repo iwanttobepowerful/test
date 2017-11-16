@@ -194,12 +194,12 @@ class ReportController extends Controller
         }else{
             $view="disabled";
         }
-        $rs = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."common_system_user b on a.verify_user_id=b.id","LEFT")->join(C("DB_PREFIX")."test_report c on a.centreno=c.centreno","LEFT")
+        $rs = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."common_system_user b on a.verify_user_id=b.id","LEFT")->join(C("DB_PREFIX")."test_report c on a.centreno=c.centreno","LEFT")->join(C("DB_PREFIX")."common_system_user f on a.inner_sign_user_id=f.id","LEFT")
             ->where($where)
-            ->field('a.id,a.status,a.internalpass,a.centreNo,a.inner_sign_time,a.inner_sign_user_id,a.verify_user_id,a.verify_time,b.name,c.tplno,c.pdf_path,c.path')
+            ->field('a.id,a.status,a.internalpass,a.centreNo,a.inner_sign_time,a.inner_sign_user_id,a.verify_user_id,a.verify_time,b.name,c.tplno,c.pdf_path,c.path,f.name as innername')
             ->limit("{$offset},{$pagesize}")
             ->order($orderby)->select();
-        $data = $admin_auth['name'];
+
         $count = D("contract_flow")->alias("a")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");

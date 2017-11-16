@@ -58,7 +58,9 @@
                                 	</a>
                                 </td>
                                 <td>{$one.remark}</td>
-                                <td><a href="javascript:void(0);" onclick="onDelete({$one.id})" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> 删除</a></td>
+                                <td><a href="javascript:void(0);" onclick="onDelete({$one.id})" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> 删除</a>
+                                    <a href="javascript:void(0);" name="{$one.path}" onclick="onPrint({$one.id},1);" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-print"></i> 打印</a>
+                                </td>
                             </tr>
                         </volist>
                     </tbody>
@@ -133,6 +135,12 @@
 		var _options = {"flag":"error","text":"您确定要删除吗！","buttons":{"ok":{"action":function(){doneDel(id);}},"cancel":{}}};
 		doConfirmDialog(_options);
 	}
+    //打印图片
+    function onPrint(num,type) {
+        var newurl='/admin/test/doPrint.html?id='+num+'&type=1';
+        console.log(newurl);
+        window.open(newurl);
+    }
 	
 	function doneDel(id){
 		if(!id) return false;

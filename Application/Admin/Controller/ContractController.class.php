@@ -141,6 +141,14 @@ class ContractController extends Controller
         $Drecord = I("Drecord",0,'intval');
         $Erecord = I("Erecord",0,'intval');
         $Frecord = I("Frecord",0,'intval');
+		
+		$RArecord = I("RArecord",0,'intval');
+        $RBrecord = I("RBrecord",0,'intval');
+        $RCrecord = I("RCrecord",0,'intval');
+        $RDrecord = I("RDrecord",0,'intval');
+        $RErecord = I("RErecord",0,'intval');
+        $RFrecord = I("RFrecord",0,'intval');
+		
         $Dcopy = I("Dcopy",0,'intval');
         $Donline = I("Donline",0,'intval');
         $Drevise = I("Drevise",0,'intval');
@@ -226,6 +234,12 @@ class ContractController extends Controller
             "Drecord"=>$Drecord,
             "Erecord"=>$Erecord,
             "Frecord"=>$Frecord,
+			"RArecord"=>$RArecord,
+            "RBrecord"=>$RBrecord,
+            "RCrecord"=>$RCrecord,
+            "RDrecord"=>$RDrecord,
+            "RErecord"=>$RErecord,
+            "RFrecord"=>$RFrecord,
             "Dcopy"=>$Dcopy,
             "Donline"=>$Donline,
             "Drevise"=>$Drevise,
@@ -412,6 +426,14 @@ class ContractController extends Controller
 			$Drecord = I("Drecord",0,'intval');
 			$Erecord = I("Erecord",0,'intval');
 			$Frecord = I("Frecord",0,'intval');
+			
+			$RArecord = I("RArecord",0,'intval');
+			$RBrecord = I("RBrecord",0,'intval');
+			$RCrecord = I("RCrecord",0,'intval');
+			$RDrecord = I("RDrecord",0,'intval');
+			$RErecord = I("RErecord",0,'intval');
+			$RFrecord = I("RFrecord",0,'intval');
+			
 			$Dcopy = I("Dcopy",0,'intval');
 			$Donline = I("Donline",0,'intval');
 			$Drevise = I("Drevise",0,'intval');
@@ -488,6 +510,12 @@ class ContractController extends Controller
 				"Drecord"=>$Drecord,
 				"Erecord"=>$Erecord,
 				"Frecord"=>$Frecord,
+				"RArecord"=>$RArecord,
+				"RBrecord"=>$RBrecord,
+				"RCrecord"=>$RCrecord,
+				"RDrecord"=>$RDrecord,
+				"RErecord"=>$RErecord,
+				"RFrecord"=>$RFrecord,
 				"Dcopy"=>$Dcopy,
 				"Donline"=>$Donline,
 				"Drevise"=>$Drevise,

@@ -195,7 +195,21 @@
                   <input name="Erecord" type="text" class="form-control"  id="Erecord" size="5" placeholder="E部门" readonly  onClick="Cost('E')" value="{$feeItem.erecord}"/>
                   +
                   <input name="Frecord" type="text" class="form-control"  id="Frecord" size="5" placeholder="F部门" readonly  onClick="Cost('F')" value="{$feeItem.frecord}"/>
+                 
+              </div>
+              <div class="col-xs-6">
+              	  <input name="RArecord" type="text" class="form-control"  id="RArecord" size="5" placeholder="A部门" value="{$feeItem.rarecord}" onKeyUp="computeSum()"/>
                   +
+                  <input name="RBrecord" type="text" class="form-control"  id="RBrecord" size="5" placeholder="B部门" value="{$feeItem.rbrecord}" onKeyUp="computeSum()"/>
+                  +
+                  <input name="RCrecord" type="text" class="form-control"  id="RCrecord" size="5" placeholder="C部门" value="{$feeItem.rcrecord}" onKeyUp="computeSum()"/>
+                  +
+                  <input name="RDrecord" type="text" class="form-control"  id="RDrecord" size="5" placeholder="D部门" value="{$feeItem.rdrecord}" onKeyUp="computeSum()"/>
+                  +
+                  <input name="RErecord" type="text" class="form-control"  id="RErecord" size="5" placeholder="E部门" value="{$feeItem.rerecord}" onKeyUp="computeSum()"/>
+                  +
+                  <input name="RFrecord" type="text" class="form-control"  id="RFrecord" size="5" placeholder="F部门" value="{$feeItem.rfrecord}" onKeyUp="computeSum()"/>
+                   +
                   <input name="Dcopy" type="text" class="form-control fee"  id="Dcopy" placeholder="副本" onKeyUp="computeSum()" value="{$feeItem.dcopy}"/>
                   +
                   <input name="Donline" type="text" class="form-control"  id="Donline" placeholder="上网费" onKeyUp="computeSum()" value="{$feeItem.donline}" />
@@ -205,18 +219,6 @@
                   <input name="Dother" type="text" class="form-control fee"  id="Dother" placeholder="其他"  onKeyUp="computeSum()" value="{$feeItem.dother}"/>
                   =
                   <input name="testCost" type="text" class="form-control"  id="sumCost" placeholder="总计"  size="8" readonly value="{$contract.testcost}"/>
-              
-              
-              
-              	<!--<input name="testCost1" type="text" class="form-control"  id="myCost" size="5" placeholder="本部门" readonly onChange="computeSum()"  onClick="myCost1()" value="{$feeItem.testfee}"/>
-                +
-              <input name="testCost2" type="text" class="form-control"  id="dCost" size="5" placeholder="D部门" readonly onChange="computeSum()"  onClick="dCost1()" value="{$feeItem.drecord}"/>
-              +
-              <input name="testCost3" type="text" class="form-control"  id="copyCost" placeholder="副本" onKeyUp="computeSum()" size="5" value="{$feeItem.dcopy}" />
-              +
-              <input name="testCost4" type="text" class="form-control"  id="editCost" placeholder="项目修改" onKeyUp="computeSum()" size="6"  value="{$feeItem.drevise}"/>
-              =
-              <input name="testCost" type="text" class="form-control"  id="sumCost" placeholder="总计"  size="8" readonly  value="{$contract.testcost}"/>-->
               </div>
               </td>
           </tr>
@@ -662,29 +664,29 @@
 		//实时计算总费用
 		function computeSum(){
 			var sum =0 ;
-			if($("#Arecord").val()!="" && $.trim($("#Arecord").val()).length>0){
-				sum+=parseInt($("#Arecord").val());
+			if($("#RArecord").val()!="" && $.trim($("#RArecord").val()).length>0){
+				sum+=parseInt($("#RArecord").val());
 			}
-			if($("#Brecord").val()!="" && $.trim($("#Brecord").val()).length>0){
-				sum+=parseInt($("#Brecord").val());
+			if($("#RBrecord").val()!="" && $.trim($("#RBrecord").val()).length>0){
+				sum+=parseInt($("#RBrecord").val());
 			}
-			if($("#Crecord").val()!="" && $.trim($("#Crecord").val()).length>0){
-				sum+=parseInt($("#Crecord").val());
+			if($("#RCrecord").val()!="" && $.trim($("#RCrecord").val()).length>0){
+				sum+=parseInt($("#RCrecord").val());
 			}		
-			if($("#Drecord").val()!="" && $.trim($("#Drecord").val()).length>0){
-				sum+=parseInt($("#Drecord").val());
+			if($("#RDrecord").val()!="" && $.trim($("#RDrecord").val()).length>0){
+				sum+=parseInt($("#RDrecord").val());
 			}
-			if($("#Erecord").val()!="" && $.trim($("#Erecord").val()).length>0){
-				sum+=parseInt($("#Erecord").val());
+			if($("#RErecord").val()!="" && $.trim($("#RErecord").val()).length>0){
+				sum+=parseInt($("#RErecord").val());
 			}
-			if($("#Frecord").val()!="" && $.trim($("#Frecord").val()).length>0){
-				sum+=parseInt($("#Frecord").val());
-			}
-			if($("#Donline").val()!="" && $.trim($("#Donline").val()).length>0){
-				sum+=parseInt($("#Donline").val());
+			if($("#RFrecord").val()!="" && $.trim($("#RFrecord").val()).length>0){
+				sum+=parseInt($("#RFrecord").val());
 			}
 			if($("#Dcopy").val()!="" && $.trim($("#Dcopy").val()).length>0){
 				sum+=parseInt($("#Dcopy").val());
+			}
+			if($("#Donline").val()!="" && $.trim($("#Donline").val()).length>0){
+				sum+=parseInt($("#Donline").val());
 			}
 			if($("#Drevise").val()!="" && $.trim($("#Drevise").val()).length>0){
 				sum+=parseInt($("#Drevise").val());
@@ -900,7 +902,7 @@
 		
 		function returnCost(de){
 			$("#"+de+"record").val($("#fee_"+de).html());
-			computeSum();
+			//computeSum();
 		}
 
 		<!-----------------------------------费用 end------------------------------------->
