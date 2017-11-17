@@ -37,11 +37,19 @@
 				    </div>
 				</div>
 			</form>
-            <!--抽样单列表/现场图片列表-->
+
+		<!--抽样单列表/现场图片列表-->
+		<p>
+		<div>
+			<a href="javascript:void (0)" class="btn btn-primary" onclick="data()"><i class=" glyphicon glyphicon-download"></i>批量打印</a>
+
+		</div>
+		</p>
             <div>
             	<table class="table table-bordered table-striped table-hover">
                 	<thead>
-                    	<th>序号</th>
+                    	<th><input type="checkbox" id="selectall" /><label>全选</label></th>
+					    <th>序号</th>
                         <th>中心编号</th>
                         <th>抽样照片</th>
                         <th>备注</th>
@@ -50,6 +58,7 @@
                     <tbody>
                     	<volist name="list" id="one">
                         	<tr>
+								<td><input type="checkbox" name="print" class="qx" value="{$one['id']}"/></td>
                             	<td>{$i}<input type="hidden" id="pic_id" value="{$one.id}"></td>
                                 <td>{$one.centreno}</td>
                                 <td>
@@ -169,6 +178,30 @@
         var newurl=url.replace("_thumb","");//重写
         window.open(newurl);
     }
-
+    //全选
+    $("#selectall").click(function(){
+        var xz = $(this).prop("checked");//判断全选按钮的选中状态
+        var ck = $(".qx").prop("checked",xz); //让class名为qx的选项的选中状态和全选按钮的选中状态一致。
+    });
+//批量打印
+    function data() {
+        var obj=document.getElementsByName('print');  //选择所有name="'print'"的对象，返回数组
+        //取到对象数组后，我们来循环检测它是不是被选中
+        console.log(obj);
+        var s='';
+        for(var i=0; i<obj.length; i++) {
+            if (obj[i].checked) {
+                s+= obj[i].value+',';
+                var newurl='/admin/test/doSamplePrint.html?id='+s;
+            }
+        }
+        console.log(newurl)
+        //alert(newurl);
+        window.open(newurl);
+        if(!s){
+            alert('您还没有选择任何内容！');
+            return false;
+        }
+    }
 </script>
 <include file="Common:footer" />

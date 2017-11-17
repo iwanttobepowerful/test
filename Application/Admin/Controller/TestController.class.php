@@ -273,9 +273,11 @@ class TestController extends Controller{
         $where['id'] = array('in', $data);
         if($type == 1){
             $rs=D("sample_picture")->where($where)->field('picture_name')->select();
+
         }
         else{
             $rs=D("test_record")->where($where)->field('path')->select();
+
         }
         //换成字符串后再替换
         foreach ($rs as $v){
@@ -292,7 +294,25 @@ class TestController extends Controller{
         $this->display();
     }
 //以上是检测记录的图片上传
-
+  public function doSamplePrint(){
+      $id=I("id");//获取勾选的id值
+      $data=explode(',',$id);
+      $where['id'] = array('in', $data);
+      $rs=D("sample_picture")->where($where)->field('picture_name')->select();
+      //换成字符串后再替换
+      foreach ($rs as $v){
+          $v = join(",",$v); //可以用implode将一维数组转换为用逗号连接的字符串，join是别名
+          $temp[] = $v;
+      }
+      foreach($temp as $v){
+          $s .=$v.",";
+      }
+      $s=substr($s,0,-1);//利用字符串截取函数消除最后一个逗号
+      $list=str_replace("_thumb","",$s);
+      $path=explode(',',$list);
+      $this->assign('list',$path);
+      $this->display(sampleShow);
+  }
 //上传检测报告显示页面
     public function record(){
         $page = I("p",'int');
