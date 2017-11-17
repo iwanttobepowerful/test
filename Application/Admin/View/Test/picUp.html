@@ -1,39 +1,39 @@
 <include file="Common:header" title="后台首页"/>
 <div id="page-wrapper">
+    <!-- 这一整页都不要了-->
     <include file="Common:breadcrumb" />
     <div id="page-inner" class="container">
-        <div class="search-form">
-            <a href="{:U('/admin/test/recordPictureUp')}?id={$centreno}" class="btn btn-primary">返回</a>
-        </div>
-        <form class="form-horizontal" id="myform" action="" method="post">
-            <input type="hidden" name="id" value="{$pic['id']}" />
-            <input type="hidden" name="centreno" value="{$centreno}" /><!--!!!!!!!!-->
-            <div class="form-group">
-                <label class="col-sm-2 control-label talign-center fz13">上传图片</label>
-                <div class="col-sm-10">
-                    <div class="face" id="attachment" style="width: 120px;height: 80px;" onclick="onFileUpload()"><img src="{$pic['path']}" onerror="this.src='__PUBLIC__/static/images/default-timg.gif'" style="height: 100%;" /></div>
-                    <input type="hidden" name="imgurl" value="{$pic['path']}" />
-                    <input type="file" name="file" onchange="ajaxFileUpload()" id="addfile" style="display:none;"  />
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label talign-center fz13">备注</label>
-                <div class="col-sm-10">
-                    <textarea class="form-control" name="remark">{$pic['remark']}</textarea>
-                    <p class="help-block">（选填）</p>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-2 control-label talign-center">&nbsp;</label>
-                <div class="col-sm-10">
-                    <button type="submit" class="btn btn-success" onclick="onSave()">保 存</button>
-                </div>
-            </div>
-        </form>
+    <div class="search-form">
+        <a href="{:U('/admin/test/recordPictureUp')}?id={$centreno}" class="btn btn-primary">返回</a>
     </div>
+    <form class="form-horizontal" id="myform" action="" method="post">
+        <input type="hidden" name="id" value="{$pic['id']}" />
+        <input type="hidden" name="centreno" value="{$centreno}" /><!--!!!!!!!!-->
+        <div class="form-group">
+            <label class="col-sm-2 control-label talign-center fz13">上传图片</label>
+            <div class="col-sm-10">
+                <div class="face" id="attachment" style="width: 120px;height: 80px;" onclick="onFileUpload()"><img src="{$pic['path']}" onerror="this.src='__PUBLIC__/static/images/default-timg.gif'" style="height: 100%;" /></div>
+                <input type="hidden" name="imgurl" value="{$pic['path']}" />
+                <input type="file" name="file" onchange="ajaxFileUpload()" id="addfile" style="display:none;"  />
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label talign-center fz13">备注</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" name="remark">{$pic['remark']}</textarea>
+                <p class="help-block">（选填）</p>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label talign-center">&nbsp;</label>
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-success" onclick="onSave()">保 存</button>
+            </div>
+        </div>
+    </form>
 </div>
 </div>
 <script src="__PUBLIC__/static/js/jquery.form.js"></script>

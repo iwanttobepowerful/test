@@ -189,13 +189,16 @@ class TestController extends Controller{
     }
     //检测记录上传图片
     public function recordPictureUp(){
+        $id =I("id",0,'intval');
+        $centreno=I("centreno");//中心编号
         $page = I("p",'int');
-        $pagesize = 20;
+        $pagesize = 10;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
-        $orderby = "create_time desc";
-        $keyword = I("id");//获取中心编号
-        $where= "centreno='{$keyword}'";
+        $where= "centreno='{$centreno}'";
+        if($id){
+            $pic = D('test_record')->where("id=".$id)->find();
+        }
         $result=D('test_record')
             ->limit("{$offset},{$pagesize}")->where($where)->select();
         $status=D("contract_flow")->where($where)->find();
@@ -206,16 +209,17 @@ class TestController extends Controller{
         $pagination       = $Page->show();// 分页显示输出
 
         $body=array(
+            'pic' => $pic,
             'lists'=>$result,
             'pagination'=>$pagination,
-            'centreno'=>$keyword,//!!!!!!!!!!!!!!
-            'view'=>$view,
+            'centreno'=>$centreno,//!!!!!!!!!!!!!!
+            'view'=>$view
         );
         $this->assign($body);
         $this->display();
     }
 
-    public function picUp(){
+    /*public function picUp(){
         $id =I("id",0,'intval');
         $centreno=I("centreno");//!!!!!!!!!!!!!!!!!!!!!!!
         if($id){
@@ -227,7 +231,7 @@ class TestController extends Controller{
         );
         $this->assign($body);
         $this->display();
-    }
+    }*/
 
     public function doUploadPic(){
         $id = I("id",0,'intval');
