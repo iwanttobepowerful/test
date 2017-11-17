@@ -52,7 +52,10 @@
                     <td>
                         <if condition="$con['doc_path']">
                         <a href="{$con.doc_path}"  class="btn btn-primary btn-xs" >报告预览</a></if>
-
+                        <if condition="$if_edit==1">
+                        <if condition="$con['status']==8">
+                            <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="confirmReport('{$con.centreno}')" >确认</a></if></if>
+                        <br />
                         <if condition="$if_edit==1">
                             <if condition="($con['ifedit'] == 1) and ($con['sub_status'] == 0)">
                                 <span style="color:green">申请中</span>
@@ -70,9 +73,6 @@
                             <elseif condition="$con['status']==6"/>
                             <span style="color:green">{$con.externalname}已外部签发<br/>{$con.external_sign_time}</span>
                         </if>
-                        <if condition="$if_edit==1">
-                        <if condition="$con['status']==8">
-                            <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="confirmReport('{$con.centreno}')" >确认</a></if></if>
                     </td>
                 </tr>
             </volist>
