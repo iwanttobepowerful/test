@@ -25,7 +25,7 @@ class StatisticsController extends Controller {
 
         if(!empty($centreno)){
             //查询合同编号
-            $where .=" and a.centreno='{$centreno}'";
+            $where .=" and a.centreno like '%{$centreno}%'";
         }
         if($sortby==1){
             //盖章日期

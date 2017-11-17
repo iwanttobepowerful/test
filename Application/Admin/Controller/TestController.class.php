@@ -122,10 +122,16 @@ class TestController extends Controller{
         $user=$admin_auth['gid'];//判断是哪个角色
         $department=$admin_auth['department'];//判断是哪个部门的
         $keyword = I("keyword");//获取参数
+        if($user==8||$user==15||$if_admin ==1){
+            if(!empty($keyword)){
+                $where =" contract_flow.centreno like '%{$keyword}%'";
+            }
+        }
+        else{
         $where = "contract_flow.centreno like '______{$department}%'";
         if(!empty($keyword)){
             $where .="and contract_flow.centreno like '%{$keyword}%'";
-        }
+        }}
         if ($user==9 || $if_admin ==1) {//只有报告编制员，超级管理员才能操作
             $view="visible";
         }
@@ -137,20 +143,12 @@ class TestController extends Controller{
         $pagesize = 10;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
-        if($user==8||$user==15||$if_admin ==1){
-            $result=M('contract_flow')
-                ->join('work_inform_form ON contract_flow.centreNo = work_inform_form.centreNo')//从工作通知单取数据
-                ->field('contract_flow.takelist_user_id,contract_flow.status,work_inform_form.workDate,work_inform_form.centreNo,work_inform_form.sampleName,work_inform_form.testCreiteria')
-                ->order('work_inform_form.workDate desc,work_inform_form.id desc')
-                ->limit("{$offset},{$pagesize}")->select();//从合同表!!!!里取出对应中心编号的信息
-            $count = D("contract_flow")->count();
-        }else{
         $result=M('contract_flow')->where($where)
             ->join('work_inform_form ON contract_flow.centreNo = work_inform_form.centreNo')//从工作通知单取数据
             ->field('contract_flow.takelist_user_id,contract_flow.status,work_inform_form.workDate,work_inform_form.centreNo,work_inform_form.sampleName,work_inform_form.testCreiteria')
             ->order('work_inform_form.workDate desc,work_inform_form.id desc')
             ->limit("{$offset},{$pagesize}")->select();//从合同表!!!!里取出对应中心编号的信息
-        $count = D("contract_flow")->where($where)->count();}
+        $count = D("contract_flow")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
         $pagination= $Page->show();// 分页显示输出
