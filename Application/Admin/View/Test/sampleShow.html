@@ -133,6 +133,12 @@
 				font-family: simsun;
 				font-size: 10.5pt;
 			}
+            .picture{
+            max-width: 100%;
+            display: block;
+            margin: 0 auto;
+            max-height: 100%;
+            }
 		</style>
 		<style type="text/css" media="print">
 			/*以下是打印格式*/
@@ -170,6 +176,7 @@
 	</head>
 
 	<body>
+	    <button onclick="window.print()" class="Noprint">打印</button>
 		<div class="page">
 
 			<input type="hidden" id="role" value="{$if_edit}" />
@@ -368,9 +375,12 @@
 				</tr>
 
 			</table>
-			<button onclick="window.print()" class="Noprint">打印</button>
-            
 		</div>
+        <volist name="list" id="one">
+            <div class="page">
+                <img src="{$one}" class="picture" />
+            </div>
+        </volist>
 	</body>
 
 </html>
