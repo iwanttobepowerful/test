@@ -24,7 +24,7 @@
     <div class="aui-pull-left aui-btn aui-font-size-12" onclick="window.location.href='/index/index.html'" >
         <span class="aui-iconfont aui-icon-left"></span>返回
     </div>
-    <div class="aui-title aui-font-size-14">实际收入</div>
+    <div class="aui-title aui-font-size-14">报告应收收入</div>
     <a class="aui-pull-right aui-btn" href="{:U('account/logout')}">
         <span class="aui-iconfont aui-icon-my aui-font-size-12">退出登录</span>
     </a>
@@ -133,26 +133,26 @@
 		<!--接口不知道写的对不对-->		
 	    <tr >
             <td>副本</td>
-            <td >0</td>
-            <td >{$sum.copy|floatval}</td>
+            <td >----</td>
+            <td >{$sum.dcopy|floatval}</td>
         </tr>
 		
 		<tr >
             <td>上网费</td>
-            <td >0</td>
+            <td >----</td>
             <td >{$sum.online|floatval}</td>
         </tr>
 		
 		<tr >
             <td>项目修改</td>
-            <td >0</td>
-            <td >{$sum.revise|floatval}</td>
+            <td >----</td>
+            <td >{$sum.drevise|floatval}</td>
         </tr>
 		
 	     <tr >
             <td>其他</td>
-            <td >0</td>
-            <td >{$sum.other|floatval}</td>
+            <td>----</td>
+            <td >{$sum.dother|floatval}</td>
         </tr>
         </tbody>
 
