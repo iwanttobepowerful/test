@@ -180,8 +180,7 @@ class TestController extends Controller{
         $where= "centreno='{$centreno}'";
         $data=array(
             'status'=>8,
-            //'takelist_time'=>date("Y-m-d H:i:s"),
-            //'takelist_user_id'=>$userid,
+            'takelist_all_time'=>date("Y-m-d H:i:s"),
         );
         if(D("contract_flow")->where($where)->save($data)){
             $rs['msg'] = 'succ';
