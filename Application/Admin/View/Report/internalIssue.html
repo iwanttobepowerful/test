@@ -23,7 +23,7 @@
             <th width="5%">序号</th>
             <th >中心编号</th>
             <th width="20%">审核人/操作时间</th>
-            <th width="22%">详情</th>
+            <th width="27%">详情</th>
             <th width="15%">操作</th>
             <th width="15%">签发状态</th>
             </thead>
@@ -36,6 +36,7 @@
                     <td>
                         <a href="/admin/manager/contractDetail?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检验受理合同</a>
                         <a href="{$vo.pdf_path}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检测报告</a>
+                        <a href="" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>价格审核</a>
                     </td>
                     <td>
                         <if condition="$vo[status] eq 4">
