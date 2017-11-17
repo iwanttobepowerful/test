@@ -926,13 +926,11 @@ class ContractController extends Controller
         //判断角色，确定是否可以修改
         $admin_auth = session("admin_auth");
         $if_admin = $admin_auth['super_admin'];
-        $roleid = $admin_auth['gid'];
+        $user = $admin_auth['gid'];
         $department = $admin_auth['department'];
         $begin_time = I("begin_time");
         $end_time = I("end_time");
-
-        $role = D('common_role')->where('id='.$roleid)->find();
-        if($role['rolename']=="报告编制员" || $if_admin==1 ){
+        if($user==10 || $if_admin==1 ){
             $if_edit = 1;
         }else{
             $if_edit = 0;
@@ -941,7 +939,7 @@ class ContractController extends Controller
         $where= "f.status != 7";
         $keyword && $where .= " and c.centreNo like '%{$keyword}%'";
 
-        if($role['rolename']=="领导" || $role['rolename']=="审核员" || $role['rolename']=="盖章人员" || $if_admin==1){
+        if($user==8 || $user==15 || $user==13 || $if_admin==1){
             //
         }else{
             $where .= " and SUBSTR(c.centreNo,7,1) = '{$department}'";
@@ -960,7 +958,7 @@ class ContractController extends Controller
 
         //判断是接单还是签发
         //$ifstatus =
-        $list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,if(r.status is null,-1,r.status) as sub_status,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.external_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername,v.doc_path')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN report_feedback r on r.centreNo = c.centreNo left join test_report as v on c.centreNo=v.centreNo' )->where($where)->order('c.id desc')->limit("{$offset},{$pagesize}")->select();
+        $list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,if(r.status is null,-1,r.status) as sub_status,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.external_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername,u2.name as externalname,v.doc_path')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u2 on f.external_sign_user_id=u2.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN report_feedback r on r.centreNo = c.centreNo left join test_report as v on c.centreNo=v.centreNo' )->where($where)->order('c.id desc')->limit("{$offset},{$pagesize}")->select();
         $count = D("contract as c")->field('if(r.status is null,-1,r.status) as sub_status,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u2.name as externalname,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN common_system_user u2 on f.external_sign_user_id=u2.id LEFT JOIN report_feedback r on r.centreNo = c.centreNo')->where($where)->order('c.id desc')->count();
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
