@@ -851,6 +851,7 @@ class ContractController extends Controller
 			'status'=>6,
 			'external_sign_user_id'=>$external_sign_user_id,
 			'contract_time'=>Date("Y-m-d H:i:s"),
+            'external_sign_time'=>Date("Y-m-d H:i:s")
 		);
 		$where['centreNo']=$centreNo;
 		M()->startTrans();	
