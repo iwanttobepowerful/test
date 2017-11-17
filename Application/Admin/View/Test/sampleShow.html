@@ -376,10 +376,12 @@
 
 			</table>
 		</div>
+
         <volist name="list" id="one">
+			<if condition="$one">
             <div class="page">
                 <img src="{$one}" class="picture" />
-            </div>
+            </div></if>
         </volist>
 	</body>
 
