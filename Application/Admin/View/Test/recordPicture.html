@@ -41,7 +41,7 @@
                                 <else />
                                     <span style="color: green">检测完毕</span></if>
                                 <elseif condition="($one[status] eq 0) AND ($one[takelist_user_id] eq 0)"/>
-                                    <a href="{:U('/admin/test/infoShow')}?centreno={$one.centreno}" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-search"></i>检测工作通知单</a>
+                                    <a href="{:U('/admin/test/infoShow')}?id={$one.centreno}" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-search"></i>检测工作通知单</a>
                                     <a href="javascript:void(0);" onclick="takeList('{$one.centreno}')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-check"></i>接单</a>
                                     <else />
                                     <a class="btn btn-primary btn-xs disabled">已被接单</a>

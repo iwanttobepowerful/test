@@ -189,8 +189,8 @@ class TestController extends Controller{
     }
     //检测记录上传图片
     public function recordPictureUp(){
-        $id =I("id",0,'intval');
-        $centreno=I("centreno");//中心编号
+        $id =I("idnum",0,'intval');
+        $centreno=I("id");//中心编号
         $page = I("p",'int');
         $pagesize = 10;
         if($page<=0) $page = 1;
@@ -202,7 +202,7 @@ class TestController extends Controller{
         $result=D('test_record')
             ->limit("{$offset},{$pagesize}")->where($where)->select();
         $status=D("contract_flow")->where($where)->find();
-        $view=$status['status'];
+        $view =$status['status'];
         $count = D("test_record")->where($where)->count();//!!!!!!!!!!!!!!
         $Page       = new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
