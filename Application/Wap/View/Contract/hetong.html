@@ -63,10 +63,10 @@
                             </div>
 
                         </div>
-                        <div class="aui-margin-r-15 aui-margin-l-15">
+                        <div class=" aui-margin-l-15">
                             <button  class="aui-btn aui-btn-block aui-btn-outlined aui-btn-outlined2 aui-btn-sm ">搜索</button></div>
 
-                        <div class="aui-list-item  aui-margin-r-15 aui-margin-t-15 aui-margin-b-15">
+                        <div class="aui-list-item  aui-margin-l-15 aui-margin-b-15">
                         </div>
                     </form>
                 </div>
@@ -82,8 +82,8 @@
 <!--<button type="submit"  class="aui-btn aui-btn-block aui-btn-outlined aui-btn-outlined2 aui-btn-sm ">搜索</button>-->
 <!--</div>-->
 
-<div class="aui-list-item  aui-margin-r-15 aui-margin-t-15 aui-margin-b-15">
-    <table width="100%" border="0px"  cellspacing="0px" style="border-collapse:collapse " height="300" class=" aui-margin-r-15 aui-margin-b-15">
+<div class="aui-list-item  aui-margin-r-15 aui-margin-l-15">
+    <table width="100%" border="0px"  cellspacing="0px" style="border-collapse:collapse " height="525" >
         <tbody th class="aui-font-size-16 aui-text-center" >
 
         <tr class=" aui-bg-primary aui-text-white  ">
@@ -127,6 +127,31 @@
             <td>F</td>
             <td >0</td>
             <td >{$sum.frecord|floatval}</td>
+        </tr>
+
+<!--接口不知道写的对不对-->		
+	    <tr >
+            <td>副本</td>
+            <td >0</td>
+            <td >{$sum.copy|floatval}</td>
+        </tr>
+		
+		<tr >
+            <td>上网费</td>
+            <td >0</td>
+            <td >{$sum.online|floatval}</td>
+        </tr>
+		
+		<tr >
+            <td>项目修改</td>
+            <td >0</td>
+            <td >{$sum.revise|floatval}</td>
+        </tr>
+		
+	     <tr >
+            <td>其他</td>
+            <td >0</td>
+            <td >{$sum.other|floatval}</td>
         </tr>
         </tbody>
 
