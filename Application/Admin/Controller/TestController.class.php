@@ -287,9 +287,13 @@ class TestController extends Controller{
         $type=I("type");//获取type
         $data=explode(',',$id);
         $where['id'] = array('in', $data);
+        $where1= "centreno='{$id}'";
         if($type == 1){
             $rs=D("sample_picture")->where($where)->field('picture_name')->select();
 
+        }
+        elseif ($type == 2){
+            $rs=D("test_record")->where($where1)->field('path')->select();
         }
         else{
             $rs=D("test_record")->where($where)->field('path')->select();
