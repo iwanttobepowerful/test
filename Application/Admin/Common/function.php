@@ -304,7 +304,7 @@ if(!function_exists('convert2Pdf')){
         $method = "GET";
         $headers = array();
         array_push($headers, "Authorization:APPCODE " . $appcode);
-        $querys = "docURL=".urlencode($docUrl)."&outputType=png";
+        $querys = "docURL=".urlencode($docUrl)."&outputType=longimage";
         $bodys = "";
         $url = $url . "?" . $querys;
         $curl = curl_init();
