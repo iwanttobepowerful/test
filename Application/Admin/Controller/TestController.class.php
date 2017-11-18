@@ -397,10 +397,8 @@ class TestController extends Controller{
         );
         //pdf转换
         $docUrl = getCurrentHost().$data['path'];
-        //$docUrl = "http://adm.qooce.cn/Public/attached/word/2017-11-15/1510741227.docx";
-        $res = convert2Pdf($docUrl);
+        $res = convert2Pdf($docUrl,'pdf');
         $res = json_decode($res,true);
-        pr($res);
         if($res['retMsg']=='success'){
             $outputURLs = $res['outputURLs'];
             $pdfUrl = $outputURLs[0];
@@ -409,12 +407,6 @@ class TestController extends Controller{
             $result['msg'] = "转换pdf失败";
             $this->ajaxReturn($result);
         }
-       /*$data1=array(
-            'status'=>2,
-            'uploadreport_user_id'=>$userid,
-            'uploadreport_time'=>date("Y-m-d H:i:s"),
-        );*/
-
         if(D("test_report")->where("centreno='{$centreno}'")->save($data)){
             $result['msg'] = "succ";    
         }
