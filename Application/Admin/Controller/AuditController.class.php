@@ -40,25 +40,35 @@ class AuditController extends Controller {
     //申请列表
     public function reportList(){
         $keyword = I("keyword");
-        $where="contractno like '%{$keyword}%'";
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
-        //$role = D('common_role')->where('id='.$user)->find();
-        if($user==8 || $if_admin==1){//只有领导，超级管理员才能审核
-            $view="";
+        if($if_admin==1 || $user==14 ||$user==8) {
+            $view="1";
         }else{
-            $view="disabled";
+            $view="0";
         }
         $page = I("p",'int');
         $pagesize = 10;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
-        $audit_report=M("audit_report");//实例化对象
-        $rs=$audit_report->where($where)
-            ->join('contract ON audit_report.contractno=contract.centreno')
-            ->order('create_time desc,audit_report.id desc')->limit("{$offset},{$pagesize}")->select();
-        $count = D("audit_report")->where($where)->count();
+        if(!empty($keyword)){
+            $where="r.centreno like '%{$keyword}%'";
+            $rs=D("report_feedback")->alias("r")
+                ->field('if(r.status is null,-1,r.status) as sub_status,r.reason,r.create_time,r.centreno,a.clientname,a.samplename,a.testcriteria,a.testitem')
+                ->join(' left join contract as a on r.centreNo=a.centreNo')
+                ->where($where)
+                ->limit("{$offset},{$pagesize}")
+                ->order('r.create_time desc')->select();
+            $count = D("report_feedback")->alias("r")->where($where)->count();
+        }else{
+        $rs=D("report_feedback")->alias("r")
+            ->field('if(r.status is null,-1,r.status) as sub_status,r.reason,r.create_time,r.centreno,a.clientname,a.samplename,a.testcriteria,a.testitem')
+            ->join(' left join contract as a on r.centreNo=a.centreNo')
+            ->limit("{$offset},{$pagesize}")
+            ->order('r.create_time desc')->select();
+        $count = D("report_feedback")->alias("r")->count();
+        }
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
         $pagination= $Page->show();// 分页显示输出
@@ -72,36 +82,35 @@ class AuditController extends Controller {
     }
     //允许
     public function isAllow(){
-        $id =I("id",0,'intval');
+        $centreno =I("centreno");
+        $where= "centreno='{$centreno}'";
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
-        $role = D('common_role')->where('id='.$user)->find();
-        if($role['rolename']=="领导" || $if_admin==1){//只有领导，超级管理员才能审核
-            $data=array(
-                'status'=>1,
-                'modify_time'=>date("Y-m-d H:i:s"),
-            );
-            if(D("audit_report")->where("id=".$id)->save($data)){
+        $data=array(
+            'status'=>1,
+        );
+        if ($user==14||$if_admin==1||$user==8){//领导、批准员和超级管理员的权限
+            if(D("report_feedback")->where($where)->save($data)){
                 $rs['msg'] = 'succ';
             }}
         $this->ajaxReturn($rs);
     }
     //拒绝
     public function notAllow(){
-        $id =I("id",0,'intval');
+        $centreno =I("centreno");
+        $where= "centreno='{$centreno}'";
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
-        $role = D('common_role')->where('id='.$user)->find();
-        if($role['rolename']=="领导" || $if_admin==1){//只有领导，超级管理员才能审核
-            $data=array(
-                'status'=>2,
-                'modify_time'=>date("Y-m-d H:i:s"),
-            );
-            if(D("audit_report")->where("id=".$id)->save($data)){
+        $data=array(
+            'status'=>2,
+        );
+        if ($user==14||$if_admin==1||$user==8){//领导、批准员和超级管理员的权限
+            $result=D("report_feedback")->where($where)->save($data);
+            if($result!==false){
                 $rs['msg'] = 'succ';
             }}
         $this->ajaxReturn($rs);

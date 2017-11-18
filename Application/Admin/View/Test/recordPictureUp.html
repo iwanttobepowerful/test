@@ -2,14 +2,46 @@
 <div id="page-wrapper">
     <include file="Common:breadcrumb" />
     <div id="page-inner" class="container">
-        <div class="search-form">
-            <a href="{:U('/admin/test/recordPicture')}" class="btn btn-primary">返回</a>
-            <if condition="$view eq 7" >
-            <a href="{:U('/admin/test/picUp')}?centreno={$centreno}" class="btn btn-primary">上传</a>
-            </if>
+        <div>
+            <button onclick="window.history.back() " class="btn btn-primary">返回</button>
+        </div><br/>
+
+        <if condition="$view eq 7">
+            <form class="form-horizontal" id="myform" action="" method="post">
+                <input type="hidden" name="idnum" value="{$pic['id']}" />
+                <input type="hidden" name="centreno" value="{$centreno}" /><!--!!!!!!!!-->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label talign-center fz13">上传检测记录</label>
+                    <div class="col-sm-10">
+                        <div class="face" id="attachment" style="width: 120px;height: 80px;" onclick="onFileUpload()"><img src="{$pic['path']}" onerror="this.src='__PUBLIC__/static/images/default-timg.gif'" style="height: 100%;" /></div>
+                        <input type="hidden" name="imgurl" value="{$pic['path']}" />
+                        <input type="file" name="file" onchange="ajaxFileUpload()" id="addfile" style="display:none;"  />
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label talign-center fz13">备注</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" name="remark">{$pic['remark']}</textarea>
+                        <p class="help-block">（选填）</p>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label talign-center">&nbsp;</label>
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-success" onclick="onSave()">保 存</button>
+                    </div>
+                </div>
+            </form>
+        </if>
+        <p>
+        <div>
                 <a href="javascript:void (0)" class="btn btn-primary" onclick="data()"><i class=" glyphicon glyphicon-download"></i>批量打印</a>
 
         </div>
+        </p>
         <table class="table table-bordered table-striped table-hover">
             <thead>
 
@@ -31,7 +63,8 @@
                     <td>{$one.lastmodifytime}</td>
                     <td>{$one.remark}</td>
                     <td>
-                        <a href="javascript:void(0);" onclick="onDelete({$one.id})" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> 删除</a>
+                        <if condition="$gid eq 1">
+                        <a href="javascript:void(0);" onclick="onDelete({$one.id})" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> 删除</a></if>
                         <a href="javascript:void(0);" name="{$one.path}" onclick="onPrint({$one.id});" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-print"></i> 打印</a>
                     </td>
                 </tr>
@@ -40,10 +73,14 @@
         </table>
         <div class=" pull-right"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
     </div>
-</div>
+
+
 </div>
 
+<script src="__PUBLIC__/static/js/jquery.form.js"></script>
+<script src="__PUBLIC__/static/js/ajaxfileupload.js"></script>
 <script type="text/javascript">
+
     function onDelete(id){
         if(!id) return false;
         var _options = {"flag":"error","text":"您确定要删除吗！","buttons":{"ok":{"action":function(){doneDel(id);}},"cancel":{}}};
@@ -105,6 +142,61 @@
             alert('您还没有选择任何内容！');
             return false;
         }
+    }
+    //上传检测记录
+    function ajaxFileUpload(){
+        var file = $("#addfile").val();
+        if(file){
+            $.ajaxFileUpload({
+                url: "{:U('Uploader/start')}",
+                secureuri: false,
+                fileElementId: 'addfile',
+                dataType: 'JSON',
+                success: function (data, status) {
+                    var ret = JSON.parse(data);
+                    $("#addfile").val("");
+                    if(ret.info=='succ'){
+                        $("input[name='imgurl']").val(ret.url);
+                        $("#attachment img").attr("src",ret.url);
+                    }else{
+                        var _options = {"text":"上传失败","flag":"error"};
+                        if(ret.info) _options.text = ret.info;
+                        doAlertDialog(_options);
+                    }
+                },
+                error: function (data, status, e){
+                    var _options = {"text":"上传失败","flag":"error"};
+                    doAlertDialog(_options);
+                }
+            });
+        }
+        return false;
+    }
+    function onFileUpload() {
+        $('#addfile').click();
+        return false;
+    }
+
+    function onSave(){
+        var options = {
+            url: "{:U('/admin/Test/doUploadPic')}",
+            dataType: 'json',
+            beforeSubmit: function(){
+                return true;
+            },
+            success: function (data) {
+                if(data.msg=='succ'){
+                    var _options = {"text":"保存成功！","action":function(){window.location.reload();}};
+                    doAlertDialog(_options);
+                }else{
+                    var _options = {"text":"保存失败！"};
+                    if(data.msg) _options.text = data.msg;
+                    doAlertDialog(_options);
+                }
+            }
+        };
+        $("#myform").ajaxForm(options);
+        return false;
     }
 </script>
 <include file="Common:footer" />

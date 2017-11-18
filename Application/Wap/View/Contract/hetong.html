@@ -1,3 +1,4 @@
+
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -63,10 +64,10 @@
                             </div>
 
                         </div>
-                        <div class="aui-margin-r-15 aui-margin-l-15">
+                        <div class=" aui-margin-l-15">
                             <button  class="aui-btn aui-btn-block aui-btn-outlined aui-btn-outlined2 aui-btn-sm ">搜索</button></div>
 
-                        <div class="aui-list-item  aui-margin-r-15 aui-margin-t-15 aui-margin-b-15">
+                        <div class="aui-list-item  aui-margin-l-15 aui-margin-b-15">
                         </div>
                     </form>
                 </div>
@@ -82,8 +83,8 @@
 <!--<button type="submit"  class="aui-btn aui-btn-block aui-btn-outlined aui-btn-outlined2 aui-btn-sm ">搜索</button>-->
 <!--</div>-->
 
-<div class="aui-list-item  aui-margin-r-15 aui-margin-t-15 aui-margin-b-15">
-    <table width="100%" border="0px"  cellspacing="0px" style="border-collapse:collapse " height="300" class=" aui-margin-r-15 aui-margin-b-15">
+<div class="aui-list-item  aui-margin-r-15 aui-margin-l-15">
+    <table width="100%" border="0px"  cellspacing="0px" style="border-collapse:collapse " height="525" >
         <tbody th class="aui-font-size-16 aui-text-center" >
 
         <tr class=" aui-bg-primary aui-text-white  ">
@@ -94,39 +95,64 @@
 
         <tr >
             <td width="33%" >A</td>
-            <td  width="33%">0</td>
+            <td  width="33%">{$A_count}</td>
             <td  width="33%">{$sum.arecord|floatval}</td>
 
 
         </tr >
-        <tr bgcolor="	#F5F5F5">
+        <tr bgcolor="	#D3D3D3">
             <td>B</td>
-            <td >0</td>
+            <td >{$B_count}</td>
             <td >{$sum.brecord|floatval}</td>
         </tr>
 
         <tr>
             <td>C</td>
-            <td >0</td>
+            <td >{$C_count}</td>
             <td >{$sum.crecord|floatval}</td>
         </tr>
 
-        <tr bgcolor="	#F5F5F5">
+        <tr bgcolor="	#D3D3D3">
             <td>D</td>
-            <td >0</td>
+            <td >{$D_count}</td>
             <td >{$sum.drecord|floatval}</td>
         </tr>
 
         <tr>
             <td>E</td>
-            <td >0</td>
+            <td >{$E_count}</td>
             <td >{$sum.erecord|floatval}</td>
         </tr>
 
-        <tr bgcolor="	#F5F5F5">
+        <tr bgcolor="	#D3D3D3">
             <td>F</td>
-            <td >0</td>
+            <td >{$F_count}</td>
             <td >{$sum.frecord|floatval}</td>
+        </tr>
+
+
+        <tr >
+            <td>副本</td>
+            <td >----</td>
+            <td >{$sum.dcopy|floatval}</td>
+        </tr>
+
+        <tr bgcolor="	#D3D3D3">
+            <td>上网费</td>
+            <td >----</td>
+            <td >{$sum.online|floatval}</td>
+        </tr>
+
+        <tr >
+            <td>项目修改</td>
+            <td >----</td>
+            <td >{$sum.drevise|floatval}</td>
+        </tr>
+
+        <tr bgcolor="	#D3D3D3">
+            <td>其他</td>
+            <td>----</td>
+            <td >{$sum.dother|floatval}</td>
         </tr>
         </tbody>
 

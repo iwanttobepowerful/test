@@ -93,24 +93,46 @@ class TestController extends Controller{
         array_push($result,$entsigndatemonth);
         array_push($result,$entsigndateday);
 
+        //后面跟着现场上传图片
+        $rs=D("sample_picture")->where($where)->field("picture_name")->select();//取出地址
+        //换成字符串后再替换
+        foreach ($rs as $v){
+            $v = join(",",$v); //可以用implode将一维数组转换为用逗号连接的字符串，join是别名
+            $temp[] = $v;
+        }
+        foreach($temp as $v){
+            $s .=$v.",";
+        }
+        $s=substr($s,0,-1);//利用字符串截取函数消除最后一个逗号
+        $list=str_replace("_thumb","",$s);
+        $path=explode(',',$list);
         $body=array(
             'one'=>$result,
-			'if_edit'=>$if_edit
-
+			'if_edit'=>$if_edit,
+            'list'=>$path
         );
         $this->assign($body);
         $this->display();
     }
 //检测记录
     public function recordPicture(){
-        $keyword = I("keyword");//获取参数
-        $where= "contract_flow.centreno like '%{$keyword}%'";
         $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $if_admin = $admin_auth['super_admin'];//是否是超级管理员
         $userid=$admin_auth['id'];
         $user=$admin_auth['gid'];//判断是哪个角色
-        $if_admin = $admin_auth['super_admin'];//是否是超级管理员
-        $role = D('common_role')->where('id='.$user)->find();
-        if ($role['rolename']=="检测员" || $if_admin ==1) {//只有报告编制员，超级管理员才能操作
+        $department=$admin_auth['department'];//判断是哪个部门的
+        $keyword = I("keyword");//获取参数
+        if($user==8||$user==15||$if_admin ==1){
+            if(!empty($keyword)){
+                $where =" contract_flow.centreno like '%{$keyword}%'";
+            }
+        }
+        else{
+        $where = "contract_flow.centreno like '______{$department}%'";
+        if(!empty($keyword)){
+            $where .="and contract_flow.centreno like '%{$keyword}%'";
+        }}
+        if ($user==9 || $if_admin ==1) {//只有报告编制员，超级管理员才能操作
             $view="visible";
         }
         else
@@ -160,7 +182,7 @@ class TestController extends Controller{
         }}
         $this->ajaxReturn($rs);
     }
-//上传完毕
+//检测记录上传完毕按钮
     public function doAllSave(){
         $centreno=I("centreno");
         $rs = array("msg"=>"fail");
@@ -169,43 +191,51 @@ class TestController extends Controller{
         $where= "centreno='{$centreno}'";
         $data=array(
             'status'=>8,
-            //'takelist_time'=>date("Y-m-d H:i:s"),
-            //'takelist_user_id'=>$userid,
+            'takelist_all_time'=>date("Y-m-d H:i:s"),
         );
         if(D("contract_flow")->where($where)->save($data)){
             $rs['msg'] = 'succ';
         }
         $this->ajaxReturn($rs);
     }
-    //上传图片
+    //检测记录上传图片
     public function recordPictureUp(){
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $if_admin = $admin_auth['super_admin'];//是否是超级管理员
+        $user=$admin_auth['gid'];//判断是哪个角色
+        if($user==9 || $if_admin==1){$gid=1;}else{$gid=0;}
+        $id =I("idnum",0,'intval');
+        $centreno=I("id");//中心编号
         $page = I("p",'int');
-        $pagesize = 20;
+        $pagesize = 10;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
-        $orderby = "create_time desc";
-        $keyword = I("id");//获取中心编号
-        $where= "centreno='{$keyword}'";
+        $where= "centreno='{$centreno}'";
+        if($id){
+            $pic = D('test_record')->where("id=".$id)->find();
+        }
         $result=D('test_record')
             ->limit("{$offset},{$pagesize}")->where($where)->select();
         $status=D("contract_flow")->where($where)->find();
-        $view=$status['status'];
+        $view =$status['status'];
         $count = D("test_record")->where($where)->count();//!!!!!!!!!!!!!!
         $Page       = new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
         $pagination       = $Page->show();// 分页显示输出
 
         $body=array(
+            'pic' => $pic,
             'lists'=>$result,
             'pagination'=>$pagination,
-            'centreno'=>$keyword,//!!!!!!!!!!!!!!
+            'centreno'=>$centreno,//!!!!!!!!!!!!!!
             'view'=>$view,
+            'gid'=>$gid
         );
         $this->assign($body);
         $this->display();
     }
 
-    public function picUp(){
+    /*public function picUp(){
         $id =I("id",0,'intval');
         $centreno=I("centreno");//!!!!!!!!!!!!!!!!!!!!!!!
         if($id){
@@ -217,7 +247,7 @@ class TestController extends Controller{
         );
         $this->assign($body);
         $this->display();
-    }
+    }*/
 
     public function doUploadPic(){
         $id = I("id",0,'intval');
@@ -257,11 +287,17 @@ class TestController extends Controller{
         $type=I("type");//获取type
         $data=explode(',',$id);
         $where['id'] = array('in', $data);
+        $where1= "centreno='{$id}'";
         if($type == 1){
             $rs=D("sample_picture")->where($where)->field('picture_name')->select();
+
+        }
+        elseif ($type == 2){
+            $rs=D("test_record")->where($where1)->field('path')->select();
         }
         else{
             $rs=D("test_record")->where($where)->field('path')->select();
+
         }
         //换成字符串后再替换
         foreach ($rs as $v){
@@ -277,8 +313,6 @@ class TestController extends Controller{
         $this->assign('list',$path);
         $this->display();
     }
-//以上是检测记录的图片上传
-
 //上传检测报告显示页面
     public function record(){
         $page = I("p",'int');

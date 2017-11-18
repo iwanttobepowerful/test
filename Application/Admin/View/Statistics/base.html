@@ -26,7 +26,7 @@
                 <th>委托单位</th>
                 <th>生产单位</th>
                 <th>样品名称</th>
-                <th>规格型号</th>
+                <th>检验依据</th>
                 <th>检验内容及要求</th>
                 <th>应收金额(元)</th>
                 <th>A记录(元)</th>
@@ -36,13 +36,10 @@
                 <th>E记录(元)</th>
                 <th>F记录(元)</th>
                 <th>副本(元)</th>
+                <th>上网费(元)</th>
                 <th>项目修改(元)</th>
                 <th>其它(元)</th>
-                <th>备注</th>
-                <th>检验依据</th>
                 <th>来样日期</th>
-                <th>样品数量</th>
-                <th>实验员</th>
                 <th>收样人</th>			
 			</thead>
 			<tbody>
@@ -57,9 +54,10 @@
                 <td>{$sum.erecord|floatval}</td>
                 <td>{$sum.frecord|floatval}</td>
                 <td>{$sum.dcopy|floatval}</td>
+                    <td>{$sum.donline|floatval}</td>
                 <td>{$sum.drevise|floatval}</td>
                 <td>{$sum.dother|floatval}</td>
-                <td colspan="7"></td>
+                <td colspan="2"></td>
                 </tr>
 			<volist name="lists" id="one">
 				<tr>
@@ -68,7 +66,7 @@
                     <td>{$one.clientname}</td>
                     <td>{$one.productunit}</td>
                     <td>{$one.samplename}</td>
-                    <td>{$one.samplecode}</td>
+                    <td>{$one.testcriteria}</td>
                     <td>{$one.testitem}</td>
                     <td>{$one.testcost|floatval}</td>
                     <td>{$one.arecord|floatval}</td>
@@ -78,13 +76,10 @@
                     <td>{$one.erecord|floatval}</td>
                     <td>{$one.frecord|floatval}</td>
                     <td>{$one.dcopy|floatval}</td>
+                    <td>{$one.donline}</td>
                     <td>{$one.drevise|floatval}</td>
                     <td>{$one.dother|floatval}</td>
-                    <td>{$one.remark}</td>
-                    <td>{$one.testcriteria}</td>
                     <td>{$one.collectdate|strtotime|date='Y年m月d日',###}</td>
-                    <td>{$one.samplequantity}</td>
-                    <td>{$one.takelist_user}</td>
                     <td>{$one.collector}</td>
 				</tr>
 			</volist>

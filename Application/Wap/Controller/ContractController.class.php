@@ -280,6 +280,28 @@ class ContractController extends Controller {
         $end_time && $where .=" and date_format(b.collectdate,'%Y-%m-%d') <='{$end_time}'";
 
         //份数
+        $countlist =  D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->where($where)->field('collector_partment,count(collector_partment)')->group('collector_partment')->select();
+        //dump($countlist);
+        foreach ($countlist as $value) {
+            if($value['collector_partment']=='A'){
+                $A_count=$value['count(collector_partment)'];
+            }
+            if($value['collector_partment']=='B'){
+                $B_count=$value['count(collector_partment)'];
+            }
+            if($value['collector_partment']=='C'){
+                $C_count=$value['count(collector_partment)'];
+            }
+            if($value['collector_partment']=='D'){
+                $D_count=$value['count(collector_partment)'];
+            }
+            if($value['collector_partment']=='E'){
+                $E_count=$value['count(collector_partment)'];
+            }
+            if($value['collector_partment']=='F'){
+                $F_count=$value['count(collector_partment)'];
+            }
+        }
         //$countlist = ;
         //金额
         $sumlist = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->join(C("DB_PREFIX")."test_cost c on a.centreno=c.centreno","LEFT")->where($where)->field("sum(b.testcost) as testcost,sum(c.arecord) as arecord,sum(c.brecord) as brecord,sum(c.crecord) as crecord,sum(c.drecord) as drecord,sum(c.erecord) as erecord,sum(c.frecord) as frecord,sum(c.dcopy) as dcopy,sum(c.drevise) as drevise,sum(c.dother) as dother")->find();
@@ -288,6 +310,12 @@ class ContractController extends Controller {
             'sum'=>$sumlist,
             'begin_time'=>$begin_time,
             'end_time'=>$end_time,
+            'A_count'=>$A_count?$A_count:0,
+            'B_count'=>$B_count?$B_count:0,
+            'C_count'=>$C_count?$C_count:0,
+            'D_count'=>$D_count?$D_count:0,
+            'E_count'=>$E_count?$E_count:0,
+            'F_count'=>$F_count?$F_count:0,
         );
         $this->assign($body);
         $this->display();
@@ -305,16 +333,44 @@ class ContractController extends Controller {
         //份数
         $countlist =  D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->where($where)->field('collector_partment,count(collector_partment)')->group('collector_partment')->select();//->field('testdepartment,count(testdepartment)')->group('testdepartment')->select()
         //dump($countlist);
+        foreach ($countlist as $value) {
+            if($value['collector_partment']=='A'){
+                $A_count=$value['count(collector_partment)'];
+            }
+            if($value['collector_partment']=='B'){
+                $B_count=$value['count(collector_partment)'];
+            }
+            if($value['collector_partment']=='C'){
+                $C_count=$value['count(collector_partment)'];
+            }
+            if($value['collector_partment']=='D'){
+                $D_count=$value['count(collector_partment)'];
+            }
+            if($value['collector_partment']=='E'){
+                $E_count=$value['count(collector_partment)'];
+            }
+            if($value['collector_partment']=='F'){
+                $F_count=$value['count(collector_partment)'];
+            }
+        }
         //if($countlist[0])
         //$countlist->query("select fileformat, count(fileformat) as icount from gallery group by fileformat");
         //金额
         $sumlist = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->join(C("DB_PREFIX")."test_cost c on a.centreno=c.centreno","LEFT")->where($where)->field("sum(b.testcost) as testcost,sum(c.arecord) as arecord,sum(c.brecord) as brecord,sum(c.crecord) as crecord,sum(c.drecord) as drecord,sum(c.erecord) as erecord,sum(c.frecord) as frecord,sum(c.dcopy) as dcopy,sum(c.drevise) as drevise,sum(c.dother) as dother")->find();
-       // dump($sumlist);
+       //dump($sumlist);
+
+
         $body = array(
             'count'=>$countlist[0],
             'sum'=>$sumlist,
             'begin_time'=>$begin_time,
             'end_time'=>$end_time,
+            'A_count'=>$A_count?$A_count:0,
+            'B_count'=>$B_count?$B_count:0,
+            'C_count'=>$C_count?$C_count:0,
+            'D_count'=>$D_count?$D_count:0,
+            'E_count'=>$E_count?$E_count:0,
+            'F_count'=>$F_count?$F_count:0,
         );
         $this->assign($body);
         $this->display();

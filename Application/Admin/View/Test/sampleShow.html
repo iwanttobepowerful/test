@@ -8,7 +8,7 @@
         <script src="__PUBLIC__/static/js/jquery-2.1.3.min.js" type="text/javascript" charset="utf-8"></script>
 		<style type="text/css">
 			* {
-				font-family: "宋体";
+				font-family: simsun;
 				font-size: 10.5pt;
 			}
 			
@@ -28,7 +28,7 @@
 			}
 			
 			.cn {
-				font-family: "宋体";
+				font-family: simsun;
 				font-size: 10.5pt;
 			}
             .remark{
@@ -100,7 +100,7 @@
 			}
 			
 			.sample_title_txt {
-				font-family: "黑体";
+				font-family: simhei;
 				font-size: 18pt;
 				text-align: center;
 			}
@@ -130,9 +130,15 @@
 			}
 			
 			.sample_txt {
-				font-family: "宋体";
+				font-family: simsun;
 				font-size: 10.5pt;
 			}
+            .picture{
+            max-width: 100%;
+            display: block;
+            margin: 0 auto;
+            max-height: 100%;
+            }
 		</style>
 		<style type="text/css" media="print">
 			/*以下是打印格式*/
@@ -170,6 +176,7 @@
 	</head>
 
 	<body>
+	    <button onclick="window.print()" class="Noprint">打印</button>
 		<div class="page">
 
 			<input type="hidden" id="role" value="{$if_edit}" />
@@ -368,9 +375,14 @@
 				</tr>
 
 			</table>
-			<button onclick="window.print()" class="Noprint">打印</button>
-            
 		</div>
+
+        <volist name="list" id="one">
+			<if condition="$one">
+            <div class="page">
+                <img src="{$one}" class="picture" />
+            </div></if>
+        </volist>
 	</body>
 
 </html>

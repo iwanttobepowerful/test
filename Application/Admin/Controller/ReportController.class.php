@@ -179,7 +179,7 @@ class ReportController extends Controller
         $where="a.isaudit=1";
         $orderby = "a.verify_time desc";
         if(!empty($centreno)){
-            $where .=" and a.centreno='{$centreno}'";
+            $where .=" and a.centreno like'%{$centreno}%'";
         }
         if($sortby==1){
             $begin_time && $where .=" and date_format(a.verify_time,'%Y-%m-%d') >='{$begin_time}'";
@@ -267,7 +267,7 @@ class ReportController extends Controller
         $where = "contract_flow.status=5";
         if(!empty($keyword)){
             //查询合同编号
-            $where .=" and contract_flow.centreno='{$keyword}'";
+            $where .=" and contract_flow.centreno like '%{$keyword}%'";
         }
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
