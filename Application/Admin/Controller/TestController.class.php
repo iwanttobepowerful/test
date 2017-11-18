@@ -413,16 +413,8 @@ class TestController extends Controller{
             'uploadreport_user_id'=>$userid,
             'uploadreport_time'=>date("Y-m-d H:i:s"),
         );*/
-        M()->startTrans();
         if(D("test_report")->where("centreno='{$centreno}'")->save($data)){
-            //if(D("contract_flow")->where("centreno='{$centreno}'")->save($data1)){
-                $result['msg'] = "succ";
-                M()->commit();
-            }else{
-                M()->rollback();
-          // }
-       // }else{
-           // M()->rollback();
+            $result['msg'] = "succ";    
         }
         $this->ajaxReturn($result);
     }
