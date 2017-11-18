@@ -91,7 +91,7 @@ class AuditController extends Controller {
         $data=array(
             'status'=>1,
         );
-        if ($user==14||$if_admin==1||$user==14){//领导、批准员和超级管理员的权限
+        if ($user==14||$if_admin==1||$user==8){//领导、批准员和超级管理员的权限
             if(D("report_feedback")->where($where)->save($data)){
                 $rs['msg'] = 'succ';
             }}
