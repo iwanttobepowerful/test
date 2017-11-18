@@ -413,9 +413,12 @@ class TestController extends Controller{
             'uploadreport_user_id'=>$userid,
             'uploadreport_time'=>date("Y-m-d H:i:s"),
         );*/
+
         if(D("test_report")->where("centreno='{$centreno}'")->save($data)){
             $result['msg'] = "succ";    
         }
+        pr($data);
+        pr($result);
         $this->ajaxReturn($result);
     }
     //提交审核按钮
