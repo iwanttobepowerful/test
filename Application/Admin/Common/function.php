@@ -321,7 +321,6 @@ if(!function_exists('convert2Pdf')){
         }
         $response = curl_exec($curl);
         curl_close ($curl);
-        pr($response);
         return $response;
     }
 }
