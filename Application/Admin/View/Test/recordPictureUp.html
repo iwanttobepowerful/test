@@ -2,6 +2,9 @@
 <div id="page-wrapper">
     <include file="Common:breadcrumb" />
     <div id="page-inner" class="container">
+        <div>
+            <button onclick="window.history.back() " class="btn btn-primary">返回</button>
+        </div><br/>
 
         <if condition="$view eq 7">
             <form class="form-horizontal" id="myform" action="" method="post">
@@ -60,7 +63,8 @@
                     <td>{$one.lastmodifytime}</td>
                     <td>{$one.remark}</td>
                     <td>
-                        <a href="javascript:void(0);" onclick="onDelete({$one.id})" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> 删除</a>
+                        <if condition="$gid eq 1">
+                        <a href="javascript:void(0);" onclick="onDelete({$one.id})" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> 删除</a></if>
                         <a href="javascript:void(0);" name="{$one.path}" onclick="onPrint({$one.id});" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-print"></i> 打印</a>
                     </td>
                 </tr>

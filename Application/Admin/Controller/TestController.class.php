@@ -200,6 +200,10 @@ class TestController extends Controller{
     }
     //检测记录上传图片
     public function recordPictureUp(){
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $if_admin = $admin_auth['super_admin'];//是否是超级管理员
+        $user=$admin_auth['gid'];//判断是哪个角色
+        if($user==9 || $if_admin==1){$gid=1;}else{$gid=0;}
         $id =I("idnum",0,'intval');
         $centreno=I("id");//中心编号
         $page = I("p",'int');
@@ -224,7 +228,8 @@ class TestController extends Controller{
             'lists'=>$result,
             'pagination'=>$pagination,
             'centreno'=>$centreno,//!!!!!!!!!!!!!!
-            'view'=>$view
+            'view'=>$view,
+            'gid'=>$gid
         );
         $this->assign($body);
         $this->display();
