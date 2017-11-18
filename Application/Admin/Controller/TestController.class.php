@@ -400,6 +400,7 @@ class TestController extends Controller{
         //$docUrl = "http://adm.qooce.cn/Public/attached/word/2017-11-15/1510741227.docx";
         $res = convert2Pdf($docUrl);
         $res = json_decode($res,true);
+        pr($res);
         if($res['retMsg']=='success'){
             $outputURLs = $res['outputURLs'];
             $pdfUrl = $outputURLs[0];
@@ -417,8 +418,6 @@ class TestController extends Controller{
         if(D("test_report")->where("centreno='{$centreno}'")->save($data)){
             $result['msg'] = "succ";    
         }
-        pr($data);
-        pr($result);
         $this->ajaxReturn($result);
     }
     //提交审核按钮
