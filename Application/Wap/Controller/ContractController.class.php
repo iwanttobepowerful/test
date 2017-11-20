@@ -193,7 +193,7 @@ class ContractController extends Controller {
                 $department='F';
                 break;
             default:
-                    $department='A';
+                $department='A';
                 break;
 
         }
@@ -208,6 +208,40 @@ class ContractController extends Controller {
         $this->display();
     }
 
+    //查看各个部门的情况
+    public function dep(){
+        $id = I("id");
+
+        switch ($id)
+        {
+            case '2':
+                $department='B';
+                break;
+            case '3':
+                $department='C';
+                break;
+            case '4':
+                $department='D';
+                break;
+            case '5':
+                $department='E';
+                break;
+            case '6':
+                $department='F';
+                break;
+            default:
+                $department='A';
+                break;
+
+        }
+
+        $where['department']=$department;
+        $list = D("special_centre_code")->where($where)->field('*,getNum-remainNum as useNum')->select();
+        if ($list){
+            $this->ajaxReturn($list);
+        }
+
+    }
 
     //特殊号段添加
     public function addsp(){

@@ -47,7 +47,8 @@
                 <th>使用量</th>
                 <th>剩余量</th>
             </thead>
-            <tbody>
+            <tbody id="show">
+
             <volist name="special_list" id="special">
                 <tr>
                     <td>{$special.year}</td>
@@ -67,7 +68,7 @@
 <div class="aui-margin-r-15 aui-margin-l-15" onclick="javascript:window.open('/contract/add.html','_self')">
     <button  class="aui-btn aui-btn-block aui-btn-outlined aui-btn-outlined2 aui-btn-sm ">新增</button>
 </div>
-
+<script src="__PUBLIC__/static/js/jquery.form.js"></script>
 <script type="text/javascript" src="__PUBLIC__/wx/script/aui-tab.js" ></script>
 <script type="text/javascript">
 
@@ -77,9 +78,25 @@
         repeatClick:false
     },
     function(ret){
-        //console.log(ret);//向web控制台输出一条信息，例如：Object { index: 1, dom: <div.aui-bar-btn-item> }
+        //console.log(ret['index']);//向web控制台输出一条信息，例如：Object { index: 1, dom: <div.aui-bar-btn-item> }
         //alert(ret['index']);\
-        window.location.href="/contract/specialCodeList?id="+ret['index'];
+        //window.location.href="/contract/specialCodeList?id="+ret['index'];
+        if(!ret['index']) return false;
+        $.ajax({
+            type:"post",
+            url:"{:U('/wap/contract/dep')}",
+            data:{"id":ret['index']},
+            dataType:"json",
+            success:function(list){
+                var _html = '<tr>';
+                $.each(list,function(index,obj){
+                    _html += '<tr><td>'+obj.year+'</td>'+'<td>'+obj.month+'</td>'+'<td>'+obj.usenum+'</td>'+'<td>'+obj.remainnum+'</td></tr>';
+                })
+                _html +='</tr>';
+
+                $("#show").html(_html);
+            }
+        });
 
     });
 </script>
