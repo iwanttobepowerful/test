@@ -16,6 +16,7 @@
 
         <table class="table table-bordered table-striped table-hover">
             <thead>
+            <th width="5%">序号</th>
             <th width="10%">收样日期</th>
             <th width="15%">中心编号</th>
             <th>样本名称</th>
@@ -23,8 +24,9 @@
             <th width="38%">检测进度</th>
             </thead>
             <tbody>
-            <volist name="lists" id="one">
+            <volist name="lists" id="one" key="i">
                 <tr>
+                    <td>{$i}</td>
                     <td>{$one.workdate}</td>
                     <td>{$one.centreno}</td>
                     <td>{$one.samplename}</td>
