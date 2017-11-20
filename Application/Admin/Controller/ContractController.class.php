@@ -149,6 +149,8 @@ class ContractController extends Controller
         $RErecord = I("RErecord",0,'intval');
         $RFrecord = I("RFrecord",0,'intval');
 		
+		$fee_remark = I("fee_remark");
+		
         $Dcopy = I("Dcopy",0,'intval');
         $Donline = I("Donline",0,'intval');
         $Drevise = I("Drevise",0,'intval');
@@ -244,6 +246,7 @@ class ContractController extends Controller
             "Donline"=>$Donline,
             "Drevise"=>$Drevise,
             "Dother"=>$Dother,
+			"remark"=>$fee_remark,
             'costDate'=>Date("Y-m-d H:i:s")
         );
 
@@ -359,6 +362,7 @@ class ContractController extends Controller
 			$Dcopy = I("Dcopy",0,'intval');
 			$Drevise = I("Drevise",0,'intval');
 			$Dother = I("Dother",0,'intval');
+			$fee_remark = I("fee_remark");
 			
 			$data = array(
 				"testCost"=>$testCost,
@@ -368,6 +372,7 @@ class ContractController extends Controller
 				"Dcopy"=>$Dcopy,
 				"Drevise"=>$Drevise,
 				"Dother"=>$Dother,
+				"remark"=>$fee_remark
 			);
 			M()->startTrans();
 			try{
@@ -438,7 +443,7 @@ class ContractController extends Controller
 			$Donline = I("Donline",0,'intval');
 			$Drevise = I("Drevise",0,'intval');
 			$Dother = I("Dother",0,'intval');
-	
+			$fee_remark = I("fee_remark");
 	
 			if(empty($clientName)||empty($productUnit)||empty($sampleName)||empty($testCriteria)||empty($testItem)||empty($sampleQuantity)||empty($sampleStatus)||empty($sampleStaQuan)||empty($collector)||empty($testCost)||empty($collectDate)||empty($reportDate)){
 				$rs['msg'] = '信息填写不完整!';
@@ -520,6 +525,7 @@ class ContractController extends Controller
 				"Donline"=>$Donline,
 				"Drevise"=>$Drevise,
 				"Dother"=>$Dother,
+				"remark"=>$fee_remark,
 				'costDate'=>Date("Y-m-d H:i:s")
 			);
 			M()->startTrans();
@@ -603,7 +609,7 @@ class ContractController extends Controller
         $centreno = I("id");
         $where['centreNo']=$centreno;
         $result=M('sampling_form')->where($where)->find();
-        //$status=M('contract_flow')->where($where)->find();
+        
         $ifedit=M('contract')->where($where)->find();
         $sub_status=M('report_feedback')->where($where)->find();
         if(empty($sub_status)){
@@ -620,24 +626,42 @@ class ContractController extends Controller
         }else{
             $if_edit = 0;
         }
+		
+		//判断是否已经提交完毕，目的判断是否出现抽样单录入完毕按钮
+		if(empty($result['samplebase']) && empty($result['sampledate']) && empty($result['productiondate']) && empty($result['sampleplace']) && empty($result['samplemethod']) && empty($result['simplersign']) && empty($result['simsigndate']) && empty($result['sealersign']) && empty($result['seasingdate']) && empty($result['enterprisesign']) && empty($result['entsigndate'])){
+			$if_save = 0;
+		}else{
+			$if_save = 1;	
+		}
+		
+		//判断是否上传现成照片，目的判断是否出现抽样单录入完毕按钮
+		$where_p['centreNo']=$centreno;
+		$where_p['type']=1;
+		$if_picture = M('sample_picture')->where($where_p)->count();
+		
+		//判断是否所有抽样信息录入完毕，目的判断是否出现打印按钮
+		$if_submit=M('contract_flow')->where($where)->count();
+		
+		
+		
 
-        $simsigndateyear = $result['simsigndate'] ? date("Y",strtotime($result[0]['simsigndate'])):"";
-        $simsigndatemonth =  $result['simsigndate'] ? date("m",strtotime($result[0]['simsigndate'])):"";
-        $simsigndateday =  $result['simsigndate'] ? date("d",strtotime($result[0]['simsigndate'])):"";
+        $simsigndateyear = $result['simsigndate'] ? date("Y",strtotime($result['simsigndate'])):"";
+        $simsigndatemonth =  $result['simsigndate'] ? date("m",strtotime($result['simsigndate'])):"";
+        $simsigndateday =  $result['simsigndate'] ? date("d",strtotime($result['simsigndate'])):"";
         array_push($result,$simsigndateyear);
         array_push($result,$simsigndatemonth);
         array_push($result,$simsigndateday);
 
-        $seasingdateyear =  $result['seasingdate'] ? date("Y",strtotime($result[0]['seasingdate'])):"";
-        $seasingdatemonth =  $result['seasingdate'] ? date("m",strtotime($result[0]['seasingdate'])):"";
-        $seasingdateday =  $result['seasingdate'] ? date("d",strtotime($result[0]['seasingdate'])):"";
+        $seasingdateyear =  $result['seasingdate'] ? date("Y",strtotime($result['seasingdate'])):"";
+        $seasingdatemonth =  $result['seasingdate'] ? date("m",strtotime($result['seasingdate'])):"";
+        $seasingdateday =  $result['seasingdate'] ? date("d",strtotime($result['seasingdate'])):"";
         array_push($result,$seasingdateyear);
         array_push($result,$seasingdatemonth);
         array_push($result,$seasingdateday);
 
-        $entsigndateyear =  $result['entsigndate'] ? date("Y",strtotime($result[0]['entsigndate'])):"";
-        $entsigndatemonth =  $result['entsigndate'] ? date("m",strtotime($result[0]['entsigndate'])):"";
-        $entsigndateday =  $result['entsigndate'] ? date("d",strtotime($result[0]['entsigndate'])):"";
+        $entsigndateyear =  $result['entsigndate'] ? date("Y",strtotime($result['entsigndate'])):"";
+        $entsigndatemonth =  $result['entsigndate'] ? date("m",strtotime($result['entsigndate'])):"";
+        $entsigndateday =  $result['entsigndate'] ? date("d",strtotime($result['entsigndate'])):"";
         array_push($result,$entsigndateyear);
         array_push($result,$entsigndatemonth);
         array_push($result,$entsigndateday);
@@ -652,6 +676,9 @@ class ContractController extends Controller
             //'status'=>$status,
             'ifedit'=>$ifedit,
             'sub_status'=>$sub_status,
+			'if_save'=>$if_save,
+			'if_picture'=>$if_picture,
+			'if_submit'=>$if_submit,
         );
         $this->assign($body);
         $this->display();
@@ -840,7 +867,7 @@ class ContractController extends Controller
 	}
 	
 	//外部签发
-	public function externalSign(){
+	/*public function externalSign(){
 		$rs = array('msg'=>'fail');
 		$centreNo = I('centreno');
 		//pr($centreNo);
@@ -863,7 +890,7 @@ class ContractController extends Controller
 			M()->rollback();	
 		}
 		$this->ajaxReturn($rs);
-	}
+	}*/
 
 	//合同列表
 	public function showList(){

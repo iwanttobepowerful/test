@@ -1,0 +1,90 @@
+<include file="Common:header" title="后台首页"/>
+<div id="page-wrapper">
+    <include file="Common:breadcrumb" />
+    <div id="page-inner" class="container">
+<div class="page">
+    <table class="table table-bordered table-striped table-hover">
+        <div>
+        <span>中心编号:&nbsp;&nbsp;</span>
+            <span>{$one.centreno}</span><p></p>
+        </div>
+        <thead>
+        <th colspan="2" width="50%">参考价格:</th>
+        <th colspan="2" width="50%">报告应收价格:</th>
+        </thead>
+        <tbody>
+        <tr>
+            <td width="20%"><lable>A部门</lable></td>
+            <td><span>{$one.arecord}</span></td>
+            <td width="20%"><lable>A部门</lable></td>
+            <td><span>{$one.rarecord}</span></td>
+        <tr>
+            <td width="20%"><lable>B部门</lable></td>
+            <td><span>{$one.brecord}</span></td>
+            <td width="20%"><lable>B部门</lable></td>
+            <td><span>{$one.rbrecord}</span></td>
+        </tr>
+        <tr>
+            <td width="20%"><lable>C部门</lable></td>
+            <td><span>{$one.crecord}</span></td>
+            <td width="20%"><lable>C部门</lable></td>
+            <td><span>{$one.rcrecord}</span></td>
+        </tr>
+        <tr>
+            <td width="20%"><lable>D部门</lable></td>
+            <td><span>{$one.drecord}</span></td>
+            <td width="20%"><lable>D部门</lable></td>
+            <td><span>{$one.rdrecord}</span></td>
+        </tr>
+        <tr>
+            <td width="20%"><lable>E部门</lable></td>
+            <td><span>{$one.erecord}</span></td>
+            <td width="20%"><lable>E部门</lable></td>
+            <td><span>{$one.rerecord}</span></td>
+        </tr>
+        <tr>
+            <td width="20%"><lable>F部门</lable></td>
+            <td><span>{$one.frecord}</span></td>
+            <td width="20%"><lable>F部门</lable></td>
+            <td><span>{$one.rfrecord}</span></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><lable>副本</lable></td>
+            <td><span>{$one.dcopy}</span></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><lable>上网费</lable></td>
+            <td><span>{$one.donline}</span></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><lable>项目修改</lable></td>
+            <td><span>{$one.drevise}</span></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><lable>其他</lable></td>
+            <td><span>{$one.dother}</span></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><lable style="color: red">总数：</lable></td>
+            <td><span>{$cost.testcost}</span></td>
+        </tr>
+        <tr>
+            <td><lable>备注</lable></td>
+            <td colspan="3"><textarea  rows="10" cols="100%" readonly>{$one.remark}</textarea></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+    </div>
+</div>
+<include file="Common:footer" />
