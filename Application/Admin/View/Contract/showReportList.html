@@ -51,10 +51,10 @@
                     </td>
                     <td>
                         <if condition="$con['doc_path']">
-                        <a href="{$con.doc_path}"  class="btn btn-primary btn-xs" >报告预览</a></if>
+                        <a href="{$con.doc_path}"  class="btn btn-primary btn-xs" >报告预览</a>
                         <if condition="$if_edit==1">
                         <if condition="$con['status']==8">
-                            <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="confirmReport('{$con.centreno}')" >确认</a></if></if>
+                            <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="confirmReport('{$con.centreno}')" >确认</a></if></if></if>
                         <br />
                         <if condition="$if_edit==1">
                             <if condition="($con['ifedit'] == 1) and ($con['sub_status'] == 0)">

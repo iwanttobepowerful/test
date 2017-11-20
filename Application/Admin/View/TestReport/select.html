@@ -74,7 +74,7 @@
                 dataType:"json",
                 success:function(ret){
                     if(ret.msg=='succ'){
-                        var _options = {"text":"操作成功！","action":function(){window.location.href="/Admin/Contract/showReportList";}};
+                        var _options = {"text":"操作成功！","action":function(){window.history.back();}};
                         doAlertDialog(_options);
                     }else{
                         var _options = {"text":"Error！"};
