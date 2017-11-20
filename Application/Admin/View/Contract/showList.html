@@ -71,7 +71,8 @@
                     	<if condition="$con['status']==7">
                         	<span style="color:green">{$con.takename}已接单<br/>{$con.takelist_time}</span>
                         <elseif condition="$con['status']==5"/>
-                        	<span style="color:green">{$con.innername}已内部签发&nbsp;&nbsp;&nbsp;<a href="#" class="btn btn-info btn-xs" onclick="externalSign('{$con.centreno}')" >外部签发完毕</a>
+                        	<span style="color:green">{$con.innername}已内部签发&nbsp;&nbsp;&nbsp;
+                            <!--<a href="#" class="btn btn-info btn-xs" onclick="externalSign('{$con.centreno}')" >外部签发完毕</a>-->
                             <br/>
                             {$con.inner_sign_time}</span>
                         <elseif condition="$con['status']==6"/>
@@ -144,7 +145,7 @@
 		
 	});
 	
-	function externalSign(centreno){
+	/*function externalSign(centreno){
 		if(confirm('确认已外部签发？')){
 			$.ajax({
 				url: "{:U('/admin/contract/externalSign')}",
@@ -157,7 +158,7 @@
 				}
 			});	
 		}
-	}
+	}*/
 	
 	function applyBack(centreno,status){
 		$("#back_reason").val("");

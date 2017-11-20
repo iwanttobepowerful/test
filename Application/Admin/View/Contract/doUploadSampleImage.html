@@ -33,7 +33,8 @@
                         <if condition="($ifedit['ifedit'] == 0) OR (($ifedit['ifedit'] == 1) and ($sub_status['status'] == 1))">
         					<button type="submit" class="btn btn-success" onclick="onSave()">保 存</button>
        					</if>		   		
-                        <button type="button" class="btn btn-success" onclick="javascript:history.go(-1);">返 回</button>
+                        <!--<button type="button" class="btn btn-success" onclick="javascript:history.go(-1);">返 回</button>-->
+                        <a href="{:U('/admin/contract/sampleEdit')}?id={$centreno}" class="btn btn-success">返 回</a>
 				    </div>
 				</div>
 			</form>
