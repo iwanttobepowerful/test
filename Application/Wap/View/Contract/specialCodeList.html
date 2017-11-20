@@ -84,7 +84,7 @@
         if(!ret['index']) return false;
         $.ajax({
             type:"post",
-            url:"{:U('./wap/contract/dep')}",
+            url:"{:U('/m.qooce.cn/contract/dep')}",
             data:{"id":ret['index']},
             dataType:"json",
             success:function(list){
