@@ -67,7 +67,7 @@
 <div class="aui-margin-r-15 aui-margin-l-15" onclick="javascript:window.open('/contract/add.html','_self')">
     <button  class="aui-btn aui-btn-block aui-btn-outlined aui-btn-outlined2 aui-btn-sm ">新增</button>
 </div>
-<script src="__PUBLIC__/static/js/jquery-2.1.3.min.js"></script>
+<script src="__PUBLIC__/static/js/jquery.form.js"></script>
 <script type="text/javascript" src="__PUBLIC__/wx/script/aui-tab.js" ></script>
 <script type="text/javascript">
 
@@ -83,7 +83,7 @@
         if(!ret['index']) return false;
         $.ajax({
             type:"post",
-            url:"{:U('/wap/contract/dep')}",
+            url:"{:U('/contract/dep')}",
             data:{"id":ret['index']},
             dataType:"json",
             success:function(list){
