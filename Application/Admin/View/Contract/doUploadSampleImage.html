@@ -60,7 +60,8 @@
                     	<volist name="list" id="one">
                         	<tr>
 								<td><input type="checkbox" name="print" class="qx" value="{$one['id']}"/></td>
-                            	<td>{$i}<input type="hidden" id="pic_id" value="{$one.id}"></td>
+                            	<td><if condition="$_GET['p'] eq 0">{$i}
+									<else />{$_GET['p']*10-10+$i}</if><input type="hidden" id="pic_id" value="{$one.id}"></td>
                                 <td>{$one.centreno}</td>
                                 <td>
                                 	<a href="javascript:void(0);" name="{$one.picture_name}" onclick="return Check(this);">

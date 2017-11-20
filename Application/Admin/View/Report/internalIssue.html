@@ -7,7 +7,7 @@
                 <div class="form-group">
                     <label>中心编号：</label>
                     <input type="text" class="form-control input-sm" name="centreno" value="{$centreno}" />
-
+                    <input type="hidden" name="p" value="1" />
                     开始时间：<input type="text" readonly class="form-control f-datetime input-sm" name="begin_time" value="{$begin_time}"> 结束时间<input type="text" readonly class="form-control f-datetime input-sm" name="end_time" value="{$end_time}" />
                     查找方式：<select class="form-control input-sm" name="sortby">
                     <option value="1" <php>if($sortby==1){echo 'selected';}</php>>按审核日期查找</option>
@@ -30,7 +30,8 @@
             <tbody>
             <volist name="rs" id="vo" key="i">
                 <tr>
-                    <td>{$i}</td>
+                    <td><if condition="$_GET['p'] eq 0">{$i}
+                        <else />{$_GET['p']*10-10+$i}</if></td>
                     <td>{$vo.centreno}</td>
                     <td>{$vo.name}/{$vo.verify_time}</td>
                     <td>
