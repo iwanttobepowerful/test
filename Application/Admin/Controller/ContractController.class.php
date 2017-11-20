@@ -149,6 +149,8 @@ class ContractController extends Controller
         $RErecord = I("RErecord",0,'intval');
         $RFrecord = I("RFrecord",0,'intval');
 		
+		$fee_remark = I("fee_remark");
+		
         $Dcopy = I("Dcopy",0,'intval');
         $Donline = I("Donline",0,'intval');
         $Drevise = I("Drevise",0,'intval');
@@ -244,6 +246,7 @@ class ContractController extends Controller
             "Donline"=>$Donline,
             "Drevise"=>$Drevise,
             "Dother"=>$Dother,
+			"remark"=>$fee_remark,
             'costDate'=>Date("Y-m-d H:i:s")
         );
 
@@ -359,6 +362,7 @@ class ContractController extends Controller
 			$Dcopy = I("Dcopy",0,'intval');
 			$Drevise = I("Drevise",0,'intval');
 			$Dother = I("Dother",0,'intval');
+			$fee_remark = I("fee_remark");
 			
 			$data = array(
 				"testCost"=>$testCost,
@@ -368,6 +372,7 @@ class ContractController extends Controller
 				"Dcopy"=>$Dcopy,
 				"Drevise"=>$Drevise,
 				"Dother"=>$Dother,
+				"remark"=>$fee_remark
 			);
 			M()->startTrans();
 			try{
@@ -438,7 +443,7 @@ class ContractController extends Controller
 			$Donline = I("Donline",0,'intval');
 			$Drevise = I("Drevise",0,'intval');
 			$Dother = I("Dother",0,'intval');
-	
+			$fee_remark = I("fee_remark");
 	
 			if(empty($clientName)||empty($productUnit)||empty($sampleName)||empty($testCriteria)||empty($testItem)||empty($sampleQuantity)||empty($sampleStatus)||empty($sampleStaQuan)||empty($collector)||empty($testCost)||empty($collectDate)||empty($reportDate)){
 				$rs['msg'] = '信息填写不完整!';
@@ -520,6 +525,7 @@ class ContractController extends Controller
 				"Donline"=>$Donline,
 				"Drevise"=>$Drevise,
 				"Dother"=>$Dother,
+				"remark"=>$fee_remark,
 				'costDate'=>Date("Y-m-d H:i:s")
 			);
 			M()->startTrans();
