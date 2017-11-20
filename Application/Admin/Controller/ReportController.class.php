@@ -261,6 +261,19 @@ class ReportController extends Controller
             }}
         $this->ajaxReturn($rs);
     }
+    //盖章价格审核
+    public function priceList(){
+        $centreno=I("id");//获取中心编号
+        $where= "centreno='{$centreno}'";
+        $rs=D("test_cost")->where($where)->find();
+        $cost=D("contract")->where($where)->field('testcost')->find();
+        $body=array(
+            'one'=>$rs,
+            'cost'=>$cost
+        );
+        $this->assign($body);
+        $this->display();
+    }
     //外部签发
     public function externalIssue(){
         $keyword = I("keyword");
