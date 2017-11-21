@@ -98,9 +98,14 @@
             success:function(ret){
                 if(ret.msg=='succ'){
                     window.location.href="{:U('/admin/test/recordPicture')}";
-                }else{
-                    var _options = {"text":"操作失败！"};
-                    if(data.msg) _options.text = data.msg;
+                }
+                else if(ret.msg=='error')
+                {
+                    var _options = {"text":'您没有提交任何记录!'};
+                    doAlertDialog(_options);
+                }
+                else{
+                    var _options = {"text":"Error！"};
                     doAlertDialog(_options);
                 }
             }
