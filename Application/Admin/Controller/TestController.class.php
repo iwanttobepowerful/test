@@ -185,10 +185,17 @@ class TestController extends Controller{
 //检测记录上传完毕按钮
     public function doAllSave(){
         $centreno=I("centreno");
-        $rs = array("msg"=>"fail");
+        $where= "centreno='{$centreno}'";
+        $record=D('test_record')->where($where)->select();
+        if(empty($record)){
+            $rs['msg'] = 'error';
+            $this->ajaxReturn($rs);
+        }
+            $rs = array("msg"=>"fail");
+
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
-        $where= "centreno='{$centreno}'";
+
         $data=array(
             'status'=>8,
             'takelist_all_time'=>date("Y-m-d H:i:s"),
