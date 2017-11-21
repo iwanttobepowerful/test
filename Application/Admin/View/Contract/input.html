@@ -54,7 +54,7 @@
           <tr >
             <td ><p align="center" ><span style="color:red; font-size:15px">*</span>样品状态 </p></td>
             <td colspan="2"><input type="text" class="form-control"  name="sampleStatus" id="sampleStatus2" /></td>
-            <td colspan="1"><p align="center" >粉（料）水比 </p></td>
+            <td colspan="1"><p align="center" >水粉（料）比 </p></td>
             <td colspan="5" ><input type="text" class="form-control"  name="ration" id="ration2" /></td>
           </tr>
           <tr >
@@ -155,6 +155,7 @@
             <td  ><p align="center" ><span style="color:red; font-size:15px">*</span>检验费用 </p></td>
             <td  colspan="4" >
               <div class="col-xs-6">
+              <p align="center">参考价格</p>
               <input name="Arecord" type="text" class="form-control"  id="Arecord" size="5" placeholder="A部门" readonly   onClick="Cost('A')"/>
               <br/>
               <input name="Brecord" type="text" class="form-control"  id="Brecord" size="5" placeholder="B部门" readonly  onClick="Cost('B')"/>
@@ -166,9 +167,14 @@
               <input name="Erecord" type="text" class="form-control"  id="Erecord" size="5" placeholder="E部门" readonly  onClick="Cost('E')"/>
               <br/>
               <input name="Frecord" type="text" class="form-control"  id="Frecord" size="5" placeholder="F部门" readonly  onClick="Cost('F')"/>
+              <br/>
+              <p align="center">备注</p>
+              <textarea class="form-control" rows="10" name="fee_remark"></textarea>
               
               </div>
               <div  class="col-xs-6">
+              <p align="center">报告应收价格</p>
+              <div  class="col-xs-7">
               <input name="RArecord" type="text" class="form-control"  id="RArecord" size="5" placeholder="A部门" onKeyUp="computeSum()"/>
               +
               <input name="RBrecord" type="text" class="form-control"  id="RBrecord" size="5" placeholder="B部门" onKeyUp="computeSum()"/>
@@ -191,6 +197,19 @@
               =
               <input name="testCost" type="text" class="form-control"  id="sumCost" placeholder="总计"  value="100" readonly />
               </div>
+              <div  class="col-xs-5">
+              	A部门
+                B部门
+                C部门
+                D部门
+                E部门
+                F部门
+                副本
+                上网费
+                项目修改
+                其他
+              </div>
+              </div>
             </td>
           </tr>
           <tr >
@@ -198,7 +217,7 @@
             <td  colspan="3" ><p >
             
             <div class="form-group">
-				 <input type="text" readonly class="form-control f-datetime input-sm" name="collectDate">
+				 <input type="text" readonly class="form-control" name="collectDate" id="collectDate" value=""/>
 				  	</div>
             </p></td>
             <td valign="center" ><p align="center" ><span style="color:red; font-size:15px">*</span>报告日期<u> </u></p></td>
@@ -216,7 +235,7 @@
         </table>
         
        <!-- <button class="btn btn-success" type="button" id="sampling_list" on>生成抽样单</button>-->
-        <button class="btn btn-success" type="submit" id="check_list" onClick="doInputContract()">合同录入</button>
+        <button class="btn btn-success" type="submit" id="check_list" onClick="doInputContract()">保存</button>
       </form>
     </div>
     
@@ -544,10 +563,20 @@
 		$(document).ready(function(){
 			$('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,	autoclose:true });
 					//计算费用
-					
-					
-
+			var date = new Date();	
+			var years = date.getFullYear();
+			var month = add_zero(date.getMonth()+1);
+			var day = add_zero(date.getDate());
+			var now_date = years+"-"+month+"-"+day;
+			$("#collectDate").val(now_date);
+			
 		});	
+		
+		//补零
+		function add_zero(temp){
+			if(temp<10) return "0"+temp;
+			else return temp;
+		}
 		
 		function makeCentreCode(){
 			var nowDate = new Date();

@@ -121,11 +121,21 @@ class TestReportController extends Controller
    	    if(!empty($modid) and !empty($centreNo)){
             $tpl = D("tpl")->where("id=".$modid)->find();
             $contract = D("contract")->where("centreno='{$centreNo}'")->find();
+			$reportNum = D("contract")->where("centreno like '%{$centreNo}%'")->count();
+			if($reportNum == 1){
+				$newCentreNo = $centreNo.'G1';
+			}
+			if($reportNum == 2){
+				$newCentreNo = $centreNo.'G2';
+			}
+			if($reportNum == 3){
+				$newCentreNo = $centreNo.'G3';
+			}
             //dump($contract);
+			
             $data = array(
-                'centreNo'=>$contract['centreno'],
+                'centreNo'=>$newCentreNo,
                 'sampleName'=>$contract['samplename'],
-                'testCategory'=>$contract['testcategory'],
                 'clientName'=>$contract['clientname'],
                 'productionDate'=>$contract['productiondate'] ? $contract['productiondate']:"————",
                 'productUnit'=>$contract['productunit'] ? $contract['productunit']:"————",
@@ -138,20 +148,17 @@ class TestReportController extends Controller
                 'collectDate'=>$contract['collectdate'] ? $contract['collectdate']:"————",
                 'sampleCode'=>$contract['samplecode'] ? $contract['samplecode']:"————",
                 'sampleQuantity'=>$contract['samplequantity'] ? $contract['samplequantity']:"————",
-                //'testType'=>$contract['testType'] ? $contract['testType']:"————",
             );
 
-            //if($contract['testCategory']=="抽样检验"){
-                $samplingForm = D("sampling_form")->where("centreno='{$centreNo}'")->find();
-                if($samplingForm){
-                    $data['samplePlace'] = $samplingForm['sampleplace'] ? $samplingForm['sampleplace'] : "————";
-                    $data['simplerSign'] = $samplingForm['simplersign'];
-                    $data['sampleDate'] = $samplingForm['sampledate'] ? $samplingForm['sampledate']:"————";
-                    $data['sampleQuantity'] = $samplingForm['samplequantity'] ? $samplingForm['samplequantity']:"————";
-                    $data['sampleBase'] = $samplingForm['samplebase'] ? $samplingForm['samplebase']:"————";
-
-                }
-            //}
+           	$samplingForm = D("sampling_form")->where("centreno='{$centreNo}'")->find();
+			if($samplingForm){
+            	$data['samplePlace'] = $samplingForm['sampleplace'] ? $samplingForm['sampleplace'] : "————";
+                $data['simplerSign'] = $samplingForm['simplersign'];
+                $data['sampleDate'] = $samplingForm['sampledate'] ? $samplingForm['sampledate']:"————";
+                $data['sampleQuantity'] = $samplingForm['samplequantity'] ? $samplingForm['samplequantity']:"————";
+                $data['sampleBase'] = $samplingForm['samplebase'] ? $samplingForm['samplebase']:"————";
+         	}
+            
             $src = "./Public/{$tpl['filename']}";
             $dst = "./Public/attached/report/{$centreNo}.docx";
             if(file_exists($dst)){

@@ -55,7 +55,7 @@
           <tr >
             <td ><p align="center" ><span style="color:red; font-size:15px">*</span>样品状态 </p></td>
             <td colspan="2"><input type="text" class="form-control"  name="sampleStatus" id="sampleStatus2" value="{$contract.samplestatus}"/></td>
-            <td colspan="1"><p align="center" >粉（料）水比 </p></td>
+            <td colspan="1"><p align="center" >水粉（料）比 </p></td>
             <td colspan="5" ><input type="text" class="form-control"  name="ration" id="ration2" value="{$contract.ration}"/></td>
           </tr>
           <tr >
@@ -163,7 +163,7 @@
             <td valign="center" ><p align="center" ><span style="color:red; font-size:15px">*</span>样品状态及数量 </p></td>
             <td valign="center" colspan="3"><input type="text" class="form-control"  name="sampleStaQuan" id="sampleStaQuan2" size="20" value="{$contract.samplestaquan}"/></td>
             <td valign="center" ><p align="center" ><span style="color:red; font-size:15px">*</span>收 样 人 </p></td>
-            <td valign="center" colspan="4" ><input type="text" class="form-control"  name="collector" id="collector2" size="20" value="{$contract.collector}"/></td>
+            <td valign="center" colspan="4" ><input type="text" class="form-control" readonly  name="collector" id="collector2" size="20" value="{$contract.collector}"/></td>
           </tr>
           <tr >
             <td  ><p align="center" ><span style="color:red; font-size:15px">*</span>中心编号 </p></td>
@@ -184,6 +184,7 @@
             <td  ><p align="center" ><span style="color:red; font-size:15px">*</span>检验费用 </p></td>
             <td  colspan="4" >
               <div class="col-xs-6">
+              <p align="center">参考价格</p>
                   <input name="Arecord" type="text" class="form-control"  id="Arecord" size="5" placeholder="A部门" readonly   onClick="Cost('A')" value="{$feeItem.arecord}"/>
                   +
                   <input name="Brecord" type="text" class="form-control"  id="Brecord" size="5" placeholder="B部门" readonly  onClick="Cost('B')" value="{$feeItem.brecord}"/>
@@ -195,9 +196,11 @@
                   <input name="Erecord" type="text" class="form-control"  id="Erecord" size="5" placeholder="E部门" readonly  onClick="Cost('E')" value="{$feeItem.erecord}"/>
                   +
                   <input name="Frecord" type="text" class="form-control"  id="Frecord" size="5" placeholder="F部门" readonly  onClick="Cost('F')" value="{$feeItem.frecord}"/>
-                 
+                 <p align="center">备注</p>
+             	 <textarea class="form-control fee" rows="10" name="fee_remark">{$feeItem.remark}</textarea>
               </div>
               <div class="col-xs-6">
+              <p align="center">报告应收价格</p>
               	  <input name="RArecord" type="text" class="form-control"  id="RArecord" size="5" placeholder="A部门" value="{$feeItem.rarecord}" onKeyUp="computeSum()"/>
                   +
                   <input name="RBrecord" type="text" class="form-control"  id="RBrecord" size="5" placeholder="B部门" value="{$feeItem.rbrecord}" onKeyUp="computeSum()"/>
@@ -245,7 +248,7 @@
         </table>
         
        <!-- <button class="btn btn-success" type="button" id="sampling_list" on>生成抽样单</button>-->
-        <button class="btn btn-success" type="submit" id="check_list" onClick="doEditContract()">修改</button>
+        <button class="btn btn-success" type="submit" id="check_list" onClick="doEditContract()">保存</button>
       </form>
     </div>
     

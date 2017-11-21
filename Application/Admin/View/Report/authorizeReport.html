@@ -14,7 +14,8 @@
             <tbody>
             <volist name="rs" id="vo" key="i">
                 <tr>
-                    <td>{$i}</td>
+                    <td><if condition="$_GET['p'] eq 0">{$i}
+                        <else />{$_GET['p']*10-10+$i}</if></td>
                     <td>{$vo.centreno}</td>
                     <td>{$vo.inner_sign_time}</td>
                     <td>{$vo.external_sign_time}</td>

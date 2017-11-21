@@ -90,7 +90,7 @@
         <tr class=" aui-bg-primary aui-text-white  ">
             <td >部门</td>
             <td>份数</td>
-            <td>金额</td>
+            <td>金额（元）</td>
         </tr>
 
         <tr >
@@ -100,7 +100,7 @@
 
 
         </tr >
-        <tr bgcolor="			#E6E6FA">
+        <tr bgcolor="	#D3D3D3">
             <td>B</td>
             <td >{$B_count}</td>
             <td >{$sum.brecord|floatval}</td>
@@ -112,7 +112,7 @@
             <td >{$sum.crecord|floatval}</td>
         </tr>
 
-        <tr bgcolor="		#E6E6FA">
+        <tr bgcolor="	#D3D3D3">
             <td>D</td>
             <td >{$D_count}</td>
             <td >{$sum.drecord|floatval}</td>
@@ -124,23 +124,23 @@
             <td >{$sum.erecord|floatval}</td>
         </tr>
 
-        <tr bgcolor="		#E6E6FA">
+        <tr bgcolor="	#D3D3D3">
             <td>F</td>
             <td >{$F_count}</td>
             <td >{$sum.frecord|floatval}</td>
         </tr>
 
-        <!--接口不知道写的对不对-->
+
         <tr >
             <td>副本</td>
             <td >----</td>
             <td >{$sum.dcopy|floatval}</td>
         </tr>
 
-        <tr bgcolor="		#E6E6FA">
+        <tr bgcolor="	#D3D3D3">
             <td>上网费</td>
             <td >----</td>
-            <td >{$sum.online|floatval}</td>
+            <td>{$sum.donline|floatval}</td>
         </tr>
 
         <tr >
@@ -149,7 +149,7 @@
             <td >{$sum.drevise|floatval}</td>
         </tr>
 
-        <tr bgcolor="		#E6E6FA">
+        <tr bgcolor="	#D3D3D3">
             <td>其他</td>
             <td>----</td>
             <td >{$sum.dother|floatval}</td>

@@ -15,14 +15,15 @@
             <tbody>
             <volist name="rs" id="vo" key="i">
                 <tr>
-                    <td>{$i}</td>
+                    <td><if condition="$_GET['p'] eq 0">{$i}
+                        <else />{$_GET['p']*10-10+$i}</if></td>
                     <td>{$vo.centreno}</td>
                     <td>
                         <a href="/admin/manager/contractDetail?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检验受理合同</a>
                         <a href="{:U('/admin/test/infoShow')}?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检测工作通知单</a>
                         <a href="{:U('/admin/test/sampleShow')}?id={$vo.centreno}" class="btn btn-info btn-xs" style="display:none"><i class="glyphicon glyphicon-search"></i>抽样单</a>
-                        <a href="{:U('/admin/test/recordPictureUp')}?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检测记录</a>
-                        <a href="{$vo.pdf_path}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>报告预览</a>
+                        <a href="javascript:void(0);" class="btn btn-info btn-xs" onclick="recordDetail('{$vo.centreno}')"><i class="glyphicon glyphicon-search"></i>检测记录</a>
+                        <a href="{$vo.pdf_path}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检测报告</a>
 
                     </td>
                     <td>{$vo.name}/{$vo.report_time}</td>
@@ -65,7 +66,6 @@
         doConfirmDialog(_options);
     }
     function pass(id){
-        id.onclick = function() {};
         $.ajax({
             type:"post",
             url:"{:U('/admin/Report/isApprove')}",
@@ -89,7 +89,6 @@
         doConfirmDialog(_options);
     }
     function notPass(id){
-        id.onclick = function() {};
         $.ajax({
             type:"post",
             url:"{:U('/admin/Report/notApprove')}",
@@ -107,6 +106,10 @@
             }
         });
     }
-
+    function recordDetail(centreno) {
+        var newurl='/admin/test/doPrint.html?id='+centreno+'&type=2';
+        console.log(newurl);
+        window.open(newurl,'_self');
+    }
 </script>
 <include file="Common:footer" />

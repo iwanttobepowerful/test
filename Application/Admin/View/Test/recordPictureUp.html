@@ -2,6 +2,9 @@
 <div id="page-wrapper">
     <include file="Common:breadcrumb" />
     <div id="page-inner" class="container">
+        <div>
+            <button onclick="window.history.back() " class="btn btn-primary">返回</button>
+        </div><br/>
 
         <if condition="$view eq 7">
             <form class="form-horizontal" id="myform" action="" method="post">
@@ -54,13 +57,15 @@
             <volist name="lists" id="one" key="i">
                 <tr>
                         <td><input type="checkbox" name="print" class="qx" value="{$one['id']}"/> </td>
-                    <td>{$i}</td>
+                    <td><if condition="$_GET['p'] eq 0">{$i}
+                        <else />{$_GET['p']*10-10+$i}</if></td>
                     <td>{$one.centreno}</td>
                     <td><a href="javascript:void(0);" name="{$one.path}" onclick="return Check(this);"><img src="{$one.path}" onerror="this.src='__PUBLIC__/static/images/default-timg.gif'" style="width: 90px;" /></a></td>
                     <td>{$one.lastmodifytime}</td>
                     <td>{$one.remark}</td>
                     <td>
-                        <a href="javascript:void(0);" onclick="onDelete({$one.id})" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> 删除</a>
+                        <if condition="($gid eq 1) and ($view eq 7)">
+                        <a href="javascript:void(0);" onclick="onDelete({$one.id})" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> 删除</a></if>
                         <a href="javascript:void(0);" name="{$one.path}" onclick="onPrint({$one.id});" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-print"></i> 打印</a>
                     </td>
                 </tr>

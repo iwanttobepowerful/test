@@ -297,14 +297,14 @@ if(!function_exists('http_request')){
 }
 /** user the thirdpart api */
 if(!function_exists('convert2Pdf')){
-    function convert2Pdf($docUrl){
+    function convert2Pdf($docUrl,$type='pdf'){
         $url = "https://api.9yuntu.cn/execute/Convert";
         $appcode = "d61ead3bea9c46e8a7026aabb2eb1b19";
         $headers = array();
         $method = "GET";
         $headers = array();
         array_push($headers, "Authorization:APPCODE " . $appcode);
-        $querys = "docURL=".urlencode($docUrl)."&outputType=pdf";
+        $querys = "docURL=".urlencode($docUrl)."&outputType=".$type;
         $bodys = "";
         $url = $url . "?" . $querys;
         $curl = curl_init();
