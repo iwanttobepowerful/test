@@ -165,7 +165,9 @@ input:-webkit-autofill {-webkit-box-shadow: 0 0 0px 1000px white inset;outline:n
 #bread-crumb {background: none;border-radius: 0;padding:8px 0;width: 100%;margin-bottom: 8px !important;}
 #bread-crumb .active{color:#555;font-size: 14px}
 .form-group .thumb-image {width: 120px;height: 80px;display: inline-block;}
-
+/**合同录入**/
+#page-wrapper .hint {font-family: simhei;font-size: 13pt;color:#858585;display:inline-block;}
+#page-wrapper .two-col {width:50%;display:inline-block}
 /**登陆**/
 .loginbox {padding-top:0px}
 /*.loginbox .top {margin-left:25%}

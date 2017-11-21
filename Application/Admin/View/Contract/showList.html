@@ -43,12 +43,13 @@
                         <if condition="$if_edit==1">
                         	<if condition="($con['ifedit'] == 0) OR (($con['ifedit'] == 1) and ($con['sub_status'] == 1)) ">
                        	 		<a href="{:U('/admin/contract/editContract')}?id={$con.centreno}&type_status={$con.status}" class="btn btn-info btn-xs" >修改</a>
-                                <if condition="$con['status']==6" >
-                                	<a href="/admin/contract/addorEditReport?id={$con.centreno}" class="btn btn-info btn-xs" >更改检验报告单</a>
-                                </if>
+                                
                             <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == -1)" />
-                            	<a href="#" class="btn btn-info btn-xs" onclick="applyBack('{$con.centreno}',{$con.status})" >申请修改</a>
+                            	<a href="#" class="btn btn-info btn-xs" onclick="return applyBack('{$con.centreno}',{$con.status})" >申请修改</a>
                             </if>
+                        </if>
+                        <if condition="$con['status']==6" >
+                            <a href="/admin/contract/addorEditReport?id={$con.centreno}" class="btn btn-info btn-xs" >更改检验报告单</a>
                         </if>
                     	<a href="/admin/manager/contractDetail?id={$con.centreno}"  class="btn btn-info btn-xs" >检验受理合同</a>
        
@@ -174,6 +175,22 @@
 	}*/
 	
 	function applyBack(centreno,status){
+		var flag = true;
+		if(status==6){
+			$.ajax({
+				url: "{:U('/admin/contract/checkEditList')}",
+				dataType: 'json',			
+				async: false,
+				data:{'centreno':centreno},
+				success: function (res) {
+					if(res.count==0){
+						alert('请填更改检验报告单');
+						flag=false;	
+					}
+				}
+			});		
+		}
+		if(!flag) return flag;
 		$("#back_reason").val("");
 		var modal = $("#editModal");
 		$("#back_centreno").val(centreno);

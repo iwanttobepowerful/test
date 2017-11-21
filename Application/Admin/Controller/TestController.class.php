@@ -399,16 +399,16 @@ class TestController extends Controller{
         }
         $report = D("test_report")->where("centreno='{$centreno}'")->find();
         //pdf转换
-        $distfile = convert2Pdf(ROOT_PATH,$data['path'],'pdf');
         $data = array(
             //"centreNo"=>$centreno,
             "path"=>$fileurl,
             "remark"=>$remark,
             'modify_time'=>date("Y-m-d H:i:s"),
         );
+        $distfile = convert2Pdf(ROOT_PATH,$data['path'],'pdf');
+
         //转image,在测试服务器上测试，本地需要配置环境
         //demo
-        //$distfile = "/Public/attached/2017-11-21/SJ-4-77_2017_01.pdf";        
         $imageFiles = convertPdf2Image(ROOT_PATH,$distfile);
         if($imageFiles){
             //转换成功,合并二维码
