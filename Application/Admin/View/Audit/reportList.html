@@ -10,15 +10,14 @@
 		</ul>
 
 		<if condition="$de eq 'A'"><!-- 内部修改申请显示表单-->
+			<!--<form class="form-inline" method="GET" action="">
 		<div class="search-form">
-			<form class="form-inline" method="GET" action="">
 				<div class="form-group">
 					<label>中心编号：</label>
-					<input type="text" class="form-control input-sm" name="keyword"/>
+					<input type="text" class="form-control input-sm" name="keyword" value="{$centreno}"/>
 				</div>
-				<button type="submit" class="btn btn-primary btn-sm" >查询</button>
-			</form>
-		</div>
+				<button  class="btn btn-primary btn-sm" onabort="search('A','{$centreno}')">查询</button>
+		</div></form>--><p></p>
 		<table class="table table-bordered table-striped table-hover">
 			<thead>
 			<th>中心编号</th>
@@ -70,7 +69,7 @@
 					</div>
 					<button type="submit" class="btn btn-primary btn-sm" >查询</button>
 				</form>
-			</div>---->
+			</div>----><p></p>
 			<table class="table table-bordered table-striped table-hover">
 				<thead>
 				<th>中心编号</th>
@@ -85,9 +84,12 @@
 				<volist name="lists" id="one" key="i">
 					<tr>
 						<td>{$one.centreno}</td>
-						<td></td>
-						<td></td>
-						<td></td>
+						<td>{$one.internal_sign_time}</td>
+						<td>{$one.external_sign_time}</td>
+						<td>
+							<button class="btn btn-info btn-xs" onclick="" ><i class="glyphicon glyphicon-search"></i>更改单</button>
+							<button class="btn btn-info btn-xs" onclick="" ><i class="glyphicon glyphicon-search"></i>附件</button>
+						</td>
 						<td>{$one.create_time}</td>
 						<td>
 							<if condition="$one['sub_status'] ==0 and $view==1" >
@@ -119,7 +121,22 @@
         $("li[name='de']").removeClass("active");
         $("#de_"+de).addClass("active");
     });
-
+//换成ajax提交
+	function search(de,centreno) {
+        $.ajax({
+            type:"post",
+            url:"{:U('/admin/audit/reportList')}",
+            data:{"centreno":centreno,"type":de},
+            dataType:"json",
+            success:function(ret){
+                if(ret.msg=='succ'){
+                    return true;
+                }else{
+                    return false;
+				}
+            }
+        });
+    }
     function onUpdate(centreno){
         if(!centreno) return false;
         var _options = {"flag":"error","text":"将批准该申请","buttons":{"ok":{"action":function(){pass(centreno);}},"cancel":{}}};
