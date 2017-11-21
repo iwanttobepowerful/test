@@ -163,7 +163,7 @@
             <td valign="center" ><p align="center" ><span style="color:red; font-size:15px">*</span>样品状态及数量 </p></td>
             <td valign="center" colspan="3"><input type="text" class="form-control"  name="sampleStaQuan" id="sampleStaQuan2" size="20" value="{$contract.samplestaquan}"/></td>
             <td valign="center" ><p align="center" ><span style="color:red; font-size:15px">*</span>收 样 人 </p></td>
-            <td valign="center" colspan="4" ><input type="text" class="form-control"  name="collector" id="collector2" size="20" value="{$contract.collector}"/></td>
+            <td valign="center" colspan="4" ><input type="text" class="form-control" readonly  name="collector" id="collector2" size="20" value="{$contract.collector}"/></td>
           </tr>
           <tr >
             <td  ><p align="center" ><span style="color:red; font-size:15px">*</span>中心编号 </p></td>
@@ -248,7 +248,7 @@
         </table>
         
        <!-- <button class="btn btn-success" type="button" id="sampling_list" on>生成抽样单</button>-->
-        <button class="btn btn-success" type="submit" id="check_list" onClick="doEditContract()">修改</button>
+        <button class="btn btn-success" type="submit" id="check_list" onClick="doEditContract()">保存</button>
       </form>
     </div>
     
