@@ -81,7 +81,9 @@
         <input type="hidden" name="count" id="count" value="{$count}" />
         <input type="hidden" name="update_items" id="update_items" value="{$one.update_item}" />
         <if condition="$count == 0">
-        	<button class="btn btn-success" type="submit" onClick="saveData()">提交</button>
+        	<button class="btn btn-success" type="submit" onClick="saveData()">保存</button>
+        <else />
+        	<a class="btn btn-success" href="/admin/contract/reWriteTest?id={$centreNo}">打印</a>
         </if>
       </form>
     </div>

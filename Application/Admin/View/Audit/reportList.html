@@ -49,9 +49,9 @@
 					</td>
 					<td><if condition="$one['sub_status'] ==0">
 						<span>未处理</span>
-						<elseif condition="$one['sub_status'] ==1" />
+						<elseif condition="$one['sub_status'] ==1 or $one['sub_status'] ==3" />
 						<span style="color: green">允许</span>
-						<else />
+						<elseif condition="$one['sub_status'] ==2 "/>
 						<span style="color: red">拒绝</span></if>
 					</td>
 				</tr>
@@ -100,9 +100,9 @@
 						</td>
 						<td><if condition="$one['sub_status'] ==0">
 							<span>未处理</span>
-							<elseif condition="$one['sub_status'] ==1" />
+							<elseif condition="$one['sub_status'] ==1 or $one['sub_status'] ==3" />
 							<span style="color: green">允许</span>
-							<else />
+							<elseif condition="$one['sub_status'] ==2 "/>
 							<span style="color: red">拒绝</span></if>
 						</td>
 					</tr>
