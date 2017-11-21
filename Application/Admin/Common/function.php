@@ -342,16 +342,29 @@ if(!function_exists('convert2Pdf')){
     }
 }
 if(!function_exists('convertPdf2Image')){
-    function convertPdf2Image($pdf_file_path,$folder_path_for_images){
+    function convertPdf2Image($root_path,$pdfFile){
         vendor("Pdflib.vendor.autoload");
 
+        $baseinfo = pathinfo($pdfFile);
+        $file = $baseinfo['filename'];
+        $path = $baseinfo['dirname'];
+        $srcFile = $root_path.$pdfFile;
+        $outDir = $root_path . $path;
+
         $pdflib = new \ImalH\PDFLib\PDFLib();
-        $pdflib->setPdfPath($pdf_file_path);
-        $pdflib->setOutputPath($folder_path_for_images);
+        $pdflib->setPdfPath($srcFile);
+        $pdflib->setOutputPath($outDir);
         $pdflib->setImageFormat(\ImalH\PDFLib\PDFLib::$IMAGE_FORMAT_JPEG);
         $pdflib->setDPI(300);
         $pdflib->setPageRange(1,$pdflib->getNumberOfPages());
         $filesArray = $pdflib->convert();
+        if($filesArray){
+            $tmp = array();
+            foreach ($filesArray as $value) {
+                $tmp[] = $root_path . $path . '/' .$value;
+            }
+            $filesArray = $tmp;
+        }
         return $filesArray;
     }
 }
@@ -363,6 +376,7 @@ if(!function_exists('convertImageToPdf')){
             unlink($pdfFileName);
         }
         $res = $pdfLib->makePDF($pdfFileName,$imagePaths);
+        return $res;
     }
 }
 
