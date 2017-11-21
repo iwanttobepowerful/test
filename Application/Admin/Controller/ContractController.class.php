@@ -582,7 +582,7 @@ class ContractController extends Controller
         $data_apply = array(
             "status"=>0
         );
-		if($type_status == 1) $data_apply['status']=8;
+		if($type_status == 1) $data_apply['status']=7;
         //M()->startTrans();
         D("contract_flow")->where($where)->save($data_apply);
         D("report_feedback")->where($where)->delete();
@@ -1143,6 +1143,7 @@ class ContractController extends Controller
 		}else{
 			$if_leader = 0;	
 		}
+		$page = I("p",'int');
         $pagesize = 10;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
@@ -1156,7 +1157,8 @@ class ContractController extends Controller
         $body = array(
             "fee_list"=>$list,
             'pagination'=>$pagination,
-            'if_leader'=>$if_leader
+            'if_leader'=>$if_leader,
+			'pagination'=>$pagination,
         );
         $this->assign($body);
         $this->display();
