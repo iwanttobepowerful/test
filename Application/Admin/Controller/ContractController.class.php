@@ -250,18 +250,18 @@ class ContractController extends Controller
             'costDate'=>Date("Y-m-d H:i:s")
         );
 
-        $contract_user_id = $admin_auth['id'];
+        //$contract_user_id = $admin_auth['id'];
         //pr($contract_user_id);
-        $data_flow = array(
+        /*$data_flow = array(
             "centreNo"=>$centreNo,
             'contract_user_id'=>$contract_user_id,
             'contract_time'=>Date("Y-m-d H:i:s"),
-        );
+        );*/
 
 		$type = substr($centreNo,7,1);
-		if($type=='W'){
+		/*if($type=='W'){
 			$data['ifedit']=1;
-		}
+		}*/
         M()->startTrans();
         try{
 
@@ -314,9 +314,9 @@ class ContractController extends Controller
                     "package_remark"=>$package_remark,
                 );
                 D("sampling_form")->data($data_sample)->add();
-            }else{
+            }/*else{
                 D("contract_flow")->data($data_flow)->add();
-            }
+            }*/
             M()->commit();
             $rs['msg'] = 'succ';
         }catch(Exception $e){
@@ -784,12 +784,31 @@ class ContractController extends Controller
         $this->display();
     }
 
-    //检验抽样现场图片个数
+    //检验是否录入完毕
     public function checkFinish(){
         $centreno = I('centreno');
-        $count = D('sample_picture')->where('type=1 and centreno="'.$centreno.'"')->count();
+		$where['centreNo']=$centreno;
+		$if_finish = 1;
+		$picture_count=0;
+		$if_sample = substr($centreno,7,1);
+		if($if_sample=='C'){
+			$picture_count = D('sample_picture')->where('type=1 and centreno="'.$centreno.'"')->count();
+			if($picture_count==0) $if_finish = 0;
+			
+			//判断是否已经提交完毕，目的判断是否出现抽样单录入完毕按钮
+			$result=M('sampling_form')->where($where)->find();			
+			if(empty($result['samplebase']) && empty($result['sampledate']) && empty($result['productiondate']) && empty($result['sampleplace']) && empty($result['samplemethod']) && empty($result['simplersign']) && empty($result['simsigndate']) && empty($result['sealersign']) && empty($result['seasingdate']) && empty($result['enterprisesign']) && empty($result['entsigndate'])){
+				$if_sample_save = 0;
+				$if_finish = 0;
+			}else{
+				$if_save = 1;	
+			}
+		}
+		
         $rs=array(
-            'count'=>$count
+            'picture_count'=>$picture_count,
+			'if_sample_save'=>$if_sample_save,
+			'if_finish'=>$if_finish,
         );
         $this->ajaxReturn($rs);
     }
@@ -833,7 +852,7 @@ class ContractController extends Controller
         $this->ajaxReturn($result);
 	}
 	
-	//抽样单提交
+	//合同状态入库
 	public function doUpdateState(){
 		$rs = array('msg'=>'fail');
 		$centreNo = I('centreno');
@@ -853,9 +872,9 @@ class ContractController extends Controller
 		if(D("contract_flow")->data($data_flow)->add()){
 			D("contract")->where($where)->save($data_contract);
 			M()->commit();
-			$rs['msg']='已提交';
+			$rs['msg']='录入成功';
 		}else{
-			$rs['msg']='提交失败';
+			$rs['msg']='录入失败';
 			M()->rollback();	
 		}
 		$this->ajaxReturn($rs);
@@ -936,20 +955,19 @@ class ContractController extends Controller
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
 		
-		//判断是接单还是签发
-		//$ifstatus = 
-		$list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,if(r.status is null,-1,r.status) as sub_status,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN report_feedback r on r.centreNo = c.centreNo')->where($where)->order('c.input_time DESC')->limit("{$offset},{$pagesize}")->select();
-		$count = D("contract as c")->field('if(r.status is null,-1,r.status) as sub_status,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN report_feedback r on r.centreNo = c.centreNo')->where($where)->order('c.input_time DESC')->count();
+		$list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,if(r.status is null,-1,r.status) as sub_status,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN report_feedback r on r.centreNo = c.centreNo')->where($where)->group('c.centreNo')->order('c.input_time DESC')->limit("{$offset},{$pagesize}")->select();
+		$count = D("contract as c")->where($where)->count();
+		//pr($count);
 		$Page= new \Think\Page($count,$pagesize);
 		$Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
 		$pagination= $Page->show();// 分页显示输出
-		
+
 		$body = array(
 			"list"=>$list,
 			'pagination'=>$pagination,
 			'if_edit'=>$if_edit,
 			'begin_time'=>$begin_time,
-			'end_time'=>$end_time
+			'end_time'=>$end_time,
 		);
 		//dump($body);
 		$this->assign($body);
