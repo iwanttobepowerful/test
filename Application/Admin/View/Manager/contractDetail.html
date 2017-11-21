@@ -108,6 +108,7 @@
 				margin: 0 auto;
 				width: 90%;
 				height: 1.5cm;
+                margin-top:1cm;
 			}
 			
 			.logo {
@@ -153,6 +154,9 @@
 				font-family: simsun;
 				font-size: 10.5pt;
 			}
+            .final{
+                margin: 0 auto;
+            }
 		</style>
 		<style type="text/css" media="print">
 			/*以下是打印格式*/
@@ -173,7 +177,7 @@
 				padding: 0.3cm;
 				border-radius: initial;
 				/*width: 20cm;*/
-				min-height: 29.7cm;
+				height: 29.7cm;
 				box-shadow: initial;
 				background: initial;
 				page-break-after: always;
@@ -273,7 +277,7 @@
             <td colspan="2"><span class="contract_txt">{$one.samplestatus}
 
 					</span></td>
-            <td class="test_txt">粉（料）水比</td>
+            <td class="test_txt">水（料）粉比</td>
             <td colspan="3"><span class="contract_txt">
                 <if condition="$one[ration]">
                     {$one.ration}
@@ -294,18 +298,20 @@
         </tr>
         <tr>
             <td class="test_txt">检验类别</td>
-            <td colspan="6">{$one.testcategory}</td>
+            <td colspan="6"><span class="contract_txt">{$one.testcategory}
+
+					</span></td>
         </tr>
         <tr>
             <td colspan="5" class="test_txt">检验报告是否在本中心网站可查询真伪 （www.dmtc.org.cn）</td>
-            <td colspan="2"><php>if($one['ifonline']==1){echo '是';}else{echo '否';}</php></td>
+            <td colspan="2"><span class="contract_txt"><php>if($one['ifonline']==1){echo '是';}else{echo '否';}</php></span></td>
         </tr>
         <tr>
-            <td class="test_txt">报告提交方式</td>
-            <td colspan="2">{$one.postmethod}</td>
+            <td class="test_txt"><span class="contract_txt">报告提交方式</span></td>
+            <td colspan="2"><span class="contract_txt">{$one.postmethod}</span></td>
             <td colspan="2" class="test_txt">是否同意分包</td>
             <td colspan="2">
-            	<php>
+            	<span class="contract_txt"><php>
                 	if($one['ifsubpackage']==1){
                     	if($one["package_remark"]){
                         	echo '是'."(".$one["package_remark"].")";
@@ -315,7 +321,7 @@
                     }else{
                     	echo '否';
                     }       
-                </php></td>
+                </php></span></td>
         </tr>
         <tr>
             <td class="test_txt">委 托 人（签字）</td>
@@ -424,8 +430,9 @@
         </table>
     </table>
     <footer class="foot test_txt">单位地址：北京市朝阳区管庄东里中国建材院内北楼&nbsp;&nbsp;电话：010-51164723&nbsp;&nbsp;传真：010-51164724</footer>
-    <button onclick="window.print()" class="Noprint">打印</button>
+    
 </div>
+<button onclick="window.print()" class="Noprint btn btn-primary final">打印</button>
 </body>
 
 </html>
