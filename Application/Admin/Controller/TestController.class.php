@@ -404,8 +404,24 @@ class TestController extends Controller{
             "path"=>$fileurl,
             "remark"=>$remark,
             'modify_time'=>date("Y-m-d H:i:s"),
-            'pdf_path'=>$distfile,
         );
+        //转image,在测试服务器上测试，本地需要配置环境
+        //demo
+        ///$distfile = "/Public/attached/2017-11-21/SJ-4-77_2017_01.pdf";        
+        $imageFiles = convertPdf2Image(ROOT_PATH,$distfile);
+        if($imageFiles){
+            //转换成功,合并二维码
+            
+            //再转换成pdf
+            $pdf = './Public/attached/report/'.$centreno.'.pdf';
+            convertImageToPdf(ROOT_PATH,$pdf,$imageFiles);
+            $data['pdf_path'] = $pdf;
+            if(D("test_report")->where("centreno='{$centreno}'")->save($data)){
+                $result['msg'] = "succ";    
+            }
+        }else{
+            $result['msg'] = "转换pdf失败";
+        }
         /*
         $res = json_decode($res,true);
         if($res['retMsg']=='success'){
@@ -417,10 +433,6 @@ class TestController extends Controller{
             $this->ajaxReturn($result);
         }
         */
-       
-        if(D("test_report")->where("centreno='{$centreno}'")->save($data)){
-            $result['msg'] = "succ";    
-        }
         $this->ajaxReturn($result);
     }
     //提交审核按钮
