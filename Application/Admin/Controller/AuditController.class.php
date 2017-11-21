@@ -44,7 +44,7 @@ class AuditController extends Controller {
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
-        if($if_admin==1 || $user==14 ) {
+        if($if_admin==1 || $user==13 ) {
             $view="1";
         }else{
             $view="0";
@@ -98,7 +98,7 @@ class AuditController extends Controller {
         $data=array(
             'status'=>1,
         );
-        if ($user==14||$if_admin==1){//批准员和超级管理员的权限
+        if ($user==13||$if_admin==1){//审核员和超级管理员的权限
             if(D("report_feedback")->where($where)->save($data)){
                 $rs['msg'] = 'succ';
             }}
@@ -115,7 +115,7 @@ class AuditController extends Controller {
         $data=array(
             'status'=>2,
         );
-        if ($user==14||$if_admin==1){//批准员和超级管理员的权限
+        if ($user==13||$if_admin==1){//审核员和超级管理员的权限
             $result=D("report_feedback")->where($where)->save($data);
             if($result!==false){
                 $rs['msg'] = 'succ';
