@@ -145,7 +145,8 @@ class TestController extends Controller{
         $offset = ( $page-1 ) * $pagesize;
         $result=M('contract_flow')->where($where)
             ->join('work_inform_form ON contract_flow.centreNo = work_inform_form.centreNo')//从工作通知单取数据
-            ->field('contract_flow.takelist_user_id,contract_flow.status,work_inform_form.workDate,work_inform_form.centreNo,work_inform_form.sampleName,work_inform_form.testCreiteria')
+            ->join('contract as a on contract_flow.centreno=a.centreno')
+            ->field('contract_flow.takelist_user_id,contract_flow.status,work_inform_form.workDate,work_inform_form.centreNo,work_inform_form.sampleName,work_inform_form.testCreiteria,a.centreno1,a.centreno2,a.centreno3')
             ->order('work_inform_form.workDate desc,work_inform_form.id desc')
             ->limit("{$offset},{$pagesize}")->select();//从合同表!!!!里取出对应中心编号的信息
         $count = D("contract_flow")->where($where)->count();
