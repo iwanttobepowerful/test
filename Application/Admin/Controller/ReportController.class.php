@@ -37,7 +37,7 @@ class ReportController extends Controller
         $where['contract_flow.status'] = 2;
         $rs=$contract_flow->where($where)
             ->join('left join common_system_user ON contract_flow.report_user_id = common_system_user.id left join test_report on contract_flow.centreno=test_report.centreno left join contract as a on contract_flow.centreno=a.centreno')
-            ->field('contract_flow.id,contract_flow.centreNo,contract_flow.status,contract_flow.report_time,common_system_user.name,test_report.pdf_path,a.centreno1,a.centreno2,a.centrneo3')
+            ->field('contract_flow.id,contract_flow.centreNo,contract_flow.status,contract_flow.report_time,common_system_user.name,test_report.pdf_path,a.centreno1,a.centreno2,a.centreno3')
             ->limit("{$offset},{$pagesize}")
             ->order('contract_flow.report_time desc,contract_flow.id desc')->select();
         //查找条件为已经批准并且内部尚未签发的报告

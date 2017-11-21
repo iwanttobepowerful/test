@@ -297,7 +297,23 @@ if(!function_exists('http_request')){
 }
 /** user the thirdpart api */
 if(!function_exists('convert2Pdf')){
-    function convert2Pdf($docUrl,$type='pdf'){
+    function convert2Pdf($root_path,$docUrl,$type='pdf'){
+        $ext = '.'.$type;
+        
+        $baseinfo = pathinfo($docUrl);
+        $file = $baseinfo['filename'];
+        $path = $baseinfo['dirname'];
+        $srcUrl = $root_path.$docUrl;
+        $outDir = $root_path . $path;
+        $distFile = $path . '/' . $baseinfo['filename'] . $ext;
+        
+        if(file_exists($root_path . $distFile)){
+            @unlink($distFile);
+        }
+        $cmd = "soffice --headless --invisible --convert-to pdf:writer_pdf_Export {$srcUrl} --outdir {$outDir} > /dev/null";
+        exec($cmd,$output,$return);
+        return $distFile;
+        /*
         $url = "https://api.9yuntu.cn/execute/Convert";
         $appcode = "d61ead3bea9c46e8a7026aabb2eb1b19";
         $headers = array();
@@ -322,5 +338,51 @@ if(!function_exists('convert2Pdf')){
         $response = curl_exec($curl);
         curl_close ($curl);
         return $response;
+        */
     }
 }
+if(!function_exists('convertPdf2Image')){
+    function convertPdf2Image($pdf_file_path,$folder_path_for_images){
+        vendor("Pdflib.vendor.autoload");
+
+        $pdflib = new \ImalH\PDFLib\PDFLib();
+        $pdflib->setPdfPath($pdf_file_path);
+        $pdflib->setOutputPath($folder_path_for_images);
+        $pdflib->setImageFormat(\ImalH\PDFLib\PDFLib::$IMAGE_FORMAT_JPEG);
+        $pdflib->setDPI(300);
+        $pdflib->setPageRange(1,$pdflib->getNumberOfPages());
+        $filesArray = $pdflib->convert();
+        return $filesArray;
+    }
+}
+if(!function_exists('convertImageToPdf')){
+    function convertImageToPdf($root_path,$pdfFileName,$imagePaths){
+        vendor("Pdflib.vendor.autoload");
+        $pdfLib = new \ImalH\PDFLib\PDFLib();        
+        if(file_exists($pdfFileName)){
+            unlink($pdfFileName);
+        }
+        $res = $pdfLib->makePDF($pdfFileName,$imagePaths);
+    }
+}
+
+if(!function_exists('convert2Png')){
+    function convert2Png($root_path,$pdfFile,$ext = "png"){
+        $srcFile = $root_path . $pdfFile;
+        if(file_exists($srcFile)){
+            $baseinfo = pathinfo($pdfFile);
+            $outFile = $root_path . $baseinfo['dirname'] . '/' . $baseinfo['filename'] .'.' . $ext;
+            $cmd = "convert -density 600 {$srcFile} -alpha off -resize 2480x {$outFile} > /dev/null";
+            exec($cmd,$output,$return);
+        }
+    }
+}
+
+
+if(!function_exists('mergeImage')){
+    function mergeImage(){
+
+    }
+}
+
+//convert -density 600 SJ-4-77_2017.pdf -alpha off  SJ-4-77_2017.png
