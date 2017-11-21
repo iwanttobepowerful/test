@@ -397,7 +397,41 @@
 
 					</span></td>
                 <td class="test_txt">检验费用</td>
-                <td><span class="contract_txt">{$cost.rarecord}(A)+{$cost.rbrecord}(B)+{$cost.rcrecord}(C)+{$cost.rdrecord}(D)+{$cost.rerecord}(E)+{$cost.rfrecord}(F)+{$cost.dcopy}(副本)+{$cost.donline}(上网费)+{$cost.drevise}(修改)+{$cost.dother}(其他)={$one.testcost}
+                <td><span class="contract_txt">
+                	<php>
+                    	$str = "";
+                        if($cost["rarecord"]>0){
+                        	$str.=$cost["rarecord"]."(A)+";
+                        }
+                        if($cost["rbrecord"]>0){
+                        	$str.=$cost["rbrecord"]."(B)+";
+                        }
+                        if($cost["rcrecord"]>0){
+                        	$str.=$cost["rcrecord"]."(C)+";
+                        }
+                        if($cost["rdrecord"]>0){
+                        	$str.=$cost["rdrecord"]."(D)+";
+                        }
+                        if($cost["rerecord"]>0){
+                        	$str.=$cost["rerecord"]."(E)+";
+                        }
+                        if($cost["rfrecord"]>0){
+                        	$str.=$cost["rfrecord"]."(F)+";
+                        }
+                        if($cost["dcopy"]>0){
+                        	$str.=$cost["dcopy"]."(副本)+";
+                        }
+                        if($cost["donline"]>0){
+                        	$str.=$cost["donline"]."(上网费)+";
+                        }
+                        if($cost["drevise"]>0){
+                        	$str.=$cost["drevise"]."(修改)+";
+                        }
+                        if($cost["dother"]>0){
+                        	$str.=$cost["dother"]."(其他)+";
+                        }
+                        echo substr($str,0,strlen($str)-1)."=".	$one["testcost"];
+                    </php>
 
 					</span></td>
             </tr>
