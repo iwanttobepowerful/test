@@ -250,18 +250,18 @@ class ContractController extends Controller
             'costDate'=>Date("Y-m-d H:i:s")
         );
 
-        $contract_user_id = $admin_auth['id'];
+        //$contract_user_id = $admin_auth['id'];
         //pr($contract_user_id);
-        $data_flow = array(
+        /*$data_flow = array(
             "centreNo"=>$centreNo,
             'contract_user_id'=>$contract_user_id,
             'contract_time'=>Date("Y-m-d H:i:s"),
-        );
+        );*/
 
 		$type = substr($centreNo,7,1);
-		if($type=='W'){
+		/*if($type=='W'){
 			$data['ifedit']=1;
-		}
+		}*/
         M()->startTrans();
         try{
 
@@ -314,9 +314,9 @@ class ContractController extends Controller
                     "package_remark"=>$package_remark,
                 );
                 D("sampling_form")->data($data_sample)->add();
-            }else{
+            }/*else{
                 D("contract_flow")->data($data_flow)->add();
-            }
+            }*/
             M()->commit();
             $rs['msg'] = 'succ';
         }catch(Exception $e){
@@ -789,20 +789,26 @@ class ContractController extends Controller
         $centreno = I('centreno');
 		$where['centreNo']=$centreno;
 		$if_finish = 1;
-		
-        $picture_count = D('sample_picture')->where('type=1 and centreno="'.$centreno.'"')->count();
-		
-		$result=M('sampling_form')->where($where)->find();	
-		//判断是否已经提交完毕，目的判断是否出现抽样单录入完毕按钮
-		if(empty($result['samplebase']) && empty($result['sampledate']) && empty($result['productiondate']) && empty($result['sampleplace']) && empty($result['samplemethod']) && empty($result['simplersign']) && empty($result['simsigndate']) && empty($result['sealersign']) && empty($result['seasingdate']) && empty($result['enterprisesign']) && empty($result['entsigndate'])){
-			$if_save = 0;
-		}else{
-			$if_save = 1;	
+		$picture_count=0;
+		$if_sample = substr($centreno,7,1);
+		if($if_sample=='C'){
+			$picture_count = D('sample_picture')->where('type=1 and centreno="'.$centreno.'"')->count();
+			if($picture_count==0) $if_finish = 0;
+			
+			//判断是否已经提交完毕，目的判断是否出现抽样单录入完毕按钮
+			$result=M('sampling_form')->where($where)->find();			
+			if(empty($result['samplebase']) && empty($result['sampledate']) && empty($result['productiondate']) && empty($result['sampleplace']) && empty($result['samplemethod']) && empty($result['simplersign']) && empty($result['simsigndate']) && empty($result['sealersign']) && empty($result['seasingdate']) && empty($result['enterprisesign']) && empty($result['entsigndate'])){
+				$if_sample_save = 0;
+				$if_finish = 0;
+			}else{
+				$if_save = 1;	
+			}
 		}
 		
         $rs=array(
             'picture_count'=>$picture_count,
-			'if_save'=>$if_save,
+			'if_sample_save'=>$if_sample_save,
+			'if_finish'=>$if_finish,
         );
         $this->ajaxReturn($rs);
     }
@@ -846,7 +852,7 @@ class ContractController extends Controller
         $this->ajaxReturn($result);
 	}
 	
-	//抽样单提交
+	//合同状态入库
 	public function doUpdateState(){
 		$rs = array('msg'=>'fail');
 		$centreNo = I('centreno');
@@ -866,9 +872,9 @@ class ContractController extends Controller
 		if(D("contract_flow")->data($data_flow)->add()){
 			D("contract")->where($where)->save($data_contract);
 			M()->commit();
-			$rs['msg']='已提交';
+			$rs['msg']='录入成功';
 		}else{
-			$rs['msg']='提交失败';
+			$rs['msg']='录入失败';
 			M()->rollback();	
 		}
 		$this->ajaxReturn($rs);
@@ -955,13 +961,13 @@ class ContractController extends Controller
 		$Page= new \Think\Page($count,$pagesize);
 		$Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
 		$pagination= $Page->show();// 分页显示输出
-		
+
 		$body = array(
 			"list"=>$list,
 			'pagination'=>$pagination,
 			'if_edit'=>$if_edit,
 			'begin_time'=>$begin_time,
-			'end_time'=>$end_time
+			'end_time'=>$end_time,
 		);
 		//dump($body);
 		$this->assign($body);
