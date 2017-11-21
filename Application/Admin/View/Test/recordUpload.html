@@ -82,17 +82,16 @@
         $('#addfile').click();
         return false;
     }
-
     function onSave(){
-        
         var options = {
             url: "{:U('/admin/test/doUp')}",
             dataType: 'json',
             beforeSubmit: function(){
-                return true;
+                $("#loading").html("<img src='/Public/static/images/loading.gif' />");
             },
             success: function (data) {
                 if(data.msg=='succ'){
+                    $("#loading").empty();
                     var _options = {"text":"保存成功！","action":function(){window.location.reload();}};
                     doAlertDialog(_options);
                 }else{
