@@ -582,10 +582,17 @@ class ContractController extends Controller
         $data_apply = array(
             "status"=>0
         );
+		
 		if($type_status == 1) $data_apply['status']=7;
         //M()->startTrans();
         D("contract_flow")->where($where)->save($data_apply);
-        D("report_feedback")->where($where)->delete();
+        //D("report_feedback")->where($where)->delete();
+		
+		//修改完毕后，逻辑删除
+		$data_feedback = array(
+            "status"=>3
+        );
+		D("report_feedback")->where($where)->save($data_feedback);
         //M()->commit();
         $rs['msg']='修改提交成功';
         /*}else{
