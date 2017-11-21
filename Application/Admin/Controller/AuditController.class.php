@@ -68,8 +68,8 @@ class AuditController extends Controller {
             }}
 
         $rs=D("report_feedback")->alias("r")
-            ->field('if(r.status is null,-1,r.status) as sub_status,r.reason,r.create_time,r.centreno,a.clientname,a.samplename,a.testcriteria,a.testitem')
-            ->join(' left join contract as a on r.centreNo=a.centreNo')
+            ->field('if(r.status is null,-1,r.status) as sub_status,r.reason,r.create_time,r.centreno,a.clientname,a.samplename,a.testcriteria,a.testitem,c.*')
+            ->join(' left join contract as a on r.centreNo=a.centreNo left join contract_flow as c on r.centreNo=c.centreNo')
             ->where($where)
             ->limit("{$offset},{$pagesize}")
             ->order('r.create_time desc')->select();
@@ -82,6 +82,7 @@ class AuditController extends Controller {
             'pagination'=>$pagination,
             'view'=>$view,
             'de'=>$de,
+            'centreno'=>$keyword
         );
         $this->assign($body);
         $this->display();
