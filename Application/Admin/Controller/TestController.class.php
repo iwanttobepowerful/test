@@ -396,15 +396,16 @@ class TestController extends Controller{
             $result['msg'] = "无效的提交！";
             $this->ajaxReturn($result);
         }
+        //pdf转换
+        $distfile = convert2Pdf(ROOT_PATH,$data['path'],'pdf');
         $data = array(
             //"centreNo"=>$centreno,
             "path"=>$fileurl,
             "remark"=>$remark,
             'modify_time'=>date("Y-m-d H:i:s"),
+            'pdf_path'=>$distfile,
         );
-        //pdf转换
-        $docUrl = getCurrentHost().$data['path'];
-        $res = convert2Pdf($docUrl,'pdf');
+        /*
         $res = json_decode($res,true);
         if($res['retMsg']=='success'){
             $outputURLs = $res['outputURLs'];
@@ -414,6 +415,8 @@ class TestController extends Controller{
             $result['msg'] = "转换pdf失败";
             $this->ajaxReturn($result);
         }
+        */
+       
         if(D("test_report")->where("centreno='{$centreno}'")->save($data)){
             $result['msg'] = "succ";    
         }
