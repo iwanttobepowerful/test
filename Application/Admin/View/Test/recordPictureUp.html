@@ -57,7 +57,8 @@
             <volist name="lists" id="one" key="i">
                 <tr>
                         <td><input type="checkbox" name="print" class="qx" value="{$one['id']}"/> </td>
-                    <td>{$i}</td>
+                    <td><if condition="$_GET['p'] eq 0">{$i}
+                        <else />{$_GET['p']*10-10+$i}</if></td>
                     <td>{$one.centreno}</td>
                     <td><a href="javascript:void(0);" name="{$one.path}" onclick="return Check(this);"><img src="{$one.path}" onerror="this.src='__PUBLIC__/static/images/default-timg.gif'" style="width: 90px;" /></a></td>
                     <td>{$one.lastmodifytime}</td>

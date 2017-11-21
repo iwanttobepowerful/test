@@ -8,6 +8,7 @@
                 <div class="form-group">
                     <label>中心编号：</label>
                     <input type="text" class="form-control input-sm" name="keyword" value="{$keyword}"/>
+                    <input type="hidden" name="p" value="1" />
                     收样日期：
                     <input type="text" readonly class="form-control f-datetime input-sm" name="begin_time" value="{$begin_time}" placeholder="开始日期" />
                     —&nbsp;<input type="text" readonly class="form-control f-datetime input-sm" name="end_time" value="{$end_time}" placeholder="结束日期"/>
@@ -69,7 +70,7 @@
                         <if condition="$con['status']==7">
                             <span style="color:green">{$con.takename}已接单<br/>{$con.takelist_time}</span>
                             <elseif condition="$con['status']==5"/>
-                            <span style="color:green">{$con.innername}已内部签发<br/>{$con.inner_sign_time}</span>
+                            <span style="color:green">{$con.innername}已盖章签发<br/>{$con.inner_sign_time}</span>
                             <elseif condition="$con['status']==6"/>
                             <span style="color:green">{$con.externalname}已外部签发<br/>{$con.external_sign_time}</span>
                         </if>
@@ -163,7 +164,7 @@
     }*/
     function confirmReport(centreno) {
         if(!centreno) return false;
-        var _options = {"flag":"error","text":"您确认生成报告吗！","buttons":{"ok":{"action":function(){doConfirm(centreno);}},"cancel":{}}};
+        var _options = {"flag":"error","text":"您确认提交生成的报告吗！","buttons":{"ok":{"action":function(){doConfirm(centreno);}},"cancel":{}}};
         doConfirmDialog(_options);
     }
     function doConfirm(centreno) {

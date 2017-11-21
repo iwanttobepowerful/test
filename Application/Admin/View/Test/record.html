@@ -16,7 +16,7 @@
                     <td>{$one.centreno}</td>
                     <td>{$one.samplename}</td>
                     <td>
-                        <a href="{:U('/admin/test/recordList')}?id={$one.centreno}" class="btn btn-primary btn-xs" ><i class="glyphicon glyphicon-open"></i>检测报告上传</a>
+                        <a href="{:U('/admin/test/recordUpload')}?centreno={$one.centreno}" class="btn btn-primary btn-xs" ><i class="glyphicon glyphicon-open"></i>检测报告上传</a>
                         <if condition="$one[pdf_path]">
                         <a href="{$one.pdf_path}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>报告预览</a>
                         <a href="javascript:void(0);" class="btn btn-success btn-xs" onclick="doUpdate('{$one.centreno}')"><i class="glyphicon glyphicon-ok-circle"></i>提交审核</a></if>

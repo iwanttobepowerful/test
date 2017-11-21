@@ -15,7 +15,8 @@
             <tbody>
             <volist name="rs" id="vo" key="i">
                 <tr>
-                    <td>{$i}</td>
+                    <td><if condition="$_GET['p'] eq 0">{$i}
+                        <else />{$_GET['p']*10-10+$i}</if></td>
                     <td>{$vo.centreno}</td>
                     <td>
                         <a href="/admin/manager/contractDetail?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检验受理合同</a>

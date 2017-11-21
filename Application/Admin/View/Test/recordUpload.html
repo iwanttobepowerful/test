@@ -3,7 +3,7 @@
     <include file="Common:breadcrumb" />
     <div id="page-inner" class="container">
         <div class="search-form">
-            <a href="{:U('/admin/test/recordList')}?id={$centreno}" class="btn btn-primary">返回</a>
+            <a href="{:U('/admin/test/record')}?id={$centreno}" class="btn btn-primary">返回</a>
         </div>
         <form class="form-horizontal" id="myform" action="" method="post">
             <input type="hidden" name="id" value="{$report['id']}" />
@@ -82,17 +82,16 @@
         $('#addfile').click();
         return false;
     }
-
     function onSave(){
-        
         var options = {
             url: "{:U('/admin/test/doUp')}",
             dataType: 'json',
             beforeSubmit: function(){
-                return true;
+                $("#loading").html("<img src='/Public/static/images/loading.gif' />");
             },
             success: function (data) {
                 if(data.msg=='succ'){
+                    $("#loading").empty();
                     var _options = {"text":"保存成功！","action":function(){window.location.reload();}};
                     doAlertDialog(_options);
                 }else{
