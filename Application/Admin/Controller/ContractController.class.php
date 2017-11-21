@@ -1086,6 +1086,31 @@ class ContractController extends Controller
 		$this->display();
 	}
 	
+	//检查是否录入更改检验报告单
+	public function checkEditList(){
+		$centreNo = I('centreno');
+		$count = D('inspection_report')->where('centreNo="'.$centreNo.'"')->count();
+		$rs = array(
+			'count'=>$count,
+		);
+		$this->ajaxReturn($rs);
+	}
+	
+	//跳转更改检验报告单打印页面
+	public function reWriteTest(){
+		$centreNo = I('id');
+		$one = D('inspection_report')->where('centreNo="'.$centreNo.'"')->find();
+		$update_item_list = split("/&&/",$one['update_item']);
+		//pr($update_item_list);
+		$body = array(
+			'one'=>$one,
+			'update_item_list'=>$update_item_list
+		);
+		
+		$this->assign($body);
+		$this->display();
+	}
+	
 	//检验报告单录入
 	public function saveInspecReport(){
 		$edit_No = I('edit_No');
