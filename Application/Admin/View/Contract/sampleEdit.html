@@ -67,7 +67,7 @@
 			
 		}
 		
-		function doSubmit(){
+		/*function doSubmit(){
 			var flag = checkFinish();
 			if(!flag){
 				return false;	
@@ -86,7 +86,7 @@
 				});				
 			}
 			
-		}
+		}*/
 		
 		//检查抽样信息是否录制全面
 		function checkFinish(){
@@ -119,7 +119,7 @@
 				async: false,
 				data:{'centreno':centreno},
 				success: function (res) {
-					if(res.count==0){
+					if(res.picture_count==0){
 						alert("请上传现场图片！");
 						flag=false;	
 					}
@@ -286,7 +286,7 @@
           </tr>
         </table>
         <if condition="($ifedit['ifedit'] == 0) OR (($ifedit['ifedit'] == 1) and ($sub_status['status'] == 1))">
-        	<button class="btn btn-success edit" type="button" id="check_list" onClick="doEditSample()">提交</button>
+        	<button class="btn btn-success edit" type="button" id="check_list" onClick="doEditSample()">保存</button>
         </if>
         <!--<if condition="$ifedit['ifedit'] == 0">
         	<button class="btn btn-success edit" type="button" id="check_list" onClick="doEditSample()">修改</button>
@@ -305,9 +305,9 @@
 		<button class="btn btn-success" type="button" id="up_check" onClick="doUpSample('work')">上传检测图片</button>-->
         <a class="btn btn-success edit" href="/admin/contract/doUploadSampleImage?centreno={$one.centreno}&type=sample">上传抽样单</a>
 		<a class="btn btn-success edit" href="/admin/contract/doUploadSampleImage?centreno={$one.centreno}&type=work">上传现场照片</a>
-        <if condition="$if_save==1 && $if_picture gt 0">
+        <!--<if condition="$if_save==1 && $if_picture gt 0">
       		<button class="btn btn-success edit1" type="button" onClick="doSubmit()">抽样单录入完毕</button> 
-        </if> 
+        </if> -->
         <if condition="$if_submit gt 0">
         	<a class="btn btn-success" href="/admin/test/sampleShow?id={$one.centreno}" onClick="return checkFinish()">打印</a>
         </if>

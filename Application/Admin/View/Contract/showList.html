@@ -53,9 +53,13 @@
                     	<a href="/admin/manager/contractDetail?id={$con.centreno}"  class="btn btn-info btn-xs" >检验受理合同</a>
        
                         <!--<a href="{:U('/admin/test/sampleShow')}?id={$con.centreno}" style="display:none" class="btn btn-info btn-xs" >抽样单</a>-->
-                    	<a href="{:U('/admin/contract/sampleEdit')}?id={$con.centreno}" style="display:none" class="btn btn-info btn-xs" >抽样单</a>
+                    	<a href="{:U('/admin/contract/sampleEdit')}?id={$con.centreno}" id="but_sample" style="display:none" class="btn btn-info btn-xs" >抽样单</a>
                         <if condition="$con.flow_id != -1">
                        		<a href="/admin/test/infoShow?id={$con.centreno}"  class="btn btn-info btn-xs" >检验工作通知单</a>
+                        </if>
+                        
+                        <if condition="$con.flow_id == -1">
+                        	<a href="#"  class="btn btn-primary btn-xs" onclick="return doFinish('{$con.centreno}')">录入完毕</a>
                         </if>
                         
                         <if condition="$if_edit==1">
@@ -146,7 +150,9 @@
 			//alert(text+":"+text.substr(6,1))
 			if (text.substr(7,1)=='C'){
 				//alert($(this).children("td:last").children("a:last").html());
-				$(this).children("td").eq(5).children("a").eq(2).css("display","inline-block");
+				//$(this).children("td").eq(5).children("a").eq(2).css("display","inline-block");
+				
+				$(this).children("td").eq(5).find("[id=but_sample]").css("display","inline-block");
 			}
         });
 		
@@ -207,6 +213,47 @@
 					window.location.reload();
 				}
 			});	
+		}
+	}
+	
+	function checkFinish(centreno){
+		var flag=true;
+		$.ajax({
+				url: "{:U('/admin/contract/checkFinish')}",
+				dataType: 'json',			
+				async: false,
+				data:{'centreno':centreno},
+				success: function (res) {
+					if(res.if_finish==0){
+						if(res.if_sample_save==0){
+							alert("抽样单信息不全！");
+							flag=false;	
+						}else if(res.picture_count==0){
+							alert("请上传现场图片！");
+							flag=false;	
+						}						
+					}
+				}
+		});	
+		return flag;
+	}
+	//录入完毕确认
+	function doFinish(centreno){
+		if(!checkFinish(centreno)){
+			return false;	
+		}else{
+			if(confirm('确定后不可更改，确认是否录入完毕？')){
+				$.ajax({
+					url: "{:U('/admin/contract/doUpdateState')}",
+					dataType: 'json',			
+					async: false,
+					data:{'centreno':centreno},
+					success: function (res) {
+						alert(res.msg);
+						window.location.reload();
+					}
+				});		
+			}
 		}
 	}
 </script>

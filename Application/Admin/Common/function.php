@@ -356,35 +356,13 @@ if(!function_exists('convertPdf2Image')){
     }
 }
 if(!function_exists('convertImageToPdf')){
-    function convertImageToPdf($pdf,$path,$pdfFileName,$imagePaths){
+    function convertImageToPdf($root_path,$pdfFileName,$imagePaths){
         vendor("Pdflib.vendor.autoload");
-
-       $pdfLib = new \ImalH\PDFLib\PDFLib();
-        $pdfLib->setPdfPath($pdf);
-        $pdfLib->setOutputPath($path);
-        $pdfLib->setImageFormat(\ImalH\PDFLib\PDFLib::$IMAGE_FORMAT_JPEG);
-        $pdfLib->setDPI(300);
-        $pdfLib->setImageQuality(95);
-        $pdfLib->setPageRange(2, 4);
-        $filesArray = $pdfLib->convert();
-        $fullpaths = [];
-        foreach ($filesArray as $item){
-            $fullpaths[] = $path."/".$item;
-        }
-        $pdfFileName = $path."/from_images.pdf";
+        $pdfLib = new \ImalH\PDFLib\PDFLib();        
         if(file_exists($pdfFileName)){
             unlink($pdfFileName);
         }
-        pr($fullpaths);
-        $pdfLib->makePDF($pdfFileName,$fullpaths);
-        $pdfLib = new \ImalH\PDFLib\PDFLib();
-        $pdfLib->setPdfPath($pdfFileName);
-        //self::assertTrue($pdfLib->getNumberOfPages() == count($fullpaths));
-
-
-
-
-
+        $res = $pdfLib->makePDF($pdfFileName,$imagePaths);
     }
 }
 
