@@ -323,11 +323,19 @@ class TestController extends Controller{
     }
 //上传检测报告显示页面
     public function record(){
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $if_admin = $admin_auth['super_admin'];//是否是超级管理员
+        $user=$admin_auth['gid'];//判断是哪个角色
+        $department = $admin_auth['department'];
         $page = I("p",'int');
         $pagesize = 20;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
-        $where['status']=1;
+        $where="status=1";
+        if($user==8 || $user==15 || $user==13 || $if_admin==1){
+            //
+        }else{
+        $where .= " and SUBSTR(c.centreNo,7,1) = '{$department}'";}
         $result=D("contract_flow as c")->where($where)
             ->join('left join contract as a on c.centreno=a.centreno left join test_report as t on c.centreno=t.centreno')
             ->field('c.*,a.*,t.path,t.doc_path,t.pdf_path')
@@ -371,8 +379,9 @@ class TestController extends Controller{
     public function recordUpload(){
         //$id =I("id",0,'intval');
         $centreno=I("centreno");
+        $where="centreno='{$centreno}'";
         //if($id){
-        $report = D('test_report')->where("centreno='{$centreno}'")->find();
+        $report = D('test_report')->where($where)->find();
         //}
         $body = array(
             'report' => $report,
