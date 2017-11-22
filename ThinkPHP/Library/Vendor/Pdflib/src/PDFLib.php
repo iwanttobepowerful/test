@@ -147,6 +147,7 @@ class PDFLib{
         $psfile  = $this->getGSLibFilePath("viewjpeg.ps");
         $command = '-dBATCH -dNOPAUSE -sDEVICE=pdfwrite -o"'.$ouput_path_pdf_name.'" "'.$psfile.'" -c "'.$imagesources.'"';
         $command_results = $this->executeGS($command);
+
         if(!$this->checkFilesExists("",[$ouput_path_pdf_name])){
             throw new \Exception("Unable to make PDF : ".$command_results[2],500);
         }
@@ -181,7 +182,7 @@ class PDFLib{
                 $output = $this->execute('gs --version 2>&1');
                 if(!((is_array($output) && (strpos($output[0], 'is not recognized as an internal or external command') !== false)) || !is_array($output) && trim($output) == "")){
                     $this->gs_command = "gs";
-                    $this->gs_version = doubleval($output[0]);
+                    $this->gs_version = $output[0];
                     $this->gs_path = "/usr/local/share/ghostscript/".$this->gs_version;
                     $this->gs_is_64 = "NOT WIN";
                 }

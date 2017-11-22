@@ -23,12 +23,13 @@
                         <span>{$vo.centreno}</span></if></td>
                     <td>
                         <a href="/admin/manager/contractDetail?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检验受理合同</a>
+                        <if condition="mb_substr($vo[centreno],7,1)=='C'">
+                            <a href="{:U('/admin/test/sampleShow')}?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>抽样单</a></if>
                         <a href="{:U('/admin/test/infoShow')}?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检测工作通知单</a>
-                        <a href="{:U('/admin/test/sampleShow')}?id={$vo.centreno}" class="btn btn-info btn-xs" style="display:none"><i class="glyphicon glyphicon-search"></i>抽样单</a>
                         <a href="javascript:void(0);" class="btn btn-info btn-xs" onclick="recordDetail('{$vo.centreno}')"><i class="glyphicon glyphicon-search"></i>检测记录</a>
                         <a href="{$vo.pdf_path}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检测报告</a>
-                        <if condition="$one[centreno1] or $one[centreno2] or $one[centreno3]">
-                            <a href="" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-list"></i>更改单</a></if>
+                        <if condition="$vo[centreno1] or $vo[centreno2] or $vo[centreno3]">
+                            <a href="{:U('/admin/contract/reWriteTest')}?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-list"></i>更改单</a></if>
                     </td>
                     <td>{$vo.name}/{$vo.report_time}</td>
                     <td>
@@ -54,16 +55,6 @@
 </div>
 </div>
 <script type="text/javascript">
-    $(function(){
-        $("#tb tr").each(function(){
-            var text = $(this).children("td").eq(1).text();
-            if (text.substr(7,1)=='C'){
-                $(this).children("td").eq(2).children("a").eq(2).css("display","inline-block");
-            }
-        });
-
-    });
-
     function onUpdate(id){
         if(!id) return false;
         var _options = {"flag":"error","text":"该项目将通过审核","buttons":{"ok":{"action":function(){pass(id);}},"cancel":{}}};

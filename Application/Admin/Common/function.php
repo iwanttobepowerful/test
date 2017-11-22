@@ -391,12 +391,43 @@ if(!function_exists('convert2Png')){
         }
     }
 }
-
-
 if(!function_exists('mergeImage')){
-    function mergeImage(){
+    function mergeImage($bg,$qrcode,$save_file){
+        if(@file_exists($save_file)){
+           @unlink($save_file); 
+        }
+        $bg = file_get_contents($bg);
+        $bg = imagecreatefromstring($bg);
+        $bg_width = imagesx($bg);
+        $bg_height = imagesy($bg);
+        /*
+        //圆角图片
+        $corner = file_get_contents($corner);
+        $corner = imagecreatefromstring($corner);
+        $corner_width = imagesx($corner);
+        $corner_height = imagesy($corner);
 
+        //计算圆角图片的宽高及相对于二维码的摆放位置,将圆角图片拷贝到二维码中央
+        $corner_qr_height = $corner_qr_width = $qrcode_width/5;
+        $from_width = ($qrcode_width-$corner_qr_width)/2;
+        imagecopyresampled($qrcode, $corner, $from_width, $from_width, 0, 0, $corner_qr_width, $corner_qr_height, $corner_width, $corner_height);
+        */
+        //logo图片
+        $qrcode = file_get_contents($qrcode);
+        $qrcode = imagecreatefromstring($qrcode);
+        if(imageistruecolor($qrcode)) imagetruecolortopalette($qrcode, false, 65535);
+        $qrcode_width = imagesx($qrcode);
+        $qrcode_height = imagesy($qrcode);
+        
+        $bg_qr_height = $bg_qr_width = $bg_width/8;
+        $from_x = 8 * ($bg_width - $qrcode_width)/9;
+        $from_y = 9 * ($bg_height - $qrcode_height)/10;
+        imagecopyresampled($bg, $qrcode, $from_x, $from_y, 0, 0, $bg_qr_height, $bg_qr_height, $qrcode_width, $qrcode_height);
+        imagejpeg($bg,$save_file);
+        imagedestroy($bg);
+        //imagedestroy($corner);
+        imagedestroy($qrcode);
+        return true;
     }
 }
-
 //convert -density 600 SJ-4-77_2017.pdf -alpha off  SJ-4-77_2017.png

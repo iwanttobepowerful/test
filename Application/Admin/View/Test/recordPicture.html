@@ -44,7 +44,7 @@
                                 <a href="{:U('/admin/test/infoShow')}?id={$one.centreno}" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-search"></i>检测工作通知单</a>
                                 <a href="{:U('/admin/test/recordPictureUp')}?id={$one.centreno}" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-upload"></i>检测图片上传</a>
                                 <if condition="$one[centreno1] or $one[centreno2] or $one[centreno3]">
-                                    <a href="" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-list"></i>更改单</a></if>
+                                    <a href="{:U('/admin/contract/reWriteTest')}?id={$one.centreno}" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-list"></i>更改单</a></if>
                                 <if condition="$one[status] eq 7">
                                     <a herf="javascript:void(0);" class="btn btn-success btn-xs" onclick="allSave('{$one.centreno}')"><i class="glyphicon glyphicon-floppy-disk"></i>上传完毕</a>
                                     <span style="color: orangered">正在检测中...</span>

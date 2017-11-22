@@ -1100,24 +1100,30 @@ class ContractController extends Controller
 	public function reWriteTest(){
 		$centreNo = I('id');
 		$one = D('inspection_report')->where('centreNo="'.$centreNo.'"')->find();
-		$update_item_list = split("/&&/",$one['update_item']);
+		$update_item_list = explode("/&&/",$one['update_item']);
 		//pr($update_item_list);
+		$imageurl = str_replace("_thumb","",$one['imageurl']);
 		$body = array(
 			'one'=>$one,
-			'update_item_list'=>$update_item_list
+			'update_item_list'=>$update_item_list,
+			'imageurl'=>$imageurl
 		);
 		
 		$this->assign($body);
 		$this->display();
 	}
 	
-	//检验报告单录入
+	//更改检验报告单录入
 	public function saveInspecReport(){
+		$rs['msg']='fail';
+		
 		$edit_No = I('edit_No');
 		$centreNo = I('centreNo');
 		$sampleName = I('sampleName');
 		$clientName = I('clientName');
 		$update_item = I('update_item');
+		$imageurl = I('imgurl');
+		$image_remark = I('image_remark');
 		$update_item_list = "";
 		for($i = 0;$i < 6;$i++){
 			$update_item_list.=$update_item[$i]."/&&/";
@@ -1126,6 +1132,10 @@ class ContractController extends Controller
 		$applicant = I('applicant');
 		$handler = I('handler');
 		$handleDate = I('handleDate');
+		if(empty($edit_No) || empty($sampleName) || empty($clientName) || empty($update_item) || empty($imageurl)){
+			$rs['msg']='信息填写不完整！';
+			$this->ajaxReturn($rs);
+		}
 		$data_list = array(
 			"handler"=>$handler,
 			'handleDate'=>$handleDate,
@@ -1136,13 +1146,26 @@ class ContractController extends Controller
 			'update_item'=>$update_item_list,
 			'update_reason'=>$update_reason,
 			'applicant'=>$applicant,
+			'imageurl'=>$imageurl,
+			'image_remark'=>$image_remark,
 		);
-		$rs['msg']='fail';
+		
 		if(D('inspection_report')->add($data_list)){
 			$rs['msg']='succ';
 		}
 		$this->ajaxReturn($rs);
 		
+	}
+	
+	//跳转上传附件页面
+	function doUploadInsImage(){
+		$centreNo = I('centreno');
+		$body = array(
+			'centreNo'=>$centreNo,
+		);
+		
+		$this->assign($body);
+		$this->display();
 	}
 
 	//获取最中心编号

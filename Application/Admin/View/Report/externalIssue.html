@@ -30,7 +30,7 @@
                     <td><if condition="$vo[centreno1] or $vo[centreno2] or $vo[centreno3]">
                         <span style="color: red"><i class="glyphicon glyphicon-star"></i>{$vo.centreno}</span>
                         <br />
-                        <a href="" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-list"></i>更改单</a>
+                        <a href="{:U('/admin/contract/reWriteTest')}?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-list"></i>更改单</a>
                         <else />
                         <span>{$vo.centreno}</span></if>
                     </td>

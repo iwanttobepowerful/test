@@ -397,6 +397,7 @@ class TestController extends Controller{
             $result['msg'] = "无效的提交！";
             $this->ajaxReturn($result);
         }
+        $report = D("test_report")->where("centreno='{$centreno}'")->find();
         //pdf转换
         $data = array(
             //"centreNo"=>$centreno,
@@ -408,11 +409,17 @@ class TestController extends Controller{
 
         //转image,在测试服务器上测试，本地需要配置环境
         //demo
-        ///$distfile = "/Public/attached/2017-11-21/SJ-4-77_2017_01.pdf";
         $imageFiles = convertPdf2Image(ROOT_PATH,$distfile);
         if($imageFiles){
             //转换成功,合并二维码
             
+            if(file_exists($imageFiles[0]) && file_exists($report['qrcode_path'])){
+                $baseinfo = pathinfo($imageFiles[0]);
+                $saveFile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-tmp.'.$baseinfo['extension'];
+                mergeImage($imageFiles[0],$report['qrcode_path'],$saveFile);
+                @rename($saveFile,$imageFiles[0]);
+            }
+           
             //再转换成pdf
             $pdf = './Public/attached/report/'.$centreno.'.pdf';
             convertImageToPdf(ROOT_PATH,$pdf,$imageFiles);
