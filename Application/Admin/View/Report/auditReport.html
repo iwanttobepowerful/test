@@ -110,11 +110,13 @@
         var url=path.name;
         if(!url) return false;//获取url
         if(url.indexOf("http")==-1){
-            thisTHost = top.location.hostname;
-            var newurl='http://'+thisTHost+url;
+            thisHost = location.hostname;
+            var newurl='http://'+thisHost+url;
+        }else{
+            var newurl=url;
         }
-        alert(newurl);
-        //window.open(newurl);
+        //alert(newurl);
+        window.open(newurl);
     }
 </script>
 <include file="Common:footer" />
