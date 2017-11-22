@@ -106,7 +106,7 @@ class TestReportController extends Controller
             'shengchengview'=>$shengchengview,
             'dayinview'=>$dayinview,
             'status'=>$status['status'],
-            'qrimg'=>$this->qrcode($final_content['centreno'],getCurrentHost().'/admin/SeeReport/show?centreno='.$final_content['centreno']),
+            //'qrimg'=>$this->qrcode($final_content['centreno'],getCurrentHost().'/admin/SeeReport/show?centreno='.$final_content['centreno']),
         );
 
         $this->assign($body);
@@ -228,13 +228,15 @@ class TestReportController extends Controller
 //生成二维码
     public function qrcode($centreno,$qr_data){
         $save_path = './Public/attached/qrcode/';  //图片存储的绝对路径
+        $logo_path = "./Public/static/images/logoB.png";
         $qr_level = 'L';
         $qr_size = '4';
         $save_prefix = '';
         if(file_exists($save_path.md5($centreno).'.png')){
             @unlink($save_path.md5($centreno).'.png');
         }
-        if($filename = createQRcode($centreno,$save_path,$qr_data,$qr_level,$qr_size,$save_prefix)){
+        $filename = createQRcode($centreno,$save_path,$qr_data,$logo_path,'H',8,$save_prefix);
+        if($filename){
             $img = $save_path.$filename;
         }
         return $img;

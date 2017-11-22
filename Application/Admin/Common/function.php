@@ -167,7 +167,7 @@ function send_msg($receiver_id,$type,$content,$tips){
  * @param string $save_path 图片存储路径
  * @param string $save_prefix 图片名称前缀
  */
-function createQRcode($filename,$save_path,$qr_data='PHP QR Code :)',$qr_level='L',$qr_size=4,$save_prefix='qrcode'){
+function createQRcode($filename,$save_path,$qr_data='PHP QR Code :)',$logo = "",$qr_level='L',$qr_size=4,$save_prefix='qrcode'){
     if(!isset($save_path)) return '';
     //设置生成png图片的路径
     $PNG_TEMP_DIR = & $save_path;
@@ -193,18 +193,25 @@ function createQRcode($filename,$save_path,$qr_data='PHP QR Code :)',$qr_level='
             die('data cannot be empty!');
         }
         //生成文件名 文件路径+图片名字前缀+md5(名称)+.png
-        $filename = $PNG_TEMP_DIR.$save_prefix.md5($filename).'.png';
+        $filename = $PNG_TEMP_DIR.$save_prefix.md5($filename).'.jpg';
+        $filenameLogo = $PNG_TEMP_DIR.$save_prefix.md5($filename).'_l.jpg';
         //开始生成
         QRcode::png($qr_data, $filename, $errorCorrectionLevel, $matrixPointSize, 2);
     } else {
-        echo 'filename:'.$filename;
         //默认生成
         QRcode::png('PHP QR Code :)', $filename, $errorCorrectionLevel, $matrixPointSize, 2);
     }
-    if(file_exists($PNG_TEMP_DIR.basename($filename)))
+    if(file_exists($PNG_TEMP_DIR.basename($filename))){
+        //合并logo
+        if($logo){
+            mergeImage($filename,'./Public/static/images/logoA.png',$filenameLogo,array('align'=>'center'));
+            return basename($filenameLogo);
+        }
+
         return basename($filename);
-    else
+    }else{
         return FALSE;
+    }
 }
 if(!function_exists('convert2Word')){
     function convert2Word($data,$srcFile,$distFile,$qrcode=null){
@@ -372,8 +379,8 @@ if(!function_exists('convertImageToPdf')){
     function convertImageToPdf($root_path,$pdfFileName,$imagePaths){
         vendor("Pdflib.vendor.autoload");
         $pdfLib = new \ImalH\PDFLib\PDFLib();        
-        if(file_exists($pdfFileName)){
-            unlink($pdfFileName);
+        if(@file_exists($pdfFileName)){
+            @unlink($pdfFileName);
         }
         $res = $pdfLib->makePDF($pdfFileName,$imagePaths);
         return $res;
@@ -392,7 +399,7 @@ if(!function_exists('convert2Png')){
     }
 }
 if(!function_exists('mergeImage')){
-    function mergeImage($bg,$qrcode,$save_file){
+    function mergeImage($bg,$qrcode,$save_file,$position=null){
         if(@file_exists($save_file)){
            @unlink($save_file); 
         }
@@ -400,29 +407,42 @@ if(!function_exists('mergeImage')){
         $bg = imagecreatefromstring($bg);
         $bg_width = imagesx($bg);
         $bg_height = imagesy($bg);
-        /*
-        //圆角图片
-        $corner = file_get_contents($corner);
-        $corner = imagecreatefromstring($corner);
-        $corner_width = imagesx($corner);
-        $corner_height = imagesy($corner);
-
-        //计算圆角图片的宽高及相对于二维码的摆放位置,将圆角图片拷贝到二维码中央
-        $corner_qr_height = $corner_qr_width = $qrcode_width/5;
-        $from_width = ($qrcode_width-$corner_qr_width)/2;
-        imagecopyresampled($qrcode, $corner, $from_width, $from_width, 0, 0, $corner_qr_width, $corner_qr_height, $corner_width, $corner_height);
-        */
-        //logo图片
-        $qrcode = file_get_contents($qrcode);
-        $qrcode = imagecreatefromstring($qrcode);
-        if(imageistruecolor($qrcode)) imagetruecolortopalette($qrcode, false, 65535);
-        $qrcode_width = imagesx($qrcode);
-        $qrcode_height = imagesy($qrcode);
-        
-        $bg_qr_height = $bg_qr_width = $bg_width/8;
-        $from_x = 8 * ($bg_width - $qrcode_width)/9;
-        $from_y = 9 * ($bg_height - $qrcode_height)/10;
-        imagecopyresampled($bg, $qrcode, $from_x, $from_y, 0, 0, $bg_qr_height, $bg_qr_height, $qrcode_width, $qrcode_height);
+        if($position['align']=='center'){
+            //居中
+            $qrcode = file_get_contents($qrcode);
+            $qrcode = imagecreatefromstring($qrcode);
+            if(imageistruecolor($qrcode)) imagetruecolortopalette($qrcode, false, 65535);
+            $qrcode_width = imagesx($qrcode);
+            $qrcode_height = imagesy($qrcode);
+            //计算圆角图片的宽高及相对于二维码的摆放位置,将圆角图片拷贝到二维码中央
+            $qrcode_qr_height = $qrcode_qr_width = $qrcode_width/2;
+            $from_width = ($bg_width-$qrcode_qr_width)/2;
+            imagecopyresampled($bg, $qrcode, $from_width, $from_width, 0, 0, $qrcode_qr_width, $qrcode_qr_height, $qrcode_width, $qrcode_height);
+        }else{
+            // 报告的图片
+            $qrcode = file_get_contents($qrcode);
+            $qrcode = imagecreatefromstring($qrcode);
+            if(imageistruecolor($qrcode)) imagetruecolortopalette($qrcode, false, 65535);
+            $qrcode_width = imagesx($qrcode);
+            $qrcode_height = imagesy($qrcode);
+            
+            if($position['x'] && $position['y']){
+                $from_x = $position['x'];
+                $from_y = $position['y'];
+            }else{
+                # code...
+                $from_x = 8 * ($bg_width - $qrcode_width)/9;
+                $from_y = 9 * ($bg_height - $qrcode_height)/10;
+            }
+            if($position['w'] && $position['h']){
+                $bg_qr_width = $position['w'];
+                $bg_qr_height = $position['h'];
+            }else{
+                $bg_qr_height = $bg_qr_width = $bg_width/8;
+            }
+            
+            imagecopyresampled($bg, $qrcode, $from_x, $from_y, 0, 0, $bg_qr_height, $bg_qr_height, $qrcode_width, $qrcode_height);
+        }
         imagejpeg($bg,$save_file);
         imagedestroy($bg);
         //imagedestroy($corner);
