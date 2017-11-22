@@ -43,7 +43,8 @@
 
                     <td width="33%">
                         <a href="/admin/manager/contractDetail?id={$con.centreno}"  class="btn btn-info btn-xs" >检验受理合同</a>
-                        <a href="/admin/test/sampleShow?id={$con.centreno}" style="display:none" class="btn btn-info btn-xs" >抽样单</a>
+                        <if condition="mb_substr($con[centreno],7,1)=='C'">
+                        <a href="/admin/test/sampleShow?id={$con.centreno}"  class="btn btn-info btn-xs" >抽样单</a></if>
                         <if condition="$con.flow_id != -1">
                             <a href="/admin/test/infoShow?id={$con.centreno}"  class="btn btn-info btn-xs" >检验工作通知单</a>
                         </if>
@@ -97,19 +98,6 @@
 
 <script src="__PUBLIC__/static/js/jquery.form.js"></script>
 <script type="text/javascript">
-    $(function(){
-        $('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true });
-        $("#tb tr").each(function(){
-            var text = $(this).children("td").eq(1).text();
-            //alert(text+":"+text.substr(6,1))
-            if (text.substr(7,1)=='C'){
-                //alert($(this).children("td:last").children("a:last").html());
-                $(this).children("td").eq(5).children("a").eq(1).css("display","inline-block");
-            }
-        });
-
-    });
-
    /* function externalSign(centreno){
         if(confirm('确认已外部签发？')){
             $.ajax({

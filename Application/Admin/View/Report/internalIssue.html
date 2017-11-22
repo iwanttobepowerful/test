@@ -39,9 +39,10 @@
                     <td>{$vo.name}/{$vo.verify_time}</td>
                     <td>
                         <a href="/admin/manager/contractDetail?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检验受理合同</a>
-                        <a href="{$vo.pdf_path}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检测报告</a>
-                        <a href="{:U('/admin/test/sampleShow')}?id={$vo.centreno}" class="btn btn-info btn-xs" style="display:none"><i class="glyphicon glyphicon-search"></i>抽样单</a>
+                        <if condition="mb_substr($vo['centreno'],7,1) eq 'C' ">
+                        <a href="{:U('/admin/test/sampleShow')}?id={$vo.centreno}" class="btn btn-info btn-xs" ><i class="glyphicon glyphicon-search"></i>抽样单</a></if>
                         <a href="javascript:void(0);" class="btn btn-info btn-xs" onclick="recordDetail('{$vo.centreno}')"><i class="glyphicon glyphicon-search"></i>检测记录</a>
+                        <a href="{$vo.pdf_path}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检测报告</a>
                         <a href="/admin/report/priceList?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>价格审核</a>
                         <if condition="$vo[centreno1] or $vo[centreno2] or $vo[centreno3]">
                             <a href="{:U('/admin/contract/reWriteTest')}?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-list"></i>更改单</a></if>
@@ -74,16 +75,8 @@
 </div>
 </div>
 <script type="text/javascript">
-    $(function(){
-        $("#tb tr").each(function(){
-            var text = $(this).children("td").eq(1).text();
-            if (text.substr(7,1)=='C'){
-                $(this).children("td").eq(3).children("a").eq(2).css("display","inline-block");
-            }
-        });
-
-    });
-    $('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true });    function onUpdate(id){
+    $('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true });
+    function onUpdate(id){
         if(!id) return false;
         var _options = {"flag":"error","text":"您确定要签发此项目吗！","buttons":{"ok":{"action":function(){doneUpd(id);}},"cancel":{}}};
         doConfirmDialog(_options);
