@@ -161,8 +161,8 @@ class TestReportController extends Controller
             
             $src = "./Public/{$tpl['filename']}";
             $dst = "./Public/attached/report/{$centreNo}.docx";
-            if(file_exists($dst)){
-                unlink($dst);
+            if(@file_exists($dst)){
+                @unlink($dst);
             }
             $qrcode = $this->qrcode($centreNo,getCurrentHost().'/admin/report/pdf?no='.$centreNo);
             convert2Word($data,$src,$dst,$qrcode);
@@ -173,14 +173,12 @@ class TestReportController extends Controller
 
             $update = array(
                 'tplno'=>$modid,
-                'doc_path'=>substr($dst,1),
-                'qrcode_path'=>$qrcode,
+                'doc_path'=>$dst ? substr($dst,1):"",
+                'qrcode_path'=>$qrcode ? substr($qrcode,1):"",
                 'modify_time'=>date("Y-m-d H:i:s"),
             );
-
             if($testReport){
-                $result=D("test_report")->where("centreno='{$centreNo}'")->save($update);
-                if($result!==false){
+                if(D("test_report")->where("centreno='{$centreNo}'")->save($update)){
                     $rs['msg']='succ';
                 }
             }else{
@@ -229,12 +227,12 @@ class TestReportController extends Controller
     }
 //生成二维码
     public function qrcode($centreno,$qr_data){
-        $save_path = './Public/qrcode/';  //图片存储的绝对路径
+        $save_path = './Public/attached/qrcode/';  //图片存储的绝对路径
         $qr_level = 'L';
         $qr_size = '4';
         $save_prefix = '';
         if(file_exists($save_path.md5($centreno).'.png')){
-            unlink($save_path.md5($centreno).'.png');
+            @unlink($save_path.md5($centreno).'.png');
         }
         if($filename = createQRcode($centreno,$save_path,$qr_data,$qr_level,$qr_size,$save_prefix)){
             $img = $save_path.$filename;
