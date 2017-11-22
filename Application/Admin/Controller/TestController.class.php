@@ -331,7 +331,7 @@ class TestController extends Controller{
         $pagesize = 20;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
-        $where="status=1";
+        $where="c.status=1";
         if($user==8 || $user==15 || $user==13 || $if_admin==1){
             //
         }else{
