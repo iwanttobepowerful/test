@@ -417,14 +417,14 @@ class TestController extends Controller{
             if(file_exists($imageFiles[0]) && file_exists(ROOT_PATH . $report['qrcode_path'])){
                 $baseinfo = pathinfo($imageFiles[0]);
                 $saveFile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-tmp.'.$baseinfo['extension'];
-                mergeImage($imageFiles[0],ROOT_PATH . $report['qrcode_path'],$saveFile,array('x'=>2048,'y'=>3156,'w'=>300,'height'=>300));
+                mergeImage($imageFiles[0],ROOT_PATH . $report['qrcode_path'],$saveFile,array('x'=>2048,'y'=>2856,'w'=>300,'height'=>300));
                 @rename($saveFile,$imageFiles[0]);
             }
             //最后一页
             if(count($imageFiles) >1 && file_exists($imageFiles[count($imageFiles)-1]) && file_exists(ROOT_PATH . $report['qrcode_path'])){
                 $baseinfo = pathinfo($imageFiles[count($imageFiles)-1]);
                 $saveFile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-tmp.'.$baseinfo['extension'];
-                mergeImage($imageFiles[count($imageFiles)-1],ROOT_PATH . $report['qrcode_path'],$saveFile,array('x'=>2048,'y'=>2756,'w'=>300,'height'=>300));
+                mergeImage($imageFiles[count($imageFiles)-1],ROOT_PATH . $report['qrcode_path'],$saveFile,array('x'=>2048,'y'=>2156,'w'=>300,'height'=>300));
                 @rename($saveFile,$imageFiles[count($imageFiles)-1]);
             }
 
