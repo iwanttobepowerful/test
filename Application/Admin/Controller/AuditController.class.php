@@ -115,9 +115,13 @@ class AuditController extends Controller {
         $data=array(
             'status'=>2,
         );
+        $data1=array(
+            'if_edit'=>0,
+        );
         if ($user==13||$if_admin==1){//审核员和超级管理员的权限
             $result=D("report_feedback")->where($where)->save($data);
-            if($result!==false){
+            $result1=D("inspection_report")->where($where)->save($data1);
+            if($result!==false and $result1!==false){
                 $rs['msg'] = 'succ';
             }}
         $this->ajaxReturn($rs);
