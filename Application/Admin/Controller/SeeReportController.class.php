@@ -54,7 +54,14 @@ class SeeReportController extends Controller
 
     }
     public function pdf(){
+        $centreno = I('no');
+        if($centreno){
+            $report = D('test_report')->where("centreno='{$centreno}'")->find();
+        }
+        $body = array(
+            'pdfUrl'=>$report['pdf_path'],
+        );
+        $this->assign($body);
         $this->display();
     }
-
 }
