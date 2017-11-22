@@ -173,14 +173,12 @@ class TestReportController extends Controller
 
             $update = array(
                 'tplno'=>$modid,
-                'doc_path'=>substr($dst,1),
-                'qrcode_path'=>$qrcode,
+                'doc_path'=>$dst ? substr($dst,1):"",
+                'qrcode_path'=>$qrcode ? substr($qrcode,1):"",
                 'modify_time'=>date("Y-m-d H:i:s"),
             );
-
             if($testReport){
-                $result=D("test_report")->where("centreno='{$centreNo}'")->save($update);
-                if($result!==false){
+                if($result=D("test_report")->where("centreno='{$centreNo}'")->save($update)){
                     $rs['msg']='succ';
                 }
             }else{
