@@ -44,7 +44,7 @@
                         	<if condition="($con['ifedit'] == 0) OR (($con['ifedit'] == 1) and ($con['sub_status'] == 1)) ">
                        	 		<a href="{:U('/admin/contract/editContract')}?id={$con.centreno}&type_status={$con.status}" class="btn btn-info btn-xs" >修改</a>
                                 
-                            <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == -1)" />
+                            <elseif condition="($con['ifedit'] == 1) and !($con['sub_status'] == 1 or $con['sub_status'] == 0) "/>
                             	<a href="#" class="btn btn-info btn-xs" onclick="return applyBack('{$con.centreno}',{$con.status})" >申请修改</a>
                             </if>
                         </if>
@@ -175,8 +175,10 @@
 	}*/
 	
 	function applyBack(centreno,status){
+		
 		var flag = true;
 		if(status==6){
+			alert("提示：先填写更改检验报告单,再申请修改");
 			$.ajax({
 				url: "{:U('/admin/contract/checkEditList')}",
 				dataType: 'json',			

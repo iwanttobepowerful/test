@@ -159,13 +159,22 @@ class ContractController extends Controller
         $ifspecial = I("ifspecial");//是否是特殊编码
 
         $rs = array("msg"=>'fail');
+
+		if($testCost<=0){
+			$rs['msg'] = '费用输入不正确!';
+			$this->ajaxReturn($rs);
+		}
+
         if(empty($clientName)||empty($productUnit)||empty($sampleName)||empty($testCriteria)||empty($testItem)||empty($sampleQuantity)||empty($sampleStatus)||empty($sampleStaQuan)||empty($collector)||empty($testCost)||empty($collectDate)||empty($reportDate)){
             $rs['msg'] = '信息填写不完整!';
             $this->ajaxReturn($rs);
         }
+		
         if(empty($productionDate)){
             $productionDate=null;
         }
+
+		
         $admin_auth = session("admin_auth");
         $collector_partment=$admin_auth['department'];
         $data = array(
@@ -262,67 +271,73 @@ class ContractController extends Controller
 		/*if($type=='W'){
 			$data['ifedit']=1;
 		}*/
-        M()->startTrans();
-        try{
-
-            //合同入库
-            D("contract")->data($data)->add();
-
-
-            //特殊编码操作
-            if($ifspecial==1){
-                $year = substr($centreNo,0,4);
-                $month = substr($centreNo,4,2);
-                $where['year']=$year;
-                $where['month']=$month;
-                $specialItem = D("special_centre_code")->field('id,getNum')->where($where)->find();
-                $num = (int)$specialItem['getnum'];
-                //pr("num=".$num);
-                $special_id = $specialItem['id'];
-                //if($num==1){
-                //D("special_centre_code")->delete($special_id);
-                //}else{
-                $num = $num-1;
-                $editData['remainNum'] = $num;
-                D("special_centre_code")->where('id='.$special_id)->save($editData);
-                //}
-            }
-
-            //费用入库
-            if(!D("test_cost")->data($date_cost)->add()) $flag=false;
-
-            //通知单入库
-            if(!D("work_inform_form")->data($data_work)->add()) $flag=false;
-
-            //抽样单入库
-           
-            if($type=='C'){
-                $data_sample = array(
-                    "centreNo"=>$centreNo,
-                    "productUnit"=>$clientName,
-                    "sampleName"=>$sampleName,
-                    "specification"=>$specification,
-                    //缺产品批号
-                    "testCriteria"=>$testCriteria,
-                    "trademark"=>$trademark,
-                    "sampleQuantity"=>$sampleQuantity,
-                    //"sampleUnit"=>$sampleunti,
-                    //"productionDate"=>$productionDate,
-                    "testItem"=>$testItem,
-                    "ifOnline"=>$ifOnline,
-                    "ifSubpackage"=>$ifSubpackage,
-                    "package_remark"=>$package_remark,
-                );
-                D("sampling_form")->data($data_sample)->add();
-            }/*else{
-                D("contract_flow")->data($data_flow)->add();
-            }*/
-            M()->commit();
-            $rs['msg'] = 'succ';
-        }catch(Exception $e){
-            $rs['msg'] = '信息有误，录入不成功';
-            M()->rollback();
-        }
+		
+		if(D("contract")->where('centreNo="'.$centreNo.'"')->count()==0){
+		
+			M()->startTrans();
+			try{
+	
+				//合同入库
+				D("contract")->data($data)->add();
+	
+	
+				//特殊编码操作
+				if($ifspecial==1){
+					$year = substr($centreNo,0,4);
+					$month = substr($centreNo,4,2);
+					$where['year']=$year;
+					$where['month']=$month;
+					$specialItem = D("special_centre_code")->field('id,getNum')->where($where)->find();
+					$num = (int)$specialItem['getnum'];
+					//pr("num=".$num);
+					$special_id = $specialItem['id'];
+					//if($num==1){
+					//D("special_centre_code")->delete($special_id);
+					//}else{
+					$num = $num-1;
+					$editData['remainNum'] = $num;
+					D("special_centre_code")->where('id='.$special_id)->save($editData);
+					//}
+				}
+	
+				//费用入库
+				if(!D("test_cost")->data($date_cost)->add()) $flag=false;
+	
+				//通知单入库
+				if(!D("work_inform_form")->data($data_work)->add()) $flag=false;
+	
+				//抽样单入库
+			   
+				if($type=='C'){
+					$data_sample = array(
+						"centreNo"=>$centreNo,
+						"productUnit"=>$clientName,
+						"sampleName"=>$sampleName,
+						"specification"=>$specification,
+						//缺产品批号
+						"testCriteria"=>$testCriteria,
+						"trademark"=>$trademark,
+						"sampleQuantity"=>$sampleQuantity,
+						//"sampleUnit"=>$sampleunti,
+						//"productionDate"=>$productionDate,
+						"testItem"=>$testItem,
+						"ifOnline"=>$ifOnline,
+						"ifSubpackage"=>$ifSubpackage,
+						"package_remark"=>$package_remark,
+					);
+					D("sampling_form")->data($data_sample)->add();
+				}/*else{
+					D("contract_flow")->data($data_flow)->add();
+				}*/
+				M()->commit();
+				$rs['msg'] = 'succ';
+			}catch(Exception $e){
+				$rs['msg'] = '信息有误，录入不成功';
+				M()->rollback();
+			}
+		}else{
+			$rs['msg'] = '中心编号已用';
+		}
         ////if($flag){
         //$rs['msg'] = 'succ';
         //M()->commit();
@@ -374,6 +389,10 @@ class ContractController extends Controller
 				"Dother"=>$Dother,
 				"remark"=>$fee_remark
 			);
+			if($testCost<=0){
+				$rs['msg'] = '费用输入不正确!';
+				$this->ajaxReturn($rs);
+			}
 			M()->startTrans();
 			try{
 				$where['centreNo']=$centreNo;
@@ -444,6 +463,11 @@ class ContractController extends Controller
 			$Drevise = I("Drevise",0,'intval');
 			$Dother = I("Dother",0,'intval');
 			$fee_remark = I("fee_remark");
+			
+			if($testCost<=0){
+				$rs['msg'] = '费用输入不正确!';
+				$this->ajaxReturn($rs);
+			}
 	
 			if(empty($clientName)||empty($productUnit)||empty($sampleName)||empty($testCriteria)||empty($testItem)||empty($sampleQuantity)||empty($sampleStatus)||empty($sampleStaQuan)||empty($collector)||empty($testCost)||empty($collectDate)||empty($reportDate)){
 				$rs['msg'] = '信息填写不完整!';
@@ -583,7 +607,23 @@ class ContractController extends Controller
             "status"=>0
         );
 		
-		if($type_status == 1) $data_apply['status']=7;
+		if($type_status == 1){
+			$data_apply['status']=7;
+			$contract = D("contract")->where($where)->find();
+			$data_contract = array();
+			//pr($contract);
+			if(empty($contract['centreno1'])){
+				$centreNoNew = $centreno."G1";
+				$data_contract['centreNo1']=$centreNoNew;
+			}else if(empty($contract['centreno2'])){
+				$centreNoNew = $centreno."G2";
+				$data_contract['centreNo2']=$centreNoNew;
+			}else{
+				$centreNoNew = $centreno."G3";
+				$data_contract['centreNo3']=$centreNoNew;
+			}
+			D('contract')->where($where)->save($data_contract);
+		} 
         //M()->startTrans();
         D("contract_flow")->where($where)->save($data_apply);
         //D("report_feedback")->where($where)->delete();
@@ -745,7 +785,7 @@ class ContractController extends Controller
         M()->startTrans();
         if(D('sampling_form')->where($where)->save($data)){
             M()->commit();
-            $rs['msg']='修改成功！';
+            $rs['msg']='保存成功！';
         }else{
             M()->rollback();
             $rs['msg']='数据未更改！';
@@ -955,7 +995,8 @@ class ContractController extends Controller
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
 		
-		$list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,if(r.status is null,-1,r.status) as sub_status,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN report_feedback r on r.centreNo = c.centreNo')->where($where)->group('c.centreNo')->order('c.input_time DESC')->limit("{$offset},{$pagesize}")->select();
+		$list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,if(r.status is null,-1,r.status) as sub_status,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN (select * from report_feedback WHERE id in (select max(id) from report_feedback GROUP BY centreNo)
+) r on r.centreNo = c.centreNo')->where($where)->order('c.input_time DESC')->limit("{$offset},{$pagesize}")->select();
 		$count = D("contract as c")->where($where)->count();
 		//pr($count);
 		$Page= new \Think\Page($count,$pagesize);
@@ -988,7 +1029,7 @@ class ContractController extends Controller
             $if_edit = 0;
         }
         $keyword = I("keyword");//获取参数
-        $where= "f.status != 7";
+        $where= "f.status != 7 and f.status !=0";
         $keyword && $where .= " and c.centreNo like '%{$keyword}%'";
 
         if($user==8 || $user==15 || $user==13 || $if_admin==1){
@@ -1052,8 +1093,9 @@ class ContractController extends Controller
 		$rs = array('msg'=>'fail');
 		$centreno = I('centreno');
 		$reason = I('reason');
-		
+		$where['centreNo']=$centreno;
 		$type_status = I('type_status',0,'intval')== 6?1:0;
+
 		//pr($type_status);
 		$data = array(
 			'centreNo'=>$centreno,
@@ -1063,6 +1105,11 @@ class ContractController extends Controller
 		M()->startTrans();
 		if(D('report_feedback')->add($data)){
 			$rs['msg']='申请成功';
+			//申请中  审核单不可修改
+			if($type_status==1){
+				$data_contract['if_edit']=1;
+				D("inspection_report")->where($where)->save($data_contract);
+			}
 			M()->commit();	
 		}else{
 			$rs['msg']='申请失败';
@@ -1136,6 +1183,8 @@ class ContractController extends Controller
 			$rs['msg']='信息填写不完整！';
 			$this->ajaxReturn($rs);
 		}
+		$where['centreNo'] = $centreNo;
+
 		$data_list = array(
 			"handler"=>$handler,
 			'handleDate'=>$handleDate,
@@ -1149,16 +1198,18 @@ class ContractController extends Controller
 			'imageurl'=>$imageurl,
 			'image_remark'=>$image_remark,
 		);
-		
-		if(D('inspection_report')->add($data_list)){
-			$rs['msg']='succ';
+		if(D("inspection_report")->where($where)->count()>0){
+			D('inspection_report')->where($where)->save($data_list);
+		}else{
+			D('inspection_report')->add($data_list);
 		}
+		$rs['msg']='succ';
 		$this->ajaxReturn($rs);
 		
 	}
 	
 	//跳转上传附件页面
-	function doUploadInsImage(){
+	/*function doUploadInsImage(){
 		$centreNo = I('centreno');
 		$body = array(
 			'centreNo'=>$centreNo,
@@ -1166,7 +1217,7 @@ class ContractController extends Controller
 		
 		$this->assign($body);
 		$this->display();
-	}
+	}*/
 
 	//获取最中心编号
 	public function getLastCode(){

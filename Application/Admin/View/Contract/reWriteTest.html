@@ -67,6 +67,7 @@
 				margin: 0 auto;
 				width: 90%;
 				height: 5%;
+				margin-top:5.5%;
 				margin-bottom: 15pt;
                 margin-top: 5.5%;
 			}
@@ -159,7 +160,7 @@
 			<table class="middle">
 				<tr>
 					<td class="en" style="text-align: left; width: 65%;">SJ－4－68</td>
-					<td class="cn" style="text-align: left;">编号：<span class="en">{$one.edit_no}</span></td>
+					<td class="cn" style="text-align: left;">编号：<span class="cn">{$one.edit_no}</span></td>
 				</tr>
 			</table>
 			<table border="1s" class="reNot">
@@ -246,9 +247,11 @@
 			</table>
 			
 		</div>
-        <div class="page">
-        	<img src="{$imageurl}" class="picture" />
-        </div>
+        <if condition="$imgeurl">
+            <div class="page">
+                <img src="{$imageurl}" class="picture" />              
+            </div>
+        </if>
 		<button onclick="window.print()" class="Noprint btn btn-primary final">打印</button>
 	</body>
 </html>
