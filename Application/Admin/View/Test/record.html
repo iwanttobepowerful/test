@@ -20,7 +20,7 @@
                     <td>{$one.samplename}</td>
                     <td>
                         <if condition="$one[centreno1] or $one[centreno2] or $one[centreno3]">
-                            <a href="" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-list"></i>更改单</a></if>
+                            <a href="{:U('/admin/contract/reWriteTest')}?id={$one.centreno}" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-list"></i>更改单</a></if>
                         <a href="{:U('/admin/test/recordUpload')}?centreno={$one.centreno}" class="btn btn-primary btn-xs" ><i class="glyphicon glyphicon-open"></i>检测报告上传</a>
                         <if condition="$one[pdf_path]">
                         <a href="{$one.pdf_path}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>报告预览</a>
