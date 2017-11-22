@@ -103,12 +103,14 @@
         </table>
         <input type="hidden" name="count" id="count" value="{$count}" />
         <input type="hidden" name="update_items" id="update_items" value="{$one.update_item}" />
-        <if condition="$count == 0">
+        <input type="hidden" name="if_edit" id="if_edit" value="{$one.if_edit}" />
+        <if condition="$count == 0 || $one.if_edit == 0">
         	<button class="btn btn-success" type="submit" onClick="saveData()">保存</button>
-            <a class="btn btn-success edit" href="/admin/contract/doUploadInsImage?centreno={$one.centreno}">上传附件</a>
+            <!--<a class="btn btn-success edit" href="/admin/contract/doUploadInsImage?centreno={$one.centreno}">上传附件</a>-->
         <else />
         	<a class="btn btn-success" href="/admin/contract/reWriteTest?id={$centreNo}">打印</a>
         </if>
+        <button type="button" class="btn btn-success" onclick="javascript:history.go(-1);">返 回</button>
       </form>
     </div>
     
@@ -120,7 +122,8 @@
 	$(document).ready(function(){
 		$('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,	autoclose:true });
 		var count = $("#count").val();
-		if(count>0){
+		var if_edit = $("#if_edit").val();
+		if(count>0 && if_edit == 1){
 			$('input,textarea').prop('disabled',true);
 		}	
 		var update_item = $("#update_items").val();
