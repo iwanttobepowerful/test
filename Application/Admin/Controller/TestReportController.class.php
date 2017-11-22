@@ -161,8 +161,8 @@ class TestReportController extends Controller
             
             $src = "./Public/{$tpl['filename']}";
             $dst = "./Public/attached/report/{$centreNo}.docx";
-            if(file_exists($dst)){
-                unlink($dst);
+            if(@file_exists($dst)){
+                @unlink($dst);
             }
             $qrcode = $this->qrcode($centreNo,getCurrentHost().'/admin/report/pdf?no='.$centreNo);
             convert2Word($data,$src,$dst,$qrcode);
@@ -177,7 +177,6 @@ class TestReportController extends Controller
                 'qrcode_path'=>$qrcode ? substr($qrcode,1):"",
                 'modify_time'=>date("Y-m-d H:i:s"),
             );
-            pr($update);
             if($testReport){
                 if(D("test_report")->where("centreno='{$centreNo}'")->save($update)){
                     $rs['msg']='succ';
