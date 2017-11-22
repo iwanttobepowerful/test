@@ -175,9 +175,10 @@
 	}*/
 	
 	function applyBack(centreno,status){
-		alert("提示：先填写更改检验报告单,再申请修改");
+		
 		var flag = true;
 		if(status==6){
+			alert("提示：先填写更改检验报告单,再申请修改");
 			$.ajax({
 				url: "{:U('/admin/contract/checkEditList')}",
 				dataType: 'json',			

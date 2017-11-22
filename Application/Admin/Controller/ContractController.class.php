@@ -785,7 +785,7 @@ class ContractController extends Controller
         M()->startTrans();
         if(D('sampling_form')->where($where)->save($data)){
             M()->commit();
-            $rs['msg']='修改成功！';
+            $rs['msg']='保存成功！';
         }else{
             M()->rollback();
             $rs['msg']='数据未更改！';
