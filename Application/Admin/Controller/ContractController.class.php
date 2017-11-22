@@ -1318,7 +1318,8 @@ class ContractController extends Controller
     public function findItemList(){
         $meterial = I('m_select');
         $productname = I('p_select');
-        $item_list=D("test_fee")->field("item,fee,quantity")->where('meterial="'.$meterial.'" and productname="'.$productname.'"')->select();
+		$choose = explode(",",$productname);
+        $item_list=D("test_fee")->field("item,fee,quantity")->where('meterial="'.$meterial.'" and productname="'.$choose[0].'" and criteria="'.$choose[1].'"')->select();
         //pr(D("test_fee")->getLastSql());
         $rs = array(
             'item_list'=>$item_list,

@@ -852,7 +852,7 @@
 						for(var i=0;i<data.length;i++){
 							var productname = data[i]['productname'];
 							var criteria = data[i]['criteria'];
-							option = "<option value='"+productname+"'>"+productname+" "+criteria+"</option>";
+							option = "<option value='"+productname+","+criteria+"'>"+productname+" "+criteria+"</option>";
 							$('#productname_'+de).append(option);
 						}
 					}	
@@ -911,12 +911,14 @@
 					cash+=parseInt(element.value);
 				}		
 			});
-			if(allCheck==false){
-				$("#items_all_"+de).prop("checked",false);	
-			}else{
-				$("#items_all_"+de).prop("checked",true);
-				cash = parseInt($("#items_all_"+de).val());
-			}
+			if($("#items_all_"+de).length>0){
+				if(allCheck==false){
+					$("#items_all_"+de).prop("checked",false);	
+				}else{
+					$("#items_all_"+de).prop("checked",true);
+					cash = parseInt($("#items_all_"+de).val());
+				}
+			}		
 			$("input[name='s_items_"+de+"']").each(function(index, element) {
 				if($(this).prop("checked") == true){
 					cash+=parseInt(element.value);	
