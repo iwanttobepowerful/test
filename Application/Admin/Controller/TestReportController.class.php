@@ -121,7 +121,7 @@ class TestReportController extends Controller
    	    if(!empty($modid) and !empty($centreNo)){
             $tpl = D("tpl")->where("id=".$modid)->find();
             $contract = D("contract")->where("centreno='{$centreNo}'")->find();
-			$reportNum = D("contract")->where("centreno ='{$centreNo}'")->count();
+			$reportNum = D("contract")->where("centreno ='{$centreNo}%'")->count();
             if($reportNum == 1){
                 $newCentreNo = $centreNo;
             }
