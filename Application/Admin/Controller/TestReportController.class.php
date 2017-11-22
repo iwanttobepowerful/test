@@ -177,8 +177,9 @@ class TestReportController extends Controller
                 'qrcode_path'=>$qrcode ? substr($qrcode,1):"",
                 'modify_time'=>date("Y-m-d H:i:s"),
             );
+            pr($update);
             if($testReport){
-                if($result=D("test_report")->where("centreno='{$centreNo}'")->save($update)){
+                if(D("test_report")->where("centreno='{$centreNo}'")->save($update)){
                     $rs['msg']='succ';
                 }
             }else{
