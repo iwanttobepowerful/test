@@ -53,5 +53,8 @@ class SeeReportController extends Controller
 //        }
 
     }
+    public function pdf(){
+        $this->display();
+    }
 
 }
