@@ -92,7 +92,12 @@
 				margin-bottom: 2.3pt;
 				text-indent: 3pt;
 			}
-			
+			.picture{
+            max-width: 100%;
+            display: block;
+            margin: 0 auto;
+            max-height: 100%;
+            }
 			.page {
 				width: 210mm;
 				height: 29.7cm;
@@ -240,6 +245,9 @@
 			</table>
 			
 		</div>
+        <div class="page">
+        	<img src="{$imageurl}" class="picture" />
+        </div>
 		<button onclick="window.print()" class="Noprint btn btn-primary final">打印</button>
 	</body>
 </html>
