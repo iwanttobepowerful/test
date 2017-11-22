@@ -413,10 +413,12 @@ class TestController extends Controller{
         if($imageFiles){
             //转换成功,合并二维码
             
-            if(file_exists($imageFiles[0]) && file_exists($report['qrcode_path'])){
+            if(file_exists($imageFiles[0]) && file_exists(ROOT_PATH . $report['qrcode_path'])){
+
                 $baseinfo = pathinfo($imageFiles[0]);
+                pr($baseinfo);
                 $saveFile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-tmp.'.$baseinfo['extension'];
-                mergeImage($imageFiles[0],$report['qrcode_path'],$saveFile);
+                mergeImage($imageFiles[0],ROOT_PATH . $report['qrcode_path'],$saveFile);
                 @rename($saveFile,$imageFiles[0]);
             }
            
