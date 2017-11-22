@@ -1029,7 +1029,7 @@ class ContractController extends Controller
             $if_edit = 0;
         }
         $keyword = I("keyword");//获取参数
-        $where= "f.status != 7";
+        $where= "f.status != 7 and f.status !=0";
         $keyword && $where .= " and c.centreNo like '%{$keyword}%'";
 
         if($user==8 || $user==15 || $user==13 || $if_admin==1){
