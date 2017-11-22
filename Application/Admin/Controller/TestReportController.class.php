@@ -167,7 +167,7 @@ class TestReportController extends Controller
             if(@file_exists($dst)){
                 @unlink($dst);
             }
-            $qrcode = $this->qrcode($centreNo,getCurrentHost().'/admin/report/pdf?no='.$centreNo);
+            $qrcode = $this->qrcode($centreNo,getCurrentHost().'/admin/seeReport/pdf?no='.$centreNo);
             convert2Word($data,$src,$dst,$qrcode);
 
 
