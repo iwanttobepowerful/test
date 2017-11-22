@@ -317,7 +317,7 @@ class ReportController extends Controller
     }
     public function passUpd(){
 // 要修改的数据对象属性赋值
-        $id =I("id",0,'intval');
+        $centreno =I("id");
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
@@ -325,12 +325,18 @@ class ReportController extends Controller
         $if_admin = $admin_auth['super_admin'];
         $role = D('common_role')->where('id='.$user)->find();
         if($if_admin==1 || $role['rolename']=="前台人员") {
+            $where['centreno']=$centreno;
         $data=array(
             'status'=>6,
             'external_sign_time'=>date("Y-m-d H:i:s"),
             'external_sign_user_id'=>$userid,
         );
-        if(D("contract_flow")->where("id=".$id)->save($data)){
+        $find=D("inspection_report")->where($where)->find();
+        if(!empty($find)){
+            $data1=array('if_edit'=>0);
+            D("inspection_report")->where($where)->save($data1);
+        }
+        if(D("contract_flow")->where($where)->save($data)){
             $rs['msg'] = 'succ';
         }}
         $this->ajaxReturn($rs);
