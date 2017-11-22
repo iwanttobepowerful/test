@@ -27,7 +27,7 @@
                             <a href="{:U('/admin/test/sampleShow')}?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>抽样单</a></if>
                         <a href="{:U('/admin/test/infoShow')}?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检测工作通知单</a>
                         <a href="javascript:void(0);" class="btn btn-info btn-xs" onclick="recordDetail('{$vo.centreno}')"><i class="glyphicon glyphicon-search"></i>检测记录</a>
-                        <a href="{$vo.pdf_path}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-search"></i>检测报告</a>
+                        <a href="javascript:void(0);" class="btn btn-info btn-xs" name="{$vo.pdf_path}" onclick="return Check(this);"><i class="glyphicon glyphicon-search"></i>检测报告</a>
                         <if condition="$vo[centreno1] or $vo[centreno2] or $vo[centreno3]">
                             <a href="{:U('/admin/contract/reWriteTest')}?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-list"></i>更改单</a></if>
                     </td>
@@ -105,6 +105,16 @@
         var newurl='/admin/test/doPrint.html?id='+centreno+'&type=2';
         console.log(newurl);
         window.open(newurl,'_self');
+    }
+    function Check(path) {
+        var url=path.name;
+        if(!url) return false;//获取url
+        if(url.indexOf("http")==-1){
+            thisTHost = top.location.hostname;
+            var newurl='http://'+thisTHost+url;
+        }
+        alert(newurl);
+        //window.open(newurl);
     }
 </script>
 <include file="Common:footer" />
