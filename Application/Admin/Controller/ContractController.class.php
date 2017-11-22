@@ -1198,7 +1198,7 @@ class ContractController extends Controller
 			'imageurl'=>$imageurl,
 			'image_remark'=>$image_remark,
 		);
-		if(D("contract")->where($where)->count()>0){
+		if(D("inspection_report")->where($where)->count()>0){
 			D('inspection_report')->where($where)->save($data_list);
 		}else{
 			D('inspection_report')->add($data_list);

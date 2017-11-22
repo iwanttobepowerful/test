@@ -181,10 +181,10 @@
 				},
 				success: function (data) {
 					if(data.msg=='succ'){
-						var _options = {"text":"录入成功！","action":function(){window.location.reload();}};
+						var _options = {"text":"保存成功！","action":function(){window.location.reload();}};
 						doAlertDialog(_options);
 					}else{
-						var _options = {"text":"录入失败,请完善信息"};
+						var _options = {"text":"保存失败,请完善信息"};
 						if(data.msg) _options.text = data.msg;
 						doAlertDialog(_options);
 					}
