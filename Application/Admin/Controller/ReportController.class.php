@@ -277,7 +277,7 @@ class ReportController extends Controller
     //外部签发
     public function externalIssue(){
         $keyword = I("keyword");
-        $where = "contract_flow.status=5";
+        $where = "contract_flow.status=5 or contract_flow.status=6";
         if(!empty($keyword)){
             //查询合同编号
             $where .=" and contract_flow.centreno like '%{$keyword}%'";
@@ -304,7 +304,7 @@ class ReportController extends Controller
         $rs=$contract_flow->where($where)
             ->join('common_system_user ON contract_flow.inner_sign_user_id = common_system_user.id')
             ->join('contract ON contract_flow.centreNo = contract.centreNo')
-            ->field('contract_flow.id,contract_flow.centreNo,contract_flow.inner_sign_time,common_system_user.name,contract.productUnit,contract.clientSign,contract.telephone,contract.postmethod,contract.address,contract.centreno1,contract.centreno2,contract.centreno3')
+            ->field('contract_flow.id,contract_flow.status,contract_flow.centreNo,contract_flow.inner_sign_time,common_system_user.name,contract.productUnit,contract.clientSign,contract.telephone,contract.postmethod,contract.address,contract.centreno1,contract.centreno2,contract.centreno3')
             ->limit("{$offset},{$pagesize}")
             ->order('contract_flow.inner_sign_time desc,contract_flow.id desc')->select();
         //查找条件为已经批准并且内部尚未签发的报告
