@@ -53,6 +53,9 @@
                         <if condition="$if_edit==1">
                         <if condition="$con['status'] eq 8">
                             <a href="/admin/TestReport/seleteKey?mod={$con.centreno}" class="btn btn-primary btn-xs">生成报告</a></if></if>
+                        <if condition="$con['status'] eq 6">
+                            <a href="javascript:void(0);" class="btn btn-info btn-xs" name="{$con.pdf_path}" onclick="return Check(this);"><i class="glyphicon glyphicon-search"></i>检测报告</a>
+                        </if>
                     </td>
                     <td>
                         <if condition="$con['doc_path']">
@@ -175,6 +178,18 @@
                 }
             }
         });
+    }
+    function Check(path) {
+        var url=path.name;
+        if(!url) return false;//获取url
+        if(url.indexOf("http")==-1){
+            thisHost = location.hostname;
+            var newurl='http://'+thisHost+url;
+        }else{
+            var newurl=url;
+        }
+        //alert(newurl);
+        window.open(newurl);
     }
 </script>
 
