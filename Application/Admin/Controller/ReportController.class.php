@@ -285,8 +285,13 @@ class ReportController extends Controller
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
-        $role = D('common_role')->where('id='.$user)->find();
-        if($if_admin==1 || $role['rolename']=="前台人员") {//只有前台，超级管理员才能签发
+        $department = $admin_auth['department'];
+        if($user==8 || $user==15 || $user==13 || $if_admin==1){
+            //
+        }else{
+            $where .= " and SUBSTR(contract_flow.centreNo,7,1) = '{$department}'";
+        }
+        if($if_admin==1 || $user==7) {//只有前台，超级管理员才能签发
             $view="";
         }else{
             $view="disabled";
@@ -325,7 +330,7 @@ class ReportController extends Controller
         $if_admin = $admin_auth['super_admin'];
         $role = D('common_role')->where('id='.$user)->find();
         if($if_admin==1 || $role['rolename']=="前台人员") {
-            $where['centreno']=$centreno;
+            $where="centreno='{$centreno}'";
         $data=array(
             'status'=>6,
             'external_sign_time'=>date("Y-m-d H:i:s"),
@@ -410,15 +415,5 @@ class ReportController extends Controller
         }
         $this->ajaxReturn($rs);
     }
-    public function pdf(){
-        $centreno = I('no');
-        if($centreno){
-            $report = D('test_report')->where("centreno='{$centreno}'")->find();
-        }
-        $body = array(
-            'pdfUrl'=>$report['pdf_path'],
-        );
-        $this->assign($body);
-        $this->display();
-    }
+
 }

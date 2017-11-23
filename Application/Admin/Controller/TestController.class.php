@@ -323,15 +323,23 @@ class TestController extends Controller{
     }
 //上传检测报告显示页面
     public function record(){
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $if_admin = $admin_auth['super_admin'];//是否是超级管理员
+        $user=$admin_auth['gid'];//判断是哪个角色
+        $department = $admin_auth['department'];
         $page = I("p",'int');
         $pagesize = 20;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
-        $where['status']=1;
-        $result=D("contract_flow as c")->where($where)
-            ->join('left join contract as a on c.centreno=a.centreno left join test_report as t on c.centreno=t.centreno')
-            ->field('c.*,a.*,t.path,t.doc_path,t.pdf_path')
-            ->order('c.report_time desc,a.id desc')->limit("{$offset},{$pagesize}")->select();
+        $where="contract_flow .status=1";
+        if($user==8 || $user==15 || $user==13 || $if_admin==1){
+            //
+        }else{
+        $where .= " and SUBSTR(contract_flow .centreno,7,1) = '{$department}'";}
+        $result=D("contract_flow ")->where($where)
+            ->join('left join contract as a on contract_flow .centreno=a.centreno left join test_report as t on contract_flow .centreno=t.centreno')
+            ->field('contract_flow .*,a.*,t.path,t.doc_path,t.pdf_path')
+            ->order('contract_flow .report_time desc,a.id desc')->limit("{$offset},{$pagesize}")->select();
             //当已经生成报告，状态为1的时候，才能上传检测报告
         $count = D("contract_flow")->where($where)->count();//!!!!!!!!!!!!!!
         $Page       = new \Think\Page($count,$pagesize);
@@ -371,8 +379,9 @@ class TestController extends Controller{
     public function recordUpload(){
         //$id =I("id",0,'intval');
         $centreno=I("centreno");
+        $where="centreno='{$centreno}'";
         //if($id){
-        $report = D('test_report')->where("centreno='{$centreno}'")->find();
+        $report = D('test_report')->where($where)->find();
         //}
         $body = array(
             'report' => $report,
@@ -406,33 +415,86 @@ class TestController extends Controller{
             'modify_time'=>date("Y-m-d H:i:s"),
         );
         $distfile = convert2Pdf(ROOT_PATH,$data['path'],'pdf');
-
+        
+        $imgFiles = array();//delete image
+        //$distfile = "/Public/attached/2017-11-21/SJ-4-77_2017_01.pdf";
         //转image,在测试服务器上测试，本地需要配置环境
         //demo
         $imageFiles = convertPdf2Image(ROOT_PATH,$distfile);
+        
         if($imageFiles){
             //转换成功,合并二维码
             //第一页
             if(file_exists($imageFiles[0]) && file_exists(ROOT_PATH . $report['qrcode_path'])){
                 $baseinfo = pathinfo($imageFiles[0]);
                 $saveFile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-tmp.'.$baseinfo['extension'];
-                mergeImage($imageFiles[0],ROOT_PATH . $report['qrcode_path'],$saveFile);
+                waterMark($imageFiles[0],ROOT_PATH . $report['qrcode_path'],$saveFile,array(2048,2856));
                 @rename($saveFile,$imageFiles[0]);
             }
             //最后一页
             if(count($imageFiles) >1 && file_exists($imageFiles[count($imageFiles)-1]) && file_exists(ROOT_PATH . $report['qrcode_path'])){
                 $baseinfo = pathinfo($imageFiles[count($imageFiles)-1]);
                 $saveFile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-tmp.'.$baseinfo['extension'];
-                mergeImage($imageFiles[count($imageFiles)-1],ROOT_PATH . $report['qrcode_path'],$saveFile);
+                waterMark($imageFiles[count($imageFiles)-1],ROOT_PATH . $report['qrcode_path'],$saveFile,array(2048,2356));
                 @rename($saveFile,$imageFiles[count($imageFiles)-1]);
             }
 
             //再转换成pdf
             $pdf = './Public/attached/report/'.$centreno.'.pdf';
             convertImageToPdf(ROOT_PATH,$pdf,$imageFiles);
-            $data['pdf_path'] = $pdf;
+
+            $imgFiles = $imageFiles;
+            //对外签加公章
+            if(file_exists($imageFiles[0]) && file_exists($imageFiles[1])){
+
+                $baseinfo = pathinfo($imageFiles[0]);
+                $tmpSavefile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-mark.'.$baseinfo['extension'];
+                waterMark($imageFiles[0],'./Public/static/images/sealA.png',$tmpSavefile,array(700,2500));
+                //第二个公章
+                $tmpSavefile2 = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-mark2.'.$baseinfo['extension'];
+                waterMark($tmpSavefile,'./Public/static/images/sealB.png',$tmpSavefile2,array(1300,2500));
+                //左上角章
+                $tmpSavefile3 = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-sign.'.$baseinfo['extension'];
+                waterMark($tmpSavefile2,'./Public/static/images/sign.png',$tmpSavefile3,array(100,100));
+                //带mark的pdf
+                @rename($tmpSavefile3,$imageFiles[0]);
+
+                $imgFiles[] = $tmpSavefile;
+                $imgFiles[] = $tmpSavefile2;
+
+
+
+                //图二带章
+                $baseinfo = pathinfo($imageFiles[1]);
+                $tmpSavefile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-mark2.'.$baseinfo['extension'];
+                waterMark($imageFiles[1],'./Public/static/images/sealA.png',$tmpSavefile,array(1600,2400));
+                //左上角章
+                $tmpSavefile2 = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-sign2.'.$baseinfo['extension'];
+                waterMark($tmpSavefile,'./Public/static/images/sign.png',$tmpSavefile2,array(100,100));
+                @rename($tmpSavefile2,$imageFiles[1]);               
+
+                $imgFiles[] = $tmpSavefile;
+
+                //再转换成pdf
+                $signPdf = './Public/attached/report/'.$centreno.'-sign.pdf';
+                convertImageToPdf(ROOT_PATH,$signPdf,$imageFiles);
+
+                $imgFiles[] = $tmpSavefile;
+                $imgFiles[] = $tmpSavefile2;
+
+                $data['pdf_path'] = $signPdf;
+            }
+            //
+            //
             if(D("test_report")->where("centreno='{$centreno}'")->save($data)){
-                $result['msg'] = "succ";    
+                if($imgFiles){
+                    foreach ($imgFiles as $value) {
+                        if(file_exists($value)){
+                            @unlink($value);
+                        }
+                    }
+                }
+                $result['msg'] = "succ";
             }
         }else{
             $result['msg'] = "转换pdf失败";

@@ -53,5 +53,25 @@ class SeeReportController extends Controller
 //        }
 
     }
+    public function pdf(){
+        $centreno = I('no');
+        if($centreno){
+            $report = D('test_report')->where("centreno='{$centreno}'")->find();
+            $pdf_path=$report['pdf_path'];
+            if(strpos($pdf_path,'http')===false){
 
+                $pdf_path = getCurrentHost().$pdf_path;
+            }
+        }
+        $data=D("contract_flow")->where("centreno='{$centreno}'")->find();//查中心编号对应的状态
+        $status=$data['status'];
+        if($status==6){
+        $body = array(
+            'pdfUrl'=>$pdf_path,
+        );
+
+        $this->assign($body);
+        }
+        $this->display();
+    }
 }

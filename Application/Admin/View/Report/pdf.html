@@ -1,6 +1,21 @@
 <!--<div id="pdf-box"></div>
 <script src="__PUBLIC__/static/js/pdfobject.min.js"></script>
 <script>PDFObject.embed("http://jiancai.com/Public/static/js/example.pdf", "#pdf-box");</script>-->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/css/bootstrap.min.css" />
 <div id="pdf-box">
-    <iframe src="__PUBLIC__/static/js/example.pdf" width="100%" height="999">
+    <iframe src="__PUBLIC__/static/js/example.pdf" width="100%" height='999px'>
 </div>
+<script>
+    function setIframeHeight(iframe) {
+        if (iframe) {
+            var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+            if (iframeWin.document.body) {
+                iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
+            }
+        }
+    };
+
+    window.onload = function () {
+        setIframeHeight(document.getElementById('external-frame'));
+    };
+</script>
