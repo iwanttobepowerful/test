@@ -10,10 +10,7 @@ class MainController extends Controller {
         $this->assign('menu_secoud_active',strtolower(ACTION_NAME));
     }
     public function index(){
-        $file = "./Public/attached/2017-11-21/tmp.png";
-        unlink($file);
-        waterMark('./Public/attached/2017-11-21/page-1.jpg','./Public/static/images/sealB.png',$file,array(100,100));
-        
+       
        $this->display();
     }
 }

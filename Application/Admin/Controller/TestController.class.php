@@ -445,7 +445,7 @@ class TestController extends Controller{
 
             $imgFiles = $imageFiles;
             //对外签加公章
-            if(file_exists($imageFiles[0])){
+            if(file_exists($imageFiles[0]) && file_exists($imageFiles[1])){
 
                 $baseinfo = pathinfo($imageFiles[0]);
                 $tmpSavefile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-mark.'.$baseinfo['extension'];
@@ -458,6 +458,23 @@ class TestController extends Controller{
                 waterMark($tmpSavefile2,'./Public/static/images/sign.png',$tmpSavefile3,array(100,100));
                 //带mark的pdf
                 @rename($tmpSavefile3,$imageFiles[0]);
+
+                $imgFiles[] = $tmpSavefile;
+                $imgFiles[] = $tmpSavefile2;
+
+
+
+                //图二带章
+                $baseinfo = pathinfo($imageFiles[1]);
+                $tmpSavefile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-mark2.'.$baseinfo['extension'];
+                waterMark($imageFiles[1],'./Public/static/images/sealA.png',$tmpSavefile,array(1600,2400));
+                //左上角章
+                $tmpSavefile2 = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-sign2.'.$baseinfo['extension'];
+                waterMark($tmpSavefile,'./Public/static/images/sign.png',$tmpSavefile2,array(100,100));
+                @rename($tmpSavefile2,$imageFiles[1]);               
+
+                $imgFiles[] = $tmpSavefile;
+
                 //再转换成pdf
                 $signPdf = './Public/attached/report/'.$centreno.'-sign.pdf';
                 convertImageToPdf(ROOT_PATH,$signPdf,$imageFiles);
