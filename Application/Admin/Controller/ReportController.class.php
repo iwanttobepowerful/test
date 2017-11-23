@@ -277,6 +277,8 @@ class ReportController extends Controller
     //外部签发
     public function externalIssue(){
         $keyword = I("keyword");
+        $begin_time = I("begin_time");
+        $end_time = I("end_time");
         $where = "contract_flow.status=5 or contract_flow.status=6";
         if(!empty($keyword)){
             //查询合同编号
@@ -290,6 +292,12 @@ class ReportController extends Controller
             //
         }else{
             $where .= " and SUBSTR(contract_flow.centreNo,7,1) = '{$department}'";
+        }
+        if(!empty($begin_time)){
+            $where.=" and date_format(contract_flow.external_sign_time,'%Y-%m-%d') >='{$begin_time}'";
+        }
+        if(!empty($end_time)){
+            $where.=" and date_format(contract_flow.external_sign_time,'%Y-%m-%d') <='{$end_time}'";
         }
         if($if_admin==1 || $user==7) {//只有前台，超级管理员才能签发
             $view="";
@@ -316,6 +324,8 @@ class ReportController extends Controller
             'rs'=>$rs,
             'pagination'=>$pagination,
             'view'=>$view,
+            'begin_time'=>$begin_time,
+            'end_time'=>$end_time,
         );
         $this->assign($body);
         $this->display();
