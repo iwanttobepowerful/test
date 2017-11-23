@@ -10,6 +10,7 @@ class MainController extends Controller {
         $this->assign('menu_secoud_active',strtolower(ACTION_NAME));
     }
     public function index(){
+       
        $this->display();
     }
 }

@@ -238,7 +238,7 @@ class TestReportController extends Controller
         if(file_exists($save_path.md5($centreno).'.png')){
             @unlink($save_path.md5($centreno).'.png');
         }
-        $filename = createQRcode($centreno,$save_path,$qr_data,$logo_path,'H',8,$save_prefix);
+        $filename = createQRcode($centreno,$save_path,$qr_data,$logo_path,'H',4,$save_prefix);
         if($filename){
             $img = $save_path.$filename;
         }

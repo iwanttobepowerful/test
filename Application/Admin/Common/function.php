@@ -415,7 +415,7 @@ if(!function_exists('mergeImage')){
             $qrcode_width = imagesx($qrcode);
             $qrcode_height = imagesy($qrcode);
             //计算圆角图片的宽高及相对于二维码的摆放位置,将圆角图片拷贝到二维码中央
-            $qrcode_qr_height = $qrcode_qr_width = $qrcode_width/2;
+            $qrcode_qr_height = $qrcode_qr_width = $qrcode_width/4;
             $from_width = ($bg_width-$qrcode_qr_width)/2;
             imagecopyresampled($bg, $qrcode, $from_width, $from_width, 0, 0, $qrcode_qr_width, $qrcode_qr_height, $qrcode_width, $qrcode_height);
         }else{
