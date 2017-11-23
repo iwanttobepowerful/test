@@ -222,7 +222,11 @@
 				</tr>
 			</table>
 		</div>
-        <button onclick="window.print()" class="Noprint btn btn-primary final">打印</button>
+        <if condition="$ifedit['ifedit']==0 OR $sub_status['status']==1">
+            <button onclick="window.print()" class="Noprint btn btn-primary final" disabled>打印</button>
+        <else/>
+            <button onclick="window.print()" class="Noprint btn btn-primary final">打印</button>
+        </if>
 	</body>
 
 </html>

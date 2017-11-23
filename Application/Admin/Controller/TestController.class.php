@@ -32,8 +32,18 @@ class TestController extends Controller{
 
         $work_inform_form=M('work_inform_form');
         $result=$work_inform_form->where($where)->find();
+		
+		//判断是否可以打印
+		$ifedit=M('contract')->where($where)->find();
+        $sub_status=M('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$keyword.'")')->find();
+        if(empty($sub_status)){
+            $sub_status['status']=-1;
+        }
+		
         $body=array(
             'one'=>$result,
+			'ifedit'=>$ifedit,
+			'sub_status'=>$sub_status,
         );
         $this->assign($body);
         $this->display();
@@ -106,10 +116,20 @@ class TestController extends Controller{
         $s=substr($s,0,-1);//利用字符串截取函数消除最后一个逗号
         $list=str_replace("_thumb","",$s);
         $path=explode(',',$list);
+		
+		//判断是否可以打印
+		$ifedit=M('contract')->where($where)->find();
+        $sub_status=M('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$keyword.'")')->find();
+        if(empty($sub_status)){
+            $sub_status['status']=-1;
+        }
+		
         $body=array(
             'one'=>$result,
 			'if_edit'=>$if_edit,
-            'list'=>$path
+            'list'=>$path,
+			'sub_status'=>$sub_status,
+			'ifedit'=>$ifedit
         );
         $this->assign($body);
         $this->display();
