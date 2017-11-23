@@ -62,15 +62,20 @@ class SeeReportController extends Controller
 
                 $pdf_path = getCurrentHost().$pdf_path;
             }
-        }
-        $data=D("contract_flow")->where("centreno='{$centreno}'")->find();//查中心编号对应的状态
-        $status=$data['status'];
-        if($status==6){
-        $body = array(
-            'pdfUrl'=>$pdf_path,
-        );
-
-        $this->assign($body);
+            $data=D("contract_flow")->where("centreno='{$centreno}'")->find();//查中心编号对应的状态
+            $status=$data['status'];
+            if($status==6){
+                //计数
+                $count = $report['find_count'] +1;
+                D("test_report")->where("id=".$report['id'])->save(array("find_count"=>$count));
+                @header("Location:{$pdf_path}");
+                /*
+                $body = array(
+                    'pdfUrl'=>$pdf_path,
+                );
+                */
+            }
+            $this->assign($body);
         }
         $this->display();
     }
