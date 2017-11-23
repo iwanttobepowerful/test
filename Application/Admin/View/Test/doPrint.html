@@ -44,7 +44,7 @@
 		page-break-after: always;
 		}
 		</style>
-    <button onclick="window.print()" class="Noprint">打印</button>
+   <!-- <button onclick="window.print()" class="Noprint">打印</button>-->
 </head>
 <body>
     <volist name="list" id="one">
@@ -53,5 +53,6 @@
             <img src="{$one}" class="picture" />
         </div></if>
     </volist>
+   <div align="center"><button  onclick="window.print()" class="Noprint btn btn-primary final">打印</button></div>
 </body>
 </html>

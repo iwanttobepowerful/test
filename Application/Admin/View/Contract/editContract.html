@@ -298,6 +298,12 @@
                         </div>
                         <div class="clearfix"></div>
                 </div>
+                <div class="form-group form-group-sm">
+                	<div class="col-sm-1"></div>
+                    <div class="col-sm-11">
+                        <span style="color:red">注：带*字不包含在全项内</span>
+                    </div>           
+                </div>
                 <div class="modal-footer">
                     <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
                     <button type="button" class="btn btn-primary" onclick="returnCost('A')" data-dismiss="modal">确定</button>
@@ -347,6 +353,12 @@
                             
                         </div>
                         <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                	<div class="col-sm-1"></div>
+                    <div class="col-sm-11">
+                        <span style="color:red">注：带*字不包含在全项内</span>
+                    </div>           
                 </div>
                 <div class="modal-footer">
                     <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
@@ -399,6 +411,12 @@
                         </div>
                         <div class="clearfix"></div>
                 </div>
+                <div class="form-group form-group-sm">
+                	<div class="col-sm-1"></div>
+                    <div class="col-sm-11">
+                        <span style="color:red">注：带*字不包含在全项内</span>
+                    </div>           
+                </div>
                 <div class="modal-footer">
                     <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
                     <button type="button" class="btn btn-primary" onclick="returnCost('C')" data-dismiss="modal">确定</button>
@@ -449,6 +467,12 @@
                             
                         </div>
                         <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                	<div class="col-sm-1"></div>
+                    <div class="col-sm-11">
+                        <span style="color:red">注：带*字不包含在全项内</span>
+                    </div>           
                 </div>
                 <div class="modal-footer">
                     <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
@@ -501,6 +525,12 @@
                         </div>
                         <div class="clearfix"></div>
                 </div>
+                <div class="form-group form-group-sm">
+                	<div class="col-sm-1"></div>
+                    <div class="col-sm-11">
+                        <span style="color:red">注：带*字不包含在全项内</span>
+                    </div>           
+                </div>
                 <div class="modal-footer">
                     <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
                     <button type="button" class="btn btn-primary" onclick="returnCost('E')" data-dismiss="modal">确定</button>
@@ -551,6 +581,12 @@
                             
                         </div>
                         <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                	<div class="col-sm-1"></div>
+                    <div class="col-sm-11">
+                        <span style="color:red">注：带*字不包含在全项内</span>
+                    </div>           
                 </div>
                 <div class="modal-footer">
                     <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
@@ -811,6 +847,8 @@
 		
 		function setProOption(de){
 			m_select = $("#meterial_"+de).val();
+			$("#items_"+de).empty();
+			$("#fee_"+de).empty();
 			if(m_select!=0){
 				$.ajax({
 					url: "{:U('/admin/contract/findProList')}",
@@ -827,7 +865,7 @@
 						for(var i=0;i<data.length;i++){
 							var productname = data[i]['productname'];
 							var criteria = data[i]['criteria'];
-							option = "<option value='"+productname+"'>"+productname+" "+criteria+"</option>";
+							option = "<option value='"+productname+","+criteria+"'>"+productname+" "+criteria+"</option>";
 							$('#productname_'+de).append(option);
 						}
 					}	
@@ -857,9 +895,13 @@
 						for(var i=0;i<data.length;i++){
 							var items = data[i]['item'];
 							var money = data[i]['fee'];
-							if(items=='全项'){
+							var quantity = data[i]['quantity'];
+							if(quantity==2){
 								option = "<input type='checkbox' id='items_all_"+de+"' name='items_all_"+de+"' value='"+money+"' onclick=checkAllFee('"+de+"'); />&nbsp;&nbsp;"+items+"&nbsp;&nbsp;";
 								$('#items_'+de).prepend(option);
+							}else if(quantity==0){
+								option = "<input type='checkbox' name='s_items_"+de+"' value='"+money+"' onclick=checkFee('"+de+"');  />&nbsp;&nbsp;<span style='color:red; font-size:16px'>*</span>"+items+"&nbsp;&nbsp;";
+								$('#items_'+de).append(option);
 							}else{
 								option = "<input type='checkbox' name='items_"+de+"' value='"+money+"' onclick=checkFee('"+de+"');  />&nbsp;&nbsp;"+items+"&nbsp;&nbsp;";
 								$('#items_'+de).append(option);
@@ -882,12 +924,19 @@
 					cash+=parseInt(element.value);
 				}		
 			});
-			if(allCheck==false){
-				$("#items_all_"+de).prop("checked",false);	
-			}else{
-				$("#items_all_"+de).prop("checked",true);
-				cash = parseInt($("#items_all_"+de).val());
-			}				
+			if($("#items_all_"+de).length>0){
+				if(allCheck==false){
+					$("#items_all_"+de).prop("checked",false);	
+				}else{
+					$("#items_all_"+de).prop("checked",true);
+					cash = parseInt($("#items_all_"+de).val());
+				}	
+			}
+			$("input[name='s_items_"+de+"']").each(function(index, element) {
+				if($(this).prop("checked") == true){
+					cash+=parseInt(element.value);	
+				}				
+			});				
 			$("#fee_"+de).html(cash);
 		}
 		//计算本部门费用--全项选择
@@ -900,6 +949,11 @@
 			}else{
 				$("input[name=items_"+de+"]").prop("checked",false);
 			}
+			$("input[name='s_items_"+de+"']").each(function(index, element) {
+				if($(this).prop("checked") == true){
+					cash+=parseInt(element.value);	
+				}				
+			});
 			$("#fee_"+de).html(cash);
 		}
 		

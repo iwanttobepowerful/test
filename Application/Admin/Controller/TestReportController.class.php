@@ -121,16 +121,19 @@ class TestReportController extends Controller
    	    if(!empty($modid) and !empty($centreNo)){
             $tpl = D("tpl")->where("id=".$modid)->find();
             $contract = D("contract")->where("centreno='{$centreNo}'")->find();
-			$reportNum = D("contract")->where("centreno like '%{$centreNo}%'")->count();
-			if($reportNum == 1){
-				$newCentreNo = $centreNo.'G1';
-			}
-			if($reportNum == 2){
-				$newCentreNo = $centreNo.'G2';
-			}
-			if($reportNum == 3){
-				$newCentreNo = $centreNo.'G3';
-			}
+            $data=array();
+			//$reportNum = D("contract")->where("centreno like '%{$centreNo}%' or centreno1 like '%{$centreNo}%' or centreno2 like '%{$centreNo}%' or centreno3 like '%{$centreNo}%'")->count();
+
+            if(!empty($contract['centreno3'])){
+                $newCentreNo = $centreNo.'G3';
+            }else if(!empty($contract['centreno2'])){
+                $newCentreNo = $centreNo.'G2';
+            }else if(!empty($contract['centreno1'])){
+                $newCentreNo = $centreNo.'G1';
+            }else{
+                $newCentreNo = $centreNo;
+            }
+            //dump($newCentreNo);die;
             //dump($contract);
 			
             $data = array(
@@ -164,7 +167,7 @@ class TestReportController extends Controller
             if(@file_exists($dst)){
                 @unlink($dst);
             }
-            $qrcode = $this->qrcode($centreNo,getCurrentHost().'/admin/report/pdf?no='.$centreNo);
+            $qrcode = $this->qrcode($centreNo,getCurrentHost().'/admin/seeReport/pdf?no='.$centreNo);
             convert2Word($data,$src,$dst,$qrcode);
 
 
@@ -235,7 +238,7 @@ class TestReportController extends Controller
         if(file_exists($save_path.md5($centreno).'.png')){
             @unlink($save_path.md5($centreno).'.png');
         }
-        $filename = createQRcode($centreno,$save_path,$qr_data,$logo_path,'H',8,$save_prefix);
+        $filename = createQRcode($centreno,$save_path,$qr_data,$logo_path,'H',4,$save_prefix);
         if($filename){
             $img = $save_path.$filename;
         }

@@ -415,7 +415,7 @@ if(!function_exists('mergeImage')){
             $qrcode_width = imagesx($qrcode);
             $qrcode_height = imagesy($qrcode);
             //计算圆角图片的宽高及相对于二维码的摆放位置,将圆角图片拷贝到二维码中央
-            $qrcode_qr_height = $qrcode_qr_width = $qrcode_width/2;
+            $qrcode_qr_height = $qrcode_qr_width = $qrcode_width/4;
             $from_width = ($bg_width-$qrcode_qr_width)/2;
             imagecopyresampled($bg, $qrcode, $from_width, $from_width, 0, 0, $qrcode_qr_width, $qrcode_qr_height, $qrcode_width, $qrcode_height);
         }else{
@@ -443,11 +443,17 @@ if(!function_exists('mergeImage')){
             
             imagecopyresampled($bg, $qrcode, $from_x, $from_y, 0, 0, $bg_qr_height, $bg_qr_height, $qrcode_width, $qrcode_height);
         }
-        imagejpeg($bg,$save_file);
+        imagepng($bg,$save_file);
         imagedestroy($bg);
         //imagedestroy($corner);
         imagedestroy($qrcode);
         return true;
+    }
+}
+if(!function_exists('waterMark')){
+    function waterMark($src,$water,$dst,$locate=\Think\Image::IMAGE_WATER_SOUTHEAST,$opacity = 100){
+        $image = new \Think\Image();
+        $image->open($src)->water($water,$locate,$opacity)->save($dst);
     }
 }
 //convert -density 600 SJ-4-77_2017.pdf -alpha off  SJ-4-77_2017.png
