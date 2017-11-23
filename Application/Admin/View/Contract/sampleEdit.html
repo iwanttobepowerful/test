@@ -308,7 +308,7 @@
         <!--<if condition="$if_save==1 && $if_picture gt 0">
       		<button class="btn btn-success edit1" type="button" onClick="doSubmit()">抽样单录入完毕</button> 
         </if> -->
-        <if condition="$if_submit gt 0">
+        <if condition="($ifedit['ifedit'] == 1) and !($sub_status['status'] == 1)">
         	<a class="btn btn-success" href="/admin/test/sampleShow?id={$one.centreno}" onClick="return checkFinish()">打印</a>
         </if>
         

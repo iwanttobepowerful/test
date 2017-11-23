@@ -658,7 +658,8 @@ class ContractController extends Controller
         $result=M('sampling_form')->where($where)->find();
         
         $ifedit=M('contract')->where($where)->find();
-        $sub_status=M('report_feedback')->where($where)->find();
+		//SELECT * from report_feedback where id = (SELECT max(id) from report_feedback WHERE centreNo='201711AC158')
+        $sub_status=M('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$centreno.'")')->find();
         if(empty($sub_status)){
             $sub_status['status']=-1;
         }
@@ -687,7 +688,7 @@ class ContractController extends Controller
 		$if_picture = M('sample_picture')->where($where_p)->count();
 		
 		//判断是否所有抽样信息录入完毕，目的判断是否出现打印按钮
-		$if_submit=M('contract_flow')->where($where)->count();
+		//$if_submit=M('contract_flow')->where($where)->count();
 		
 		
 		
@@ -725,7 +726,7 @@ class ContractController extends Controller
             'sub_status'=>$sub_status,
 			'if_save'=>$if_save,
 			'if_picture'=>$if_picture,
-			'if_submit'=>$if_submit,
+			//'if_submit'=>$if_submit,
         );
         $this->assign($body);
         $this->display();

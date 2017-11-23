@@ -913,7 +913,7 @@
 			});
 			if($("#items_all_"+de).length>0){
 				if(allCheck==false){
-					$("#items_all_"+de).prop("checked",false);	
+					$("input[name='items_all_"+de+"']").prop("checked",false);	
 				}else{
 					$("#items_all_"+de).prop("checked",true);
 					cash = parseInt($("#items_all_"+de).val());

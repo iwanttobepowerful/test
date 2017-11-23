@@ -62,9 +62,17 @@ class ManagerController extends Controller
         $where= "centreno='{$centreno}'";
         $data=$contract->where($where)->field('ifHighQuantity,remark1,remark2',ture)->find();
 		$cost=D("test_cost")->where('centreno="'.$centreno.'"')->find();
-        $body=array(
+        //判断是否可以打印
+		$ifedit=M('contract')->where($where)->find();
+        $sub_status=M('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$centreno.'")')->find();
+        if(empty($sub_status)){
+            $sub_status['status']=-1;
+        }
+		$body=array(
             'one'=>$data,
-			'cost'=>$cost
+			'cost'=>$cost,
+			'ifedit'=>$ifedit,
+			'sub_status'=>$sub_status
         );
         $this->assign($body);
         $this->display();
