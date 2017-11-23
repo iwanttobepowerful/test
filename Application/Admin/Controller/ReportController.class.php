@@ -311,8 +311,9 @@ class ReportController extends Controller
         $contract_flow=M("contract_flow");//实例化对象
         $rs=$contract_flow->where($where)
             ->join('common_system_user ON contract_flow.inner_sign_user_id = common_system_user.id')
-            ->join('contract ON contract_flow.centreNo = contract.centreNo')
-            ->field('contract_flow.id,contract_flow.status,contract_flow.centreNo,contract_flow.inner_sign_time,common_system_user.name,contract.productUnit,contract.clientSign,contract.telephone,contract.postmethod,contract.address,contract.centreno1,contract.centreno2,contract.centreno3')
+            ->join('contract ON contract_flow.centreno = contract.centreno')
+            ->join('test_report on contract_flow.centreno=test_report.centreno')
+            ->field('contract_flow.id,contract_flow.status,contract_flow.centreNo,contract_flow.inner_sign_time,common_system_user.name,contract.productUnit,contract.clientSign,contract.telephone,contract.postmethod,contract.address,contract.centreno1,contract.centreno2,contract.centreno3,test_report.pdf_path')
             ->limit("{$offset},{$pagesize}")
             ->order('contract_flow.inner_sign_time desc,contract_flow.id desc')->select();
         //查找条件为已经批准并且内部尚未签发的报告

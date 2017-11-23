@@ -37,6 +37,10 @@
                         <a href="{:U('/admin/contract/reWriteTest')}?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-list"></i>更改单</a>
                         <else />
                         <span>{$vo.centreno}</span></if>
+                        <if condition="$vo.status eq 6">
+                            <p></p>
+                            <a href="javascript:void(0);" class="btn btn-info btn-xs" name="{$vo.pdf_path}" onclick="return Check(this);"><i class="glyphicon glyphicon-search"></i>检测报告</a>
+                        </if>
                     </td>
                     <td>{$vo.productunit}</td>
                     <td>{$vo.postmethod}</td>
@@ -85,6 +89,18 @@
                 }
             }
         });
+    }
+    function Check(path) {
+        var url=path.name;
+        if(!url) return false;//获取url
+        if(url.indexOf("http")==-1){
+            thisHost = location.hostname;
+            var newurl='http://'+thisHost+url;
+        }else{
+            var newurl=url;
+        }
+        //alert(newurl);
+        window.open(newurl);
     }
 </script>
 <include file="Common:footer" />
