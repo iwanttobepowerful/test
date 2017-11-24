@@ -324,6 +324,9 @@ class TestController extends Controller{
     }
     //批量打印
     public function doPrint(){
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $if_admin = $admin_auth['super_admin'];//是否是超级管理员
+        $user=$admin_auth['gid'];//判断是哪个角色
         $id=I("id");//获取勾选的id值
         $type=I("type");//获取type
         $data=explode(',',$id);
@@ -351,7 +354,12 @@ class TestController extends Controller{
         $s=substr($s,0,-1);//利用字符串截取函数消除最后一个逗号
         $list=str_replace("_thumb","",$s);
         $path=explode(',',$list);
-        $this->assign('list',$path);
+        $body=array(
+            'list'=>$path,
+            'user'=>$user,
+            'if_admin'=>$if_admin
+        );
+        $this->assign($body);
         $this->display();
     }
 //上传检测报告显示页面
