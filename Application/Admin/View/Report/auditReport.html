@@ -18,7 +18,7 @@
                     <td><if condition="$_GET['p'] eq 0">{$i}
                         <else />{$_GET['p']*10-10+$i}</if></td>
                     <td><if condition="$vo[centreno1] or $vo[centreno2] or $vo[centreno3]">
-                        <span style="color: red"><i class="glyphicon glyphicon-star"></i>{$vo.centreno}</span>
+                        <span style="color: red"><i class="glyphicon glyphicon-star">{$vo.centreno}</i></span>
                         <else />
                         <span>{$vo.centreno}</span></if></td>
                     <td>

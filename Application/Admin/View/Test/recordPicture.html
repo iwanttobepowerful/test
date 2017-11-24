@@ -31,7 +31,7 @@
                         <else />{$_GET['p']*10-10+$i}</if></td>
                     <td>{$one.workdate}</td>
                     <td><if condition="$one[centreno1] or $one[centreno2] or $one[centreno3]">
-                        <span style="color: red"><i class="glyphicon glyphicon-star"></i>{$one.centreno}</span>
+                        <span style="color: red"><i class="glyphicon glyphicon-star">{$one.centreno}</i></span>
                         <else />
                         <span>{$one.centreno}</span></if>
                     </td>
