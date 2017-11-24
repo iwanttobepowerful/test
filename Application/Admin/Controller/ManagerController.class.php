@@ -57,6 +57,9 @@ class ManagerController extends Controller
     }
     //合同详情查询
     public function contractDetail(){
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $user=$admin_auth['gid'];//判断是哪个角色
+        $if_admin = $admin_auth['super_admin'];//是否是超级管理员
         $centreno=I("id");
         $contract=D("contract");//实例化
         $where= "centreno='{$centreno}'";
@@ -72,7 +75,9 @@ class ManagerController extends Controller
             'one'=>$data,
 			'cost'=>$cost,
 			'ifedit'=>$ifedit,
-			'sub_status'=>$sub_status
+			'sub_status'=>$sub_status,
+            'user'=>$user,
+            'if_admin'=>$if_admin
         );
         $this->assign($body);
         $this->display();
