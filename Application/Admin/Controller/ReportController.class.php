@@ -252,7 +252,7 @@ class ReportController extends Controller
         //$role = D('common_role')->where('id='.$user)->find();
         if($if_admin==1 || $user==15) {
             $data=array(
-                'status'=>7,
+                'status'=>3,//退回前台费用
                 'inner_sign_time'=>date("Y-m-d H:i:s"),
                 'inner_sign_user_id'=>$userid,
             );
