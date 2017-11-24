@@ -142,7 +142,9 @@ class TestController extends Controller{
 			'if_edit'=>$if_edit,
             'list'=>$path,
 			'sub_status'=>$sub_status,
-			'ifedit'=>$ifedit
+			'ifedit'=>$ifedit,
+            'if_admin'=>$if_admin,
+            'user'=>$roleid
         );
         $this->assign($body);
         $this->display();

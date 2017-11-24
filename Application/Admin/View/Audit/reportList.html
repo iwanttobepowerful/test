@@ -5,7 +5,8 @@
 
 		<ul class="nav nav-tabs">
 			<li role="presentation" class="active" id="de_A" name="de"><a href="/admin/audit/reportList?de=A" >内部修改申请</a></li>
-			<li role="presentation" id="de_B" name="de"><a href="/admin/audit/reportList?de=B">外部修改申请</a></li>
+			<li role="presentation" id="de_B" name="de"><a href="/admin/audit/reportList?de=B">报告申请修改</a></li>
+			<li role="presentation" id="de_C" name="de"><a href="/admin/audit/reportList?de=C">外部修改申请</a></li>
 			<input hidden id="de_choose" value="{$de}">
 		</ul>
 
@@ -24,7 +25,7 @@
 			<th>委托单位</th>
 			<th>样品名称</th>
 			<th>检验依据</th>
-			<th>检验项目</th>
+			<th>详情</th>
 			<th>修改原因</th>
 			<th width="8%">申请时间</th>
 			<th width="12%">操作</th>
@@ -37,7 +38,11 @@
 					<td>{$one.clientname}</td>
 					<td>{$one.samplename}</td>
 					<td>{$one.testcriteria}</td>
-					<td>{$one.testitem}</td>
+					<td>
+						<a href="/admin/manager/contractDetail?id={$one.centreno}"  class="btn btn-info btn-xs" ><i class="glyphicon glyphicon-search"></i>检验受理合同</a>
+						<if condition="mb_substr($one[centreno],7,1)=='C'">
+							<p></p><a href="/admin/test/sampleShow?id={$one.centreno}"  class="btn btn-info btn-xs" ><i class="glyphicon glyphicon-search"></i>抽样单</a></if>
+					</td>
 					<td>{$one.reason}</td>
 					<td>{$one.create_time}</td>
 					<td>
@@ -60,7 +65,7 @@
 		</table>
 		</if>
 
-		<if condition="$de eq 'B'"><!-- 外部修改申请显示表单-->
+		<if condition="$de eq 'C'"><!-- 外部修改申请显示表单-->
 			<!---<div class="search-form">
 				<form class="form-inline" method="GET" action="">
 					<div class="form-group">
