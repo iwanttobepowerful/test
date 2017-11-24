@@ -90,9 +90,24 @@ class ContractController extends Controller
         $admin_auth = session("admin_auth");
         $collector = $admin_auth['name'];
         $department = $admin_auth['department'];
+		
+		//费用查询
+		$criteria = I('criteria');
+		$page = I("p",'int');
+        $pagesize = 10;
+        if($page<=0) $page = 1;
+        $offset = ( $page-1 ) * $pagesize;
+		$list = D("test_fee")->where('criteria like "%'.$criteria.'%"')->limit("{$offset},{$pagesize}")->select();
+		$count = D("test_fee")->where('criteria like "%'.$criteria.'%"')->count();
+        $Page= new \Think\Page($count,$pagesize);
+        $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</ a></ul>");
+        $pagination= $Page->show();// 分页显示输出		
+		
         $body=array(
             'collector'=>$collector,
-            'department'=>$department
+            'department'=>$department,
+			"fee_list"=>$list,
+            'pagination'=>$pagination,
         );
         $this->assign($body);
         $this->display();
@@ -1126,12 +1141,18 @@ class ContractController extends Controller
 	//更改补充检验报告单
 	public function addorEditReport(){
 		$centreNo = I('id');
+		//pr($centreNo);
 		$count = D('inspection_report')->where('centreNo="'.$centreNo.'"')->count();
 		$one = D('inspection_report')->where('centreNo="'.$centreNo.'"')->find();
+		$sub_status = M('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$centreNo.'")')->find();
+		if(empty($sub_status)){
+            $sub_status['status']=-1;
+        }
 		$body = array(
 			'centreNo'=>$centreNo,
 			'count'=>$count,
-			'one'=>$one
+			'one'=>$one,
+			'sub_status'=>$sub_status,
 		);
 		
 		$this->assign($body);
@@ -1296,14 +1317,16 @@ class ContractController extends Controller
 
     //费用列表
     public function findMetList(){
-        $meterial_list=D("test_fee")->field("meterial")->group("meterial")->select();
-        if($productname!=0 && $meterial!=0){
-            $productname_list=D("test_fee")->field("productname")->where('meterial="'.meterial.'"')->group("productname")->select();
-        }
+		$criteria = I('criteria');
+		$list = D("test_fee")->where('criteria like "%'.$criteria.'%"')->limit("{$offset},{$pagesize}")->select();
+		$count = D("test_fee")->where('criteria like "%'.$criteria.'%"')->count();
+        $Page= new \Think\Page($count,$pagesize);
+        $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</ a></ul>");
+        $pagination= $Page->show();// 分页显示输出
 
         $rs = array(
-            "meterial_list"=>$meterial_list,
-            'productname_list'=>$productname_list,
+			"fee_list"=>$list,
+            'pagination'=>$pagination,
         );
         $this->ajaxReturn($rs);
     }

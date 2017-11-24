@@ -17,7 +17,7 @@
           <tr >
             <td width="141" valign="center" ><p align="center" >中心编号 </p></td>
             <td width="361" valign="center" ><p align="center" >
-            	<input name="centreNo" type="text" class="form-control"  class="form-control" id="centreNo" value="{$centreNo}"  readonly="readonly"/> 
+            	<input name="centreNo" type="text" class="form-control"  class="form-control" id="centreNo" value="{$centreNo}"  readonly="readonly"/> 				
             </p></td>
             <td width="147" valign="center" colspan="2" ><p align="center" >样品名称 </p></td>
             <td width="355" valign="center" colspan="2" ><p align="center" >
@@ -64,7 +64,7 @@
             </p></td>
             <td width="151" valign="center" colspan="2" ><p align="center" >办理日期 </p></td>
             <td width="306" valign="center" ><p align="center" >
-            	<input type="text" readonly class="form-control f-datetime input-sm" name="handleDate" id="handleDate" value="{$one.handledate}"/>
+            	<input type="text" class="form-control input-sm"  readonly="readonly" name="handleDate" id="handleDate" value="{$one.handledate}"/>
             </p></td>
           </tr>
           <tr >
@@ -107,20 +107,74 @@
         <if condition="$count == 0 || $one.if_edit == 0">
         	<button class="btn btn-success" type="submit" onClick="saveData()">保存</button>
             <!--<a class="btn btn-success edit" href="/admin/contract/doUploadInsImage?centreno={$one.centreno}">上传附件</a>-->
+        </if>
+        <if condition="!($sub_status['status'] == 1 or $sub_status['status'] == 0)">
+        	<a href="#" class="btn btn-success" onclick="return applyBack('{$centreNo}')" >申请</a>
+        </if>
+        <if condition="$count == 0 || $one.if_edit == 0">
+			
         <else />
         	<a class="btn btn-success" href="/admin/contract/reWriteTest?id={$centreNo}">打印</a>
         </if>
-        <button type="button" class="btn btn-success" onclick="javascript:history.go(-1);">返 回</button>
+        <!--<button type="button" class="btn btn-success" onclick="javascript:history.go(-1);">返 回</button>-->
       </form>
     </div>
     
 </div>
+
+
+<div>
+    <!-- 模态框（Modal) -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <form class="form-horizontal" id="aform" action="" method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="createModalLabel">申请修改</h4>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">中心编号</label>
+                        <div class="col-sm-7">
+                            <input type="text" readonly="readonly" id="back_centreno" name="back_centreno" class="form-control" value="{$centreNo}"/>
+                            <input type="hidden" id="type_status" name="type_status" value="" />
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">理由</label>
+                        <div class="col-sm-7">
+                            <textarea id="back_reason" name="back_reason" class="form-control" rows="5" ></textarea>
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
+                    <button type="submit" class="btn btn-primary" onclick="subFeedback()">确定</button>
+                </div>
+            </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</div>	
 <script src="__PUBLIC__/static/js/jquery.form.js"></script>
 <script src="__PUBLIC__/static/js/ajaxfileupload.js"></script>
 <script type="text/javascript">
 	//时间
 	$(document).ready(function(){
-		$('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,	autoclose:true });
+		//$('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,	autoclose:true });
+		//获取当前日期
+		if($("#handleDate").val()==""){
+			var date = new Date();	
+			var years = date.getFullYear();
+			var month = add_zero(date.getMonth()+1);
+			var day = add_zero(date.getDate());
+			var now_date = years+"-"+month+"-"+day;
+			$("#handleDate").val(now_date);
+		}
+
+		
+		
 		var count = $("#count").val();
 		var if_edit = $("#if_edit").val();
 		if(count>0 && if_edit == 1){
@@ -131,8 +185,82 @@
 		for(var i=1 ; i<=a.length; i++){
 			$("#update_item" + i).val(a[i-1]);
 		}
+		
+		
 	});	
 	
+	//补零
+	function add_zero(temp){
+		if(temp<10) return "0"+temp;
+		else return temp;
+	}
+	
+	//申请
+	function applyBack(centreno){	
+		var flag = true;
+		$.ajax({
+			url: "{:U('/admin/contract/checkEditList')}",
+			dataType: 'json',			
+			async: false,
+			data:{'centreno':centreno},
+			success: function (res) {
+				if(res.count==0){
+					alert('请填更改检验报告单');
+					flag=false;	
+				}
+			}
+		});	
+		if(!flag) return flag;
+		$("#back_reason").val("");
+		var modal = $("#editModal");
+		$("#back_centreno").val(centreno);
+		$("#type_status").val(6);
+		modal.modal();
+	}
+	
+	//申请提交
+	function subFeedback(){
+		var centreno = $("#back_centreno").val();
+		var reason = $("#back_reason").val();
+		var type_status = $("#type_status").val();
+		$.ajax({
+			url: "{:U('/admin/contract/doSubmitFeedback')}",
+			dataType: 'json',
+			data:{'centreno':centreno,'reason':reason,'type_status':type_status},
+			beforeSubmit: function(){
+				return true;
+			},
+			success: function (re) {
+				alert(re.msg);
+				window.location.reload();
+			}
+		});
+	}
+	
+	//合同入库
+	function saveData(){
+		//if(confirm('确认提交吗？')){
+			var options = {
+				url: "{:U('/admin/contract/saveInspecReport')}",
+				dataType: 'json',
+				beforeSubmit: function(){
+					return true;
+				},
+				success: function (data) {
+					if(data.msg=='succ'){
+						var _options = {"text":"保存成功！","action":function(){window.location.reload();}};
+						doAlertDialog(_options);
+					}else{
+						var _options = {"text":"保存失败,请完善信息"};
+						if(data.msg) _options.text = data.msg;
+						doAlertDialog(_options);
+					}
+				}
+			};
+			$("#form2").ajaxForm(options);
+			return false;
+		//}
+	}
 	//--------------------------------------------------------上传附件 start-------------------------------------------------------------
 	function ajaxFileUpload(){
     	var file = $("#addfile").val();
@@ -170,28 +298,5 @@
 
 	//--------------------------------------------------------上传附件 end-------------------------------------------------------------
 	
-	//合同入库
-	function saveData(){
-		//if(confirm('确认提交吗？')){
-			var options = {
-				url: "{:U('/admin/contract/saveInspecReport')}",
-				dataType: 'json',
-				beforeSubmit: function(){
-					return true;
-				},
-				success: function (data) {
-					if(data.msg=='succ'){
-						var _options = {"text":"保存成功！","action":function(){window.location.reload();}};
-						doAlertDialog(_options);
-					}else{
-						var _options = {"text":"保存失败,请完善信息"};
-						if(data.msg) _options.text = data.msg;
-						doAlertDialog(_options);
-					}
-				}
-			};
-			$("#form2").ajaxForm(options);
-			return false;
-		//}
-	}
+
 </script>
