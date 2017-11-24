@@ -1193,6 +1193,9 @@ class ContractController extends Controller
 	//跳转更改检验报告单打印页面
 	public function reWriteTest(){
 		$centreNo = I('id');
+        $admin_auth = session("admin_auth");
+        $if_admin = $admin_auth['super_admin'];
+        $user = $admin_auth['gid'];
 		$one = D('inspection_report')->where('centreNo="'.$centreNo.'"')->find();
 		$update_item_list = explode("/&&/",$one['update_item']);
 		//pr($update_item_list);
@@ -1200,7 +1203,9 @@ class ContractController extends Controller
 		$body = array(
 			'one'=>$one,
 			'update_item_list'=>$update_item_list,
-			'imageurl'=>$imageurl
+			'imageurl'=>$imageurl,
+            'user'=>$user,
+            'if_admin'=>$if_admin
 		);
 		
 		$this->assign($body);
