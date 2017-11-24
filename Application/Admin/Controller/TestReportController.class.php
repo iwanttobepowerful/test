@@ -154,7 +154,7 @@ class TestReportController extends Controller
             $samplingForm = D("sampling_form")->where("centreno='{$centreNo}'")->find();
             if($samplingForm){
                 $data['samplePlace'] = $samplingForm['sampleplace'] ? $samplingForm['sampleplace'] : "——";
-                $data['simplerSign'] = $samplingForm['simplersign'].' '.$samplingForm['sealerSign'];
+                $data['simplerSign'] = $samplingForm['simplersign'].' '.$samplingForm['sealersign'];
                 $data['sampleDate'] = $samplingForm['sampledate'] ? $samplingForm['sampledate']:"——";
                 $data['sampleQuantity'] = $samplingForm['samplequantity'] ? $samplingForm['samplequantity']:"——";
                 $data['sampleBase'] = $samplingForm['samplebase'] ? $samplingForm['samplebase']:"——";
