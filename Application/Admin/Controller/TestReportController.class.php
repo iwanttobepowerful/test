@@ -60,9 +60,9 @@ class TestReportController extends Controller
         $this->assign($body);
         $this->display();
    }
-    
+
     //选择模板
-   	public function seleteTemp(){
+    public function seleteTemp(){
         $mod = I("mod");
         $conNo=I("conNo");
         $where= "centreno='{$conNo}'";
@@ -82,14 +82,12 @@ class TestReportController extends Controller
             $shengchengview="";
             $dayinview="hidden";
             $zhidu="";
-
         }
         else
         {
             $shengchengview="hidden";
             $dayinview="";
             $zhidu="readonly";
-
         }
         $final_content=$test_content->where($where)->find();
         $final_content_two=$sample_content->where($where)->find();
@@ -112,17 +110,17 @@ class TestReportController extends Controller
         $this->assign($body);
         $tplfile = $tpl['filename'];
         $this->display($tplfile);
-	}
-	//生成报告word下载模板选择
-	public function selectTemp(){
-   	    $modid=I("id");
-   	    $centreNo=I("contractno");
+    }
+    //生成报告word下载模板选择
+    public function selectTemp(){
+        $modid=I("id");
+        $centreNo=I("contractno");
         $rs = array("msg"=>"","status"=>"fail");
-   	    if(!empty($modid) and !empty($centreNo)){
+        if(!empty($modid) and !empty($centreNo)){
             $tpl = D("tpl")->where("id=".$modid)->find();
             $contract = D("contract")->where("centreno='{$centreNo}'")->find();
             $data=array();
-			//$reportNum = D("contract")->where("centreno like '%{$centreNo}%' or centreno1 like '%{$centreNo}%' or centreno2 like '%{$centreNo}%' or centreno3 like '%{$centreNo}%'")->count();
+            //$reportNum = D("contract")->where("centreno like '%{$centreNo}%' or centreno1 like '%{$centreNo}%' or centreno2 like '%{$centreNo}%' or centreno3 like '%{$centreNo}%'")->count();
 
             if(!empty($contract['centreno3'])){
                 $newCentreNo = $centreNo.'G3';
@@ -135,33 +133,33 @@ class TestReportController extends Controller
             }
             //dump($newCentreNo);die;
             //dump($contract);
-			
+
             $data = array(
                 'centreNo'=>$newCentreNo,
                 'sampleName'=>$contract['samplename'],
                 'clientName'=>$contract['clientname'],
-                'productionDate'=>$contract['productiondate'] ? $contract['productiondate']:"————",
-                'productUnit'=>$contract['productunit'] ? $contract['productunit']:"————",
-                'trademark'=>$contract['trademark'] ? $contract['trademark']:"————",
-                'grade'=>$contract['grade'] ? $contract['grade']:"————",
-                'specification'=>$contract['specification'] ? $contract['specification']:"————",
-                'sampleStatus'=>$contract['samplestatus'] ? $contract['samplestatus']:"————",
+                'productionDate'=>$contract['productiondate'] ? $contract['productiondate']:"——",
+                'productUnit'=>$contract['productunit'] ? $contract['productunit']:"——",
+                'trademark'=>$contract['trademark'] ? $contract['trademark']:"——",
+                'grade'=>$contract['grade'] ? $contract['grade']:"——",
+                'specification'=>$contract['specification'] ? $contract['specification']:"——",
+                'sampleStatus'=>$contract['samplestatus'] ? $contract['samplestatus']:"——",
                 'testCriteria'=>$contract['testcriteria'],
                 'testItem'=>$contract['testitem'],
-                'collectDate'=>$contract['collectdate'] ? $contract['collectdate']:"————",
-                'sampleCode'=>$contract['samplecode'] ? $contract['samplecode']:"————",
-                'sampleQuantity'=>$contract['samplequantity'] ? $contract['samplequantity']:"————",
+                'collectDate'=>$contract['collectdate'] ? $contract['collectdate']:"——",
+                'sampleCode'=>$contract['samplecode'] ? $contract['samplecode']:"——",
+                'sampleQuantity'=>$contract['samplequantity'] ? $contract['samplequantity']:"——",
             );
 
-           	$samplingForm = D("sampling_form")->where("centreno='{$centreNo}'")->find();
-			if($samplingForm){
-            	$data['samplePlace'] = $samplingForm['sampleplace'] ? $samplingForm['sampleplace'] : "————";
-                $data['simplerSign'] = $samplingForm['simplersign'];
-                $data['sampleDate'] = $samplingForm['sampledate'] ? $samplingForm['sampledate']:"————";
-                $data['sampleQuantity'] = $samplingForm['samplequantity'] ? $samplingForm['samplequantity']:"————";
-                $data['sampleBase'] = $samplingForm['samplebase'] ? $samplingForm['samplebase']:"————";
-         	}
-            
+            $samplingForm = D("sampling_form")->where("centreno='{$centreNo}'")->find();
+            if($samplingForm){
+                $data['samplePlace'] = $samplingForm['sampleplace'] ? $samplingForm['sampleplace'] : "——";
+                $data['simplerSign'] = $samplingForm['simplersign'].' '.$samplingForm['sealerSign'];
+                $data['sampleDate'] = $samplingForm['sampledate'] ? $samplingForm['sampledate']:"——";
+                $data['sampleQuantity'] = $samplingForm['samplequantity'] ? $samplingForm['samplequantity']:"——";
+                $data['sampleBase'] = $samplingForm['samplebase'] ? $samplingForm['samplebase']:"——";
+            }
+
             $src = "./Public/{$tpl['filename']}";
             $dst = "./Public/attached/report/{$centreNo}.docx";
             if(@file_exists($dst)){
