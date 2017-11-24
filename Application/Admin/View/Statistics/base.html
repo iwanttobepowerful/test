@@ -13,6 +13,14 @@
                         <option value="1" <php>if($sortby==1){echo 'selected';}</php>>盖章日期</option>
                         <option value="2" <php>if($sortby==2){echo 'selected';}</php>>来样日期</option>
                     </select>
+                    分部门查询：<select class="form-control input-sm" name="searchby">
+                    <option value="1" <php>if($searchby==1){echo 'selected';}</php>>A部门</option>
+                    <option value="2" <php>if($searchby==2){echo 'selected';}</php>>B部门</option>
+                    <option value="3" <php>if($searchby==3){echo 'selected';}</php>>C部门</option>
+                    <option value="4" <php>if($searchby==4){echo 'selected';}</php>>D部门</option>
+                    <option value="5" <php>if($searchby==5){echo 'selected';}</php>>E部门</option>
+                    <option value="6" <php>if($searchby==6){echo 'selected';}</php>>F部门</option>
+                </select>
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-sm" >查询</button>
@@ -62,7 +70,9 @@
 			<volist name="lists" id="one">
 				<tr>
 					<td>{$one.inner_sign_time|strtotime|date='Y年m月d日',###}</td>
-                    <td>{$one.centreno}</td>
+                    <td><if condition="$one[centreno1] or $one[centreno2] or $one[centreno3]">
+                        <span style="color: red"><i class="glyphicon glyphicon-star"></i>{$one.centreno}</span><else />
+                    <span>{$one.centreno}</span></if></td>
                     <td>{$one.clientname}</td>
                     <td>{$one.productunit}</td>
                     <td>{$one.samplename}</td>

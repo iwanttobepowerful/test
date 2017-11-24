@@ -16,7 +16,9 @@ class StatisticsController extends Controller {
         $begin_time = I("begin_time");
         $end_time = I("end_time");
         $sortby = I("sortby");
+        $searchby=I("searchby");
         $where = " a.status in(5,6)";
+
 
         $page = I("p",'int');
         $pagesize = 10;
@@ -42,10 +44,29 @@ class StatisticsController extends Controller {
         else{
             $orderby = "a.external_sign_time desc";//默认排序
         }
+        if($searchby==1)
+        {
+            $where.="and SUBSTR(a.centreNo,7,1) = 'A'";
+        }
+        elseif ($searchby==2){
+            $where.="and SUBSTR(a.centreNo,7,1) = 'B'";
+        }
+        elseif ($searchby==3){
+            $where.="and SUBSTR(a.centreNo,7,1) = 'C'";
+        }
+        elseif ($searchby==4){
+            $where.="and SUBSTR(a.centreNo,7,1) = 'D'";
+        }
+        elseif ($searchby==5){
+            $where.="and SUBSTR(a.centreNo,7,1) = 'E'";
+        }
+        elseif ($searchby==6){
+            $where.="and SUBSTR(a.centreNo,7,1) = 'F'";
+        }
         //小计
         $sumlist = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->join(C("DB_PREFIX")."test_cost c on a.centreno=c.centreno","LEFT")->where($where)->field("sum(b.testcost) as testcost,sum(c.rarecord) as arecord,sum(c.rbrecord) as brecord,sum(c.rcrecord) as crecord,sum(c.rdrecord) as drecord,sum(c.rerecord) as erecord,sum(c.rfrecord) as frecord,sum(c.dcopy) as dcopy,sum(c.drevise) as drevise,sum(c.dother) as dother,sum(c.donline) as donline")->find();
         $list = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->join(C("DB_PREFIX")."test_cost c on a.centreno=c.centreno","LEFT")->where($where)->order($orderby)
-            ->field("a.id,a.status,a.external_sign_time,a.inner_sign_time,a.centreno,a.takelist_user_id,b.clientname,b.productunit,b.samplename,b.samplecode,b.testitem,b.testcost,b.remark,b.testcriteria,b.collectdate,b.samplequantity,b.collector,c.rarecord,c.rbrecord,c.rcrecord,c.rdrecord,c.rerecord,c.rfrecord,c.dcopy,c.donline,c.drevise,c.dother")->limit("{$offset},{$pagesize}")->select();
+            ->field("a.id,a.status,a.external_sign_time,a.inner_sign_time,a.centreno,a.takelist_user_id,b.clientname,b.productunit,b.samplename,b.samplecode,b.testitem,b.testcost,b.remark,b.testcriteria,b.collectdate,b.samplequantity,b.collector,b.centreno1,b.centreno2,b.centreno3,c.rarecord,c.rbrecord,c.rcrecord,c.rdrecord,c.rerecord,c.rfrecord,c.dcopy,c.donline,c.drevise,c.dother")->limit("{$offset},{$pagesize}")->select();
         
         if($list){            
         	$centrenoIds = array();
@@ -74,6 +95,7 @@ class StatisticsController extends Controller {
             'begin_time'=>$begin_time,
             'end_time'=>$end_time,
             'sortby'=>$sortby,
+            'searchby'=>$searchby,
         );
         $this->assign($body);
         $this->display();

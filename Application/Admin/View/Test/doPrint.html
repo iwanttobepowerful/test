@@ -53,6 +53,7 @@
             <img src="{$one}" class="picture" />
         </div></if>
     </volist>
-   <div align="center"><button  onclick="window.print()" class="Noprint btn btn-primary final">打印</button></div>
+    <if condition="$user eq 7 ||$user eq 9 ||$if_admin eq 1 ">
+   <div align="center"><button  onclick="window.print()" class="Noprint btn btn-primary final">打印</button></div></if>
 </body>
 </html>

@@ -27,12 +27,22 @@ class TestController extends Controller{
 
     //工作通知单显示
     public function infoShow(){
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $if_admin = $admin_auth['super_admin'];//是否是超级管理员
+        $user=$admin_auth['gid'];//判断是哪个角色
+        if($user==9 || $if_admin==1){
+            $gid=1;
+        }
+        else{
+            $gid=0;
+        }
         $keyword = I("id");//获取参数
         $where= "centreNo='{$keyword}'";
 
         $work_inform_form=M('work_inform_form');
         $result=$work_inform_form->where($where)->find();
-		
+        $contract_flow=D("contract_flow")->where($where)->field('status')->find();
+		$status=$contract_flow['status'];
 		//判断是否可以打印
 		$ifedit=M('contract')->where($where)->find();
         $sub_status=M('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$keyword.'")')->find();
@@ -44,6 +54,9 @@ class TestController extends Controller{
             'one'=>$result,
 			'ifedit'=>$ifedit,
 			'sub_status'=>$sub_status,
+            'status'=>$status,
+            'gid'=>$gid,
+            'user'=>$user,
         );
         $this->assign($body);
         $this->display();
@@ -129,7 +142,9 @@ class TestController extends Controller{
 			'if_edit'=>$if_edit,
             'list'=>$path,
 			'sub_status'=>$sub_status,
-			'ifedit'=>$ifedit
+			'ifedit'=>$ifedit,
+            'if_admin'=>$if_admin,
+            'user'=>$roleid
         );
         $this->assign($body);
         $this->display();
@@ -311,6 +326,9 @@ class TestController extends Controller{
     }
     //批量打印
     public function doPrint(){
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $if_admin = $admin_auth['super_admin'];//是否是超级管理员
+        $user=$admin_auth['gid'];//判断是哪个角色
         $id=I("id");//获取勾选的id值
         $type=I("type");//获取type
         $data=explode(',',$id);
@@ -338,7 +356,12 @@ class TestController extends Controller{
         $s=substr($s,0,-1);//利用字符串截取函数消除最后一个逗号
         $list=str_replace("_thumb","",$s);
         $path=explode(',',$list);
-        $this->assign('list',$path);
+        $body=array(
+            'list'=>$path,
+            'user'=>$user,
+            'if_admin'=>$if_admin
+        );
+        $this->assign($body);
         $this->display();
     }
 //上传检测报告显示页面
@@ -417,7 +440,6 @@ class TestController extends Controller{
         $centreno=I("centreno");
         $where= "centreno='{$centreno}'";
         $fileurl = I("fileurl");
-        $remark = I("remark");
         $result = array("msg"=>"fail");
 
         $admin_auth = session("admin_auth");//获取当前登录用户信息
@@ -431,7 +453,6 @@ class TestController extends Controller{
         $data = array(
             //"centreNo"=>$centreno,
             "path"=>$fileurl,
-            "remark"=>$remark,
             'modify_time'=>date("Y-m-d H:i:s"),
         );
         $distfile = convert2Pdf(ROOT_PATH,$data['path'],'pdf');

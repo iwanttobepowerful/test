@@ -26,10 +26,9 @@
                 <label class="col-sm-2 control-label talign-center fz13">模板类型</label>
                 <div class="col-sm-10">
                     <select name="type" class="form-control form-col form-col-5">
-                        <option value=1>委托检验</option>
-                        <option value=2>抽样检验(型式检验)</option>
+                        <option value=1 <php>if($type==1){echo 'selected';}</php>>委托检验 </option>
+                        <option value=2 <php>if($type==2){echo 'selected';}</php>>抽样检验(型式检验)</option>
                     </select>
-
                 </div>
                 <div class="clearfix"></div>
             </div>
