@@ -1067,6 +1067,8 @@ class ContractController extends Controller
             'begin_time'=>$begin_time,
             'end_time'=>$end_time,
             'keyword'=>$keyword,
+            'user'=>$user,
+            'if_admin'=>$if_admin
         );
         //dump($body);
         $this->assign($body);

@@ -58,12 +58,12 @@
                         </if>
                     </td>
                     <td>
+                        <if condition="$user==10 || $if_admin==1">
                         <if condition="$con['doc_path']">
-                        <a href="{$con.doc_path}"  class="btn btn-primary btn-xs" >报告预览</a>
+                        <a href="{$con.doc_path}"  class="btn btn-primary btn-xs" >报告预览</a></if>
                         <if condition="$if_edit==1">
                         <if condition="$con['status']==8">
                             <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="confirmReport('{$con.centreno}')" >确认</a></if></if></if>
-                        <br />
                         <if condition="$if_edit==1">
                             <if condition="($con['ifedit'] == 1) and ($con['sub_status'] == 0)">
                                 <span style="color:green">申请修改中</span>
