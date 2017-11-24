@@ -27,12 +27,22 @@ class TestController extends Controller{
 
     //工作通知单显示
     public function infoShow(){
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $if_admin = $admin_auth['super_admin'];//是否是超级管理员
+        $user=$admin_auth['gid'];//判断是哪个角色
+        if($user==9 || $if_admin==1){
+            $gid=1;
+        }
+        else{
+            $gid=0;
+        }
         $keyword = I("id");//获取参数
         $where= "centreNo='{$keyword}'";
 
         $work_inform_form=M('work_inform_form');
         $result=$work_inform_form->where($where)->find();
-		
+        $contract_flow=D("contract_flow")->where($where)->field('status')->find();
+		$status=$contract_flow['status'];
 		//判断是否可以打印
 		$ifedit=M('contract')->where($where)->find();
         $sub_status=M('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$keyword.'")')->find();
@@ -44,6 +54,9 @@ class TestController extends Controller{
             'one'=>$result,
 			'ifedit'=>$ifedit,
 			'sub_status'=>$sub_status,
+            'status'=>$status,
+            'gid'=>$gid,
+            'user'=>$user,
         );
         $this->assign($body);
         $this->display();
