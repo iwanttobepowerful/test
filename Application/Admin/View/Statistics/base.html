@@ -70,7 +70,9 @@
 			<volist name="lists" id="one">
 				<tr>
 					<td>{$one.inner_sign_time|strtotime|date='Y年m月d日',###}</td>
-                    <td>{$one.centreno}</td>
+                    <td><if condition="$one[centreno1] or $one[centreno2] or $one[centreno3]">
+                        <span style="color: red"><i class="glyphicon glyphicon-star"></i>{$one.centreno}</span><else />
+                    <span>{$one.centreno}</span></if></td>
                     <td>{$one.clientname}</td>
                     <td>{$one.productunit}</td>
                     <td>{$one.samplename}</td>
