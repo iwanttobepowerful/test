@@ -60,6 +60,12 @@ class AuditController extends Controller {
             $where['r.if_outer']=0;
         }
         }
+        elseif($de =='B'){//报告修改申请
+            if(!empty($keyword)){
+                $where="r.centreno like '%{$keyword}% ' and r.if_outer=1";
+            }else{
+                $where['r.if_outer']=2;
+            }}
         elseif($de =='C'){//外部修改申请
             if(!empty($keyword)){
                 $where="r.centreno like '%{$keyword}% ' and r.if_outer=1";

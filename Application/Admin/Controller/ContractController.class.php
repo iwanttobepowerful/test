@@ -1108,6 +1108,29 @@ class ContractController extends Controller
         }
         $this->ajaxReturn($rs);
     }
+    //申请修改报告
+    public function doEditReport(){
+        $rs = array('msg'=>'fail');
+        $centreno = I('centreno');
+        $reason = I('reason');
+        $where['centreNo']=$centreno;
+        $type_status = I('type_status',2,'intval');
+        $data = array(
+            'centreNo'=>$centreno,
+            'reason'=>$reason,
+            'if_outer'=>$type_status
+        );
+        M()->startTrans();
+        if(D('report_feedback')->add($data)){
+            $rs['msg']='申请成功';
+            //申请中  审核单不可修改
+            M()->commit();
+        }else{
+            $rs['msg']='申请失败';
+            M()->rollback();
+        }
+        $this->ajaxReturn($rs);
+    }
 	//申请修改
 	public function doSubmitFeedback(){
 		$rs = array('msg'=>'fail');
