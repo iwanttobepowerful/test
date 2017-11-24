@@ -96,6 +96,7 @@ class AuditController extends Controller {
     //允许
     public function isAllow(){
         $centreno =I("centreno");
+        $de=I("de");
         $where= "centreno='{$centreno}'";
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
@@ -106,8 +107,13 @@ class AuditController extends Controller {
         );
         if ($user==13||$if_admin==1){//审核员和超级管理员的权限
             if(D("report_feedback")->where($where)->save($data)){
-                $rs['msg'] = 'succ';
+                if($de =='B'){
+                    $data1['status']=8;
+                    D("contract_flow")->where($where)->save($data1);
+                    $rs['msg'] = 'succ';
+                }
             }}
+
         $this->ajaxReturn($rs);
     }
     //拒绝
