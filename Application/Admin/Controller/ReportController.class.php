@@ -408,10 +408,12 @@ class ReportController extends Controller
         $id = I("id", 0, 'intval');
         if ($id) {
             $report = D('tpl')->where("id=" . $id)->find();
+            $type=$report['type'];
         }
 
         $body = array(
             'report' => $report,
+            'type'=>$type,
         );
         $this->assign($body);
         $this->display();
