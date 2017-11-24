@@ -140,11 +140,11 @@
               <input type="text" class="form-control"  name="centreNo" id="centreNo" readonly="readonly" size="9"/>
               <!--<input type="button" name="button2" id="button2" value="生成中心编码" />-->
               <input name="ifHighQuantity" type="checkbox" value="0" onClick="upVIPCode()"/>
-              是否为优质编码
+              前100号
               <div id="remainCode" style="display:none;color:red">
                 当前剩余量：<span id="remain"></span>
               </div>
-              <input type="checkbox" id="spec_checkbox" onclick="special_code()"/>申请特殊编码<br/>
+              <input type="checkbox" id="spec_checkbox" onclick="special_code()"/>申请咨询<br/>
               <!--<button class="btn btn-success" type="button" onclick="special_code()">申请特殊编码</button>-->
               <div>
               		<ul id="spe_code" style="display:none">
@@ -226,60 +226,56 @@
     
 </div>
 
-
-
-
-
 <div>
     <!-- 模态框（Modal) -->
     <div class="modal fade" id="editModal_A" tabindex="-1" role="dialog" aria-labelledby="editModal_A" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog" style="width:800px">
             <div class="modal-content">
-            <form class="form-horizontal" id="aform" action="" method="post">
+            <form class="form-inline" id="aform" action="" method="post">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="createModalLabel">本部门费用</h4>
+                    <h4 class="modal-title" id="createModalLabel">A部门费用</h4>
                 </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">类别</label>
-                        <div class="col-sm-7">
-                            <select name="meterial_A" class="form-control" id="meterial_A" onchange="setProOption('A')">
-                                <option value=0>请选择</option>
-                            </select>
+                <div class="modal-body" style="margin-bottom:5px; padding-bottom:0">
+                    <div class="search-form">
+                        <div class="form-group" style="margin-left:20px">
+                            <label>执行标准：</label>
+                            <input type="hidden" name="p" value="1" />
+                            <input type="text" class="form-control input-sm" name="criteria" />
+                            <button type="submit" class="btn btn-primary btn-sm" >查询</button>
                         </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">产品名称/标准号</label>
-                        <div class="col-sm-7">
-                            <select name="productname_A" class="form-control" id="productname_A" onchange="setItemOption('A')">
-                                <option value=0>请选择</option>
-                            </select>
-                        </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">测试项目</label>
-                        <div class="col-sm-7" id="items_A">
-                            
-                        </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">金额</label>
-                        <div class="col-sm-7" id='fee_A'>
-                            
-                        </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                	<div class="col-sm-1"></div>
-                    <div class="col-sm-11">
-                        <span style="color:red">注：带*字不包含在全项内</span>
-                    </div>           
-                </div>
+                    </div>
+                    <table class="table table-bordered table-striped table-hover" style="margin-bottom:1px">
+                        <thead>
+                            <th>材料</th>
+                            <th>执行标准</th>
+                            <th>产品名称</th>
+                            <th>测试项目</th>
+                            <th>单项费用(元)</th>
+                            <th>选择</th>
+                        </thead>
+                        <tbody>
+                        <volist name="fee_list" id="con">
+                            <tr>
+                                <td>{$con.meterial}</td>
+                                <td>{$con.criteria}</td>
+                                <td>{$con.productname}</td>
+                                <td>{$con.item}</td>
+                                <td>{$con.fee}</td>
+                                <td width="10%">
+                                    <input type="hidden" name="id" id="test_fee_id" value="{$con.id}" />
+                                    <button class="btn btn-info btn-xs" onclick="editFee({$con.id})">选择</button>
+                                </td>                     
+                            </tr>
+                        </volist>
+                        
+                        </tbody>
+                    </table>
+        			<div style="padding-left:24%"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
+                </div>          
                 <div class="modal-footer">
                     <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
+                    <div id="money_A"></div>
                     <button type="button" class="btn btn-primary" onclick="returnCost('A')" data-dismiss="modal">确定</button>
                 </div>
             </form>
@@ -759,6 +755,7 @@
 						num = re.numList;
 						html="";
 						for(var i =0;i<data.length;i++){
+							if(num[i]>0)
 							html+="<button  type='button' id='spec_li_"+i+"' class='btn btn-default btn-xs' onclick=choseSpe('"+i+"')><span id='code'>"+data[i]+"</span> 剩余量：<span id='remain_code'>"+num[i]+"</span>(含当前)</button><br/>";
 							
 						}
@@ -800,7 +797,7 @@
 		//本部门费用选
 		function Cost(de){
 			var modal = $("#editModal_"+de);
-			setMetOption(de);
+			//setMetOption(de);
 			modal.modal();
 
 		}
@@ -808,28 +805,25 @@
 		//获取费用选项(下面三个函数)
 		function setMetOption(de){
 			//alert($('#meterial_'+de+' option').size());
-
-			if($('#meterial_'+de+' option').size()<=1){
-				$.ajax({
-					url: "{:U('/admin/contract/findMetList')}",
-					dataType: 'json',
-					beforeSubmit: function(){
-						return true;
-					},
-					success: function (re) {
-						$('#meterial_'+de).find("option").remove();
-						var option = "<option value=0>请选择</option>";
+			$.ajax({
+				url: "{:U('/admin/contract/findMetList')}",
+				dataType: 'json',
+				beforeSubmit: function(){
+					return true;
+				},
+				success: function (re) {
+					$('#meterial_'+de).find("option").remove();
+					var option = "<option value=0>请选择</option>";
+					$('#meterial_'+de).append(option);
+					
+					data = re['meterial_list'];
+					for(var i=0;i<data.length;i++){
+						var meterial = data[i]['meterial'];
+						option = "<option value='"+meterial+"'>"+meterial+"</option>";
 						$('#meterial_'+de).append(option);
-						
-						data = re['meterial_list'];
-						for(var i=0;i<data.length;i++){
-							var meterial = data[i]['meterial'];
-							option = "<option value='"+meterial+"'>"+meterial+"</option>";
-							$('#meterial_'+de).append(option);
-						}
-					}	
-				});
-			}
+					}
+				}	
+			});
 		}
 		
 		function setProOption(de){

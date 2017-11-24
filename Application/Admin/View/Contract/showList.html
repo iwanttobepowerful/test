@@ -33,7 +33,13 @@
             <volist name="list" id="con">
                 <tr>
                     <td>{$con.collectdate}</td>
-                    <td>{$con.centreno}</td>
+                    <td>
+                    <if condition="$con['centreno1'] or $con['centreno2'] or $con['centreno3']" >
+                    	<span style="color: red"><i class="glyphicon glyphicon-star">{$con.centreno}</i></span>
+                    <else />
+                    	{$con.centreno}
+                    </if>
+                    </td>
                     <td>{$con.samplename}</td>
                     <td>{$con.productunit}</td>
                     <td>{$con.testcriteria}</td>
@@ -44,12 +50,15 @@
                         	<if condition="($con['ifedit'] == 0) OR (($con['ifedit'] == 1) and ($con['sub_status'] == 1)) ">
                        	 		<a href="{:U('/admin/contract/editContract')}?id={$con.centreno}&type_status={$con.status}" class="btn btn-info btn-xs" >修改</a>
                                 
-                            <elseif condition="($con['ifedit'] == 1) and !($con['sub_status'] == 1 or $con['sub_status'] == 0) "/>
+                            <elseif condition="($con['ifedit'] == 1) and !($con['sub_status'] == 1 or $con['sub_status'] == 0) and $con['status']!=6"/>
                             	<a href="#" class="btn btn-info btn-xs" onclick="return applyBack('{$con.centreno}',{$con.status})" >申请修改</a>
                             </if>
                         </if>
                         <if condition="$con['status']==6" >
                             <a href="/admin/contract/addorEditReport?id={$con.centreno}" class="btn btn-info btn-xs" >更改检验报告单</a>
+                        </if>
+                        <if condition="($con['centreno1'] or $con['centreno2'] or $con['centreno3']) and ($con['sub_status'] == 1 or $con['sub_status'] == 3)" >
+                            <a href="{:U('/admin/contract/reWriteTest')}?id={$con.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-list"></i>更改单</a>
                         </if>
                     	<a href="/admin/manager/contractDetail?id={$con.centreno}"  class="btn btn-info btn-xs" >检验受理合同</a>
        
