@@ -1317,7 +1317,7 @@ class ContractController extends Controller
 
     //费用列表
     public function findMetList(){
-		$criteria = I('criteria');
+		/*$criteria = I('criteria');
 		$list = D("test_fee")->where('criteria like "%'.$criteria.'%"')->limit("{$offset},{$pagesize}")->select();
 		$count = D("test_fee")->where('criteria like "%'.$criteria.'%"')->count();
         $Page= new \Think\Page($count,$pagesize);
@@ -1327,6 +1327,16 @@ class ContractController extends Controller
         $rs = array(
 			"fee_list"=>$list,
             'pagination'=>$pagination,
+        );
+        $this->ajaxReturn($rs);*/
+		$meterial_list=D("test_fee")->field("meterial")->group("meterial")->select();
+        if($productname!=0 && $meterial!=0){
+            $productname_list=D("test_fee")->field("productname")->where('meterial="'.meterial.'"')->group("productname")->select();
+        }
+
+        $rs = array(
+            "meterial_list"=>$meterial_list,
+            'productname_list'=>$productname_list,
         );
         $this->ajaxReturn($rs);
     }
