@@ -430,7 +430,6 @@ class TestController extends Controller{
         $centreno=I("centreno");
         $where= "centreno='{$centreno}'";
         $fileurl = I("fileurl");
-        $remark = I("remark");
         $result = array("msg"=>"fail");
 
         $admin_auth = session("admin_auth");//获取当前登录用户信息
@@ -444,7 +443,6 @@ class TestController extends Controller{
         $data = array(
             //"centreNo"=>$centreno,
             "path"=>$fileurl,
-            "remark"=>$remark,
             'modify_time'=>date("Y-m-d H:i:s"),
         );
         $distfile = convert2Pdf(ROOT_PATH,$data['path'],'pdf');
