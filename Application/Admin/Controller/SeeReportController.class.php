@@ -68,12 +68,12 @@ class SeeReportController extends Controller
                 //计数
                 $count = $report['find_count'] +1;
                 D("test_report")->where("id=".$report['id'])->save(array("find_count"=>$count));
-                @header("Location:{$pdf_path}");
-                /*
+                //@header("Location:{$pdf_path}");
+                
                 $body = array(
-                    'pdfUrl'=>$pdf_path,
+                    'pdfUrl'=>urlencode($pdf_path),
                 );
-                */
+                
             }
             $this->assign($body);
         }
