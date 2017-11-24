@@ -161,7 +161,7 @@ class TestReportController extends Controller
             }
 
             $src = "./Public/{$tpl['filename']}";
-            $dst = "./Public/attached/report/{$centreNo}.docx";
+            $dst = "./Public/attached/report/{$newCentreNo}.docx";
             if(@file_exists($dst)){
                 @unlink($dst);
             }
