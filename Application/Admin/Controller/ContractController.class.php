@@ -614,7 +614,7 @@ class ContractController extends Controller
     //申请修改完毕
     public function doUpdateEditState(){
         $centreno = I('centreno');
-		$type_status = I('type_status')==6?1:0;
+		$type_status = I('type_status');
 		
         $rs = array('msg'=>'fail');
         $where['centreNo']=$centreno;
@@ -622,7 +622,7 @@ class ContractController extends Controller
             "status"=>0
         );
 		
-		if($type_status == 1){
+		if($type_status == 6){
 			$data_apply['status']=7;
 			$contract = D("contract")->where($where)->find();
 			$data_contract = array();
@@ -638,26 +638,24 @@ class ContractController extends Controller
 				$data_contract['centreNo3']=$centreNoNew;
 			}
 			D('contract')->where($where)->save($data_contract);
-		} 
+		}else if($type_status == 3){
+			$data_apply['status']=4;
+		}
+		
+		
+		
         //M()->startTrans();
         D("contract_flow")->where($where)->save($data_apply);
         //D("report_feedback")->where($where)->delete();
 		
 		//修改完毕后，逻辑删除
-		$data_feedback = array(
-            "status"=>3
-        );
-		D("report_feedback")->where($where)->save($data_feedback);
-        //M()->commit();
+		if($type_status != 3){
+			$data_feedback = array(
+            	"status"=>3
+        	);
+			D("report_feedback")->where($where)->save($data_feedback);
+		}
         $rs['msg']='修改提交成功';
-        /*}else{
-            M()->rollback();
-            $rs['msg']='修改提交失败';
-        }
-    }else{
-        M()->rollback();
-        $rs['msg']='修改提交失败';
-    }*/
         $this->ajaxReturn($rs);
     }
 

@@ -47,7 +47,7 @@
                     <td width="33%">
                     	<!--<a href="{:U('/admin/contract/editContract')}?id={$con.centreno}" id="editContract" target="_blank" class="btn btn-info btn-xs" ><i class="glyphicon glyphicon-search"></i>修改</a>-->
                         <if condition="$if_edit==1">
-                        	<if condition="($con['ifedit'] == 0) OR (($con['ifedit'] == 1) and ($con['sub_status'] == 1)) ">
+                        	<if condition="($con['ifedit'] == 0) OR (($con['ifedit'] == 1) and ($con['sub_status'] == 1)) OR $con['status']==3">
                        	 		<a href="{:U('/admin/contract/editContract')}?id={$con.centreno}&type_status={$con.status}" class="btn btn-info btn-xs" >修改</a>
                                 
                             <elseif condition="($con['ifedit'] == 1) and !($con['sub_status'] == 1 or $con['sub_status'] == 0) and $con['status']!=6"/>
@@ -71,9 +71,9 @@
                         <if condition="$con.flow_id == -1">
                         	<a href="#"  class="btn btn-primary btn-xs" onclick="return doFinish('{$con.centreno}')">录入完毕</a>
                         </if>
-                        
+
                         <if condition="$if_edit==1">
-                       		<if condition="($con['ifedit'] == 1) and ($con['sub_status'] == 1)" >
+                       		<if condition="(($con['ifedit'] == 1) and ($con['sub_status'] == 1)) OR $con.status == 3" >
                                 <a href="#" class="btn btn-primary btn-xs"  onclick="doUpdateEditState('{$con.centreno}','{$con.status}')" >修改完毕</a>
                             </if>
                         </if>
