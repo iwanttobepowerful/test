@@ -143,6 +143,7 @@
 </div>
 <script type="text/javascript">
 $('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true });
+$("th").addClass("text-center");
 function details(centreno,clientname,productunit,samplename,testcriteria,testitem) {
     var modal = $("#detailModal");
     modal.find("input[name='clientname']").val(clientname);
