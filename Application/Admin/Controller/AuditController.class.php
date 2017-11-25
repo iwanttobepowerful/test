@@ -55,9 +55,9 @@ class AuditController extends Controller {
         $offset = ( $page-1 ) * $pagesize;
         if($de =='A'){//内部修改申请
         if(!empty($keyword)){
-            $where="r.centreno like '%{$keyword}% ' and r.if_outer=0";
+            $where="r.centreno like '%{$keyword}% ' and r.if_outer=0 and r.if_report=0";
         }else{
-            $where['r.if_outer']=0;
+            $where="r.if_outer and r.if_report=0";
         }
         }
         elseif($de =='B'){//报告修改申请
