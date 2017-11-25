@@ -1112,11 +1112,11 @@ class ContractController extends Controller
         $centreno = I('centreno');
         $reason = I('reason');
         $where['centreNo']=$centreno;
-        $type_status = I('type_status',2,'intval');
+        $type_status = I('type_status',1,'intval');
         $data = array(
             'centreNo'=>$centreno,
             'reason'=>$reason,
-            'if_outer'=>$type_status
+            'if_report'=>$type_status
         );
         M()->startTrans();
         if(D('report_feedback')->add($data)){
