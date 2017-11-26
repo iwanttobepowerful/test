@@ -27,32 +27,28 @@
             </form>
         </div>
       
-		<table class="table table-bordered table-striped table-hover">
+		<table class="table table-bordered table-striped table-hover" >
 			<thead>
-                <th>盖章日期</th>
-                <th>中心编号</th>
-                <th>委托单位</th>
-                <th>生产单位</th>
-                <th>样品名称</th>
-                <th>检验依据</th>
-                <th>检验内容及要求</th>
-                <th>应收金额(元)</th>
-                <th>A记录(元)</th>
-                <th>B记录(元)</th>
-                <th>C记录(元)</th>
-                <th>D记录(元)</th>
-                <th>E记录(元)</th>
-                <th>F记录(元)</th>
-                <th>副本(元)</th>
-                <th>上网费(元)</th>
-                <th>项目修改(元)</th>
-                <th>其它(元)</th>
+                <th width="7%">盖章日期</th>
+                <th width="10%">中心编号</th>
+                <th width="5%">详情</th>
+                <th width="7%">应收金额(元)</th>
+                <th width="6%">A记录(元)</th>
+                <th width="6%">B记录(元)</th>
+                <th width="6%">C记录(元)</th>
+                <th width="6%">D记录(元)</th>
+                <th width="6%">E记录(元)</th>
+                <th width="6%">F记录(元)</th>
+                <th width="5%">副本(元)</th>
+                <th width="6%">上网费(元)</th>
+                <th width="7%">项目修改(元)</th>
+                <th width="5%">其它(元)</th>
                 <th>来样日期</th>
-                <th>收样人</th>			
+                <th width="6%">收样人</th>
 			</thead>
 			<tbody>
                 <tr>
-                <td colspan="7">小计
+                <td colspan="3">小计
                 </td>
                 <td>{$sum.testcost|floatval}</td>
                 <td>{$sum.arecord|floatval}</td>
@@ -71,13 +67,9 @@
 				<tr>
 					<td>{$one.inner_sign_time|strtotime|date='Y年m月d日',###}</td>
                     <td><if condition="$one[centreno1] or $one[centreno2] or $one[centreno3]">
-                        <span style="color: red"><i class="glyphicon glyphicon-star"></i>{$one.centreno}</span><else />
+                        <span style="color: red"><i class="glyphicon glyphicon-star">{$one.centreno}</i></span><else />
                     <span>{$one.centreno}</span></if></td>
-                    <td>{$one.clientname}</td>
-                    <td>{$one.productunit}</td>
-                    <td>{$one.samplename}</td>
-                    <td>{$one.testcriteria}</td>
-                    <td>{$one.testitem}</td>
+                    <td><button class="btn btn-info btn-xs" onclick="details('{$one.centreno}','{$one.clientname}','{$one.productunit}','{$one.samplename}','{$one.testcriteria}','{$one.testitem}')"><i class="glyphicon glyphicon-search"></i>详情</button></td>
                     <td>{$one.testcost|floatval}</td>
                     <td>{$one.rarecord|floatval}</td>
                     <td>{$one.rbrecord|floatval}</td>
@@ -95,11 +87,71 @@
 			</volist>
 			</tbody>
 		</table>
+        <div class=" pull-left"><i class="glyphicon glyphicon-star" style="color: red">代表合同有变更</i></div>
 		<div class=" pull-right"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
 	</div>
 </div>
+
+<!-- 模态框（Modal) -->
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="createModalLabel" name="detail">详情</h4>
+                </div>
+                <div class="modal-body form-horizontal">
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">委托单位</label>
+                        <div class="col-sm-7">
+                            <input type="text" readonly class="form-control" name="clientname"  value=""/>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">生产单位</label>
+                        <div class="col-sm-7">
+                            <input type="text" readonly class="form-control" name="productunit"  value=""/>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">样品名称</label>
+                        <div class="col-sm-7">
+                            <input type="text" readonly class="form-control" name="samplename"  value=""/>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">检验依据</label>
+                        <div class="col-sm-7">
+                            <input type="text" readonly class="form-control" name="testcriteria"  value=""/>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">检验项目</label>
+                        <div class="col-sm-7">
+                            <textarea type="text" readonly class="form-control" name="testitem"  value="" ></textarea>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
 </div>
 <script type="text/javascript">
 $('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true });
+$("th").addClass("text-center");
+function details(centreno,clientname,productunit,samplename,testcriteria,testitem) {
+    var modal = $("#detailModal");
+    modal.find("input[name='clientname']").val(clientname);
+    modal.find("input[name='productunit']").val(productunit);
+    modal.find("input[name='samplename']").val(samplename);
+    modal.find("input[name='testcriteria']").val(testcriteria);
+    modal.find("textarea[name='testitem']").val(testitem);
+    modal.modal();
+}
 </script>
 <include file="Common:footer" />

@@ -33,8 +33,8 @@
                 <tr>
                     <td><if condition="$vo[centreno1] or $vo[centreno2] or $vo[centreno3]">
                         <span style="color: red"><i class="glyphicon glyphicon-star">{$vo.centreno}</i></span>
-                        <br />
-                        <a href="{:U('/admin/contract/reWriteTest')}?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-list"></i>更改单</a>
+                        <!--<br />
+                        <a href="{:U('/admin/contract/reWriteTest')}?id={$vo.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-list"></i>更改单</a>-->
                         <else />
                         <span>{$vo.centreno}</span></if>
                         <if condition="$vo.status eq 6">
@@ -56,6 +56,7 @@
             </volist>
             </tbody>
         </table>
+        <div class=" pull-left"><i class="glyphicon glyphicon-star" style="color: red">代表合同有变更</i></div>
         <div class=" pull-right"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
 
 

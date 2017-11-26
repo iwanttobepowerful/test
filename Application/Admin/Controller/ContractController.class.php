@@ -614,7 +614,7 @@ class ContractController extends Controller
     //申请修改完毕
     public function doUpdateEditState(){
         $centreno = I('centreno');
-		$type_status = I('type_status')==6?1:0;
+		$type_status = I('type_status');
 		
         $rs = array('msg'=>'fail');
         $where['centreNo']=$centreno;
@@ -622,7 +622,7 @@ class ContractController extends Controller
             "status"=>0
         );
 		
-		if($type_status == 1){
+		if($type_status == 6){
 			$data_apply['status']=7;
 			$contract = D("contract")->where($where)->find();
 			$data_contract = array();
@@ -638,26 +638,24 @@ class ContractController extends Controller
 				$data_contract['centreNo3']=$centreNoNew;
 			}
 			D('contract')->where($where)->save($data_contract);
-		} 
+		}else if($type_status == 3){
+			$data_apply['status']=4;
+		}
+		
+		
+		
         //M()->startTrans();
         D("contract_flow")->where($where)->save($data_apply);
         //D("report_feedback")->where($where)->delete();
 		
 		//修改完毕后，逻辑删除
-		$data_feedback = array(
-            "status"=>3
-        );
-		D("report_feedback")->where($where)->save($data_feedback);
-        //M()->commit();
+		if($type_status != 3){
+			$data_feedback = array(
+            	"status"=>3
+        	);
+			D("report_feedback")->where($where)->save($data_feedback);
+		}
         $rs['msg']='修改提交成功';
-        /*}else{
-            M()->rollback();
-            $rs['msg']='修改提交失败';
-        }
-    }else{
-        M()->rollback();
-        $rs['msg']='修改提交失败';
-    }*/
         $this->ajaxReturn($rs);
     }
 
@@ -1068,7 +1066,7 @@ class ContractController extends Controller
 
         //判断是接单还是签发
         //$ifstatus =
-        $list = D("contract_flow as c")->field('if(c.id is null,-1,c.id) as flow_id,if(r.status is null,-1,r.status) as sub_status,f.*,c.status,c.inner_sign_user_id,c.inner_sign_time,c.external_sign_time,c.takelist_user_id,c.takelist_time,u.name as takename,u1.name as innername,u2.name as externalname,v.doc_path,v.pdf_path')->join('left join contract as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on c.takelist_user_id=u.id LEFT JOIN common_system_user u2 on c.external_sign_user_id=u2.id LEFT JOIN common_system_user u1 on c.inner_sign_user_id=u1.id left join test_report as v on c.centreNo=v.centreNo LEFT JOIN (select * from report_feedback WHERE id in (select max(id) from report_feedback GROUP BY centreNo)) r on r.centreNo = c.centreNo' )
+        $list = D("contract_flow as c")->field('if(c.id is null,-1,c.id) as flow_id,if(r.status is null,-1,r.status) as sub_status,r.if_report,r.if_outer,f.*,c.status,c.inner_sign_user_id,c.inner_sign_time,c.external_sign_time,c.takelist_user_id,c.takelist_time,u.name as takename,u1.name as innername,u2.name as externalname,v.doc_path,v.pdf_path')->join('left join contract as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on c.takelist_user_id=u.id LEFT JOIN common_system_user u2 on c.external_sign_user_id=u2.id LEFT JOIN common_system_user u1 on c.inner_sign_user_id=u1.id left join test_report as v on c.centreNo=v.centreNo LEFT JOIN (select * from report_feedback WHERE id in (select max(id) from report_feedback GROUP BY centreNo)) r on r.centreNo = c.centreNo' )
             ->where($where)->order('c.takelist_all_time desc,f.id desc')->limit("{$offset},{$pagesize}")->select();
         $count = D("contract_flow as c")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
@@ -1105,6 +1103,29 @@ class ContractController extends Controller
         );
         if(D("contract_flow")->where($where)->save($data)){
             $rs['msg'] = 'succ';
+        }
+        $this->ajaxReturn($rs);
+    }
+    //申请修改报告
+    public function doEditReport(){
+        $rs = array('msg'=>'fail');
+        $centreno = I('centreno');
+        $reason = I('reason');
+        $where['centreNo']=$centreno;
+        $type_status = I('type_status',1,'intval');
+        $data = array(
+            'centreNo'=>$centreno,
+            'reason'=>$reason,
+            'if_report'=>$type_status
+        );
+        M()->startTrans();
+        if(D('report_feedback')->add($data)){
+            $rs['msg']='申请成功';
+            //申请中  审核单不可修改
+            M()->commit();
+        }else{
+            $rs['msg']='申请失败';
+            M()->rollback();
         }
         $this->ajaxReturn($rs);
     }
@@ -1172,6 +1193,9 @@ class ContractController extends Controller
 	//跳转更改检验报告单打印页面
 	public function reWriteTest(){
 		$centreNo = I('id');
+        $admin_auth = session("admin_auth");
+        $if_admin = $admin_auth['super_admin'];
+        $user = $admin_auth['gid'];
 		$one = D('inspection_report')->where('centreNo="'.$centreNo.'"')->find();
 		$update_item_list = explode("/&&/",$one['update_item']);
 		//pr($update_item_list);
@@ -1179,7 +1203,9 @@ class ContractController extends Controller
 		$body = array(
 			'one'=>$one,
 			'update_item_list'=>$update_item_list,
-			'imageurl'=>$imageurl
+			'imageurl'=>$imageurl,
+            'user'=>$user,
+            'if_admin'=>$if_admin
 		);
 		
 		$this->assign($body);
