@@ -1,5 +1,24 @@
 <include file="Common:header" title="后台首页"/>
+<script>
+$(function() {
+    $("#Brecord").click(function() {
+        $('#myModal').modal({
+            keyboard: true,
+        })
+    });
+});
 
+function valid(num) {
+	console.log(num)
+	var input_id = "#" + num;
+	var input_class = "." + num;
+	if($(input_id)[0].checked) {
+		$('#footer').append("<span class=" + num + ">" + $(input_id).val() + "&nbsp;&nbsp;&nbsp;</span>")
+	} else {
+		$(input_class).remove()
+	}
+}
+</script>
 <div id="page-wrapper">
 	<include file="Common:breadcrumb" />
     <div id="page-inner" class="container">
@@ -223,349 +242,145 @@
         <button class="btn btn-success" type="submit" id="check_list" onClick="doInputContract()">保存</button>
       </form>
     </div>
-    
+    <div>
+		<!-- 模态框（Modal） -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							&times;
+						</button>
+						<h4 class="modal-title" id="myModalLabel">
+							费用管理
+						</h4>
+						<div class="col-sm-10 search">
+							<input type="text" class="form-control col-sm-10" placeholder="请输入标准">
+							<button class="btn btn-primary search_btn">搜索</button>
+						</div>
+					</div>
+					<div class="modal-body main_content sco">
+						<!--折叠的大div，在一个大的id下折叠会相互影响，id与a标签的date-parent相关联-->
+						<div class="panel-group" id="accordion222">
+							<!--折叠一的面板，折叠一-->
+							<div class="panel panel-default">
+								<!--折叠一的头部-->
+								<div class="panel-heading">
+									<h4 class="panel-title">
+						                		<a data-toggle="collapse" data-parent="#accordion222" href="#collapseOne">
+						                			瓷墙地砖填缝剂JC/T1004-2006
+						                		</a>
+	            							</h4>
+								</div>
+								<!--折叠一的内容，id与a标签的href相关联-->
+								<div id="collapseOne" class="panel-collapse collapse">
+									<div class="panel-body">
+										<!--折叠一的内容的大div，id与a标签的date-parent相关联-->
+										<div class="panel-group" id="accordion">
+											<!--折叠一的折叠一的头部-->
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													<h4 class="panel-title">
+									                			<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne_A">
+									                				水泥基陶瓷墙地砖填缝剂
+									                			</a>
+			            									</h4>
+												</div>
+												<!--折叠一的折叠一的内容，id与a标签的href相关联-->
+												<div id="collapseOne_A" class="panel-collapse collapse">
+													<div class="panel-body">
+														<form class="checkbox-inlin" role="form">
+															<input type="checkbox" id="inlineCheckbox1" value="耐磨损性/800（元）" onchange="valid(this.id)"> 耐磨损性
+															<input type="checkbox" id="inlineCheckbox2" value="收缩值/500（元）" onchange="valid(this.id)"> 收缩值
+															<input type="checkbox" id="inlineCheckbox3" value="标准抗折强度/300（元）" onchange="valid(this.id)"> 标准抗折强度
+															<input type="checkbox" id="inlineCheckbox4" value="标准抗压强度/300（元）" onchange="valid(this.id)"> 标准抗压强度
+															<input type="checkbox" id="inlineCheckbox5" value="冻融循环抗折强度/600（元）" onchange="valid(this.id)"> 冻融循环抗折强度
+															<input type="checkbox" id="inlineCheckbox6" value="冻融循环抗压强度/600（元）" onchange="valid(this.id)"> 冻融循环抗压强度
+															<input type="checkbox" id="inlineCheckbox7" value="吸水量(30min)/500（元）" onchange="valid(this.id)"> 吸水量(30min)
+															<input type="checkbox" id="inlineCheckbox8" value="吸水量(240min)/500（元）" onchange="valid(this.id)"> 吸水量(240min)
+															<input type="checkbox" id="inlineCheckbox9" value="标准试验条件24h抗压强度/200（元）" onchange="valid(this.id)"> 标准试验条件24h抗压强度
+															<input type="checkbox" id="inlineCheckbox10" value="横向变形/300（元）" onchange="valid(this.id)"> 横向变形
+															<input type="checkbox" id="inlineCheckbox11" value="高耐磨性/200（元）" onchange="valid(this.id)"> 高耐磨性
+															<input type="checkbox" id="inlineCheckbox12" value="30min低吸水量/300（元）" onchange="valid(this.id)"> 30min低吸水量
+															<input type="checkbox" id="inlineCheckbox13" value="240min低吸水量/300（元）" onchange="valid(this.id)"> 240min低吸水量
+														</form>
+													</div>
+												</div>
+											</div>
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													<h4 class="panel-title">
+								                				<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne_B">
+								                					点击我再次展开第一部分的子部分
+								                				</a>
+		            										</h4>
+												</div>
+												<div id="collapseOne_B" class="panel-collapse collapse">
+													<div class="panel-body">
+														Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--折叠二-->
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+								                <a data-toggle="collapse" data-parent="#accordion222" href="#collapseTwo">
+								                	混凝土地面用水泥基耐磨材料JC/T906-2002
+								            	</a>
+							            	</h4>
+								</div>
+								<div id="collapseTwo" class="panel-collapse collapse">
+									<div class="panel-body">
+										Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+									</div>
+								</div>
+							</div>
+							<!--折叠三-->
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+								                <a data-toggle="collapse" data-parent="#accordion222" href="#collapseThree">
+								                	预拌砂浆GB/T 25181-2010 、建筑砂浆基本性能试验方法标准JGJ/T70-2009
+								                </a>
+							            	</h4>
+								</div>
+								<div id="collapseThree" class="panel-collapse collapse">
+									<div class="panel-body">
+										Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+									</div>
+								</div>
+							</div>
+                            <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+											<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+											<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+										
+						</div>
+					</div>
+					<div class="modal-footer">
+						<div class="select_opion" id="footer">
+
+						</div>
+						<p class="fis">总金额：<span></span></p>
+						<button type="button" class="btn btn-default" data-dismiss="modal">
+							关闭
+						</button>
+						<button type="button" class="btn btn-primary">
+							提交更改
+						</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal -->
+		</div>
+    </div>
 </div>
 
-<div>
-    <!-- 模态框（Modal) -->
-    <div class="modal fade" id="editModal_A" tabindex="-1" role="dialog" aria-labelledby="editModal_A" aria-hidden="true">
-        <div class="modal-dialog" style="width:800px">
-            <div class="modal-content">
-            <form class="form-inline" id="aform" action="" method="post">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="createModalLabel">A部门费用</h4>
-                </div>
-                <div class="modal-body" style="margin-bottom:5px; padding-bottom:0">
-                    <div class="search-form">
-                        <div class="form-group" style="margin-left:20px">
-                            <label>执行标准：</label>
-                            <input type="hidden" name="p" value="1" />
-                            <input type="text" class="form-control input-sm" name="criteria" />
-                            <button type="submit" class="btn btn-primary btn-sm" >查询</button>
-                        </div>
-                    </div>
-                    <table class="table table-bordered table-striped table-hover" style="margin-bottom:1px">
-                        <thead>
-                            <th>材料</th>
-                            <th>执行标准</th>
-                            <th>产品名称</th>
-                            <th>测试项目</th>
-                            <th>单项费用(元)</th>
-                            <th>选择</th>
-                        </thead>
-                        <tbody>
-                        <volist name="fee_list" id="con">
-                            <tr>
-                                <td>{$con.meterial}</td>
-                                <td>{$con.criteria}</td>
-                                <td>{$con.productname}</td>
-                                <td>{$con.item}</td>
-                                <td>{$con.fee}</td>
-                                <td width="10%">
-                                    <input type="hidden" name="id" id="test_fee_id" value="{$con.id}" />
-                                    <button class="btn btn-info btn-xs" onclick="editFee({$con.id})">选择</button>
-                                </td>                     
-                            </tr>
-                        </volist>
-                        
-                        </tbody>
-                    </table>
-        			<div style="padding-left:24%"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
-                </div>          
-                <div class="modal-footer">
-                    <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
-                    <div id="money_A"></div>
-                    <button type="button" class="btn btn-primary" onclick="returnCost('A')" data-dismiss="modal">确定</button>
-                </div>
-            </form>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-</div>
-<div>
-    <!-- 模态框（Modal) -->
-    <div class="modal fade" id="editModal_B" tabindex="-1" role="dialog" aria-labelledby="editModal_B" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <form class="form-horizontal" id="myform" action="" method="post">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="createModalLabel">本部门费用</h4>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">类别</label>
-                        <div class="col-sm-7">
-                            <select name="meterial_B" class="form-control" id="meterial_B" onchange="setProOption('B')">
-                                <option value=0>请选择</option>
-                            </select>
-                        </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">产品名称/标准号</label>
-                        <div class="col-sm-7">
-                            <select name="productname_B" class="form-control" id="productname_B" onchange="setItemOption('B')">
-                                <option value=0>请选择</option>
-                            </select>
-                        </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">测试项目</label>
-                        <div class="col-sm-7" id="items_B">
-                            
-                        </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">金额</label>
-                        <div class="col-sm-7" id='fee_B'>
-                            
-                        </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                	<div class="col-sm-1"></div>
-                    <div class="col-sm-11">
-                        <span style="color:red">注：带*字不包含在全项内</span>
-                    </div>           
-                </div>
-                <div class="modal-footer">
-                    <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
-                    <button type="button" class="btn btn-primary" onclick="returnCost('B')" data-dismiss="modal">确定</button>
-                </div>
-            </form>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-</div>
-
-<div>
-    <!-- 模态框（Modal) -->
-    <div class="modal fade" id="editModal_C" tabindex="-1" role="dialog" aria-labelledby="editModal_C" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <form class="form-horizontal" id="myform" action="" method="post">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="createModalLabel">本部门费用</h4>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">类别</label>
-                        <div class="col-sm-7">
-                            <select name="meterial_C" class="form-control" id="meterial_C" onchange="setProOption('C')">
-                                <option value=0>请选择</option>
-                            </select>
-                        </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">产品名称/标准号</label>
-                        <div class="col-sm-7">
-                            <select name="productname_C" class="form-control" id="productname_C" onchange="setItemOption('C')">
-                                <option value=0>请选择</option>
-                            </select>
-                        </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">测试项目</label>
-                        <div class="col-sm-7" id="items_C">
-                            
-                        </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">金额</label>
-                        <div class="col-sm-7" id='fee_C'>
-                            
-                        </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                	<div class="col-sm-1"></div>
-                    <div class="col-sm-11">
-                        <span style="color:red">注：带*字不包含在全项内</span>
-                    </div>           
-                </div>
-                <div class="modal-footer">
-                    <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
-                    <button type="button" class="btn btn-primary" onclick="returnCost('C')" data-dismiss="modal">确定</button>
-                </div>
-            </form>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-</div>
-
-<div>
-    <!-- 模态框（Modal) -->
-    <div class="modal fade" id="editModal_D" tabindex="-1" role="dialog" aria-labelledby="editModal_D" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <form class="form-horizontal" id="myform" action="" method="post">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="createModalLabel">本部门费用</h4>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">类别</label>
-                        <div class="col-sm-7">
-                            <select name="meterial_D" class="form-control" id="meterial_D" onchange="setProOption('D')">
-                                <option value=0>请选择</option>
-                            </select>
-                        </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">产品名称/标准号</label>
-                        <div class="col-sm-7">
-                            <select name="productname_D" class="form-control" id="productname_D" onchange="setItemOption('D')">
-                                <option value=0>请选择</option>
-                            </select>
-                        </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">测试项目</label>
-                        <div class="col-sm-7" id="items_D">
-                            
-                        </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">金额</label>
-                        <div class="col-sm-7" id='fee_D'>
-                            
-                        </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                	<div class="col-sm-1"></div>
-                    <div class="col-sm-11">
-                        <span style="color:red">注：带*字不包含在全项内</span>
-                    </div>           
-                </div>
-                <div class="modal-footer">
-                    <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
-                    <button type="button" class="btn btn-primary" onclick="returnCost('D')" data-dismiss="modal">确定</button>
-                </div>
-            </form>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-</div>
-
-<div>
-    <!-- 模态框（Modal) -->
-    <div class="modal fade" id="editModal_E" tabindex="-1" role="dialog" aria-labelledby="editModal_E" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <form class="form-horizontal" id="myform" action="" method="post">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="createModalLabel">本部门费用</h4>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">类别</label>
-                        <div class="col-sm-7">
-                            <select name="meterial_E" class="form-control" id="meterial_E" onchange="setProOption('E')">
-                                <option value=0>请选择</option>
-                            </select>
-                        </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">产品名称/标准号</label>
-                        <div class="col-sm-7">
-                            <select name="productname_E" class="form-control" id="productname_E" onchange="setItemOption('E')">
-                                <option value=0>请选择</option>
-                            </select>
-                        </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">测试项目</label>
-                        <div class="col-sm-7" id="items_E">
-                            
-                        </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">金额</label>
-                        <div class="col-sm-7" id='fee_E'>
-                            
-                        </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                	<div class="col-sm-1"></div>
-                    <div class="col-sm-11">
-                        <span style="color:red">注：带*字不包含在全项内</span>
-                    </div>           
-                </div>
-                <div class="modal-footer">
-                    <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
-                    <button type="button" class="btn btn-primary" onclick="returnCost('E')" data-dismiss="modal">确定</button>
-                </div>
-            </form>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-</div>
-
-<div>
-    <!-- 模态框（Modal) -->
-    <div class="modal fade" id="editModal_F" tabindex="-1" role="dialog" aria-labelledby="editModal_F" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <form class="form-horizontal" id="myform" action="" method="post">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="createModalLabel">本部门费用</h4>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">类别</label>
-                        <div class="col-sm-7">
-                            <select name="meterial_F" class="form-control" id="meterial_F" onchange="setProOption('F')">
-                                <option value=0>请选择</option>
-                            </select>
-                        </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">产品名称/标准号</label>
-                        <div class="col-sm-7">
-                            <select name="productname_F" class="form-control" id="productname_F" onchange="setItemOption('F')">
-                                <option value=0>请选择</option>
-                            </select>
-                        </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">测试项目</label>
-                        <div class="col-sm-7" id="items_F">
-                            
-                        </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">金额</label>
-                        <div class="col-sm-7" id='fee_F'>
-                            
-                        </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                	<div class="col-sm-1"></div>
-                    <div class="col-sm-11">
-                        <span style="color:red">注：带*字不包含在全项内</span>
-                    </div>           
-                </div>
-                <div class="modal-footer">
-                    <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
-                    <button type="button" class="btn btn-primary" onclick="returnCost('F')" data-dismiss="modal">确定</button>
-                </div>
-            </form>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-</div>
 <script src="__PUBLIC__/static/js/jquery.form.js"></script>
 <script type="text/javascript">
 		//生成中心编码

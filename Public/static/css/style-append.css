@@ -168,7 +168,15 @@ input:-webkit-autofill {-webkit-box-shadow: 0 0 0px 1000px white inset;outline:n
 /**合同录入**/
 #page-wrapper .hint {font-family: simhei;font-size: 13pt;color:#858585;display:inline-block;}
 #page-wrapper .two-col {width:50%;display:inline-block}
-#page-wrapper .modal-body{margin-bottom:1px}
+#page-wrapper .main_content{height: 555px;}
+#page-wrapper .modal-header{height: 100px;}
+#page-wrapper .sco{overflow: auto;}
+#page-wrapper .search{margin-top: 13pt;padding-left: 0;}
+#page-wrapper .form-control{width: 60%;}
+#page-wrapper .search_btn{margin-left: 5pt;}
+#page-wrapper .select_opion{text-align: left;}
+#page-wrapper .fis{text-align: left;margin-top: 5pt;}
+#page-wrapper .modal-dialog{width: 888px;}
 /**登陆**/
 .loginbox {padding-top:0px}
 /*.loginbox .top {margin-left:25%}
