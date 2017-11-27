@@ -177,7 +177,7 @@ function valid(num) {
                   <p align="center">参考价格</p>
                   <input name="Arecord" type="text" class="form-control"  id="Arecord" size="5" placeholder="A部门" readonly   onClick="Cost('A')"/>
                   <br/>
-                  <input name="Brecord" type="text" class="form-control"  id="Brecord" size="5" placeholder="B部门" readonly  onClick="Cost('B')"/>
+                  <input name="Brecord" type="text" class="form-control"  id="Brecord" size="5" placeholder="B部门" readonly />
                   <br/>
                   <input name="Crecord" type="text" class="form-control"  id="Crecord" size="5" placeholder="C部门" readonly  onClick="Cost('C')"/>
                   <br/>
@@ -255,8 +255,8 @@ function valid(num) {
 							费用管理
 						</h4>
 						<div class="col-sm-10 search">
-							<input type="text" class="form-control col-sm-10 standard" placeholder="请输入标准">
-							<button class="btn btn-primary search_btn">搜索</button>
+							<input type="text" class="form-control col-sm-10 standard" placeholder="请输入标准号" id="criteria">
+							<button class="btn btn-primary search_btn"  onclick="findCriteria()" >搜索</button>
 						</div>
 					</div>
 					<div class="modal-body main_content sco">
@@ -267,10 +267,10 @@ function valid(num) {
 								<!--折叠一的头部-->
 								<div class="panel-heading">
 									<h4 class="panel-title">
-						                		<a data-toggle="collapse" data-parent="#accordion222" href="#collapseOne">
-						                			瓷墙地砖填缝剂JC/T1004-2006
-						                		</a>
-	            							</h4>
+                                        <a data-toggle="collapse" data-parent="#accordion222" href="#collapseOne">
+                                            瓷墙地砖填缝剂JC/T1004-2006
+                                        </a>
+                                    </h4>
 								</div>
 								<!--折叠一的内容，id与a标签的href相关联-->
 								<div id="collapseOne" class="panel-collapse collapse">
@@ -329,10 +329,10 @@ function valid(num) {
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title">
-								                <a data-toggle="collapse" data-parent="#accordion222" href="#collapseTwo">
-								                	混凝土地面用水泥基耐磨材料JC/T906-2002
-								            	</a>
-							            	</h4>
+                                        <a data-toggle="collapse" data-parent="#accordion222" href="#collapseTwo">
+                                            混凝土地面用水泥基耐磨材料JC/T906-2002
+                                        </a>
+                                    </h4>
 								</div>
 								<div id="collapseTwo" class="panel-collapse collapse">
 									<div class="panel-body">
@@ -344,21 +344,17 @@ function valid(num) {
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title">
-								                <a data-toggle="collapse" data-parent="#accordion222" href="#collapseThree">
-								                	预拌砂浆GB/T 25181-2010 、建筑砂浆基本性能试验方法标准JGJ/T70-2009
-								                </a>
-							            	</h4>
+                                        <a data-toggle="collapse" data-parent="#accordion222" href="#collapseThree">
+                                            预拌砂浆GB/T 25181-2010 、建筑砂浆基本性能试验方法标准JGJ/T70-2009
+                                        </a>
+                                    </h4>
 								</div>
 								<div id="collapseThree" class="panel-collapse collapse">
 									<div class="panel-body">
 										Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
 									</div>
 								</div>
-							</div>
-                            <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-											<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-											<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-										
+							</div>										
 						</div>
 					</div>
 					<div class="modal-footer">
@@ -617,7 +613,7 @@ function valid(num) {
 
 		}
 		
-		//获取费用选项(下面三个函数)
+/*		//获取费用选项(下面三个函数)
 		function setMetOption(de){
 			//alert($('#meterial_'+de+' option').size());
 			$.ajax({
@@ -708,7 +704,40 @@ function valid(num) {
 				});
 			}
 		}
-			
+*/	
+
+		//查询标准号
+		function findCriteria(){
+			var criteria = $("#criteria").val();
+			$.ajax({
+				url: "{:U('/admin/contract/findCriteria')}",
+				dataType: 'json',
+				data:{'criteria':criteria},
+				beforeSubmit: function(){
+					return true;
+				},
+				success: function (re) {
+					var html_list="";		
+					data_criteria = re['criteria_list'];
+					data_productname = re['productname_list'];
+					for(var i = 0;i<data_criteria.length;i++){
+						var html_productname = "";
+						for(var j=0;j<data_productname[i].length;j++){
+							data_productname[i][j]['productname'];
+							html_productname += '<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion_'+i+'" href="#collapseOne_'+i+j+'">'+data_productname[i][j]['productname']+'</a></h4></div></div>';
+							
+						}
+						html_list += '<div class="panel panel-default" id="fee_list_'+i+'"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion222" href="#collapseOne_'+i+'">'+data_criteria[i]['criteria']+'</a></h4></div><div id="collapseOne_'+i+'" class="panel-collapse collapse"><div class="panel-body"><div class="panel-group" id="accordion_'+i+'">'+html_productname+'</div></div></div></div>';
+						$("#accordion222").html(html_list);
+
+					}
+				}	
+			});
+
+		}
+		
+		
+				
 		//计算本部门费用--单项选择
 		function checkFee(de){
 			cash = 0;
