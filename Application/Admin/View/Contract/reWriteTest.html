@@ -252,6 +252,7 @@
                 <img src="{$imageurl}" class="picture" />              
             </div>
         </if>
-		<button onclick="window.print()" class="Noprint btn btn-primary final">打印</button>
+		<if condition="$user neq 9 and $user neq 13 and $user neq 15">
+		<button onclick="window.print()" class="Noprint btn btn-primary final">打印</button></if>
 	</body>
 </html>
