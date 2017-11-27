@@ -642,8 +642,6 @@ class ContractController extends Controller
 			$data_apply['status']=4;
 		}
 		
-		
-		
         //M()->startTrans();
         D("contract_flow")->where($where)->save($data_apply);
         //D("report_feedback")->where($where)->delete();
