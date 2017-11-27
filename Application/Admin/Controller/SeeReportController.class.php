@@ -56,13 +56,18 @@ class SeeReportController extends Controller
     public function pdf(){
         $centreno = I('no');
         if($centreno){
-            $report = D('test_report')->where("centreno='{$centreno}'")->find();
+            $contract = D("contract")->where("centreno='{$centreno}' or centreno1='{$centreno}' or centreno2='{$centreno}' or centreno3='{$centreno}'")->find();
+
+            $report = D('test_report')->where("centreno='{$contract['centreno']}'")->find();
+
             $pdf_path=$report['pdf_path'];
             if(strpos($pdf_path,'http')===false){
 
-                $pdf_path = getCurrentHost().$pdf_path;
+                 $pdf_path = getCurrentHost().$pdf_path;
+                //df_path = 'http://adm.qooce.cn'.$pdf_path;
             }
-            $data=D("contract_flow")->where("centreno='{$centreno}'")->find();//查中心编号对应的状态
+       
+            $data=D("contract_flow")->where("centreno='{$contract['centreno']}'")->find();//查中心编号对应的状态
             $status=$data['status'];
             if($status==6){
                 //计数
@@ -73,7 +78,6 @@ class SeeReportController extends Controller
                 $body = array(
                     'pdfUrl'=>urlencode($pdf_path),
                 );
-                
             }
             $this->assign($body);
         }
