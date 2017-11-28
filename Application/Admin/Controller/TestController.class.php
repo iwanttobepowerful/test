@@ -57,6 +57,7 @@ class TestController extends Controller{
             'status'=>$status,
             'gid'=>$gid,
             'user'=>$user,
+            'if_admin'=>$if_admin
         );
         $this->assign($body);
         $this->display();
@@ -461,28 +462,27 @@ class TestController extends Controller{
         //$distfile = "/Public/attached/2017-11-21/SJ-4-77_2017_01.pdf";
         //转image,在测试服务器上测试，本地需要配置环境
         //demo
-        $imageFiles = convertPdf2Image(ROOT_PATH,$distfile);
-        
+        $imageFiles = convertPdf2Image(ROOT_PATH,$distfile,$centreno);
         if($imageFiles){
             //转换成功,合并二维码
             //第一页
             if(file_exists($imageFiles[0]) && file_exists(ROOT_PATH . $report['qrcode_path'])){
                 $baseinfo = pathinfo($imageFiles[0]);
                 $saveFile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-tmp.'.$baseinfo['extension'];
-                waterMark($imageFiles[0],ROOT_PATH . $report['qrcode_path'],$saveFile,array(2048,2856));
+                waterMark($imageFiles[0],ROOT_PATH . $report['qrcode_path'],$saveFile,array(2048,3160));
                 @rename($saveFile,$imageFiles[0]);
             }
             //最后一页
             if(count($imageFiles) >1 && file_exists($imageFiles[count($imageFiles)-1]) && file_exists(ROOT_PATH . $report['qrcode_path'])){
                 $baseinfo = pathinfo($imageFiles[count($imageFiles)-1]);
                 $saveFile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-tmp.'.$baseinfo['extension'];
-                waterMark($imageFiles[count($imageFiles)-1],ROOT_PATH . $report['qrcode_path'],$saveFile,array(2048,2356));
+                waterMark($imageFiles[count($imageFiles)-1],ROOT_PATH . $report['qrcode_path'],$saveFile,array(1948,2870));
                 @rename($saveFile,$imageFiles[count($imageFiles)-1]);
             }
 
             //再转换成pdf
             $pdf = './Public/attached/report/'.$centreno.'.pdf';
-            convertImageToPdf(ROOT_PATH,$pdf,$imageFiles);
+            convertImageToPdf(ROOT_PATH,substr($pdf,1),$imageFiles);
 
             $imgFiles = $imageFiles;
             //对外签加公章
@@ -490,13 +490,13 @@ class TestController extends Controller{
 
                 $baseinfo = pathinfo($imageFiles[0]);
                 $tmpSavefile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-mark.'.$baseinfo['extension'];
-                waterMark($imageFiles[0],'./Public/static/images/sealA.png',$tmpSavefile,array(700,2500));
+                waterMark($imageFiles[0],'./Public/static/images/sealB.png',$tmpSavefile,array(700,2700));
                 //第二个公章
                 $tmpSavefile2 = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-mark2.'.$baseinfo['extension'];
-                waterMark($tmpSavefile,'./Public/static/images/sealB.png',$tmpSavefile2,array(1300,2500));
+                waterMark($tmpSavefile,'./Public/static/images/sealA.png',$tmpSavefile2,array(1300,2700));
                 //左上角章
                 $tmpSavefile3 = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-sign.'.$baseinfo['extension'];
-                waterMark($tmpSavefile2,'./Public/static/images/sign.png',$tmpSavefile3,array(100,100));
+                waterMark($tmpSavefile2,'./Public/static/images/sign.png',$tmpSavefile3,array(350,60));
                 //带mark的pdf
                 @rename($tmpSavefile3,$imageFiles[0]);
 
@@ -511,14 +511,14 @@ class TestController extends Controller{
                 waterMark($imageFiles[1],'./Public/static/images/sealA.png',$tmpSavefile,array(1600,2400));
                 //左上角章
                 $tmpSavefile2 = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-sign2.'.$baseinfo['extension'];
-                waterMark($tmpSavefile,'./Public/static/images/sign.png',$tmpSavefile2,array(100,100));
+                waterMark($tmpSavefile,'./Public/static/images/sign.png',$tmpSavefile2,array(350,0));
                 @rename($tmpSavefile2,$imageFiles[1]);               
 
                 $imgFiles[] = $tmpSavefile;
 
                 //再转换成pdf
                 $signPdf = './Public/attached/report/'.$centreno.'-sign.pdf';
-                convertImageToPdf(ROOT_PATH,$signPdf,$imageFiles);
+                convertImageToPdf(ROOT_PATH,substr($signPdf,1),$imageFiles,1024);
 
                 $imgFiles[] = $tmpSavefile;
                 $imgFiles[] = $tmpSavefile2;

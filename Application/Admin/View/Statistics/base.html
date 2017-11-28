@@ -69,7 +69,7 @@
                     <td><if condition="$one[centreno1] or $one[centreno2] or $one[centreno3]">
                         <span style="color: red"><i class="glyphicon glyphicon-star">{$one.centreno}</i></span><else />
                     <span>{$one.centreno}</span></if></td>
-                    <td><button class="btn btn-info btn-xs" onclick="details('{$one.centreno}','{$one.clientname}','{$one.productunit}','{$one.samplename}','{$one.testcriteria}','{$one.testitem}')"><i class="glyphicon glyphicon-search"></i>详情</button></td>
+                    <td><button class="btn btn-info btn-xs" onclick="details('{$one.centreno}','{$one.clientname}','{$one.productunit}','{$one.samplename}','{$one.testcriteria}','{$one.testitem}')">详情</button></td>
                     <td>{$one.testcost|floatval}</td>
                     <td>{$one.rarecord|floatval}</td>
                     <td>{$one.rbrecord|floatval}</td>

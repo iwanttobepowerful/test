@@ -11,6 +11,7 @@
 				margin: 0 auto;
 				width: 90%;
 				height: 88%;
+                border: #000000 solid 2px;
 			}
 			
 			.middle {
@@ -21,8 +22,11 @@
 			
 			td {
 				text-align: center;
+                border: solid #000000 1px;
 			}
-			
+			.no_border{
+			     border:none;
+			}
 			.en {
 				font-family: "times new roman";
 			}
@@ -136,7 +140,7 @@
 		<div class="page">
 			<table class="head_title">
 				<tr>
-					<td>
+					<td class="no_border">
 						<font class="notice_head">检验工作通知单</font>
 					</td>
 				</tr>
@@ -144,10 +148,10 @@
 			</table>
 			<table class="middle">
 				<tr>
-					<td class="en" style="text-align: left;">SJ－4－25</td>
+					<td class="en no_border" style="text-align: left;">SJ－4－25</td>
 				</tr>
 			</table>
-			<table border="3" class="not">
+			<table class="not">
 				<tr>
 					<td class="notice_one_col cn">中心编号</td>
 					<td class="notice_two_col"><span class="notice_txt">
@@ -222,7 +226,7 @@
 				</tr>
 			</table>
 		</div>
-		<if condition="$user eq 7">
+		<if condition="$user eq 7 or $if_admin eq 1">
         <if condition="$ifedit['ifedit']==0 OR $sub_status['status']==1">
 			<button onclick="window.print()" class="Noprint btn btn-primary final" disabled>打印</button>
 			<else />

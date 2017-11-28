@@ -23,7 +23,16 @@ class ReportController extends Controller
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
-        //$role = D('common_role')->where('id='.$user)->find();
+        $useraudit=$admin_auth['audit'];
+        $where="contract_flow.status =2";
+        if(!empty($useraudit)){
+            $data=explode(',',$useraudit);
+            foreach($data as $v){
+                $s .="'".$v."',";
+            }
+            $s=substr($s,0,-1);//利用字符串截取函数消除最后一个逗号
+            $where .=" and SUBSTR(contract_flow.centreno,7,1) in({$s})";
+        }
         if($user==8 || $if_admin==1 || $user==13) {//只有领导，审核人员，超级管理员才能审核
             $view="";
         }else{
@@ -34,7 +43,6 @@ class ReportController extends Controller
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
         $contract_flow=M("contract_flow");//实例化对象
-        $where['contract_flow.status'] = 2;
         $rs=$contract_flow->where($where)
             ->join('left join common_system_user ON contract_flow.uploadreport_user_id = common_system_user.id left join test_report on contract_flow.centreno=test_report.centreno left join contract as a on contract_flow.centreno=a.centreno')
             ->field('contract_flow.id,contract_flow.centreNo,contract_flow.status,contract_flow.uploadreport_time,common_system_user.name,test_report.pdf_path,a.centreno1,a.centreno2,a.centreno3')
@@ -58,7 +66,6 @@ class ReportController extends Controller
         $id =I("id",0,'intval');
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
-        $userid=$admin_auth['id'];
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
         //$role = D('common_role')->where('id='.$user)->find();
