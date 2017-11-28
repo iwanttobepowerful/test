@@ -16,6 +16,7 @@
 				margin: 0 auto;
 				width: 85%;
 				height: 80%;
+                border: solid #000000 1px;
 			}
 			
 			.middle {
@@ -88,7 +89,11 @@
 			
 			td {
 				text-align: center;
+                border: solid #000000 1px;
 			}
+            .no_border{
+                border: none;
+            }
 			
 			.logo {
 				width: 10%;
@@ -134,10 +139,11 @@
 				font-size: 10.5pt;
 			}
             .picture{
-            max-width: 100%;
-            display: block;
-            margin: 0 auto;
-            max-height: 100%;
+                max-width: 88%;
+                display: block;
+                margin: 0 auto;
+                margin-top:33px;
+                max-height: 88%;
             }
            .final{
                 display: block;
@@ -185,8 +191,8 @@
             <input type="hidden" name="centreno" value="{$one.centreno}">
 			<table class="head_title">
 				<tr>
-					<td class="logo" align="center"><img class="img_logo" src="__PUBLIC__/imgs/logo.png" /></td>
-					<td style="padding-top: 17pt; padding-right: 13pt;">
+					<td class="logo no_border" align="center"><img class="img_logo" src="__PUBLIC__/imgs/logo.png" /></td>
+					<td class="no_border" style="padding-top: 17pt; padding-right: 13pt;">
 						<p class="sample_title_txt">(国家)建筑材料工业技术监督研究中心</p>
 						<p class="sample_title_txt">抽 样 单</p>
 					</td>
@@ -194,16 +200,16 @@
 			</table>
 			<table class="middle">
 				<tr>
-					<td style="width: 60%;text-align: left;">
+					<td class="no_border" style="width: 60%;text-align: left;">
 						<font class="en">SJ－4－25</font>
 					</td>
-					<td style="text-align: left;">
+					<td class="no_border" style="text-align: left;">
 						<font class="cn">中心编号: </font><span class="sample_txt">
 							{$one.centreno}
 						</span></td>
 				</tr>
 			</table>
-			<table border="1" class="sam">
+			<table class="sam">
 				<tr>
 					<td class="sample_one_col cn">企业名称</td>
 					<td colspan="3"><span class="sample_txt">

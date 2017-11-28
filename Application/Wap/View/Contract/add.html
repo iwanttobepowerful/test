@@ -1,6 +1,7 @@
 <include file="Common:header"/>
+<style type="text/css">html,body{background:#FFFFFF;}</style>
 <!--新增页面-->
-<form action="" id="myform" method="post">
+<form action="" id="myform" method="post" onSubmit="return check();">
 <div class="aui-content ">
 
     <ul class="aui-list aui-form-list ">
@@ -30,7 +31,7 @@
                     年份
                 </div>
                 <div class="aui-list-item-input">
-                    <input type="text" id="year" name="year" onblur="check()" placeholder="请输入" >
+                    <input type="text" id="year" name="year"  placeholder="请输入" >
                 </div>
             </div>
         </li> 
@@ -65,7 +66,7 @@
                     数量
                 </div>
                 <div class="aui-list-item-input">
-                    <input type="text" name="getNum" placeholder="请输入">
+                    <input type="text" id="getNum" name="getNum" placeholder="请输入">
                 </div>
             </div>
         </li> 		               
@@ -95,7 +96,7 @@
             url: "{:U('/contract/addsp')}",
             dataType: 'json',
             success: function (rs) {
-            if(rs.msg=='succ'){
+            if(rs.msg=='succ' && check()==true){
                 var dialog = new auiDialog();
                 dialog.alert({
                     title:"提示",
@@ -122,18 +123,57 @@
         return false;
     }
 
-    function check(){
+
+    function check() {
         var a = /^(\d{4})$/;
-        if (!a.test(document.getElementById("year").value)) {
-            var dialog = new auiDialog();
-            dialog.alert({
-                title:"提示",
-                msg:'年份格式不对，请重新输入',
-                buttons:['取消','确定']
-            },function(ret){
-                window.location.href="/contract/add";
-            });
+        var b = /^[0-9]*[1-9][0-9]*$/;  //正整数
+        var f = false;
+        if (!a.test(document.getElementById("year").value) || !b.test(document.getElementById("getNum").value)) {
+            f = false;
+//            var dialog = new auiDialog();
+//            dialog.alert({
+//                title:"提示",
+//                msg:'年份格式不对，请重新输入',
+//                buttons:['取消','确定']
+//            },function(ret){
+//                window.location.href="/contract/add";
+//            });
         }
+        else {
+            f = true;
+        }
+        return f;
     }
+
+//        var b = /^[0-9]*[1-9][0-9]*$/;  //正整数
+//        if (!b.test(document.getElementById("getNum").value)) {
+//            f=false;
+//            var dialog = new auiDialog();
+//            dialog.alert({
+//                title:"提示",
+//                msg:'数量格式不对，请重新输入',
+//                buttons:['取消','确定']
+//            },function(ret){
+//                window.location.href="/contract/add";
+//            });
+//        }
+//        else {
+//            return true;
+//        }
+//    }
+
+//    function numcheck(){
+//        var a = /^[0-9]*[1-9][0-9]*$/;  //正整数
+//        if (!a.test(document.getElementById("getNum").value)) {
+//            var dialog = new auiDialog();
+//            dialog.alert({
+//                title:"提示",
+//                msg:'数量格式不对，请重新输入',
+//                buttons:['取消','确定']
+//            },function(ret){
+//                window.location.href="/contract/add";
+//            });
+//        }
+//    }
 </script>
 <include file="Common:footer" />
