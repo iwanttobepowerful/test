@@ -63,7 +63,7 @@ class Imagick{
      * @param  integer $quality   JPEG图像质量      
      * @param  boolean $interlace 是否对JPEG类型图像设置隔行扫描
      */
-    public function save($imgname, $type = null, $quality=80,$interlace = true){
+    public function save($imgname, $type = null, $quality=100,$interlace = true){
         if(empty($this->img)) E('没有可以被保存的图像资源');
 
         //设置图片类型
