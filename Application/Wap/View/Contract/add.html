@@ -65,7 +65,7 @@
                     数量
                 </div>
                 <div class="aui-list-item-input">
-                    <input type="text" name="getNum" placeholder="请输入">
+                    <input type="text" id="getNum" name="getNum" onblur="numcheck()" placeholder="请输入">
                 </div>
             </div>
         </li> 		               
@@ -135,5 +135,19 @@
             });
         }
     }
+
+//    function numcheck(){
+//        var a = /^[0-9]*[1-9][0-9]*$/;  //正整数
+//        if (!a.test(document.getElementById("getNum").value)) {
+//            var dialog = new auiDialog();
+//            dialog.alert({
+//                title:"提示",
+//                msg:'数量格式不对，请重新输入',
+//                buttons:['取消','确定']
+//            },function(ret){
+//                window.location.href="/contract/add";
+//            });
+//        }
+//    }
 </script>
 <include file="Common:footer" />
