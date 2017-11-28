@@ -300,14 +300,15 @@
 					$("input[name=remark]").val(re.rs.remark);
 					$("input[name=fee]").val(re.rs.fee);
 					//下拉框被选中
-					$("#quantity").find("option").removeAttr("selected");
-					$("#quantity").find("option[value="+re.rs.quantity+"]").attr("selected",'selected');
+					//$("#quantity").find("option").removeAttr("selected");
+					//$("#quantity").find("option[value="+re.rs.quantity+"]").attr("selected",true);
+					$("#quantity").val(re.rs.quantity);
 					if(re.rs.quantity==2){
 						var child_item_list = re.child_item_list;				
 						$("#c_child_item").css('display','block');
 						doReflashChildItem();
 						for(var i = 0;i<child_item_list.length;i++){
-							$("a").remove();
+							$("#child_item a").remove();
 							$("#child_item input:checkbox[value="+child_item_list[i]+"]").attr("checked",'checked');
 							//alert($("#child_item").html());
 						}
