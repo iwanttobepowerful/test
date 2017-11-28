@@ -432,6 +432,12 @@ class AuthController extends Controller {
 		$super_admin = I("super_admin",0,'intval');
 		$status = I("status",0,'intval');
 		$id = I("modid",0,'intval');
+        $xz = I("xz");//选择能审核的部门
+        //换成字符串后再替换
+        foreach($xz as $v){
+            $s .=$v.",";
+        }
+        $s=substr($s,0,-1);//利用字符串截取函数消除最后一个逗号
 		$rs = array("msg"=>'fail');
 		if(empty($username)){
 			$rs['msg'] = '信息填写不完整!';
@@ -444,6 +450,7 @@ class AuthController extends Controller {
 			'department'=>$department,
 			'status'=>$status,
 			'super_admin'=>$super_admin,
+            'audit'=>$s
 		);
 		if($data['super_admin']==1){
 			$data['gid'] = 0;//超管无角色组
