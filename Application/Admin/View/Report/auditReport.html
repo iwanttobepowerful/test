@@ -22,14 +22,15 @@
                         <else />
                         <span>{$vo.centreno}</span></if></td>
                     <td>
+                        <if condition="$vo[centreno1] or $vo[centreno2] or $vo[centreno3]">
+                            <a href="{:U('/admin/contract/reWriteTest')}?id={$vo.centreno}" class="btn btn-info btn-xs">更改单</a></if>
                         <a href="/admin/manager/contractDetail?id={$vo.centreno}" class="btn btn-info btn-xs">检验受理合同</a>
                         <if condition="mb_substr($vo[centreno],7,1)=='C'">
                             <a href="{:U('/admin/test/sampleShow')}?id={$vo.centreno}" class="btn btn-info btn-xs">抽样单</a></if>
                         <a href="{:U('/admin/test/infoShow')}?id={$vo.centreno}" class="btn btn-info btn-xs">检测工作通知单</a>
                         <a href="javascript:void(0);" class="btn btn-info btn-xs" onclick="recordDetail('{$vo.centreno}')">检测记录</a>
                         <a href="javascript:void(0);" class="btn btn-info btn-xs" name="{$vo.pdf_path}" onclick="return Check(this);">检测报告</a>
-                        <if condition="$vo[centreno1] or $vo[centreno2] or $vo[centreno3]">
-                            <a href="{:U('/admin/contract/reWriteTest')}?id={$vo.centreno}" class="btn btn-info btn-xs">更改单</a></if>
+
                     </td>
                     <td>{$vo.name}/{$vo.uploadreport_time}</td>
                     <td>
