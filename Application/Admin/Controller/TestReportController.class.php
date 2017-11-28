@@ -229,14 +229,14 @@ class TestReportController extends Controller
 //生成二维码
     public function qrcode($centreno,$qr_data){
         $save_path = './Public/attached/qrcode/';  //图片存储的绝对路径
-        $logo_path = "./Public/static/images/logoB.png";
+        $logo_path = "./Public/static/images/logoA.png";
         $qr_level = 'L';
         $qr_size = '4';
         $save_prefix = '';
         if(file_exists($save_path.md5($centreno).'.png')){
             @unlink($save_path.md5($centreno).'.png');
         }
-        $filename = createQRcode($centreno,$save_path,$qr_data,$logo_path,'H',4,$save_prefix);
+        $filename = createQRcode($centreno,$save_path,$qr_data,$logo_path,'H',5,$save_prefix);
         if($filename){
             $img = $save_path.$filename;
         }

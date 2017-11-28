@@ -40,7 +40,7 @@ class PDFLib{
     private $gs_version = null;
     private $gs_is_64 = null;
     private $gs_path = null;
-
+	private $prefix;
     public function __construct(){
 
         $this->resolution = 0;
@@ -53,7 +53,7 @@ class PDFLib{
         $this->imageDeviceCommand = "";
         $this->imageExtention = "";
         $this->pngDownScaleFactor = "";
-
+		$this->prefix = "";
         $this->setDPI(self::$MAX_RESOLUTION);
         $this->setImageFormat(self::$IMAGE_FORMAT_JPEG);
         $this->initSystem();
@@ -77,7 +77,9 @@ class PDFLib{
     public function setImageQuality($jpeg_quality){
         $this->jpeg_quality = $jpeg_quality;
     }
-
+	public function setPrefix($val){
+		$this->prefix = $val;
+	}
     public function setPageRange($start, $end){
         $this->page_start = $start;
         $this->page_end = $end;
@@ -101,7 +103,10 @@ class PDFLib{
 
     public function getNumberOfPages(){
         if($this->number_of_pages == -1){
-            $pages = $this->executeGS('-q -dNODISPLAY -c "("'.$this->pdf_path.'") (r) file runpdfbegin pdfpagecount = quit"',true);
+			if($this->is_os_win){
+				$this->pdf_path = str_replace('\\','/',$this->pdf_path);
+			}
+            $pages = $this->executeGS('-q -dNODISPLAY -c "('.$this->pdf_path.') (r) file runpdfbegin pdfpagecount = quit"',true);
             $this->number_of_pages = intval($pages);
         }
         return $this->number_of_pages;
@@ -113,10 +118,10 @@ class PDFLib{
         if(!(($this->page_start > 0) && ($this->page_start <= $this->getNumberOfPages()))){
             $this->page_start = 1;
         }
-
         if(!(($this->page_end <= $this->getNumberOfPages()) && ($this->page_end >= $this->page_start))){
             $this->page_end = $this->getNumberOfPages();
         }
+		
 
         if(!($this->resolution <= self::$MAX_RESOLUTION)){
             $this->resolution = self::$MAX_RESOLUTION;
@@ -125,12 +130,12 @@ class PDFLib{
         if(!($this->jpeg_quality >= 1 && $this->jpeg_quality <= 100)){
             $this->jpeg_quality = 100;
         }
-        $image_path = $this->output_path."/page-%d.".$this->imageExtention;
+        $image_path = $this->output_path."/page-".$this->prefix."%d.".$this->imageExtention;
         $output = $this->executeGS("-dSAFER -dBATCH -dNOPAUSE -sDEVICE=".$this->imageDeviceCommand." ".$this->pngDownScaleFactor." -r".$this->resolution." -dNumRenderingThreads=4 -dFirstPage=".$this->page_start." -dLastPage=".$this->page_end." -o\"".$image_path."\" -dJPEGQ=".$this->jpeg_quality." -q \"".($this->pdf_path)."\" -c quit");
 
         $fileArray = [];
         for($i=1; $i<=($this->page_end - $this->page_start + 1); ++$i){
-            $fileArray[] = "page-$i.".$this->imageExtention;
+            $fileArray[] = "page-".$this->prefix."$i.".$this->imageExtention;
         }
         if(!$this->checkFilesExists($this->output_path,$fileArray)){
             $errrorinfo = implode(",", $output);
@@ -142,11 +147,18 @@ class PDFLib{
     public function makePDF($ouput_path_pdf_name, $imagePathArray){
         $imagesources ="";
         foreach ($imagePathArray as $singleImage) {
-            $imagesources .= '('.$singleImage.')  viewJPEG showpage ';
+			if($this->is_os_win){
+				$imagesources .= '('.str_replace('\\','/',$singleImage).')  viewJPEG showpage ';
+			}else{
+				$imagesources .= '('.$singleImage.')  viewJPEG showpage ';
+			}
         }
+		if($this->is_os_win){
+			$ouput_path_pdf_name = str_replace('\\','/',$ouput_path_pdf_name);
+		}
         $psfile  = $this->getGSLibFilePath("viewjpeg.ps");
         $command = '-dBATCH -dNOPAUSE -sDEVICE=pdfwrite -o"'.$ouput_path_pdf_name.'" "'.$psfile.'" -c "'.$imagesources.'"';
-        $command_results = $this->executeGS($command);
+		$command_results = $this->executeGS($command);
 
         if(!$this->checkFilesExists("",[$ouput_path_pdf_name])){
             throw new \Exception("Unable to make PDF : ".$command_results[2],500);

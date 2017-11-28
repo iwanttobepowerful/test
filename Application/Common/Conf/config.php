@@ -7,6 +7,7 @@ return array(
 	'APP_SUB_DOMAIN_RULES'    =>    array(
 		/*'adm.qoowan.net'  	=> array('/'),*/
 		'm.qooce.cn'   => array('Wap/'),
+		'wap.qooce.cn'   => array('Wap/'),
 		'm.jiancai.com'   => array('Wap/')//test domain
 	)
 );
