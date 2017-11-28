@@ -204,7 +204,7 @@ function createQRcode($filename,$save_path,$qr_data='PHP QR Code :)',$logo = "",
     if(file_exists($PNG_TEMP_DIR.basename($filename))){
         //合并logo
         if($logo){
-            mergeImage($filename,'./Public/static/images/logoA.png',$filenameLogo,array('align'=>'center'));
+            mergeImage($filename,$logo,$filenameLogo,array('align'=>'center'));
             return basename($filenameLogo);
         }
 
@@ -302,54 +302,64 @@ if(!function_exists('http_request')){
         return $response;
     }
 }
+//windows
+if(!function_exists('word2pdf')){
+	function word2pdf($root_path,$docUrl,$type='pdf'){  
+		$ext = '.'.$type;
+		
+		$baseinfo = pathinfo($docUrl);
+		$file = $baseinfo['filename'];
+		$path = $baseinfo['dirname'];
+		$srcUrl = $root_path.$docUrl;
+		$outDir = $root_path . $path;
+		$distFile = $path . '/' . $baseinfo['filename'] . $ext;
+		
+		if(file_exists($root_path . $distFile)){
+			@unlink($root_path . $distFile);
+		}
+			
+		$word = new COM("Word.Application") or die ("Could not initialise Object.");  
+		$word->Visible = 0;  
+		$word->DisplayAlerts = 0;  
+		$word->Documents->Open($srcUrl);  
+		// save it as word 2003  
+		//  $word->ActiveDocument->SaveAs('4.doc');  
+		// convert word 2007-2013 to PDF  
+		// $pdfname='D:/www/fa/3.pdf';  
+		$word->ActiveDocument->ExportAsFixedFormat($root_path . $distFile, 17, false, 0, 0, 0, 0, 7, true, true, 2, true, true, false);  
+		// quit the Word process  
+		$word->Quit(false);  
+		// clean up  
+		unset($word);  
+		return $distFile;
+	}
+}
 /** user the thirdpart api */
 if(!function_exists('convert2Pdf')){
     function convert2Pdf($root_path,$docUrl,$type='pdf'){
-        $ext = '.'.$type;
+		$is_os_win = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
         
-        $baseinfo = pathinfo($docUrl);
-        $file = $baseinfo['filename'];
-        $path = $baseinfo['dirname'];
-        $srcUrl = $root_path.$docUrl;
-        $outDir = $root_path . $path;
-        $distFile = $path . '/' . $baseinfo['filename'] . $ext;
-        
-        if(file_exists($root_path . $distFile)){
-            @unlink($distFile);
-        }
-        $cmd = "soffice --headless --invisible --convert-to pdf:writer_pdf_Export {$srcUrl} --outdir {$outDir} > /dev/null";
-        exec($cmd,$output,$return);
-        return $distFile;
-        /*
-        $url = "https://api.9yuntu.cn/execute/Convert";
-        $appcode = "d61ead3bea9c46e8a7026aabb2eb1b19";
-        $headers = array();
-        $method = "GET";
-        $headers = array();
-        array_push($headers, "Authorization:APPCODE " . $appcode);
-        $querys = "docURL=".urlencode($docUrl)."&outputType=".$type;
-        $bodys = "";
-        $url = $url . "?" . $querys;
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($curl, CURLOPT_FAILONERROR, false);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_HEADER, false);
-        if (1 == strpos("$".$host, "https://"))
-        {
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-        }
-        $response = curl_exec($curl);
-        curl_close ($curl);
-        return $response;
-        */
+		if($is_os_win){
+			return word2pdf($root_path,$docUrl,$type);
+		}else{
+			$ext = '.'.$type;
+			$baseinfo = pathinfo($docUrl);
+			$file = $baseinfo['filename'];
+			$path = $baseinfo['dirname'];
+			$srcUrl = $root_path.$docUrl;
+			$outDir = $root_path . $path;
+			$distFile = $path . '/' . $baseinfo['filename'] . $ext;
+			if(file_exists($root_path . $distFile)){
+				@unlink($root_path . $distFile);
+			}
+			$cmd = "soffice --headless --invisible --convert-to pdf:writer_pdf_Export {$srcUrl} --outdir {$outDir} > /dev/null";
+			exec($cmd,$output,$return);
+			return $distFile;
+		}
     }
 }
 if(!function_exists('convertPdf2Image')){
-    function convertPdf2Image($root_path,$pdfFile){
+    function convertPdf2Image($root_path,$pdfFile,$prefix=""){
         vendor("Pdflib.vendor.autoload");
 
         $baseinfo = pathinfo($pdfFile);
@@ -364,6 +374,8 @@ if(!function_exists('convertPdf2Image')){
         $pdflib->setImageFormat(\ImalH\PDFLib\PDFLib::$IMAGE_FORMAT_JPEG);
         $pdflib->setDPI(300);
         $pdflib->setPageRange(1,$pdflib->getNumberOfPages());
+		$pdflib->setPrefix($prefix);
+
         $filesArray = $pdflib->convert();
         if($filesArray){
             $tmp = array();
@@ -376,12 +388,33 @@ if(!function_exists('convertPdf2Image')){
     }
 }
 if(!function_exists('convertImageToPdf')){
-    function convertImageToPdf($root_path,$pdfFileName,$imagePaths){
+    function convertImageToPdf($root_path,$pdfFileName,$imagePaths,$scaleWidth=false){
         vendor("Pdflib.vendor.autoload");
-        $pdfLib = new \ImalH\PDFLib\PDFLib();        
+        $pdfLib = new \ImalH\PDFLib\PDFLib();
+
+		$pdfFileName = $root_path.$pdfFileName;
         if(@file_exists($pdfFileName)){
             @unlink($pdfFileName);
         }
+		if($scaleWidth){
+			//zoom
+			$tmp = array();
+			$image = new \Think\Image();
+			foreach($imagePaths as $val){
+				$image->open($val);
+				$baseinfo = pathinfo($val);
+                $tmpSavefile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-thumb.'.$baseinfo['extension'];
+				
+				$width = $image->width(); // 返回图片的宽度
+				$height = $image->height();
+				$width = $width/$scaleWidth; //取得图片的长宽比  190是要输出的图片的宽度
+				$height = ceil($height/$width);
+				$image->thumb($scaleWidth,$height)->save($tmpSavefile);
+				$tmp[] = $tmpSavefile;
+			}
+			$imagePaths = $tmp;
+		
+		}
         $res = $pdfLib->makePDF($pdfFileName,$imagePaths);
         return $res;
     }
@@ -415,7 +448,8 @@ if(!function_exists('mergeImage')){
             $qrcode_width = imagesx($qrcode);
             $qrcode_height = imagesy($qrcode);
             //计算圆角图片的宽高及相对于二维码的摆放位置,将圆角图片拷贝到二维码中央
-            $qrcode_qr_height = $qrcode_qr_width = $qrcode_width/4;
+            $qrcode_qr_width = $qrcode_width/4;
+			$qrcode_qr_height = $qrcode_height/4;
             $from_width = ($bg_width-$qrcode_qr_width)/2;
             imagecopyresampled($bg, $qrcode, $from_width, $from_width, 0, 0, $qrcode_qr_width, $qrcode_qr_height, $qrcode_width, $qrcode_height);
         }else{
