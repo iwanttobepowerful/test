@@ -980,12 +980,15 @@ class ContractController extends Controller
 		$begin_time = I("begin_time");
         $end_time = I("end_time");
 		
-		$role = D('common_role')->where('id='.$roleid)->find();
-		if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
-			$if_edit = 1;	
-		}else{
-			$if_edit = 0;	
+		if($admin_auth){
+			$role = D('common_role')->where('id='.$roleid)->find();
+			if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
+				$if_edit = 1;	
+			}else{
+				$if_edit = 0;	
+			}
 		}
+
 		$keyword = I("keyword");//获取参数
         $where = "1=1";
         $keyword && $where .= " and c.centreNo like '%{$keyword}%'";
@@ -1319,18 +1322,21 @@ class ContractController extends Controller
 	
 	//费用查询
 	public function feeManage(){
-		$criteria = I('criteria');
+		$criteria = I('criteria_find');
 		//$test_fee_list = D("test_fee")->where('criteria like %'.$criteria.'%')->select();
 		$admin_auth = session("admin_auth");
-		$if_admin = $admin_auth['super_admin'];
-		$roleid = $admin_auth['gid'];
-		
-		$role = D('common_role')->where('id='.$roleid)->find();
-		if($role['rolename']=="领导" || $if_admin==1){
-			$if_leader = 1;	
-		}else{
-			$if_leader = 0;	
+		if($admin_auth){
+			$if_admin = $admin_auth['super_admin'];
+			$roleid = $admin_auth['gid'];
+			
+			$role = D('common_role')->where('id='.$roleid)->find();
+			if($role['rolename']=="领导" || $if_admin==1){
+				$if_leader = 1;	
+			}else{
+				$if_leader = 0;	
+			}			
 		}
+
 		$page = I("p",'int');
         $pagesize = 10;
         if($page<=0) $page = 1;
@@ -1435,10 +1441,12 @@ class ContractController extends Controller
 	public function findItem(){
 		$criteria = I('criteria');
 		$productname = I('productname');
-        $item_list=D("test_fee")->where('criteria like "%'.$criteria.'%" and productname = "'.$productname.'"')->select();
-        //pr(D("test_fee")->getLastSql());
+        $item_list = D("test_fee")->where('criteria like "%'.$criteria.'%" and productname = "'.$productname.'"')->select();
+		//$item_list_arr = array();
+		//$item_list_arr = explode(",",$item_list['child_item_list']);
         $rs = array(
             'item_list'=>$item_list,
+			//'child_item_list'=>$item_list_arr
         );
         $this->ajaxReturn($rs);
 	}
@@ -1527,8 +1535,16 @@ class ContractController extends Controller
     //费用标准修改数据回显
     public function doUpdateFee(){
         $id = I('id');
-
-        $rs = D("test_fee")->where('id='.$id)->find();
+		if($id){
+			$test_fee_item = D("test_fee")->where('id='.$id)->find();
+			$item_list = array();
+			//pr($test_fee_item['child_item_list']);
+			$item_list = explode(",",$test_fee_item['child_item_list']);
+			$rs['child_item_list'] = $item_list;
+			$rs['rs'] = $test_fee_item;
+		}else{
+			$rs['rs'] = 'add';
+		} 
         $this->ajaxReturn($rs);
     }
 
@@ -1537,6 +1553,8 @@ class ContractController extends Controller
     public function updateFee(){
         $rs['msg'] = 'fail';
         $id = I('id');
+		
+		
         $meterial = I('meterial_edit');
         $criteria = I('criteria_edit');
         $productname = I('productname_edit');
@@ -1563,18 +1581,29 @@ class ContractController extends Controller
         $this->ajaxReturn($rs);
     }
 
-    //费用标准添加
+    //费用标准添加和修改
     public function doAddFee(){
         $rs['msg'] = 'fail';
+		$id = I('edit_id');
+		$quantity = I('quantity');
         $meterial = I('meterial');
         $criteria = I('criteria');
         $productname = I('productname');
-        $item = I('item');
-        $samplequantity = I('samplequantity');
+		$item = I('item');
+		if($quantity == 2){
+			$checkbox_item = I('checkbox_item');
+		}
+		$checkbox_item_str = implode(',',$checkbox_item);
+		$samplequantity = I('samplequantity');
         $testperiod = I('testperiod');
         $remark = I('remark');
         $fee = I('fee');
         $quantity = I('quantity');
+		
+		if(empty($meterial) || empty($criteria) || empty($productname) || empty($item) || empty($fee)){
+			$rs['msg'] = '信息填写不完整';
+			$this->ajaxReturn($rs);
+		}
 
         $where['meterial']=$meterial;
         $where['criteria']=$criteria;
@@ -1585,15 +1614,18 @@ class ContractController extends Controller
         $where['remark']=$remark;
         $where['fee']=$fee;
         $where['quantity']=$quantity;
-        M()->startTrans();
-        try{
-            if(D("test_fee")->add($where)){
-                $rs['msg'] = 'succ';
-                M()->commit();
-            }
-        }catch(Exception $e){
-            M()->rollback();
-        }
+		$where['child_item_list']=$checkbox_item_str;
+		//pr($where);
+
+		if($id){
+			D("test_fee")->where('id='.$id)->save($where);
+			$rs['msg'] = '保存成功';
+		}else{
+			D("test_fee")->add($where);
+			$rs['msg'] = '添加成功';
+		}
+		
+
         $this->ajaxReturn($rs);
     }
 
