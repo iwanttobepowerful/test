@@ -57,6 +57,7 @@ class TestController extends Controller{
             'status'=>$status,
             'gid'=>$gid,
             'user'=>$user,
+            'if_admin'=>$if_admin
         );
         $this->assign($body);
         $this->display();
