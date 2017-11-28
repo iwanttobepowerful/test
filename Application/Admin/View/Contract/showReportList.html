@@ -52,12 +52,12 @@
                             <a href="/admin/test/infoShow?id={$con.centreno}"  class="btn btn-info btn-xs" >检验工作通知单</a>
                         </if>
                         <if condition="$con[centreno1] or $con[centreno2] or $con[centreno3]">
-                            <a href="{:U('/admin/contract/reWriteTest')}?id={$con.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-list"></i>更改单</a></if>
+                            <a href="{:U('/admin/contract/reWriteTest')}?id={$con.centreno}" class="btn btn-info btn-xs">更改单</a></if>
                         <if condition="$if_edit==1">
                         <if condition="$con['status'] eq 8">
                             <a href="/admin/TestReport/seleteKey?mod={$con.centreno}" class="btn btn-primary btn-xs">生成报告</a></if></if>
                         <if condition="$con['status'] eq 6">
-                            <a href="javascript:void(0);" class="btn btn-info btn-xs" name="{$con.pdf_path}" onclick="return Check(this);"><i class="glyphicon glyphicon-search"></i>检测报告</a>
+                            <a href="javascript:void(0);" class="btn btn-info btn-xs" name="{$con.pdf_path}" onclick="return Check(this);">检测报告</a>
                         </if>
                     </td>
                     <td>
