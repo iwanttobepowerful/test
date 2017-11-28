@@ -47,10 +47,10 @@
                     <td width="33%">
                     	<!--<a href="{:U('/admin/contract/editContract')}?id={$con.centreno}" id="editContract" target="_blank" class="btn btn-info btn-xs" ><i class="glyphicon glyphicon-search"></i>修改</a>-->
                         <if condition="$if_edit==1">
-                        	<if condition="($con['ifedit'] == 0) OR (($con['ifedit'] == 1) and ($con['sub_status'] == 1)) OR $con['status']==3">
+                        	<if condition="($con['ifedit'] == 0) OR (($con['ifedit'] == 1) and ($con['sub_status'] == 1) and ($con['if_report']==0)) OR $con['status']==3">
                        	 		<a href="{:U('/admin/contract/editContract')}?id={$con.centreno}&type_status={$con.status}" class="btn btn-info btn-xs" >修改</a>
                                 
-                            <elseif condition="($con['ifedit'] == 1) and !($con['sub_status'] == 1 or $con['sub_status'] == 0) and $con['status']!=6"/>
+                            <elseif condition="($con['ifedit'] == 1) and (!($con['sub_status'] == 1 or $con['sub_status'] == 0) or (($con['sub_status'] == 1 or $con['sub_status'] == 0) and $con['if_report'] == 1)) and $con['status']!=6"/>
                             	<a href="#" class="btn btn-info btn-xs" onclick="return applyBack('{$con.centreno}',{$con.status})" >申请修改</a>
                             </if>
                         </if>
@@ -73,19 +73,19 @@
                         </if>
 
                         <if condition="$if_edit==1">
-                       		<if condition="(($con['ifedit'] == 1) and ($con['sub_status'] == 1)) OR $con.status == 3" >
+                       		<if condition="(($con['ifedit'] == 1) and ($con['sub_status'] == 1) and ($con['if_report']==0)) OR $con.status == 3" >
                                 <a href="#" class="btn btn-primary btn-xs"  onclick="doUpdateEditState('{$con.centreno}','{$con.status}')" >修改完毕</a>
                             </if>
                         </if>
                     </td>
                     <td>
                    		 <if condition="$if_edit==1">
-                        	<if condition="($con['ifedit'] == 1) and ($con['sub_status'] == 0)">
+                        	<if condition="($con['ifedit'] == 1) and ($con['sub_status'] == 0) and ($con['if_report']==0)">
                             	<span style="color:green">申请修改中</span>
-                            <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == 1)" />
+                            <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == 1) and ($con['if_report']==0)" />
                             	<span style="color:green">申请修改通过</span>
                                 <!--<a href="#" class="btn btn-info btn-xs"  onclick="doUpdateEditState('{$con.centreno}','{$con.status}')" >修改完毕</a>-->	
-                            <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == 2)" />
+                            <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == 2) and ($con['if_report']==0)" />
                             	<span style="color:red">申请修改拒绝</span>
                             </if>
                         </if>

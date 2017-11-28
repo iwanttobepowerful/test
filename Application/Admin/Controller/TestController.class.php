@@ -523,7 +523,7 @@ class TestController extends Controller{
                 $imgFiles[] = $tmpSavefile;
                 $imgFiles[] = $tmpSavefile2;
 
-                $data['pdf_path'] = substr($signPdf,1);
+                $data['pdf_path'] = substr($pdf,1);
             }
             //
             //

@@ -47,8 +47,8 @@
 					<td>{$one.create_time}</td>
 					<td>
 						<if condition="$one['sub_status'] ==0 and $view==1" >
-							<button class="btn btn-success btn-xs" onclick="onUpdate('{$one.centreno}','A')" {$view}><i class="glyphicon glyphicon-ok-circle"></i>允许</button>
-							<button class="btn btn-danger btn-xs" onclick="update('{$one.centreno}','A')" {$view}><i class="glyphicon glyphicon-remove-circle"></i>拒绝</button>
+							<button class="btn btn-success btn-xs" onclick="onUpdate('{$one.reid}','A')" {$view}><i class="glyphicon glyphicon-ok-circle"></i>允许</button>
+							<button class="btn btn-danger btn-xs" onclick="update('{$one.reid}','A')" {$view}><i class="glyphicon glyphicon-remove-circle"></i>拒绝</button>
 							<else />
 						</if>
 					</td>
@@ -89,8 +89,8 @@
 						<td>{$one.create_time}</td>
 						<td>
 							<if condition="$one['sub_status'] ==0 and $view==1" >
-								<button class="btn btn-success btn-xs" onclick="onUpdate('{$one.centreno}','B')" {$view}><i class="glyphicon glyphicon-ok-circle"></i>允许</button>
-								<button class="btn btn-danger btn-xs" onclick="update('{$one.centreno}','B')" {$view}><i class="glyphicon glyphicon-remove-circle"></i>拒绝</button>
+								<button class="btn btn-success btn-xs" onclick="onUpdate('{$one.reid}','B')" {$view}><i class="glyphicon glyphicon-ok-circle"></i>允许</button>
+								<button class="btn btn-danger btn-xs" onclick="update('{$one.reid}','B')" {$view}><i class="glyphicon glyphicon-remove-circle"></i>拒绝</button>
 								<else />
 							</if>
 						</td>
@@ -140,8 +140,8 @@
 						<td>{$one.create_time}</td>
 						<td>
 							<if condition="$one['sub_status'] ==0 and $view==1" >
-								<button class="btn btn-success btn-xs" onclick="onUpdate('{$one.centreno}','C')" {$view}><i class="glyphicon glyphicon-ok-circle"></i>允许</button>
-								<button class="btn btn-danger btn-xs" onclick="update('{$one.centreno}','C')" {$view}><i class="glyphicon glyphicon-remove-circle"></i>拒绝</button>
+								<button class="btn btn-success btn-xs" onclick="onUpdate('{$one.reid}','C')" {$view}><i class="glyphicon glyphicon-ok-circle"></i>允许</button>
+								<button class="btn btn-danger btn-xs" onclick="update('{$one.reid}','C')" {$view}><i class="glyphicon glyphicon-remove-circle"></i>拒绝</button>
 								<else />
 							</if>
 						</td>
@@ -169,7 +169,7 @@
         $("#de_"+de).addClass("active");
     });
 //换成ajax提交
-	function search(de,centreno) {
+	/*function search(centreno,de) {
         $.ajax({
             type:"post",
             url:"{:U('/admin/audit/reportList')}",
@@ -183,17 +183,17 @@
 				}
             }
         });
-    }
-    function onUpdate(centreno,de){
-        if(!centreno) return false;
-        var _options = {"flag":"error","text":"将批准该申请","buttons":{"ok":{"action":function(){pass(centreno,de);}},"cancel":{}}};
+    }*/
+    function onUpdate(id,de){
+        if(!id) return false;
+        var _options = {"flag":"error","text":"将批准该申请","buttons":{"ok":{"action":function(){pass(id,de);}},"cancel":{}}};
         doConfirmDialog(_options);
     }
-    function pass(centreno,de){
+    function pass(id,de){
         $.ajax({
             type:"post",
             url:"{:U('/admin/audit/isAllow')}",
-            data:{"centreno":centreno,"de":de},
+            data:{"id":id,"de":de},
             dataType:"json",
             success:function(ret){
                 if(ret.msg=='succ'){
@@ -207,16 +207,16 @@
             }
         });
     }
-    function update(centreno,de){
-        if(!centreno) return false;
-        var _options = {"flag":"error","text":"您确定拒绝该申请吗？:","buttons":{"ok":{"action":function(){notPass(centreno,de);}},"cancel":{}}};
+    function update(id,de){
+        if(!id) return false;
+        var _options = {"flag":"error","text":"您确定拒绝该申请吗？:","buttons":{"ok":{"action":function(){notPass(id,de);}},"cancel":{}}};
         doConfirmDialog(_options);
     }
-    function notPass(centreno,de){
+    function notPass(id,de){
         $.ajax({
             type:"post",
             url:"{:U('/admin/audit/notAllow')}",
-            data:{"centreno":centreno,"de":de},
+            data:{"id":id,"de":de},
             dataType:"json",
             success:function(ret){
                 if(ret.msg=='succ'){

@@ -74,7 +74,7 @@ class AuditController extends Controller {
             }}
 
         $rs=D("report_feedback")->alias("r")
-            ->field('if(r.status is null,-1,r.status) as sub_status,r.reason,r.create_time,r.centreno,a.clientname,a.samplename,a.testcriteria,a.testitem,c.*')
+            ->field('if(r.status is null,-1,r.status) as sub_status,r.reason,r.create_time,r.centreno,r.id as reid,a.clientname,a.samplename,a.testcriteria,a.testitem,c.*')
             ->join(' left join contract as a on r.centreNo=a.centreNo left join contract_flow as c on r.centreNo=c.centreNo')
             ->where($where)
             ->limit("{$offset},{$pagesize}")
@@ -95,21 +95,22 @@ class AuditController extends Controller {
     }
     //允许
     public function isAllow(){
-        $centreno =I("centreno");
+        $id =I("id",0,'intval');
         $de=I("de");
-        $where= "centreno='{$centreno}'";
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
+        $a=D("report_feedback")->where("id=".$id)->find();
+        $centreno=$a['centreno'];
         $if_admin = $admin_auth['super_admin'];
-        $data=array(
-            'status'=>1,
-        );
+            $data=array(
+                'status'=>1,
+            );
         if ($user==13||$if_admin==1){//审核员和超级管理员的权限
-            if(D("report_feedback")->where($where)->save($data)){
+            if(D("report_feedback")->where("id=".$id)->save($data)){
                 if($de =='B'){
                     $data1['status']=8;
-                    D("contract_flow")->where($where)->save($data1);
+                    D("contract_flow")->where("centreno='{$centreno}'")->save($data1);
                     $rs['msg'] = 'succ';
                 }
             }}
@@ -118,8 +119,9 @@ class AuditController extends Controller {
     }
     //拒绝
     public function notAllow(){
-        $centreno =I("centreno");
-        $where= "centreno='{$centreno}'";
+        $id =I("id");
+        $de =I("de");
+        $where= "id='{$id}'";
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
@@ -138,4 +140,5 @@ class AuditController extends Controller {
             }}
         $this->ajaxReturn($rs);
     }
+
 }

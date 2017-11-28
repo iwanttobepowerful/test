@@ -226,13 +226,16 @@
 				</tr>
 			</table>
 		</div>
-		<if condition="$user eq 7 or $if_admin eq 1">
+		<if condition="$user eq 7">
         <if condition="$ifedit['ifedit']==0 OR $sub_status['status']==1">
 			<button onclick="window.print()" class="Noprint btn btn-primary final" disabled>打印</button>
 			<else />
 			<button onclick="window.print()" class="Noprint btn btn-primary final">打印</button>
 		</if></if>
-		<if condition="$gid eq 1">
+		<if condition="$if_admin eq 1">
+			<button onclick="window.print()" class="Noprint btn btn-primary final">打印</button>
+		</if>
+		<if condition="$user eq 9">
 			<if condition="$status neq 0 and $status neq 7 ">
             <button onclick="window.print()" class="Noprint btn btn-primary final">打印</button>
 				<else />
