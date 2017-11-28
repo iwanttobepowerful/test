@@ -57,7 +57,7 @@ class TestController extends Controller{
             'status'=>$status,
             'gid'=>$gid,
             'user'=>$user,
-            'if_admin'=>$if_admin
+            ''
         );
         $this->assign($body);
         $this->display();
@@ -523,7 +523,7 @@ class TestController extends Controller{
                 $imgFiles[] = $tmpSavefile;
                 $imgFiles[] = $tmpSavefile2;
 
-                $data['pdf_path'] = substr($pdf,1);
+                $data['pdf_path'] = substr($signPdf,1);
             }
             //
             //
