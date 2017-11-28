@@ -642,8 +642,6 @@ class ContractController extends Controller
 			$data_apply['status']=4;
 		}
 		
-		
-		
         //M()->startTrans();
         D("contract_flow")->where($where)->save($data_apply);
         //D("report_feedback")->where($where)->delete();
@@ -1272,12 +1270,18 @@ class ContractController extends Controller
 	}*/
 
 	//获取最中心编号
-	public function getLastCode(){
+	public function getLastCode(){	
+		$admin_auth = session("admin_auth");
+		$department = $admin_auth['department'];
+		$id_admin = $admin_auth['super_admin'];
+		if($id_admin==1){
+			$department=D;
+		}
 		$centreNo['re']='none';
 		$year=I("year");
 		$month=I("month");
 		$centreHead=$year.$month;
-		$list = D("contract")->field('centreNo',SUBSTR(centreNo,9,3))->where('centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)>100')->order('SUBSTR(centreNo,9,3) desc')->select();
+		$list = D("contract")->field('centreNo',SUBSTR(centreNo,9,3))->where('substr(centreNo,7,1) = "'.$department.'" and centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)>100')->order('SUBSTR(centreNo,9,3) desc')->select();
 		//pr(D("contract")->getLastSql());
 		if(count($list)>0){
 			$centreNo['re']= $list[0]['centreno'];	
@@ -1289,11 +1293,19 @@ class ContractController extends Controller
 	
 		//获取新最优质中心编号
 	public function getHighCode(){
+		$admin_auth = session("admin_auth");
+		$department = $admin_auth['department'];
+		$id_admin = $admin_auth['super_admin'];
+		if($id_admin==1){
+			$department=D;
+		}
+		
+		
 		$centreNo['re']='none';
 		$year=I("year");
 		$month=I("month");
 		$centreHead=$year.$month;
-		$list = D("contract")->field('centreNo',SUBSTR(centreNo,9,3))->where('centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)<100')->order('SUBSTR(centreNo,9,3) desc')->select();
+		$list = D("contract")->field('centreNo',SUBSTR(centreNo,9,3))->where('substr(centreNo,7,1) = "'.$department.'" and centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)<100')->order('SUBSTR(centreNo,9,3) desc')->select();
 		//$count = D("contract")->field('count(*) as num')->where('centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)<100')->order('SUBSTR(centreNo,9,3) desc')->select();
 		//pr(D("contract")->getLastSql());
 		if(count($list)>0){
@@ -1388,6 +1400,53 @@ class ContractController extends Controller
         );
         $this->ajaxReturn($rs);
     }
+	
+	//标准号查询
+	public function findCriteria(){
+        $criterias = I('criteria');
+        $criteria_list=D("test_fee")->where('criteria like "%'.$criterias.'%"')->group("criteria")->limit(10)->select();
+        //pr(D("test_fee")->getLastSql());
+		$productname_list = array();
+		foreach($criteria_list as $c){
+			$criteria = $c['criteria'];
+			$productname=D("test_fee")->where('criteria like "%'.$criteria.'%"')->group("productname")->select();		
+			array_push($productname_list,$productname);
+		}
+		
+        $rs = array(
+            'criteria_list'=>$criteria_list,
+			'productname_list'=>$productname_list,
+        );
+        $this->ajaxReturn($rs);
+    }
+	
+	//标准号下的产品名称查询
+	public function findProduct(){
+		$criteria = I('criteria');
+        $productname_list=D("test_fee")->where('criteria like "%'.$criteria.'%"')->group("productname")->select();
+        //pr(D("test_fee")->getLastSql());
+        $rs = array(
+            'productname_list'=>$productname_list,
+        );
+        $this->ajaxReturn($rs);
+	}
+	
+	//标准号下的产品名称下的选项查询
+	public function findItem(){
+		$criteria = I('criteria');
+		$productname = I('productname');
+        $item_list=D("test_fee")->where('criteria like "%'.$criteria.'%" and productname = "'.$productname.'"')->select();
+        //pr(D("test_fee")->getLastSql());
+        $rs = array(
+            'item_list'=>$item_list,
+        );
+        $this->ajaxReturn($rs);
+	}
+	
+	//全项选中选项
+	public function findAllItem(){
+			
+	}
 
     //显示特殊编码
     public function findSpecialCode(){
