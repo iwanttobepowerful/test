@@ -11,6 +11,7 @@
 				margin: 0 auto;
 				width: 87%;
 				height: 82%;
+                border:solid #000000 1px;
 			}
 			
 			.middle {
@@ -20,7 +21,11 @@
 			
 			td {
 				text-align: center;
+                border:solid #000000 1px;
 			}
+            .no_border{
+                border:none;
+            }
 			
 			.en {
 				font-family: "times new roman";
@@ -151,7 +156,7 @@
 		<div class="page">
 			<table class="head_title">
 				<tr>
-					<td>
+					<td class="no_border">
 						<font class="notice_head">更改（补充）检验报告单</font>
 					</td>
 				</tr>
@@ -159,11 +164,11 @@
 			</table>
 			<table class="middle">
 				<tr>
-					<td class="en" style="text-align: left; width: 65%;">SJ－4－68</td>
-					<td class="cn" style="text-align: left;">编号：<span class="cn">{$one.edit_no}</span></td>
+					<td class="en no_border" style="text-align: left; width: 65%;">SJ－4－68</td>
+					<td class="cn no_border" style="text-align: left;">编号：<span class="cn">{$one.edit_no}</span></td>
 				</tr>
 			</table>
-			<table border="1s" class="reNot">
+			<table class="reNot">
 				<tr>
 					<td class="re_one_col m_td cn">中心编号</td>
 					<td class="re_two_col"><span class="notice_txt">
