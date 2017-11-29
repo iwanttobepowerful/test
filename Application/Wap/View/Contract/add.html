@@ -101,7 +101,7 @@
                 dialog.alert({
                     title:"提示",
                     msg:'保存成功',
-                    buttons:['取消','确定']
+                    buttons:['确定']
                 },function(ret){
                     //console.log(ret)
                     window.location.href="/contract/specialCodeList";
@@ -111,7 +111,7 @@
                 dialog.alert({
                     title:"提示",
                     msg:'保存失败',
-                    buttons:['取消','确定']
+                    buttons:['确定']
                 },function(ret){
                     //console.log(ret)
                     //window.location.href="/contract/specialCodeList";
@@ -130,14 +130,15 @@
         var f = false;
         if (!a.test(document.getElementById("year").value) || !b.test(document.getElementById("getNum").value)) {
             f = false;
-//            var dialog = new auiDialog();
-//            dialog.alert({
-//                title:"提示",
-//                msg:'年份格式不对，请重新输入',
-//                buttons:['取消','确定']
-//            },function(ret){
-//                window.location.href="/contract/add";
-//            });
+
+            var dialog = new auiDialog();
+            dialog.alert({
+                title:"提示",
+                msg:'年份或数量输入有误，请重新输入',
+                buttons:['确定']
+            },function(ret){
+                window.location.href="/contract/add";
+            });
         }
         else {
             f = true;

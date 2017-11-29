@@ -63,10 +63,12 @@
                     <td>
                         <if condition="$user==10 || $if_admin==1">
                         <if condition="$con['doc_path']">
-                        <a href="{$con.doc_path}"  class="btn btn-primary btn-xs" >报告预览</a></if>
+                        <a href="{$con.doc_path}"  class="btn btn-primary btn-xs" >报告预览</a><p></p>
+                             <a href="{$con.qrcode_path}"  class="btn btn-primary btn-xs" >二维码下载</a><p></p>
+                        </if>
                         <if condition="$if_edit==1">
                         <if condition="$con['status']==8 and $con['doc_path']">
-                            <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="confirmReport('{$con.centreno}')" >确认</a></if></if></if>
+                            <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="confirmReport('{$con.centreno}')" >确认</a><p></p></if></if></if>
                         <if condition="$if_edit==1">
                             <if condition=" ($con['sub_status'] == 0) and ($con['if_report'] ==1)">
                                 <span style="color:green">申请修改中</span>

@@ -67,6 +67,7 @@ class ReportController extends Controller
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
+        $userid=$admin_auth['id'];
         $if_admin = $admin_auth['super_admin'];
         //$role = D('common_role')->where('id='.$user)->find();
         if($user==8 || $if_admin==1 || $user==13) {
