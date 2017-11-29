@@ -45,18 +45,14 @@ class UploaderController extends Controller {
      */
     public function start($return=false){
         $upload = new \Think\Upload();
-        $upload->maxSize   =     3145728 ;
+        $upload->maxSize   =     0 ;
         $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');
         $upload->rootPath  =     './Public/attached/'; // 设置附件上传根目录
         $upload->savePath  =     '';
         $upload->saveName = 'time'; 
         $info   =   $upload->upload();
         if(!$info) {// 上传错误提示错误信息
-            if($return){
-                return $upload->getError();
-            }else{
-                $this->error($upload->getError());
-            }
+            $array['info'] = $upload->getError();
         }else{// 上传成功 获取上传文件信息
             $saveUrl = './Public/attached/'.$info['file']['savepath'].$info['file']['savename'];
             $imgUrl = $this->cropImage($saveUrl,100,100);
