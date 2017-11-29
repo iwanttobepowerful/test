@@ -320,12 +320,14 @@
 						
 					}else{
 						ifAllItem();
+						$("input[name=item]").val(re.rs.item);
 					}
 					//$("input[name=quantity]").val(re.quantity);
 					
 				}else{
 					$("#myform1 input").val("");
 					$("#quantity").val(1);
+					ifAllItem();
 					//$("select option").eq(0).attr('checked','checked');
 				}				
 			}
@@ -435,7 +437,8 @@
 						add_item_id = data_item[i]['id'];
 						if(data_item[i]['quantity']!=2){
 							add_item_html += '<input type="checkbox" name="checkbox_item[]" value="'+add_item_id+'"><span class="checkbox_item">'+add_item+'</span>';
-						}		
+						}	
+						console.log(add_item_html);
 					}
 					$("#child_item").append(add_item_html);
 				}

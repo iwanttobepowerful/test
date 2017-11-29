@@ -1453,11 +1453,12 @@ class ContractController extends Controller
 		$productname = I('productname');
 		$where = 'criteria like "%'.$criteria.'%"';
 		if($productname){
-			$where.=' and productname = "'.$productname.'"';	
+			$where.=' and productname like "%'.$productname.'%"';	
 		}
         $item_list = D("test_fee")->where($where)->select();
 		//$item_list_arr = array();
 		//$item_list_arr = explode(",",$item_list['child_item_list']);
+		//pr(D("test_fee")->getLastSql());
         $rs = array(
             'item_list'=>$item_list,
 			//'child_item_list'=>$item_list_arr
@@ -1611,7 +1612,7 @@ class ContractController extends Controller
 		$samplequantity = I('samplequantity');
         $testperiod = I('testperiod');
         $remark = I('remark');
-        $fee = I('fee');
+        $fee = I('fee',0,'intval');
         $quantity = I('quantity');
 		
 		if(empty($meterial) || empty($criteria)|| empty($item) || empty($fee)){
@@ -1619,16 +1620,16 @@ class ContractController extends Controller
 			$this->ajaxReturn($rs);
 		}
 
-        $where['meterial']=$meterial;
-        $where['criteria']=$criteria;
-        $where['productname']=$productname;
-        $where['item']=$item;
-        $where['sampleQuantity']=$samplequantity;
-        $where['testPeriod']=$testperiod;
-        $where['remark']=$remark;
+        $where['meterial']=trim($meterial);
+        $where['criteria']=trim($criteria);
+        $where['productname']=trim($productname);
+        $where['item']=trim($item);
+        $where['sampleQuantity']=trim($samplequantity);
+        $where['testPeriod']=trim($testperiod);
+        $where['remark']=trim($remark);
         $where['fee']=$fee;
-        $where['quantity']=$quantity;
-		$where['child_item_list']=$checkbox_item_str;
+        $where['quantity']=trim($quantity);
+		$where['child_item_list']=trim($checkbox_item_str);
 		//pr($where);
 
 		if($id){
