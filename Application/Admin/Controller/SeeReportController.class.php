@@ -76,6 +76,7 @@ class SeeReportController extends Controller
                 
                 $body = array(
                     'pdfUrl'=>urlencode($pdf_path),
+                    'count'=>$count
                 );
 
             $this->assign($body);
