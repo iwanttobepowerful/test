@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>抽样单</title>
+		<title>更改（补充）检验报告单</title>
         <link rel="stylesheet" type="text/css" href="__PUBLIC__/static/css/bootstrap.min.css" />
         <script src="__PUBLIC__/static/js/jquery-2.1.3.min.js" type="text/javascript" charset="utf-8"></script>
 		<style type="text/css">
@@ -40,6 +40,15 @@
 			.re_one_col {
 				width: 14.12%;
 			}
+            .re_two_col{
+                width: 35.88%;
+            }
+            .re_three_col{
+                width:14.12%;
+            }
+            .re_four_col{
+                width: 35.88%;
+            }
 			.m_td{
 				height: 40pt;
 			}
@@ -47,10 +56,7 @@
 				vertical-align: top;
 				padding-left: 70pt;
 			}
-			
-			.re_two_col {
-				width: 34%;
-			}
+
 			
 			.notice_head {
 				font-size: 22pt;
@@ -164,7 +170,7 @@
 			</table>
 			<table class="middle">
 				<tr>
-					<td class="en no_border" style="text-align: left; width: 65%;">SJ－4－68</td>
+					<td class="en no_border" style="text-align: left; width: 70%;">SJ－4－68</td>
 					<td class="cn no_border" style="text-align: left;">编号：<span class="cn">{$one.edit_no}</span></td>
 				</tr>
 			</table>
@@ -174,8 +180,8 @@
 					<td class="re_two_col"><span class="notice_txt">
 						{$one.centreno}
 					</span></td>
-					<td class="re_one_col cn">样品名称</td>
-					<td><span class="notice_txt">
+					<td class="re_three_col cn">样品名称</td>
+					<td class="re_four_col"><span class="notice_txt">
 						{$one.samplename}
 					</span></td>
 				</tr>
