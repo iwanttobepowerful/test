@@ -164,6 +164,25 @@ class ContractController extends Controller
         $RErecord = I("RErecord",0,'intval');
         $RFrecord = I("RFrecord",0,'intval');
 		
+		$A_id_list = I("A_id_list");
+		$B_id_list = I("B_id_list");
+		$C_id_list = I("C_id_list");
+		$D_id_list = I("D_id_list");
+		$E_id_list = I("E_id_list");
+		$F_id_list = I("F_id_list");
+		
+		$arr_id_list = array(
+			'a'=>explode(",",$A_id_list),
+			'b'=>explode(",",$B_id_list),
+			'c'=>explode(",",$C_id_list),
+			'd'=>explode(",",$D_id_list),
+			'e'=>explode(",",$E_id_list),
+			'f'=>explode(",",$F_id_list),
+		);
+		$idList = serialize($arr_id_list);
+		pr($arr_id_list);
+		pr($idList);
+		
 		$fee_remark = I("fee_remark");
 		
         $Dcopy = I("Dcopy",0,'s');
@@ -271,7 +290,8 @@ class ContractController extends Controller
             "Drevise"=>$Drevise,
             "Dother"=>$Dother,
 			"remark"=>$fee_remark,
-            'costDate'=>Date("Y-m-d H:i:s")
+            'costDate'=>Date("Y-m-d H:i:s"),
+			'idList'=>$idList
         );
 
         //$contract_user_id = $admin_auth['id'];
@@ -1368,54 +1388,6 @@ class ContractController extends Controller
         $this->display();
     }
 
-
-    //费用列表
-    public function findMetList(){
-		/*$criteria = I('criteria');
-		$list = D("test_fee")->where('criteria like "%'.$criteria.'%"')->limit("{$offset},{$pagesize}")->select();
-		$count = D("test_fee")->where('criteria like "%'.$criteria.'%"')->count();
-        $Page= new \Think\Page($count,$pagesize);
-        $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</ a></ul>");
-        $pagination= $Page->show();// 分页显示输出
-
-        $rs = array(
-			"fee_list"=>$list,
-            'pagination'=>$pagination,
-        );
-        $this->ajaxReturn($rs);*/
-		$meterial_list=D("test_fee")->field("meterial")->group("meterial")->select();
-        if($productname!=0 && $meterial!=0){
-            $productname_list=D("test_fee")->field("productname")->where('meterial="'.meterial.'"')->group("productname")->select();
-        }
-
-        $rs = array(
-            "meterial_list"=>$meterial_list,
-            'productname_list'=>$productname_list,
-        );
-        $this->ajaxReturn($rs);
-    }
-
-    public function findProList(){
-        $meterial = I('m_select');
-        $productname_list=D("test_fee")->field("productname,criteria")->where('meterial="'.$meterial.'"')->group("productname")->select();
-        //pr(D("test_fee")->getLastSql());
-        $rs = array(
-            'productname_list'=>$productname_list,
-        );
-        $this->ajaxReturn($rs);
-    }
-
-    public function findItemList(){
-        $meterial = I('m_select');
-        $productname = I('p_select');
-		$choose = explode(",",$productname);
-        $item_list=D("test_fee")->field("item,fee,quantity")->where('meterial="'.$meterial.'" and productname="'.$choose[0].'" and criteria="'.$choose[1].'"')->select();
-        //pr(D("test_fee")->getLastSql());
-        $rs = array(
-            'item_list'=>$item_list,
-        );
-        $this->ajaxReturn($rs);
-    }
 	
 	//标准号查询
 	public function findCriteria(){
@@ -1468,7 +1440,14 @@ class ContractController extends Controller
 	
 	//全项选中选项
 	public function findAllItem(){
-			
+		$item_id = I('item_id');
+		$where['id'] = $item_id;
+		$item_list = D("test_fee")->where($where)->find();
+		//pr(D("test_fee")->getLastSql());
+		$rs = array(
+			'fee_item'=>$item_list
+		);
+		$this->ajaxReturn($rs);
 	}
 
     //显示特殊编码
