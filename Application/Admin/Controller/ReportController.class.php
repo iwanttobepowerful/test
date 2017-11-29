@@ -392,7 +392,7 @@ class ReportController extends Controller
         $imgurl = I("imgurl");
         $filename = I("filename");
         $type = I("type",1,'intval');
-        $subtype=I("type",0,'intval');
+        $subtype=I("subtype",0,'intval');
         $result = array("msg" => "fail");
         if (empty($imgurl)) {
             $result['msg'] = "无效的提交！";
