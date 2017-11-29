@@ -39,11 +39,11 @@
 					 <volist name="tpl" id="one">
 						 <td>
 							 <a href="javascript:void(0);" name="{$one.path}" onclick="return Check(this);"><img src="{$one.path}" class="img-rounded" /></a>
-							 <if condition="$type eq $one['type'] and $one['id'] neq 38 and $department neq 'C'">
+							 <if condition="$type eq $one['type'] and $one['id'] neq 38 and $department neq 'C' and $if_admin neq 1">
 								 <a class="btn btn-primary" href="javascript:void(0);" onclick="select('{$one.id}','{$contactNo}')">选择</a><p></p>
 								 <if condition="$one['subtype'] == 2"><span class="btn btn-warning" disabled="">大中心</span></if>
 								 <if condition="$one['subtype'] == 1"><span class="btn btn-warning" disabled="">小中心</span></if>
-								 <elseif condition="$type eq $one['type'] and $department eq 'C'"/>
+								 <elseif condition="$type eq $one['type'] and ($department eq 'C' or $if_admin eq 1)"/>
 								 <a class="btn btn-primary" href="javascript:void(0);" onclick="select('{$one.id}','{$contactNo}')">选择</a><p></p>
 								 <if condition="$one['subtype'] == 2 and $one['id'] != 38"><span class="btn btn-warning" disabled="">大中心</span></if>
 								 <if condition="$one['subtype'] == 1"><span class="btn btn-warning" disabled="">小中心</span></if>
