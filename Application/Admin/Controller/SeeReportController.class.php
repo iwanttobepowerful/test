@@ -69,7 +69,6 @@ class SeeReportController extends Controller
        
             $data=D("contract_flow")->where("centreno='{$contract['centreno']}'")->find();//查中心编号对应的状态
             $status=$data['status'];
-            if($status==6){
                 //计数
                 $count = $report['find_count'] +1;
                 D("test_report")->where("id=".$report['id'])->save(array("find_count"=>$count));
@@ -78,7 +77,7 @@ class SeeReportController extends Controller
                 $body = array(
                     'pdfUrl'=>urlencode($pdf_path),
                 );
-            }
+
             $this->assign($body);
         }
         $this->display();
