@@ -275,9 +275,50 @@ class ReportController extends Controller
         $where= "centreno='{$centreno}'";
         $rs=D("test_cost")->where($where)->find();
         $cost=D("contract")->where($where)->field('testcost')->find();
+
+        //$arr = array(
+          //'a'=>array(1,2,3,4),
+            //'b'=>array(5,6,7,8),
+        //);
+        //$arrstring = serialize($arr);
+        //dump($arrstring);
+        $attr = unserialize($rs['idlist']);
+        //$attr = unserialize($arrstring);
+        //dump($attr);
+        if(!empty($attr['a'])) {
+            $where1['id'] = array('in', $attr['a']);
+            $a = D("test_fee")->where($where1)->select();
+        }
+        if(!empty($attr['b'])) {
+            $where2['id'] = array('in', $attr['b']);
+            $b = D("test_fee")->where($where2)->select();
+        }
+        if(!empty($attr['c'])) {
+            $where3['id'] = array('in', $attr['c']);
+            $c = D("test_fee")->where($where3)->select();
+        }
+        if(!empty($attr['d'])) {
+            $where4['id'] = array('in', $attr['d']);
+            $d = D("test_fee")->where($where4)->select();
+        }
+        if(!empty($attr['e'])) {
+            $where5['id'] = array('in', $attr['e']);
+            $e = D("test_fee")->where($where5)->select();
+        }
+        if(!empty($attr['f'])) {
+            $where6['id'] = array('in', $attr['f']);
+            $f = D("test_fee")->where($where6)->select();
+        }
+        //dump($a);
         $body=array(
             'one'=>$rs,
-            'cost'=>$cost
+            'cost'=>$cost,
+            'a'=>$a,
+            'b'=>$b,
+            'c'=>$c,
+            'd'=>$d,
+            'e'=>$e,
+            'f'=>$f
         );
         $this->assign($body);
         $this->display();
