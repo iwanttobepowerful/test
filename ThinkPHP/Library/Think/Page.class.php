@@ -79,7 +79,8 @@ class Page{
 
         /* 生成URL */
         $this->parameter[$this->p] = '[PAGE]';
-        $this->url = U(ACTION_NAME, $this->parameter);
+        $this->url = UM(ACTION_NAME, $this->parameter);
+        
         /* 计算分页信息 */
         $this->totalPages = ceil($this->totalRows / $this->listRows); //总页数
         if(!empty($this->totalPages) && $this->nowPage > $this->totalPages) {
@@ -134,12 +135,12 @@ class Page{
                 }
             }
         }
-
         //替换分页内容
         $page_str = str_replace(
             array('%HEADER%', '%NOW_PAGE%', '%UP_PAGE%', '%DOWN_PAGE%', '%FIRST%', '%LINK_PAGE%', '%END%', '%TOTAL_ROW%', '%TOTAL_PAGE%'),
             array($this->config['header'], $this->nowPage, $up_page, $down_page, $the_first, $link_page, $the_end, $this->totalRows, $this->totalPages),
             $this->config['theme']);
+
         return "<div class='sui-pagination pagination-large'><ul>{$page_str}</ul></div>";
     }
 }
