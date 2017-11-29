@@ -138,6 +138,7 @@ class TestReportController extends Controller
                 'centreNo'=>$newCentreNo,
                 'sampleName'=>$contract['samplename'],
                 'clientName'=>$contract['clientname'],
+                'testCategory'=>$contract['testcategory'],
                 'productionDate'=>$contract['productiondate'] ? $contract['productiondate']:"——",
                 'productUnit'=>$contract['productunit'] ? $contract['productunit']:"——",
                 'trademark'=>$contract['trademark'] ? $contract['trademark']:"——",
