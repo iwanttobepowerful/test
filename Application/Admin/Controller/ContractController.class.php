@@ -318,8 +318,10 @@ class ContractController extends Controller
 				if($ifspecial==1){
 					$year = substr($centreNo,0,4);
 					$month = substr($centreNo,4,2);
+                    $department = substr($centreNo,6,1);
 					$where['year']=$year;
 					$where['month']=$month;
+					$where['department']=$department;
 					$specialItem = D("special_centre_code")->field('id,getNum')->where($where)->find();
 					$num = (int)$specialItem['getnum'];
 					//pr("num=".$num);
