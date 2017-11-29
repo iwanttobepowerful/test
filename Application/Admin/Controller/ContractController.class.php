@@ -166,7 +166,7 @@ class ContractController extends Controller
 		
 		$fee_remark = I("fee_remark");
 		
-        $Dcopy = I("Dcopy",0,'intval');
+        $Dcopy = I("Dcopy",0,'s');
         $Donline = I("Donline",0,'intval');
         $Drevise = I("Drevise",0,'intval');
         $Dother = I("Dother",0,'intval');
@@ -1067,7 +1067,8 @@ class ContractController extends Controller
 
         //判断是接单还是签发
         //$ifstatus =
-        $list = D("contract_flow as c")->field('if(c.id is null,-1,c.id) as flow_id,if(r.status is null,-1,r.status) as sub_status,r.if_report,r.if_outer,f.*,c.status,c.inner_sign_user_id,c.inner_sign_time,c.external_sign_time,c.takelist_user_id,c.takelist_time,u.name as takename,u1.name as innername,u2.name as externalname,v.doc_path,v.pdf_path,v.qrcode_path')->join('left join contract as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on c.takelist_user_id=u.id LEFT JOIN common_system_user u2 on c.external_sign_user_id=u2.id LEFT JOIN common_system_user u1 on c.inner_sign_user_id=u1.id left join test_report as v on c.centreNo=v.centreNo LEFT JOIN (select * from report_feedback WHERE id in (select max(id) from report_feedback GROUP BY centreNo)) r on r.centreNo = c.centreNo' )
+        $list = D("contract_flow as c")->field('if(c.id is null,-1,c.id) as flow_id,if(r.status is null,-1,r.status) as sub_status,r.if_report,r.if_outer,f.*,c.status,c.inner_sign_user_id,c.inner_sign_time,c.external_sign_time,c.takelist_user_id,c.takelist_time,u.name as takename,u1.name as innername,u2.name as externalname,v.doc_path,v.pdf_path,v.qrcode_path')
+            ->join('left join contract as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on c.takelist_user_id=u.id LEFT JOIN common_system_user u2 on c.external_sign_user_id=u2.id LEFT JOIN common_system_user u1 on c.inner_sign_user_id=u1.id left join test_report as v on c.centreNo=v.centreNo LEFT JOIN (select * from report_feedback WHERE id in (select max(id) from report_feedback GROUP BY centreNo)) r on r.centreNo = c.centreNo' )
             ->where($where)->order('c.takelist_all_time desc,f.id desc')->limit("{$offset},{$pagesize}")->select();
         $count = D("contract_flow as c")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
@@ -1324,6 +1325,7 @@ class ContractController extends Controller
 	public function feeManage(){
 		$criteria = I('criteria_find');
 		//$test_fee_list = D("test_fee")->where('criteria like %'.$criteria.'%')->select();
+		$allChose = I('allChose',0,'intval');
 		$admin_auth = session("admin_auth");
 		if($admin_auth){
 			$if_admin = $admin_auth['super_admin'];
@@ -1341,10 +1343,19 @@ class ContractController extends Controller
         $pagesize = 10;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
-
-        $list = D("test_fee")->where('criteria like "%'.$criteria.'%"')->limit("{$offset},{$pagesize}")->select();
+		
+		$where = 'criteria like "%'.$criteria.'%"';
+		
+		if($allChose==0){
+			
+		}else if($allChose==1){
+			$where .= ' and quantity=1';
+		}else if($allChose==2){
+			$where .= ' and quantity=2';
+		}
+        $list = D("test_fee")->where($where)->limit("{$offset},{$pagesize}")->select();
         //pr(D("test_fee")->getLastSql());
-        $count = D("test_fee")->where('criteria like "%'.$criteria.'%"')->count();
+        $count = D("test_fee")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
         $pagination= $Page->show();// 分页显示输出
@@ -1441,9 +1452,14 @@ class ContractController extends Controller
 	public function findItem(){
 		$criteria = I('criteria');
 		$productname = I('productname');
-        $item_list = D("test_fee")->where('criteria like "%'.$criteria.'%" and productname = "'.$productname.'"')->select();
+		$where = 'criteria like "%'.$criteria.'%"';
+		if($productname){
+			$where.=' and productname like "%'.$productname.'%"';	
+		}
+        $item_list = D("test_fee")->where($where)->select();
 		//$item_list_arr = array();
 		//$item_list_arr = explode(",",$item_list['child_item_list']);
+		//pr(D("test_fee")->getLastSql());
         $rs = array(
             'item_list'=>$item_list,
 			//'child_item_list'=>$item_list_arr
@@ -1597,24 +1613,24 @@ class ContractController extends Controller
 		$samplequantity = I('samplequantity');
         $testperiod = I('testperiod');
         $remark = I('remark');
-        $fee = I('fee');
+        $fee = I('fee',0,'intval');
         $quantity = I('quantity');
 		
-		if(empty($meterial) || empty($criteria) || empty($productname) || empty($item) || empty($fee)){
+		if(empty($meterial) || empty($criteria)|| empty($item) || empty($fee)){
 			$rs['msg'] = '信息填写不完整';
 			$this->ajaxReturn($rs);
 		}
 
-        $where['meterial']=$meterial;
-        $where['criteria']=$criteria;
-        $where['productname']=$productname;
-        $where['item']=$item;
-        $where['sampleQuantity']=$samplequantity;
-        $where['testPeriod']=$testperiod;
-        $where['remark']=$remark;
+        $where['meterial']=trim($meterial);
+        $where['criteria']=trim($criteria);
+        $where['productname']=trim($productname);
+        $where['item']=trim($item);
+        $where['sampleQuantity']=trim($samplequantity);
+        $where['testPeriod']=trim($testperiod);
+        $where['remark']=trim($remark);
         $where['fee']=$fee;
-        $where['quantity']=$quantity;
-		$where['child_item_list']=$checkbox_item_str;
+        $where['quantity']=trim($quantity);
+		$where['child_item_list']=trim($checkbox_item_str);
 		//pr($where);
 
 		if($id){

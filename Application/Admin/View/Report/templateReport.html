@@ -10,6 +10,7 @@
             <th>缩略图</th>
             <th>文件名</th>
             <th>类型</th>
+            <th>中心</th>
             <th>操作</th>
             </thead>
             <tbody>
@@ -29,6 +30,14 @@
                         }elseif($one['type']==2){
                             echo '抽样检验';
                         }
+                        </php>
+                    <td>
+                        <php>
+                            if($one['subtype']==1){
+                            echo '小中心';
+                            }elseif($one['subtype']==2){
+                            echo '大中心';
+                            }
                         </php>
                     </td>
                     <td>

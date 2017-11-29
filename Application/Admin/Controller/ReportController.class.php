@@ -321,7 +321,7 @@ class ReportController extends Controller
             ->join('common_system_user ON contract_flow.inner_sign_user_id = common_system_user.id')
             ->join('contract ON contract_flow.centreno = contract.centreno')
             ->join('test_report on contract_flow.centreno=test_report.centreno')
-            ->field('contract_flow.id,contract_flow.status,contract_flow.centreNo,contract_flow.inner_sign_time,common_system_user.name,contract.productUnit,contract.clientSign,contract.telephone,contract.postmethod,contract.address,contract.centreno1,contract.centreno2,contract.centreno3,test_report.pdf_path')
+            ->field('contract_flow.id,contract_flow.status,contract_flow.centreNo,contract_flow.inner_sign_time,common_system_user.name,contract.productUnit,contract.clientSign,contract.telephone,contract.postmethod,contract.address,contract.centreno1,contract.centreno2,contract.centreno3,test_report.pdf_sign_path')
             ->limit("{$offset},{$pagesize}")
             ->order('contract_flow.inner_sign_time desc,contract_flow.id desc')->select();
         //查找条件为已经批准并且内部尚未签发的报告
@@ -392,12 +392,13 @@ class ReportController extends Controller
         $imgurl = I("imgurl");
         $filename = I("filename");
         $type = I("type",1,'intval');
+        $subtype=I("subtype",0,'intval');
         $result = array("msg" => "fail");
         if (empty($imgurl)) {
             $result['msg'] = "无效的提交！";
             $this->ajaxReturn($result);
         }
-        $data = array("path" => $imgurl, "filename" => $filename,"type"=>$type);
+        $data = array("path" => $imgurl, "filename" => $filename,"type"=>$type,"subtype"=>$subtype);
         $report = D("tpl")->where("id=" . $id)->find();
         if ($report) {
             if (D("tpl")->where("id=" . $report['id'])->save($data)) {
@@ -417,11 +418,13 @@ class ReportController extends Controller
         if ($id) {
             $report = D('tpl')->where("id=" . $id)->find();
             $type=$report['type'];
+            $subtype=$report['subtype'];
         }
 
         $body = array(
             'report' => $report,
             'type'=>$type,
+            'subtype'=>$subtype
         );
         $this->assign($body);
         $this->display();
