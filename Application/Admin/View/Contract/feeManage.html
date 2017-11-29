@@ -192,7 +192,7 @@
                             <option value="1">非全项</option>
                             <option value="2">全项</option>
                         </select>
-                </div>
+                	</div>
                 <div class="clearfix"></div>
                 </div>
                 <div class="form-group form-group-sm">
@@ -317,7 +317,8 @@
 					//$("input[name=quantity]").val(re.quantity);
 					$("input[name=edit_id]").val(re.rs.id);
 				}else{
-					$("myform1 input").val("");
+					$("#myform1 input").val("");
+					$("#quantity").val(1);
 					//$("select option").eq(0).attr('checked','checked');
 				}				
 			}
