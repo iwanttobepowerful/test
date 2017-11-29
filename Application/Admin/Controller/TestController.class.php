@@ -458,13 +458,13 @@ class TestController extends Controller{
             "path"=>$fileurl,
             'modify_time'=>date("Y-m-d H:i:s"),
         );
-        $distfile = convert2Pdf(ROOT_PATH,$data['path'],'pdf');
+        $pdf = convert2Pdf(ROOT_PATH,$data['path'],$centreno);
         
         $imgFiles = array();//delete image
         //$distfile = "/Public/attached/2017-11-21/SJ-4-77_2017_01.pdf";
         //转image,在测试服务器上测试，本地需要配置环境
         //demo
-        $imageFiles = convertPdf2Image(ROOT_PATH,$distfile,$centreno);
+        $imageFiles = convertPdf2Image(ROOT_PATH,$pdf,$centreno);
         if($imageFiles){
             //转换成功,合并二维码
             /*
@@ -484,8 +484,8 @@ class TestController extends Controller{
             }
             */
             //再转换成pdf
-            $pdf = './Public/attached/report/'.$centreno.'.pdf';
-            convertImageToPdf(ROOT_PATH,substr($pdf,1),$imageFiles);
+            //$pdf = './Public/attached/report/'.$centreno.'.pdf';
+            //convertImageToPdf(ROOT_PATH,substr($pdf,1),$imageFiles);
 
             $imgFiles = $imageFiles;
             //对外签加公章
@@ -544,7 +544,7 @@ class TestController extends Controller{
                 $imgFiles[] = $tmpSavefile;
                 $imgFiles[] = $tmpSavefile2;
             }
-            $data['pdf_path'] = substr($pdf,1);
+            $data['pdf_path'] = $pdf;
             $data['pdf_sign_path'] = substr($signPdf,1);
 
 
