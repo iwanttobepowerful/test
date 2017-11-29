@@ -187,28 +187,32 @@ function createQRcode($filename,$save_path,$qr_data='PHP QR Code :)',$logo = "",
     if (isset($qr_size)){
         $matrixPointSize = & min(max((int)$qr_size, 1), 10);
     }
+    $distFile = $PNG_TEMP_DIR.$save_prefix."{$filename}.jpg";
+    $tmpFile = $PNG_TEMP_DIR."tmp_{$filename}.jpg";
 
+    if(file_exists($distFile)){
+        @unlink($distFile);
+    }
     if (isset($qr_data)) {
         if (trim($qr_data) == ''){
             die('data cannot be empty!');
         }
-        //生成文件名 文件路径+图片名字前缀+md5(名称)+.png
-        $filename = $PNG_TEMP_DIR.$save_prefix.md5($filename).'.jpg';
-        $filenameLogo = $PNG_TEMP_DIR.$save_prefix.md5($filename).'_l.jpg';
-        //开始生成
-        QRcode::png($qr_data, $filename, $errorCorrectionLevel, $matrixPointSize, 2);
+        QRcode::png($qr_data, $distFile, $errorCorrectionLevel, $matrixPointSize, 2);
     } else {
         //默认生成
-        QRcode::png('PHP QR Code :)', $filename, $errorCorrectionLevel, $matrixPointSize, 2);
+        QRcode::png('PHP QR Code :)', $distFile, $errorCorrectionLevel, $matrixPointSize, 2);
     }
-    if(file_exists($PNG_TEMP_DIR.basename($filename))){
+    if(file_exists($distFile)){
         //合并logo
         if($logo){
-            mergeImage($filename,$logo,$filenameLogo,array('align'=>'center'));
-            return basename($filenameLogo);
+            mergeImage($distFile,$logo,$tmpFile,array('align'=>'center'));
+            if(file_exists($tmpFile)){
+                @rename($tmpFile, $distFile);
+            }
+            return basename($distFile);
         }
 
-        return basename($filename);
+        return basename($distFile);
     }else{
         return FALSE;
     }

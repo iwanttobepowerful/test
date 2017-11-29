@@ -234,9 +234,11 @@ class TestReportController extends Controller
         $qr_level = 'L';
         $qr_size = '4';
         $save_prefix = '';
-        if(file_exists($save_path.md5($centreno).'.png')){
-            @unlink($save_path.md5($centreno).'.png');
+        /*
+        if(file_exists($save_path."qr_{$centreno}.png")){
+            @unlink($save_path."qr_{$centreno}.png");
         }
+        */
         $filename = createQRcode($centreno,$save_path,$qr_data,$logo_path,'H',5,$save_prefix);
         if($filename){
             $img = $save_path.$filename;
