@@ -87,6 +87,7 @@
                     var _options = {"text":"保存成功！","action":function(){window.location.reload();}};
                     doAlertDialog(_options);
                 }else{
+                    $("#loading").empty();
                     var _options = {"text":"保存失败！"};
                     if(data.msg) _options.text = data.msg;
                     doAlertDialog(_options);
