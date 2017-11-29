@@ -63,7 +63,9 @@
                     	<a href="/admin/manager/contractDetail?id={$con.centreno}"  class="btn btn-info btn-xs" >检验受理合同</a>
        
                         <!--<a href="{:U('/admin/test/sampleShow')}?id={$con.centreno}" style="display:none" class="btn btn-info btn-xs" >抽样单</a>-->
-                    	<a href="{:U('/admin/contract/sampleEdit')}?id={$con.centreno}" id="but_sample" style="display:none" class="btn btn-info btn-xs" >抽样单</a>
+                    	<if condition="mb_substr($con['centreno'],7,1) == 'C'">
+                        	<a href="{:U('/admin/contract/sampleEdit')}?id={$con.centreno}"  class="btn btn-info btn-xs" >抽样单</a>
+                        </if>
                         <if condition="$con.flow_id != -1">
                        		<a href="/admin/test/infoShow?id={$con.centreno}"  class="btn btn-info btn-xs" >检验工作通知单</a>
                         </if>
@@ -156,7 +158,7 @@
 <script type="text/javascript">
 	$(function(){
 		$('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true });
-		$("#tb tr").each(function(){
+		/*$("#tb tr").each(function(){
             var text = $(this).children("td").eq(1).text();
 			//alert(text+":"+text.substr(6,1))
 			if (text.substr(7,1)=='C'){
@@ -165,7 +167,7 @@
 				
 				$(this).children("td").eq(5).find("[id=but_sample]").css("display","inline-block");
 			}
-        });
+        });*/
 		
 	});
 	
