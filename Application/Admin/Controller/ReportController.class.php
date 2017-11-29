@@ -392,12 +392,13 @@ class ReportController extends Controller
         $imgurl = I("imgurl");
         $filename = I("filename");
         $type = I("type",1,'intval');
+        $subtype=I("type",0,'intval');
         $result = array("msg" => "fail");
         if (empty($imgurl)) {
             $result['msg'] = "无效的提交！";
             $this->ajaxReturn($result);
         }
-        $data = array("path" => $imgurl, "filename" => $filename,"type"=>$type);
+        $data = array("path" => $imgurl, "filename" => $filename,"type"=>$type,"subtype"=>$subtype);
         $report = D("tpl")->where("id=" . $id)->find();
         if ($report) {
             if (D("tpl")->where("id=" . $report['id'])->save($data)) {
@@ -417,11 +418,13 @@ class ReportController extends Controller
         if ($id) {
             $report = D('tpl')->where("id=" . $id)->find();
             $type=$report['type'];
+            $subtype=$report['subtype'];
         }
 
         $body = array(
             'report' => $report,
             'type'=>$type,
+            'subtype'=>$subtype
         );
         $this->assign($body);
         $this->display();
