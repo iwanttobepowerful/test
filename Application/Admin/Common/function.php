@@ -304,16 +304,15 @@ if(!function_exists('http_request')){
 }
 //windows
 if(!function_exists('word2pdf')){
-	function word2pdf($root_path,$docUrl,$type='pdf'){  
-		$ext = '.'.$type;
+	function word2pdf($root_path,$docUrl,$centreno){  
+		$ext = '.pdf';
 		
 		$baseinfo = pathinfo($docUrl);
 		$file = $baseinfo['filename'];
 		$path = $baseinfo['dirname'];
 		$srcUrl = $root_path.$docUrl;
 		$outDir = $root_path . $path;
-		$distFile = $path . '/' . $baseinfo['filename'] . $ext;
-		
+		$distFile = $path . '/' . $centreno . $ext;
 		if(file_exists($root_path . $distFile)){
 			@unlink($root_path . $distFile);
 		}
@@ -336,19 +335,19 @@ if(!function_exists('word2pdf')){
 }
 /** user the thirdpart api */
 if(!function_exists('convert2Pdf')){
-    function convert2Pdf($root_path,$docUrl,$type='pdf'){
+    function convert2Pdf($root_path,$docUrl,$centreno){
 		$is_os_win = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
         
 		if($is_os_win){
-			return word2pdf($root_path,$docUrl,$type);
+			return word2pdf($root_path,$docUrl,$centreno);
 		}else{
-			$ext = '.'.$type;
+			$ext = '.pdf';
 			$baseinfo = pathinfo($docUrl);
 			$file = $baseinfo['filename'];
 			$path = $baseinfo['dirname'];
 			$srcUrl = $root_path.$docUrl;
 			$outDir = $root_path . $path;
-			$distFile = $path . '/' . $baseinfo['filename'] . $ext;
+			$distFile = $path . '/' . $centreno . $ext;
 			if(file_exists($root_path . $distFile)){
 				@unlink($root_path . $distFile);
 			}

@@ -57,7 +57,7 @@ class TestController extends Controller{
             'status'=>$status,
             'gid'=>$gid,
             'user'=>$user,
-            ''
+            'if_admin'=>$if_admin
         );
         $this->assign($body);
         $this->display();
@@ -450,21 +450,24 @@ class TestController extends Controller{
             $this->ajaxReturn($result);
         }
         $report = D("test_report")->where("centreno='{$centreno}'")->find();
+        $report['tplno'] && $tpl = D("tpl")->where("id=".$report['tplno'])->find();
+
         //pdf转换
         $data = array(
             //"centreNo"=>$centreno,
             "path"=>$fileurl,
             'modify_time'=>date("Y-m-d H:i:s"),
         );
-        $distfile = convert2Pdf(ROOT_PATH,$data['path'],'pdf');
+        $pdf = convert2Pdf(ROOT_PATH,$data['path'],$centreno);
         
         $imgFiles = array();//delete image
         //$distfile = "/Public/attached/2017-11-21/SJ-4-77_2017_01.pdf";
         //转image,在测试服务器上测试，本地需要配置环境
         //demo
-        $imageFiles = convertPdf2Image(ROOT_PATH,$distfile,$centreno);
+        $imageFiles = convertPdf2Image(ROOT_PATH,$pdf,$centreno);
         if($imageFiles){
             //转换成功,合并二维码
+            /*
             //第一页
             if(file_exists($imageFiles[0]) && file_exists(ROOT_PATH . $report['qrcode_path'])){
                 $baseinfo = pathinfo($imageFiles[0]);
@@ -479,36 +482,54 @@ class TestController extends Controller{
                 waterMark($imageFiles[count($imageFiles)-1],ROOT_PATH . $report['qrcode_path'],$saveFile,array(1948,2870));
                 @rename($saveFile,$imageFiles[count($imageFiles)-1]);
             }
-
+            */
             //再转换成pdf
-            $pdf = './Public/attached/report/'.$centreno.'.pdf';
-            convertImageToPdf(ROOT_PATH,substr($pdf,1),$imageFiles);
+            //$pdf = './Public/attached/report/'.$centreno.'.pdf';
+            //convertImageToPdf(ROOT_PATH,substr($pdf,1),$imageFiles);
 
             $imgFiles = $imageFiles;
             //对外签加公章
             if(file_exists($imageFiles[0]) && file_exists($imageFiles[1])){
-
                 $baseinfo = pathinfo($imageFiles[0]);
-                $tmpSavefile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-mark.'.$baseinfo['extension'];
-                waterMark($imageFiles[0],'./Public/static/images/sealB.png',$tmpSavefile,array(700,2700));
-                //第二个公章
-                $tmpSavefile2 = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-mark2.'.$baseinfo['extension'];
-                waterMark($tmpSavefile,'./Public/static/images/sealA.png',$tmpSavefile2,array(1300,2700));
-                //左上角章
-                $tmpSavefile3 = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-sign.'.$baseinfo['extension'];
-                waterMark($tmpSavefile2,'./Public/static/images/sign.png',$tmpSavefile3,array(350,60));
-                //带mark的pdf
-                @rename($tmpSavefile3,$imageFiles[0]);
+                if($tpl['subtype'] == 2){
+                    //小中心
+                    $tmpSavefile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-mark.'.$baseinfo['extension'];
+                    waterMark($imageFiles[0],'./Public/static/images/sealB.png',$tmpSavefile,array(1050,2650));
+                    //左上角章
+                    $tmpSavefile2 = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-sign.'.$baseinfo['extension'];
+                    waterMark($tmpSavefile,'./Public/static/images/sign.png',$tmpSavefile2,array(350,60));
+                    //带mark的pdf
+                    @rename($tmpSavefile2,$imageFiles[0]);
+                    $imgFiles[] = $tmpSavefile;
 
-                $imgFiles[] = $tmpSavefile;
-                $imgFiles[] = $tmpSavefile2;
+                    //图二带章
+                    $baseinfo = pathinfo($imageFiles[1]);
+                    $tmpSavefile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-mark2.'.$baseinfo['extension'];
+                    waterMark($imageFiles[1],'./Public/static/images/sealB.png',$tmpSavefile,array(1600,2380));
 
 
+                }else{
+                    //大中心
+                    $tmpSavefile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-mark.'.$baseinfo['extension'];
+                    waterMark($imageFiles[0],'./Public/static/images/sealB.png',$tmpSavefile,array(700,2700));
+                    //第二个公章
+                    $tmpSavefile2 = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-mark2.'.$baseinfo['extension'];
+                    waterMark($tmpSavefile,'./Public/static/images/sealA.png',$tmpSavefile2,array(1300,2700));
+                    //左上角章
+                    $tmpSavefile3 = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-sign.'.$baseinfo['extension'];
+                    waterMark($tmpSavefile2,'./Public/static/images/sign.png',$tmpSavefile3,array(350,60));
+                    //带mark的pdf
+                    @rename($tmpSavefile3,$imageFiles[0]);
+                    $imgFiles[] = $tmpSavefile2;
 
-                //图二带章
-                $baseinfo = pathinfo($imageFiles[1]);
-                $tmpSavefile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-mark2.'.$baseinfo['extension'];
-                waterMark($imageFiles[1],'./Public/static/images/sealA.png',$tmpSavefile,array(1600,2400));
+                    //图二带章
+                    $baseinfo = pathinfo($imageFiles[1]);
+                    $tmpSavefile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-mark2.'.$baseinfo['extension'];
+                    waterMark($imageFiles[1],'./Public/static/images/sealA.png',$tmpSavefile,array(1600,2400));
+
+
+                }
+                
                 //左上角章
                 $tmpSavefile2 = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-sign2.'.$baseinfo['extension'];
                 waterMark($tmpSavefile,'./Public/static/images/sign.png',$tmpSavefile2,array(350,0));
@@ -522,11 +543,12 @@ class TestController extends Controller{
 
                 $imgFiles[] = $tmpSavefile;
                 $imgFiles[] = $tmpSavefile2;
-
-                $data['pdf_path'] = substr($signPdf,1);
             }
-            //
-            //
+            $data['pdf_path'] = $pdf;
+            $data['pdf_sign_path'] = substr($signPdf,1);
+
+
+
             if(D("test_report")->where("centreno='{$centreno}'")->save($data)){
                 if($imgFiles){
                     foreach ($imgFiles as $value) {

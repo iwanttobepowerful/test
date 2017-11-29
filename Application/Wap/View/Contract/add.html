@@ -114,7 +114,7 @@
                     buttons:['确定']
                 },function(ret){
                     //console.log(ret)
-                    //window.location.href="/contract/specialCodeList";
+                    window.location.reload();
                 })
             }
         }
@@ -137,7 +137,7 @@
                 msg:'年份或数量输入有误，请重新输入',
                 buttons:['确定']
             },function(ret){
-                window.location.href="/contract/add";
+                //window.location.href="/contract/add";
             });
         }
         else {
@@ -146,35 +146,5 @@
         return f;
     }
 
-//        var b = /^[0-9]*[1-9][0-9]*$/;  //正整数
-//        if (!b.test(document.getElementById("getNum").value)) {
-//            f=false;
-//            var dialog = new auiDialog();
-//            dialog.alert({
-//                title:"提示",
-//                msg:'数量格式不对，请重新输入',
-//                buttons:['取消','确定']
-//            },function(ret){
-//                window.location.href="/contract/add";
-//            });
-//        }
-//        else {
-//            return true;
-//        }
-//    }
-
-//    function numcheck(){
-//        var a = /^[0-9]*[1-9][0-9]*$/;  //正整数
-//        if (!a.test(document.getElementById("getNum").value)) {
-//            var dialog = new auiDialog();
-//            dialog.alert({
-//                title:"提示",
-//                msg:'数量格式不对，请重新输入',
-//                buttons:['取消','确定']
-//            },function(ret){
-//                window.location.href="/contract/add";
-//            });
-//        }
-//    }
 </script>
 <include file="Common:footer" />

@@ -234,9 +234,11 @@ class TestReportController extends Controller
         $qr_level = 'L';
         $qr_size = '4';
         $save_prefix = '';
-        if(file_exists($save_path.md5($centreno).'.png')){
-            @unlink($save_path.md5($centreno).'.png');
+        /*
+        if(file_exists($save_path."qr_{$centreno}.png")){
+            @unlink($save_path."qr_{$centreno}.png");
         }
+        */
         $filename = createQRcode($centreno,$save_path,$qr_data,$logo_path,'H',5,$save_prefix);
         if($filename){
             $img = $save_path.$filename;
@@ -247,6 +249,9 @@ class TestReportController extends Controller
 
     //选择编号
     public function seleteKey(){
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $department=$admin_auth['department'];//判断是哪个角色
+        $if_admin = $admin_auth['super_admin'];
 	   $centreno = I("mod");
         $tpl=D("tpl")->select();
         $contract = D('contract')->where("centreno='{$centreno}'")->find();
@@ -261,6 +266,8 @@ class TestReportController extends Controller
            'contactNo'=>$centreno,
             'tpl'=>$tpl,
             'type'=>$type,
+            'department'=>$department,
+            'if_admin'=>$if_admin
        );
        $this->assign($body);
        $this->display(select);

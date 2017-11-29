@@ -275,9 +275,50 @@ class ReportController extends Controller
         $where= "centreno='{$centreno}'";
         $rs=D("test_cost")->where($where)->find();
         $cost=D("contract")->where($where)->field('testcost')->find();
+
+        //$arr = array(
+          //'a'=>array(1,2,3,4),
+            //'b'=>array(5,6,7,8),
+        //);
+        //$arrstring = serialize($arr);
+        //dump($arrstring);
+        $attr = unserialize($rs['idlist']);
+        //$attr = unserialize($arrstring);
+        //dump($attr);
+        if(!empty($attr['a'])) {
+            $where1['id'] = array('in', $attr['a']);
+            $a = D("test_fee")->where($where1)->select();
+        }
+        if(!empty($attr['b'])) {
+            $where2['id'] = array('in', $attr['b']);
+            $b = D("test_fee")->where($where2)->select();
+        }
+        if(!empty($attr['c'])) {
+            $where3['id'] = array('in', $attr['c']);
+            $c = D("test_fee")->where($where3)->select();
+        }
+        if(!empty($attr['d'])) {
+            $where4['id'] = array('in', $attr['d']);
+            $d = D("test_fee")->where($where4)->select();
+        }
+        if(!empty($attr['e'])) {
+            $where5['id'] = array('in', $attr['e']);
+            $e = D("test_fee")->where($where5)->select();
+        }
+        if(!empty($attr['f'])) {
+            $where6['id'] = array('in', $attr['f']);
+            $f = D("test_fee")->where($where6)->select();
+        }
+        //dump($a);
         $body=array(
             'one'=>$rs,
-            'cost'=>$cost
+            'cost'=>$cost,
+            'a'=>$a,
+            'b'=>$b,
+            'c'=>$c,
+            'd'=>$d,
+            'e'=>$e,
+            'f'=>$f
         );
         $this->assign($body);
         $this->display();
@@ -321,7 +362,7 @@ class ReportController extends Controller
             ->join('common_system_user ON contract_flow.inner_sign_user_id = common_system_user.id')
             ->join('contract ON contract_flow.centreno = contract.centreno')
             ->join('test_report on contract_flow.centreno=test_report.centreno')
-            ->field('contract_flow.id,contract_flow.status,contract_flow.centreNo,contract_flow.inner_sign_time,common_system_user.name,contract.productUnit,contract.clientSign,contract.telephone,contract.postmethod,contract.address,contract.centreno1,contract.centreno2,contract.centreno3,test_report.pdf_path')
+            ->field('contract_flow.id,contract_flow.status,contract_flow.centreNo,contract_flow.inner_sign_time,common_system_user.name,contract.productUnit,contract.clientSign,contract.telephone,contract.postmethod,contract.address,contract.centreno1,contract.centreno2,contract.centreno3,test_report.pdf_sign_path')
             ->limit("{$offset},{$pagesize}")
             ->order('contract_flow.inner_sign_time desc,contract_flow.id desc')->select();
         //查找条件为已经批准并且内部尚未签发的报告
@@ -392,7 +433,7 @@ class ReportController extends Controller
         $imgurl = I("imgurl");
         $filename = I("filename");
         $type = I("type",1,'intval');
-        $subtype=I("type",0,'intval');
+        $subtype=I("subtype",0,'intval');
         $result = array("msg" => "fail");
         if (empty($imgurl)) {
             $result['msg'] = "无效的提交！";

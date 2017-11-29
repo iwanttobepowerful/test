@@ -42,7 +42,8 @@ class AccountController extends Controller {
 
 		$admin = D("common_system_user")->where($where)->find();
 
-		if($admin['username']=='liyingquan' or $admin['username']=='admin') {
+
+		if($admin['gid'] == 8 or $admin['gid']== 0) {
             if ($admin && D("common_system_user")->where("id=" . $admin['id'])->save(array("login_time" => date("Y-m-d H:i:s")))) {
                 !$admin['super_admin'] && $role = D("common_role")->where("id=" . $admin['gid'])->find();
                 if ($role && !$role['status']) {
