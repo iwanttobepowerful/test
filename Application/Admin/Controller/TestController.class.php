@@ -545,6 +545,9 @@ class TestController extends Controller{
                 $imgFiles[] = $tmpSavefile2;
             }
             $data['pdf_path'] = substr($pdf,1);
+            $data['pdf_sign_path'] = substr($signPdf,1);
+
+
 
             if(D("test_report")->where("centreno='{$centreno}'")->save($data)){
                 if($imgFiles){
