@@ -68,7 +68,7 @@
                         </if>
                         <if condition="$if_edit==1">
                         <if condition="$con['status']==8 and $con['doc_path']">
-                            <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="confirmReport('{$con.centreno}')" >确认</a></if></if></if>
+                            <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="confirmReport('{$con.centreno}')" >确认</a><p></p></if></if></if>
                         <if condition="$if_edit==1">
                             <if condition=" ($con['sub_status'] == 0) and ($con['if_report'] ==1)">
                                 <span style="color:green">申请修改中</span>
