@@ -1,24 +1,4 @@
 <include file="Common:header" title="后台首页"/>
-<script>
-$(function() {
-    $("#Brecord").click(function() {
-        $('#myModal').modal({
-            keyboard: true,
-        })
-    });
-});
-
-function valid(num) {
-	console.log(num)
-	var input_id = "#" + num;
-	var input_class = "." + num;
-	if($(input_id)[0].checked) {
-		$('#footer').append("<span class=" + num + ">" + $(input_id).val() + "&nbsp;&nbsp;&nbsp;</span>")
-	} else {
-		$(input_class).remove()
-	}
-}
-</script>
 <div id="page-wrapper">
 	<include file="Common:breadcrumb" />
     <div id="page-inner" class="container">
@@ -177,7 +157,7 @@ function valid(num) {
                   <p align="center">参考价格</p>
                   <input name="Arecord" type="text" class="form-control"  id="Arecord" size="5" placeholder="A部门" readonly   onClick="Cost('A')"/>
                   <br/>
-                  <input name="Brecord" type="text" class="form-control"  id="Brecord" size="5" placeholder="B部门" readonly />
+                  <input name="Brecord" type="text" class="form-control"  id="Brecord" size="5" placeholder="B部门" readonly  onclick="Cost('B')"/>
                   <br/>
                   <input name="Crecord" type="text" class="form-control"  id="Crecord" size="5" placeholder="C部门" readonly  onClick="Cost('C')"/>
                   <br/>
@@ -193,16 +173,22 @@ function valid(num) {
               <div  class="col-xs-6">
                   <p align="center">报告应收价格</p>
                   <input name="RArecord" type="text" class="form-control two-col"  id="RArecord" size="5" placeholder="A部门" onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hint">A部门</p>
+                  <input name="A_id_list" id="A_id_list" type="hidden" value=""/>
                   <div>+</div>
                   <input name="RBrecord" type="text" class="form-control two-col"  id="RBrecord" size="5" placeholder="B部门" onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hint">B部门</p>
+                  <input name="B_id_list" id="B_id_list" type="hidden" value=""/>
                   <div>+</div>
                   <input name="RCrecord" type="text" class="form-control two-col"  id="RCrecord" size="5" placeholder="C部门" onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hint">C部门</p>
+                  <input name="C_id_list" id="C_id_list" type="hidden" value=""/>
                   <div>+</div>
                   <input name="RDrecord" type="text" class="form-control two-col"  id="RDrecord" size="5" placeholder="D部门" onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hint">D部门</p>
+                  <input name="D_id_list" id="D_id_list" type="hidden" value=""/>
                   <div>+</div>
                   <input name="RErecord" type="text" class="form-control two-col"  id="RErecord" size="5" placeholder="E部门" onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hint">E部门</p>
+                  <input name="E_id_list" id="E_id_list" type="hidden" value=""/>
                   <div>+</div>
                   <input name="RFrecord" type="text" class="form-control two-col"  id="RFrecord" size="5" placeholder="F部门" onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hint">F部门</p>
+                  <input name="F_id_list" id="F_id_list" type="hidden" value=""/>
                   <div>+</div>
                   <input name="Dcopy" type="text" class="form-control two-col"  id="Dcopy" placeholder="副本" onKeyUp="computeSum()" size="5" />&nbsp;&nbsp;&nbsp;<p class="hint">副本</p>
                   <div>+</div>
@@ -257,115 +243,22 @@ function valid(num) {
 						<div class="col-sm-10 search">
 							<input type="text" class="form-control col-sm-10 standard" placeholder="请输入标准号" id="criteria">
 							<button class="btn btn-primary search_btn"  onclick="findCriteria()" >搜索</button>
+                            <input type="hidden" id="depar" value="" />
 						</div>
 					</div>
 					<div class="modal-body main_content sco">
 						<!--折叠的大div，在一个大的id下折叠会相互影响，id与a标签的date-parent相关联-->
 						<div class="panel-group" id="accordion222">
-							<!--折叠一的面板，折叠一-->
-							<div class="panel panel-default">
-								<!--折叠一的头部-->
-								<div class="panel-heading">
-									<h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion222" href="#collapseOne">
-                                            瓷墙地砖填缝剂JC/T1004-2006
-                                        </a>
-                                    </h4>
-								</div>
-								<!--折叠一的内容，id与a标签的href相关联-->
-								<div id="collapseOne" class="panel-collapse collapse">
-									<div class="panel-body">
-										<!--折叠一的内容的大div，id与a标签的date-parent相关联-->
-										<div class="panel-group" id="accordion">
-											<!--折叠一的折叠一的头部-->
-											<div class="panel panel-default">
-												<div class="panel-heading">
-													<h4 class="panel-title">
-									                			<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne_A">
-									                				水泥基陶瓷墙地砖填缝剂
-									                			</a>
-			            									</h4>
-												</div>
-												<!--折叠一的折叠一的内容，id与a标签的href相关联-->
-												<div id="collapseOne_A" class="panel-collapse collapse">
-													<div class="panel-body">
-														<form class="checkbox-inlin" role="form">
-															<input type="checkbox" id="inlineCheckbox1" value="耐磨损性/800（元）" onchange="valid(this.id)"> 耐磨损性
-															<input type="checkbox" id="inlineCheckbox2" value="收缩值/500（元）" onchange="valid(this.id)"> 收缩值
-															<input type="checkbox" id="inlineCheckbox3" value="标准抗折强度/300（元）" onchange="valid(this.id)"> 标准抗折强度
-															<input type="checkbox" id="inlineCheckbox4" value="标准抗压强度/300（元）" onchange="valid(this.id)"> 标准抗压强度
-															<input type="checkbox" id="inlineCheckbox5" value="冻融循环抗折强度/600（元）" onchange="valid(this.id)"> 冻融循环抗折强度
-															<input type="checkbox" id="inlineCheckbox6" value="冻融循环抗压强度/600（元）" onchange="valid(this.id)"> 冻融循环抗压强度
-															<input type="checkbox" id="inlineCheckbox7" value="吸水量(30min)/500（元）" onchange="valid(this.id)"> 吸水量(30min)
-															<input type="checkbox" id="inlineCheckbox8" value="吸水量(240min)/500（元）" onchange="valid(this.id)"> 吸水量(240min)
-															<input type="checkbox" id="inlineCheckbox9" value="标准试验条件24h抗压强度/200（元）" onchange="valid(this.id)"> 标准试验条件24h抗压强度
-															<input type="checkbox" id="inlineCheckbox10" value="横向变形/300（元）" onchange="valid(this.id)"> 横向变形
-															<input type="checkbox" id="inlineCheckbox11" value="高耐磨性/200（元）" onchange="valid(this.id)"> 高耐磨性
-															<input type="checkbox" id="inlineCheckbox12" value="30min低吸水量/300（元）" onchange="valid(this.id)"> 30min低吸水量
-															<input type="checkbox" id="inlineCheckbox13" value="240min低吸水量/300（元）" onchange="valid(this.id)"> 240min低吸水量
-														</form>
-													</div>
-												</div>
-											</div>
-											<div class="panel panel-default">
-												<div class="panel-heading">
-													<h4 class="panel-title">
-								                				<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne_B">
-								                					点击我再次展开第一部分的子部分
-								                				</a>
-		            										</h4>
-												</div>
-												<div id="collapseOne_B" class="panel-collapse collapse">
-													<div class="panel-body">
-														Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!--折叠二-->
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion222" href="#collapseTwo">
-                                            混凝土地面用水泥基耐磨材料JC/T906-2002
-                                        </a>
-                                    </h4>
-								</div>
-								<div id="collapseTwo" class="panel-collapse collapse">
-									<div class="panel-body">
-										Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-									</div>
-								</div>
-							</div>
-							<!--折叠三-->
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion222" href="#collapseThree">
-                                            预拌砂浆GB/T 25181-2010 、建筑砂浆基本性能试验方法标准JGJ/T70-2009
-                                        </a>
-                                    </h4>
-								</div>
-								<div id="collapseThree" class="panel-collapse collapse">
-									<div class="panel-body">
-										Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-									</div>
-								</div>
-							</div>										
+																	
 						</div>
 					</div>
 					<div class="modal-footer">
 						<div class="select_opion" id="footer">
 
 						</div>
-						<p class="fis">总金额：<span></span></p>
-						<button type="button" class="btn btn-default" data-dismiss="modal">
-							关闭
-						</button>
-						<button type="button" class="btn btn-primary">
+						<p class="fis">总金额：<span id="fee_sum"></span></p>
+
+						<button type="button" class="btn btn-primary" onclick="returnCost()" data-dismiss="modal">
 							提交更改
 						</button>
 					</div>
@@ -607,104 +500,15 @@ function valid(num) {
 				
 		//本部门费用选
 		function Cost(de){
-			var modal = $("#editModal_"+de);
-			setMetOption(de);
+			//var modal = $("#editModal_"+de);
+			//setMetOption(de);
+			$('#myModal').modal({
+				keyboard: true,
+			});
+			$("#depar").val(de);
 			modal.modal();
 
 		}
-		
-/*		//获取费用选项(下面三个函数)
-		function setMetOption(de){
-			//alert($('#meterial_'+de+' option').size());
-			$.ajax({
-				url: "{:U('/admin/contract/findMetList')}",
-				dataType: 'json',
-				beforeSubmit: function(){
-					return true;
-				},
-				success: function (re) {
-					$('#meterial_'+de).find("option").remove();
-					var option = "<option value=0>请选择</option>";
-					$('#meterial_'+de).append(option);
-					
-					data = re['meterial_list'];
-					for(var i=0;i<data.length;i++){
-						var meterial = data[i]['meterial'];
-						option = "<option value='"+meterial+"'>"+meterial+"</option>";
-						$('#meterial_'+de).append(option);
-					}
-				}	
-			});
-		}
-		
-		function setProOption(de){
-			m_select = $("#meterial_"+de).val();
-			$("#items_"+de).empty();
-			$("#fee_"+de).empty();
-			if(m_select!=0){
-				$.ajax({
-					url: "{:U('/admin/contract/findProList')}",
-					dataType: 'json',
-					data:{'m_select':m_select},
-					beforeSubmit: function(){
-						return true;
-					},
-					success: function (re) {
-						$('#productname_'+de).find("option").remove();
-						var option = "<option value=0>请选择</option>";
-						$('#productname_'+de).append(option);
-						data = re['productname_list'];
-						for(var i=0;i<data.length;i++){
-							var productname = data[i]['productname'];
-							var criteria = data[i]['criteria'];
-							option = "<option value='"+productname+","+criteria+"'>"+productname+" "+criteria+"</option>";
-							$('#productname_'+de).append(option);
-						}
-					}	
-				});
-			}else{
-				$('#productname_'+de).find("option").remove();
-				var option = "<option value=0>请选择</option>";
-				$('#productname_'+de).append(option);
-			}
-		}
-
-		function setItemOption(de){
-			m_select = $("#meterial_"+de).val();
-			p_select = $("#productname_"+de).val();
-			if(m_select!=0){
-				$.ajax({
-					url: "{:U('/admin/contract/findItemList')}",
-					dataType: 'json',
-					data:{'m_select':m_select,'p_select':p_select},
-					beforeSubmit: function(){
-						return true;
-					},
-					success: function (re) {
-						$("#items_"+de).empty();
-						$("#fee_"+de).empty();
-						data = re['item_list'];
-						for(var i=0;i<data.length;i++){
-							var items = data[i]['item'];
-							var money = data[i]['fee'];
-							var quantity = data[i]['quantity'];
-							if(quantity==2){
-								option = "<input type='checkbox' id='items_all_"+de+"' name='items_all_"+de+"' value='"+money+"' onclick=checkAllFee('"+de+"'); />&nbsp;&nbsp;"+items+"&nbsp;&nbsp;";
-								$('#items_'+de).prepend(option);
-							}else if(quantity==0){
-								option = "<input type='checkbox' name='s_items_"+de+"' value='"+money+"' onclick=checkFee('"+de+"');  />&nbsp;&nbsp;<span style='color:red; font-size:16px'>*</span>"+items+"&nbsp;&nbsp;";
-								$('#items_'+de).append(option);
-							}else{
-								option = "<input type='checkbox' name='items_"+de+"' value='"+money+"' onclick=checkFee('"+de+"');  />&nbsp;&nbsp;"+items+"&nbsp;&nbsp;";
-								$('#items_'+de).append(option);
-							}
-							
-						}
-					}	
-				});
-			}
-		}
-*/	
 
 		//查询标准号
 		function findCriteria(){
@@ -724,7 +528,8 @@ function valid(num) {
 						var html_productname = "";
 						for(var j=0;j<data_productname[i].length;j++){
 							data_productname[i][j]['productname'];
-							html_productname += '<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion_'+i+'" href="#collapseOne_'+i+j+'">'+data_productname[i][j]['productname']+'</a></h4></div></div>';
+							data_criteria_name = data_criteria[i]['criteria'];
+							html_productname += '<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion_'+i+'" href="#collapseOne_'+i+j+'" onclick=findProItem("'+i+j+'","'+encodeURIComponent(data_criteria_name)+'","'+data_productname[i][j]['productname']+'")>'+data_productname[i][j]['productname']+'</a></h4></div><div id="collapseOne_'+i+j+'" class="panel-collapse collapse"><div class="panel-body"><form class="checkbox-inlin" role="form" id="form_'+i+j+'"></form></div></div></div>';
 							
 						}
 						html_list += '<div class="panel panel-default" id="fee_list_'+i+'"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion222" href="#collapseOne_'+i+'">'+data_criteria[i]['criteria']+'</a></h4></div><div id="collapseOne_'+i+'" class="panel-collapse collapse"><div class="panel-body"><div class="panel-group" id="accordion_'+i+'">'+html_productname+'</div></div></div></div>';
@@ -736,54 +541,111 @@ function valid(num) {
 
 		}
 		
+		//获取指定产品名称的编号
+		function findProItem(ij,criteria,productname){
+			//alert(ij,criteria,productname);
+			criteria = decodeURIComponent(criteria);
+			var p_id = "collapseOne_"+ij;
+			var form_id = "form_"+ij;
+			$.ajax({
+				url: "{:U('/admin/contract/findItem')}",
+				dataType: 'json',
+				data:{'criteria':criteria,'productname':productname},
+				beforeSubmit: function(){
+					return true;
+				},
+				success: function (re) {
+					var item_list = re['item_list'];
+					var html_list = "";
+					var button_list = "";
+					for(var i=0 ;i<item_list.length;i++){
+						items_name = item_list[i]['item'];
+						items_id = item_list[i]['id'];
+						items_quantity = item_list[i]['quantity'];
+						items_fee = item_list[i]['fee'];
+						if(items_quantity==1){
+							html_list += '<input type="checkbox" id="items_'+items_id+'" name="items" value="'+items_fee+'" onchange=valid(this.id,"'+items_name+'")>'+items_name+'('+items_fee+')';
+						}else if(items_quantity==2){
+							button_list +=  '<button type="button" class="btn btn-default btn-xs" id="items_all_'+items_id+'" name="items_all" value="'+items_fee+'" onclick=checkAllFee(this.id,"'+items_name+'")>'+items_name+'</button>';
+						} 
+					}
+					html_list = button_list+"<br/>"+html_list; 
+					$("#"+p_id+" #"+form_id).html(html_list);
+				}	
+			});
+			
+		}
 		
-				
-		//计算本部门费用--单项选择
-		function checkFee(de){
+		//单项点击定位
+		function valid(num,name) {
+			//console.log(num)
+			var input_id = "#" + num;
+			var input_class = "." + num;
+			var b_id_list =[];
+			if($(input_id)[0].checked) {
+				$('#footer').append("<span class=" + num + ">" + name + "(" +$(input_id).val() + ")" + "&nbsp;&nbsp;&nbsp;</span>");
+			} else {
+				$(input_class).remove();
+			}
+			checkFee();
+		}
+		
+		//单项选择
+		function checkFee(){
 			cash = 0;
-			var allCheck=true;
-			$("input[name='items_"+de+"']").each(function(index, element) {
-				if($(this).prop("checked") == false){
-					allCheck = false;
-				}else{
+			$("input[name='items']").each(function(index, element) {
+				if($(this).prop("checked") == true){
 					cash+=parseInt(element.value);
 				}		
 			});
-			if($("#items_all_"+de).length>0){
-				if(allCheck==false){
-					$("input[name='items_all_"+de+"']").prop("checked",false);	
-				}else{
-					$("#items_all_"+de).prop("checked",true);
-					cash = parseInt($("#items_all_"+de).val());
-				}
-			}		
-			$("input[name='s_items_"+de+"']").each(function(index, element) {
-				if($(this).prop("checked") == true){
-					cash+=parseInt(element.value);	
-				}				
-			});				
-			$("#fee_"+de).html(cash);
-		}
-		//计算本部门费用--全项选择
-		function checkAllFee(de){
-			var cash=0;
-			$("#items_all_"+de).prop("checked",$("#items_all_"+de).prop("checked"));
-			if($("#items_all_"+de).prop("checked")){
-				$("input[name=items_"+de+"]").prop("checked",true);
-				cash = parseInt($("#items_all_"+de).val());
-			}else{
-				$("input[name=items_"+de+"]").prop("checked",false);
-			}
-			$("input[name='s_items_"+de+"']").each(function(index, element) {
-				if($(this).prop("checked") == true){
-					cash+=parseInt(element.value);	
-				}				
-			});
-			$("#fee_"+de).html(cash);
+			$("#fee_sum").html(cash);
 		}
 		
-		function returnCost(de){
-			$("#"+de+"record").val($("#fee_"+de).html());
+
+		
+		//计算本部门费用--全项选择
+		function checkAllFee(num,name){
+			var cash=0;
+			var item_id;
+			item_id = num.replace("items_all_","");
+			
+			$.ajax({
+				url: "{:U('/admin/contract/findAllItem')}",
+				dataType: 'json',
+				data:{'item_id':item_id},
+				beforeSubmit: function(){
+					return true;
+				},
+				success: function (re) {
+					console.log(re);
+					var fee_item = re['fee_item'];
+					var child_item_list = fee_item['child_item_list'];
+					var fee = fee_item['fee'];
+					var id_list = child_item_list.split(",");
+					$("input[name=items]").prop('checked',false);
+					$("#footer").empty();
+					for(var i=0;i<id_list.length;i++){
+						$("#items_"+id_list[i]).prop('checked',true);
+						$("#items_"+id_list[i]).trigger("onchange");
+						//id = "items_"+id_list[i];
+						//$('#footer').append("<span class=" + id + ">" + $("#"+id).attr('name') + "(" +$("#"+id).val() + ")" + "&nbsp;&nbsp;&nbsp;</span>");
+					}
+					$("#fee_sum").html(fee);
+				}	
+			});
+		}
+		
+		function returnCost(){
+			var de = $("#depar").val();
+			$("#"+de+"record").val($("#fee_sum").html());
+			id_list =[];
+			$("input[name='items']").each(function(index, element) {
+				if($(this).prop("checked") == true){
+					id = element.id.replace("items_","");
+					id_list.push(id);
+				}		
+			});
+			$("#"+de+"_id_list").val(id_list.join(","));
 			//computeSum();
 		}
 

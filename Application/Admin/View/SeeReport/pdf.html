@@ -6,16 +6,28 @@
 <div id="pdf-box">
 
 </div>
-<script>
+<!--<script>
     var he = $(window).height();
     console.log(he);
-
     
     var pdf = "<php>echo $pdfUrl;</php>";
     alert(pdf);
     window.onload = function () {
         console.log('<iframe src="__PUBLIC__/static/js/pdfJs/web/viewer.html?file={$pdfUrl}" class="pdf" width="100%" height='+he+'></iframe>')
         $("#pdf-box").html('<iframe src="__PUBLIC__/static/js/pdfJs/web/viewer.html?file={$pdfUrl}" class="pdf" width="100%" height='+he+'></iframe>');
+        };
+    
+</script>-->
+<script>
+    var pdf_height = $(window).height();
+    var pdf_width = $(window).width();
+    console.log(pdf_height);
+    console.log(pdf_width);
+    window.onload = function () {
+        var content = '<iframe src="__PUBLIC__/static/js/pdfJs/web/viewer.html?file={$pdfUrl}" style="border:none" class="pdf" width="100%" height='+pdf_height+'></iframe>';
+        $("#pdf-box").html(content);
+        $("#pdf-box").after('<div class="pdf_scan" style="position:relative;background-color:#3d3d3d;color:white;padding-left:'+pdf_width/2+'">您是第<span>{$count}</span>位访客</div>')
+        $("#pdf-box").css("height",pdf_height)
         };
     
 </script>
