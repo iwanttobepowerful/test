@@ -251,6 +251,7 @@ class TestReportController extends Controller
     public function seleteKey(){
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $department=$admin_auth['department'];//判断是哪个角色
+        $if_admin = $admin_auth['super_admin'];
 	   $centreno = I("mod");
         $tpl=D("tpl")->select();
         $contract = D('contract')->where("centreno='{$centreno}'")->find();
@@ -265,7 +266,8 @@ class TestReportController extends Controller
            'contactNo'=>$centreno,
             'tpl'=>$tpl,
             'type'=>$type,
-            'department'=>$department
+            'department'=>$department,
+            'if_admin'=>$if_admin
        );
        $this->assign($body);
        $this->display(select);
