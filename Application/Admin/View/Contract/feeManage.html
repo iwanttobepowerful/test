@@ -8,15 +8,20 @@
         <div class="search-form">
             <form class="form-inline" method="GET" action="">
                 <if condition="$if_leader == 1">
-                        <button type="button" class="btn btn-primary btn-sm" onclick="editFee()"><i class="glyphicon glyphicon-plus"></i> 添加</button>
-                </if>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="editFee()"><i class="glyphicon glyphicon-plus"></i> 添加</button>                </if>
                	<span></span>
                 <div class="form-group" style="margin-left:20px">
                     <label>执行标准：</label>
                     <input type="hidden" name="p" value="1" />
                     <input type="text" class="form-control input-sm" name="criteria_find" />
                 </div>
+                <select id="allChose" name="allChose" class="form-control">
+                    <option value="0">请选择</option>
+                    <option value="1">非全项</option>
+                    <option value="2">全项</option>
+                </select>
                 <button type="submit" class="btn btn-primary btn-sm" >查询</button>
+
             </form>
         </div>
         <table class="table table-bordered table-striped table-hover">
@@ -289,7 +294,6 @@
 				return true;
 			},
 			success: function (re) {
-				$("myform1 input").val("");
 				if(re.rs != 'add'){			
 					$("input[name=meterial]").val(re.rs.meterial);
 					$("input[name=criteria]").val(re.rs.criteria);
@@ -299,6 +303,7 @@
 					$("input[name=testperiod]").val(re.rs.testperiod);
 					$("input[name=remark]").val(re.rs.remark);
 					$("input[name=fee]").val(re.rs.fee);
+					$("input[name=edit_id]").val(re.rs.id);
 					//下拉框被选中
 					//$("#quantity").find("option").removeAttr("selected");
 					//$("#quantity").find("option[value="+re.rs.quantity+"]").attr("selected",true);
@@ -313,9 +318,11 @@
 							//alert($("#child_item").html());
 						}
 						
+					}else{
+						ifAllItem();
 					}
 					//$("input[name=quantity]").val(re.quantity);
-					$("input[name=edit_id]").val(re.rs.id);
+					
 				}else{
 					$("#myform1 input").val("");
 					$("#quantity").val(1);
@@ -405,8 +412,8 @@
 	function doReflashChildItem(){
 		var criteria =$.trim($("#criteria").val());
 		var productname =$.trim($("#productname").val());
-		if($.trim($("#criteria").val())=="" || $.trim($("#productname").val())==""){
-			alert("请输入执行标准，产品名称");	
+		if($.trim($("#criteria").val())==""){
+			alert("请输入执行标准");	
 			return false;
 		}else{
 			$.ajax({
