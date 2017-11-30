@@ -108,11 +108,16 @@ class AuditController extends Controller {
             );
         if ($user==13||$if_admin==1){//审核员和超级管理员的权限
             if(D("report_feedback")->where("id=".$id)->save($data)){
+                $rs['msg'] = 'succ';
                 if($de =='B'){
                     $data1['status']=8;
                     D("contract_flow")->where("centreno='{$centreno}'")->save($data1);
                     $rs['msg'] = 'succ';
                 }
+                else{
+                    $rs['msg'] = 'succ';
+                }
+
             }}
 
         $this->ajaxReturn($rs);
@@ -126,6 +131,8 @@ class AuditController extends Controller {
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
+        $rf=D("report_feedback")->where($where)->find();
+        $arr=$rf['centreno'];
         $data=array(
             'status'=>2,
         );
@@ -134,7 +141,7 @@ class AuditController extends Controller {
         );
         if ($user==13||$if_admin==1){//审核员和超级管理员的权限
             $result=D("report_feedback")->where($where)->save($data);
-            $result1=D("inspection_report")->where($where)->save($data1);
+            $result1=D("inspection_report")->where("centreno='{$arr}'")->save($data1);
             if($result!==false and $result1!==false){
                 $rs['msg'] = 'succ';
             }}

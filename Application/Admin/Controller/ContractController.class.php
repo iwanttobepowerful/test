@@ -1131,12 +1131,12 @@ class ContractController extends Controller
             $where .= " and SUBSTR(c.centreNo,7,1) = '{$department}'";
         }
         if(!empty($begin_time)){
-            $where.=" and date_format(c.contract_time,'%Y-%m-%d') >='{$begin_time}'";
+            $where .=" and date_format(c.contract_time,'%Y-%m-%d') >='{$begin_time}'";
         }
         if(!empty($end_time)){
-            $where.=" and date_format(c.contract_time,'%Y-%m-%d') <='{$end_time}'";
+            $where .=" and date_format(c.contract_time,'%Y-%m-%d') <='{$end_time}'";
         }
-       $where.= " and c.status != 7 and c.status != 0";
+       $where .= " and c.status != 7 and c.status != 0";
         $page = I("p",'int');
         $pagesize = 10;
         if($page<=0) $page = 1;
@@ -1144,9 +1144,34 @@ class ContractController extends Controller
 
         //判断是接单还是签发
         //$ifstatus =
-        $list = D("contract_flow as c")->field('if(c.id is null,-1,c.id) as flow_id,if(r.status is null,-1,r.status) as sub_status,r.if_report,r.if_outer,f.*,c.status,c.inner_sign_user_id,c.inner_sign_time,c.external_sign_time,c.takelist_user_id,c.takelist_time,u.name as takename,u1.name as innername,u2.name as externalname,v.doc_path,v.pdf_path,v.qrcode_path')
-            ->join('left join contract as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on c.takelist_user_id=u.id LEFT JOIN common_system_user u2 on c.external_sign_user_id=u2.id LEFT JOIN common_system_user u1 on c.inner_sign_user_id=u1.id left join test_report as v on c.centreNo=v.centreNo LEFT JOIN report_feedback as r on r.centreNo = c.centreNo' )
+        $list = D("contract_flow as c")->field('if(c.id is null,-1,c.id) as flow_id,f.*,c.status,c.inner_sign_user_id,c.inner_sign_time,c.external_sign_time,c.takelist_user_id,c.takelist_time,u.name as takename,u1.name as innername,u2.name as externalname,v.doc_path,v.pdf_path,v.qrcode_path')
+            ->join('left join contract as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on c.takelist_user_id=u.id LEFT JOIN common_system_user u2 on c.external_sign_user_id=u2.id LEFT JOIN common_system_user u1 on c.inner_sign_user_id=u1.id left join test_report as v on c.centreNo=v.centreNo ' )
             ->where($where)->order('c.takelist_all_time desc,f.id desc')->limit("{$offset},{$pagesize}")->select();
+        if($list){
+            $con_list = array();//反馈
+            foreach($list as $contract){
+                array_push($con_list,"'".$contract['centreno']."'");
+            }
+            $centreno_str = implode(',',$con_list);
+            $no_feed_list = D('report_feedback')->field('MAX(id),centreNo')->where('centreNo in('.$centreno_str.')')->group('centreNo')->select();
+            $con_list = array();
+            if($no_feed_list){
+                foreach($no_feed_list as $no_feed){
+                    $con_list[$no_feed['centreno']]	= $no_feed;
+                }
+            }
+            foreach($list as $key=>$val){
+                if($con_list[$val['centreno']]){
+                    $val['sub_status'] = $con_list[$val['centreno']]['status'];
+                    $val['if_report'] = $con_list[$val['centreno']]['if_report'];
+                }else{
+                    $val['sub_status'] = -1;
+                    $val['if_report'] = 0;
+                }
+                $list[$key] = $val;
+            }
+        }
+
         $count = D("contract_flow as c")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");

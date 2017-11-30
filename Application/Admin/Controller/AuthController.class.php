@@ -432,9 +432,9 @@ class AuthController extends Controller {
 		$super_admin = I("super_admin",0,'intval');
 		$status = I("status",0,'intval');
 		$id = I("modid",0,'intval');
-        $xz = I("xz");//选择能审核的部门
+        $audit = I("audit");//选择能审核的部门
         //换成字符串后再替换
-        foreach($xz as $v){
+        foreach($audit as $v){
             $s .=$v.",";
         }
         $s=substr($s,0,-1);//利用字符串截取函数消除最后一个逗号
