@@ -15,7 +15,7 @@
 			.sam {
 				margin: 0 auto;
 				width: 85%;
-				height: 80%;
+				height: 76.5%;
                 border: solid #000000 1px;
 			}
 			
@@ -45,12 +45,17 @@
 				border-bottom: none;
 			}
 			
-			.sample_one_col,
-			.sample_two_col {
-				width: 20%;
+			.sample_one_col{
+				width: 18.1%;
 			}
+            .sample_two_col {
+                width: 32.2%;
+            }
 			.sample_three_col{
-				width: 30%;
+				width: 13.56%;
+			}
+			.sample_four_col{
+				width: 36.72%;
 			}
 			
 			#sam_content,
@@ -111,7 +116,7 @@
 			}
 			
 			.sam_sign {
-				height: 5%;
+				height: 6%;
 			}
 			
 			.gone_two {
@@ -121,6 +126,8 @@
 			
 			.txt_right {
 				text-align: right;
+                vertical-align:text-top;
+                padding-right:3pt;
 			}
 			
 			.page {
@@ -200,7 +207,7 @@
 			</table>
 			<table class="middle">
 				<tr>
-					<td class="no_border" style="width: 60%;text-align: left;">
+					<td class="no_border" style="width: 65%;text-align: left;">
 						<font class="en">SJ－4－25</font>
 					</td>
 					<td class="no_border" style="text-align: left;">
@@ -224,15 +231,15 @@
 				</tr>
 				<tr>
 					<td class="cn">规格型号</td>
-					<td class="sample_three_col"><span class="sample_txt">
+					<td class="sample_two_col"><span class="sample_txt">
 						<if condition="$one[specification]">
                         	{$one.specification}
                         <else />
 							<span>——</span>
                         </if> 
 					</span></td>
-					<td class="sample_two_col cn">产品批号</td>
-					<td><span class="sample_txt">
+					<td class="sample_three_col cn">产品批号</td>
+					<td class="sample_four_col"><span class="sample_txt">
                             <if condition="$one[batchno]">
                                 {$one.batchno}
                             <else />
@@ -285,7 +292,7 @@
 					</span></td>
 				</tr>
 				<tr>
-					<td class="cn" style="height: 20%;">检验内容</td>
+					<td class="cn" style="height: 22%;">检验内容</td>
 					<td colspan="3"><span class="sample_txt">
                     	{$one.testitem}
 					</span></td>
@@ -336,18 +343,18 @@
 					<td class="gone_bottom txt_left cn" colspan="4">被抽检企业有关人员（签名）</td>
 				</tr>
 				<tr>
-					<td colspan="4" class="gone_two"><span class="sample_txt">
+					<td colspan="4" class="gone_two" style="height: 5%;"><span class="sample_txt">
 						{$one.enterprisesign}
 					</span>
 					</td>
 				</tr>
 				<tr>
-					<td colspan="4" class="gone_two" style="padding-bottom: 0;height: 20px;">
+					<td colspan="4" class="gone_two">
 						<font class="cn" style="padding-left: 45%;">（单 位 盖 章）</font>
 					</td>
 				</tr>
 				<tr>
-					<td colspan="4" class="gone_two cn" style="padding-left: 44%;padding-top: 0;height: 20px;padding-bottom: 28px;"><span class="sample_txt">{$one.6}</span>年<span class="sample_txt">{$one.7}</span>月<span class="sample_txt">{$one.8}</span>日 </td>
+					<td colspan="4" class="gone_two cn" style="padding-left: 44%;padding-bottom: 21px;"><span class="sample_txt">{$one.6}</span>年<span class="sample_txt">{$one.7}</span>月<span class="sample_txt">{$one.8}</span>日 </td>
 				</tr>
 
 				<tr>
@@ -379,7 +386,7 @@
 					</span></td>
 				</tr>
 				<tr>
-					<td class="remark" colspan="4" style="height: 9%;"><span class="cn">备注：第一联由抽样人带回中心存档，第二联由被检企业留任，第三联备用</span></td>
+					<td class="remark" colspan="4" style="height: 8.8%;"><span class="cn">备注：第一联由抽样人带回中心存档，第二联由被检企业留任，第三联备用</span></td>
 				</tr>
 
 			</table>
