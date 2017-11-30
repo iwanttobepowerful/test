@@ -1,5 +1,5 @@
 .htaccess
-
+/Application/Admin/Conf/config.php
 *.DS_Store
 */.DS_Store
 *.DS_Store
@@ -8,4 +8,3 @@
 */Application/Runtime/
 Application/Runtime/*
 */Public/attached/
-Application/Admin/Conf/config.php
