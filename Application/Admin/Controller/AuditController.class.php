@@ -126,7 +126,7 @@ class AuditController extends Controller {
     public function notAllow(){
         $id =I("id");
         $de =I("de");
-        $where= "id='{$id}'";
+        $where['id']= $id;
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
