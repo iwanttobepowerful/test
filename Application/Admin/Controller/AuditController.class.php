@@ -108,11 +108,16 @@ class AuditController extends Controller {
             );
         if ($user==13||$if_admin==1){//审核员和超级管理员的权限
             if(D("report_feedback")->where("id=".$id)->save($data)){
+                $rs['msg'] = 'succ';
                 if($de =='B'){
                     $data1['status']=8;
                     D("contract_flow")->where("centreno='{$centreno}'")->save($data1);
                     $rs['msg'] = 'succ';
                 }
+                else{
+                    $rs['msg'] = 'fail';
+                }
+
             }}
 
         $this->ajaxReturn($rs);
