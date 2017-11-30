@@ -199,7 +199,9 @@ class ContractController extends Controller {
         }
 
         $where['department']=$department;
-        $list = D("special_centre_code")->where($where)->field('*,getNum-remainNum as useNum')->select();
+        $list = D("special_centre_code")->where($where)->order('year desc,month desc')->select();
+        //dump($list);
+        //$list = D("special_centre_code")->where('department="'.$department.'"')->order('year desc,month desc')->select();
         $body = array(
             "special_list"=>$list,
             "id"=>$id ? $id:1
@@ -236,7 +238,7 @@ class ContractController extends Controller {
         }
 
         $where['department']=$department;
-        $list = D("special_centre_code")->where($where)->field('*,getNum-remainNum as useNum')->select();
+        $list = D("special_centre_code")->where($where)->order('year desc,month desc')->select();
         if ($list){
             $this->ajaxReturn($list);
         }
@@ -394,14 +396,14 @@ class ContractController extends Controller {
         $end_time = I("end_time");
         $where = " a.status in(5,6)";
 
-        $begin_time && $where .=" and date_format(b.costdate,'%Y-%m-%d') >='{$begin_time}'";
-        $end_time && $where .=" and date_format(b.costdate,'%Y-%m-%d') <='{$end_time}'";
+        $begin_time && $where .=" and date_format(a.inner_sign_time,'%Y-%m-%d') >='{$begin_time}'";
+        $end_time && $where .=" and date_format(a.inner_sign_time,'%Y-%m-%d') <='{$end_time}'";
 
+//        $begin_time && $where .=" and date_format(a.inner_sign_time,'%Y-%m-%d') >='{$begin_time}'";
+//        $end_time && $where .=" and date_format(a.inner_sign_time,'%Y-%m-%d') <='{$end_time}'";
         //份数
         //select substr(a.centreno,7,1),count(*) from contract_flow a left join contract b on a.centreno=b.centreno where a.status in(5,6) and date_format(b.collectdate,'%Y-%m-%d')>='2017-01-01' group by substr(a.centreno,7,1);
-        $where1=" a.status in(5,6)";
-        $begin_time && $where1.=" and date_format(collectdate,'%Y-%m-%d') >='{$begin_time}'";
-        $end_time && $where1  .=" and date_format(collectdate,'%Y-%m-%d') <='{$end_time}'";
+
         $countlist = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->where($where)->field("substr(a.centreno,7,1),count(*)")->group('substr(centreno,7,1)')->select();
 //dump($countlist);
         foreach ($countlist as $value) {
