@@ -1063,31 +1063,7 @@ class ContractController extends Controller
 		//$list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,if(r.status is null,-1,r.status) as sub_status,r.if_report,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN (select * from report_feedback WHERE id in (select max(id) from report_feedback GROUP BY centreNo)) r on r.centreNo = c.centreNo')->where($where)->order('c.input_time DESC')->limit("{$offset},{$pagesize}")->select();
 		$list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id')->where($where)->order('c.input_time DESC')->limit("{$offset},{$pagesize}")->select();
 		
-		if($list){
-			$con_list = array();//反馈
-			foreach($list as $contract){
-				array_push($con_list,"'".$contract['centreno']."'");
-			}
-			$centreno_str = implode(',',$con_list);
-			$no_feed_list = D('(select MAX(id) as maxid from report_feedback a  GROUP BY a.centreNo) f')->field('b.*')->join('left join report_feedback b on f.maxid = b.id')->where('b.centreNo in('.$centreno_str.')')->select();
-			$con_list = array();
-			if($no_feed_list){
-				foreach($no_feed_list as $no_feed){
-					$con_list[$no_feed['centreno']]	= $no_feed;
-				}
-			}
-			foreach($list as $key=>$val){
-				if($con_list[$val['centreno']]){
-					$val['sub_status'] = $con_list[$val['centreno']]['status'];
-					$val['if_report'] = $con_list[$val['centreno']]['if_report'];
-				}else{
-					$val['sub_status'] = -1;
-					$val['if_report'] = 0;
-				}
-				$list[$key] = $val;
-			}
-		}
-		pr($list);
+		
 		$count = D("contract as c")->where($where)->count();
 		//pr($count);
 		$Page= new \Think\Page($count,$pagesize);
