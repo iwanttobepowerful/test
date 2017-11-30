@@ -63,7 +63,8 @@
           <tr >
             <td valign="center" ><p align="center" ><span style="color:red; font-size:15px">*</span>检验项目 </p></td>
             <td colspan="8" ><p>
-              <input name="testItem" type="text" class="form-control"  id="testItem" size="100"/>
+              <textarea class="form-control"  name="testItem" id="testItem"></textarea>
+              <!--<input name="testItem" type="text" class="form-control"  id="testItem" size="100"/>-->
             </p></td>
           </tr>
           <tr >
@@ -506,6 +507,10 @@
 				keyboard: true,
 			});
 			$("#depar").val(de);
+			$("#footer").html("");
+			$("#fee_sum").html("");
+			$("#accordion222").html("");
+			$("#criteria").val("");
 			modal.modal();
 
 		}
