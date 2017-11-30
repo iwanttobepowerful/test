@@ -180,8 +180,6 @@ class ContractController extends Controller
 			'f'=>explode(",",$F_id_list),
 		);
 		$idList = serialize($arr_id_list);
-		pr($arr_id_list);
-		pr($idList);
 		
 		$fee_remark = I("fee_remark");
 		
@@ -393,13 +391,25 @@ class ContractController extends Controller
         //$testCategory = substr($contreno,7,1);
         $contractItem = D('contract')->where($where)->find();
         $feeItem = D('test_cost')->where($where)->find();
+		$id_list = unserialize($feeItem['idlist']);
+		$a_id_list = implode(",",$id_list['a']);
+		$b_id_list = implode(",",$id_list['b']);
+		$c_id_list = implode(",",$id_list['c']);
+		$d_id_list = implode(",",$id_list['d']);
+		$e_id_list = implode(",",$id_list['e']);
+		$f_id_list = implode(",",$id_list['f']);
         $body = array(
             'contract'=>$contractItem,
             'feeItem'=>$feeItem,
 			'type_status'=>$type_status,
+			'a_id_list'=>$a_id_list,
+			'b_id_list'=>$b_id_list,
+			'c_id_list'=>$c_id_list,
+			'd_id_list'=>$d_id_list,
+			'e_id_list'=>$e_id_list,
+			'f_id_list'=>$f_id_list,
             //'$testCategory'=>$testCategory
         );
-
         $this->assign($body);
         $this->display();
     }
@@ -424,7 +434,7 @@ class ContractController extends Controller
 				"Dcopy"=>$Dcopy,
 				"Drevise"=>$Drevise,
 				"Dother"=>$Dother,
-				"remark"=>$fee_remark
+				"remark"=>$fee_remark,
 			);
 			if($testCost<=0){
 				$rs['msg'] = '费用输入不正确!';
@@ -494,6 +504,24 @@ class ContractController extends Controller
 			$RDrecord = I("RDrecord",0,'intval');
 			$RErecord = I("RErecord",0,'intval');
 			$RFrecord = I("RFrecord",0,'intval');
+			
+			$A_id_list = I("A_id_list");
+			$B_id_list = I("B_id_list");
+			$C_id_list = I("C_id_list");
+			$D_id_list = I("D_id_list");
+			$E_id_list = I("E_id_list");
+			$F_id_list = I("F_id_list");
+			
+			$arr_id_list = array(
+				'a'=>explode(",",$A_id_list),
+				'b'=>explode(",",$B_id_list),
+				'c'=>explode(",",$C_id_list),
+				'd'=>explode(",",$D_id_list),
+				'e'=>explode(",",$E_id_list),
+				'f'=>explode(",",$F_id_list),
+			);
+			//pr($arr_id_list);
+			$idList = serialize($arr_id_list);
 			
 			$Dcopy = I("Dcopy",0,'intval');
 			$Donline = I("Donline",0,'intval');
@@ -587,7 +615,8 @@ class ContractController extends Controller
 				"Drevise"=>$Drevise,
 				"Dother"=>$Dother,
 				"remark"=>$fee_remark,
-				'costDate'=>Date("Y-m-d H:i:s")
+				'costDate'=>Date("Y-m-d H:i:s"),
+				'idList'=>$idList
 			);
 			M()->startTrans();
 			try{
