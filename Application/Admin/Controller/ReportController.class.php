@@ -102,6 +102,7 @@ class ReportController extends Controller
                 'status'=>7,
                 'verify_user_id'=>$userid,
                 'verify_time'=>date("Y-m-d H:i:s"),
+
             );
             M()->startTrans();
             if(D("contract_flow")->where("id=".$id)->save($data)){
@@ -216,7 +217,7 @@ class ReportController extends Controller
         }
         $rs = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."common_system_user b on a.verify_user_id=b.id","LEFT")->join(C("DB_PREFIX")."test_report c on a.centreno=c.centreno","LEFT")->join(C("DB_PREFIX")."common_system_user f on a.inner_sign_user_id=f.id","LEFT")->join(C("DB_PREFIX")."contract as con on a.centreno=con.centreno","LEFT")
             ->where($where)
-            ->field('a.id,a.status,a.internalpass,a.centreNo,a.inner_sign_time,a.inner_sign_user_id,a.verify_user_id,a.verify_time,b.name,c.tplno,c.pdf_path,c.path,f.name as innername,con.centreno1,con.centreno2,con.centreno3')
+            ->field('a.id,a.status,a.internalpass,a.centreNo,a.inner_sign_time,a.inner_sign_user_id,a.verify_user_id,a.verify_time,a.ifback,b.name,c.tplno,c.pdf_path,c.path,f.name as innername,con.centreno1,con.centreno2,con.centreno3')
             ->limit("{$offset},{$pagesize}")
             ->order($orderby)->select();
 
@@ -255,6 +256,7 @@ class ReportController extends Controller
                 'internalpass'=>1,
                 'inner_sign_time'=>date("Y-m-d H:i:s"),
                 'inner_sign_user_id'=>$userid,
+                'ifback'=>0
             );
             M()->startTrans();
             if(D("contract_flow")->where("id=".$id)->save($data)){
@@ -280,6 +282,7 @@ class ReportController extends Controller
                 'status'=>3,//退回前台费用
                 'inner_sign_time'=>date("Y-m-d H:i:s"),
                 'inner_sign_user_id'=>$userid,
+                'ifback'=>1
             );
             M()->startTrans();
             if(D("contract_flow")->where("id=".$id)->save($data)){

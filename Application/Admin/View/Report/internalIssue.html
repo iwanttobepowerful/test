@@ -59,6 +59,8 @@
                         <if condition="$vo['status'] eq 4">
                             <span>未签发</span>
                             <else />
+                            <if condition="$vo['ifback'] eq 1 and $vo['status'] neq 4">
+                                <span style="color:red;">已退回前台修改</span>
                             <if condition="$vo['internalpass'] eq 1">
                             <span style="color: green">{$vo.innername}已签发/{$vo.inner_sign_time}</span></if>
                         </if>
