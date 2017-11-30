@@ -110,12 +110,12 @@
 				<div class="form-group form-group-sm">
 				<label class="col-sm-3 control-label talign-right fz13">所能审核的部门</label>
 					<div class="col-sm-7">
-						<input type="checkbox" name="xz[]" value="A" >A
-						<input type="checkbox" name="xz[]" value="B" >B
-						<input type="checkbox" name="xz[]" value="C" >C
-						<input type="checkbox" name="xz[]" value="D" >D
-						<input type="checkbox" name="xz[]" value="E" >E
-						<input type="checkbox" name="xz[]" value="F" >F
+						<input type="checkbox" name="audit[]" value="A" >A
+						<input type="checkbox" name="audit[]" value="B" >B
+						<input type="checkbox" name="audit[]" value="C" >C
+						<input type="checkbox" name="audit[]" value="D" >D
+						<input type="checkbox" name="audit[]" value="E" >E
+						<input type="checkbox" name="audit[]" value="F" >F
 				<p class="help-block">如果是审核员，请勾选，其他角色请勿勾选</p>
 					</div>
 					<div class="clearfix"></div>
@@ -172,6 +172,13 @@ function editAdminUser(id){
 					modal.find("input[name='username']").val(info.username);
 					modal.find("input[name='status'][value="+info.status+"]").prop('checked',true);
 					modal.find("input[name='super_admin'][value="+info.super_admin+"]").prop('checked',true);
+                    var s=info['audit'];
+
+                    modal.find("input[name='audit[]']").prop('checked',false);
+
+                var arr = s.split(",");
+                    for(var i=0;i<arr.length;i++){
+                        modal.find("input[name='audit[]'][value="+arr[i]+"]").prop('checked',true);}
 					if(info.super_admin==1){
 						$("#rolegroup").hide();
 					}else{
