@@ -72,7 +72,7 @@
                         <if condition="$if_edit==1">
                             <if condition=" ($con['sub_status'] == 0) and ($con['if_report'] ==1)">
                                 <span style="color:green">申请修改中</span>
-                                <elseif condition=" ($con['sub_status'] == 1) and ($con['if_report'] ==1)" />
+                                <elseif condition=" ($con['sub_status'] == 1) and ($con['if_report'] ==1) and $con['status']==8" />
                                 <span style="color:green">申请修改通过</span>
                                 <!--<a href="#" class="btn btn-info btn-xs"  onclick="doUpdateEditState('{$con.centreno}')" >修改完毕</a>-->
                                 <elseif condition=" ($con['sub_status'] == 2) and ($con['if_report'] ==1)" />
