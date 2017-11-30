@@ -1131,12 +1131,12 @@ class ContractController extends Controller
             $where .= " and SUBSTR(c.centreNo,7,1) = '{$department}'";
         }
         if(!empty($begin_time)){
-            $where.=" and date_format(c.contract_time,'%Y-%m-%d') >='{$begin_time}'";
+            $where .=" and date_format(c.contract_time,'%Y-%m-%d') >='{$begin_time}'";
         }
         if(!empty($end_time)){
-            $where.=" and date_format(c.contract_time,'%Y-%m-%d') <='{$end_time}'";
+            $where .=" and date_format(c.contract_time,'%Y-%m-%d') <='{$end_time}'";
         }
-       $where.= " and c.status != 7 and c.status != 0";
+       $where .= " and c.status != 7 and c.status != 0";
         $page = I("p",'int');
         $pagesize = 10;
         if($page<=0) $page = 1;
