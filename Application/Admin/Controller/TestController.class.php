@@ -207,8 +207,8 @@ class TestController extends Controller{
         $user=$admin_auth['gid'];
         $where= "centreno='{$centreno}'";
         $if_admin = $admin_auth['super_admin'];//是否是超级管理员
-        $role = D('common_role')->where('id='.$user)->find();
-        if ($role['rolename']=="检测员" || $if_admin ==1) {
+        //$role = D('common_role')->where('id='.$user)->find();
+        if ($user==9 || $if_admin ==1) {
         $data=array(
             'status'=>7,
             'takelist_time'=>date("Y-m-d H:i:s"),
