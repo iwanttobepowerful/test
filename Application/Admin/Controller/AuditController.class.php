@@ -107,15 +107,18 @@ class AuditController extends Controller {
                 'status'=>1,
             );
         if ($user==13||$if_admin==1){//审核员和超级管理员的权限
+            M()->startTrans();
             if(D("report_feedback")->where("id=".$id)->save($data)){
                 $rs['msg'] = 'succ';
                 if($de =='B'){
                     $data1['status']=8;
                     D("contract_flow")->where("centreno='{$centreno}'")->save($data1);
                     $rs['msg'] = 'succ';
+                    M()->commit();
                 }
                 else{
-                    $rs['msg'] = 'succ';
+                    $rs['msg'] = 'fail';
+                    M()->rollback();
                 }
 
             }}
@@ -140,11 +143,16 @@ class AuditController extends Controller {
             'if_edit'=>0,
         );
         if ($user==13||$if_admin==1){//审核员和超级管理员的权限
+            M()->startTrans();
             $result=D("report_feedback")->where($where)->save($data);
             $result1=D("inspection_report")->where("centreno='{$arr}'")->save($data1);
             if($result!==false and $result1!==false){
                 $rs['msg'] = 'succ';
-            }}
+                M()->commit();
+            }
+        else{
+                M()->rollback();
+        }}
         $this->ajaxReturn($rs);
     }
 
