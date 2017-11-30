@@ -164,7 +164,7 @@ class TestController extends Controller{
             }
         }
         else{
-        $where = "contract_flow.centreno like '______{$department}%'";
+        $where = "SUBSTR(contract_flow.centreNo,7,1) = '{$department}'";
         if(!empty($keyword)){
             $where .="and contract_flow.centreno like '%{$keyword}%'";
         }}
