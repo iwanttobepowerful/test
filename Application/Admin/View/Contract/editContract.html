@@ -616,14 +616,39 @@
 		//单项选择
 		function checkFee(){
 			cash = 0;
-			$("input[name='items']").each(function(index, element) {
-				if($(this).prop("checked") == true){
-					cash+=parseInt(element.value);
-				}		
-			});
+			var flag_all = false;		
+			$("button[name=items_all]").each(function(index, element) {
+                var id = $(this).attr("id");
+				var flag = true;
+				if($(this).siblings().hasClass(id)){
+					$("."+id).each(function(index, element) {
+						if($(this).prop("checked") == false){
+							flag = false;
+						}
+					});
+					if(flag == true){
+						flag_all = true;
+						$("input[name='items']").each(function(index, element) {
+							if(!$(this).hasClass(id) && $(this).prop("checked") == true){
+								cash+=parseInt(element.value);
+							}	
+						});
+						cash += parseInt($(this).val());
+					}
+				}
+				
+            });
+			//console.log("flag_all"+flag_all);
+			if(!flag_all){
+				$("input[name='items']").each(function(index, element) {
+					if($(this).prop("checked") == true){
+						cash+=parseInt(element.value);
+					}		
+				});
+			}
+
 			$("#fee_sum").html(cash);
-		}
-		
+		}		
 
 		
 		//计算本部门费用--全项选择
@@ -649,6 +674,7 @@
 					$("#footer").empty();
 					for(var i=0;i<id_list.length;i++){
 						$("#items_"+id_list[i]).prop('checked',true);
+						$("#items_"+id_list[i]).addClass(num);
 						$("#items_"+id_list[i]).trigger("onchange");
 						//id = "items_"+id_list[i];
 						//$('#footer').append("<span class=" + id + ">" + $("#"+id).attr('name') + "(" +$("#"+id).val() + ")" + "&nbsp;&nbsp;&nbsp;</span>");

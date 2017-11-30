@@ -1060,9 +1060,9 @@ class ContractController extends Controller
         $pagesize = 10;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
-		
-		$list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,if(r.status is null,-1,r.status) as sub_status,r.if_report,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN (select * from report_feedback WHERE id in (select max(id) from report_feedback GROUP BY centreNo)
-) r on r.centreNo = c.centreNo')->where($where)->order('c.input_time DESC')->limit("{$offset},{$pagesize}")->select();
+		//$list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,if(r.status is null,-1,r.status) as sub_status,r.if_report,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN (select * from report_feedback WHERE id in (select max(id) from report_feedback GROUP BY centreNo)) r on r.centreNo = c.centreNo')->where($where)->order('c.input_time DESC')->limit("{$offset},{$pagesize}")->select();
+		$list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id')->where($where)->order('c.input_time DESC')->limit("{$offset},{$pagesize}")->select();
+		//pr($list);
 		$count = D("contract as c")->where($where)->count();
 		//pr($count);
 		$Page= new \Think\Page($count,$pagesize);
@@ -1077,6 +1077,7 @@ class ContractController extends Controller
 			'end_time'=>$end_time,
 		);
 		//dump($body);
+		
 		$this->assign($body);
 		$this->display();
 	}
@@ -1119,7 +1120,7 @@ class ContractController extends Controller
         //判断是接单还是签发
         //$ifstatus =
         $list = D("contract_flow as c")->field('if(c.id is null,-1,c.id) as flow_id,if(r.status is null,-1,r.status) as sub_status,r.if_report,r.if_outer,f.*,c.status,c.inner_sign_user_id,c.inner_sign_time,c.external_sign_time,c.takelist_user_id,c.takelist_time,u.name as takename,u1.name as innername,u2.name as externalname,v.doc_path,v.pdf_path,v.qrcode_path')
-            ->join('left join contract as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on c.takelist_user_id=u.id LEFT JOIN common_system_user u2 on c.external_sign_user_id=u2.id LEFT JOIN common_system_user u1 on c.inner_sign_user_id=u1.id left join test_report as v on c.centreNo=v.centreNo LEFT JOIN (select * from report_feedback WHERE id in (select max(id) from report_feedback GROUP BY centreNo)) r on r.centreNo = c.centreNo' )
+            ->join('left join contract as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on c.takelist_user_id=u.id LEFT JOIN common_system_user u2 on c.external_sign_user_id=u2.id LEFT JOIN common_system_user u1 on c.inner_sign_user_id=u1.id left join test_report as v on c.centreNo=v.centreNo LEFT JOIN report_feedback as r on r.centreNo = c.centreNo' )
             ->where($where)->order('c.takelist_all_time desc,f.id desc')->limit("{$offset},{$pagesize}")->select();
         $count = D("contract_flow as c")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
@@ -1457,7 +1458,7 @@ class ContractController extends Controller
 		$productname = I('productname');
 		$where = 'criteria like "%'.$criteria.'%"';
 		if($productname){
-			$where.=' and productname like "%'.$productname.'%"';	
+			$where.=' and productname = "'.$productname.'"';	
 		}
         $item_list = D("test_fee")->where($where)->select();
 		//$item_list_arr = array();
