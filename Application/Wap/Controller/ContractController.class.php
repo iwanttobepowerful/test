@@ -371,7 +371,7 @@ class ContractController extends Controller {
 //        }
         //select sum(arecord),sum(brecord),sum(crecord),sum(drecord),sum(erecord),sum(frecord),sum(dcopy),sum(donline),sum(Drevise),sum(dother) from test_cost where 1=1 and date_format(`costDate`,'%Y-%m-%d')>='2017-11-22'
 
-        $otherlist = D("test_cost")->where($where)->field("sum(arecord) as a,sum(brecord) as b,sum(crecord) as c,sum(drecord) as d,sum(erecord) as e,sum(frecord) as f,sum(dcopy) as copy,sum(donline) as online,sum(Drevise) as revise,sum(dother) as other")->find();
+        $otherlist = D("test_cost")->where($where)->field("sum(rarecord) as a,sum(rbrecord) as b,sum(rcrecord) as c,sum(rdrecord) as d,sum(rerecord) as e,sum(rfrecord) as f,sum(dcopy) as copy,sum(donline) as online,sum(Drevise) as revise,sum(dother) as other")->find();
 
         $body = array(
             //'sum'=>$sumlist,
