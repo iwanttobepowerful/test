@@ -200,7 +200,7 @@ class ContractController extends Controller {
 
         $where['department']=$department;
         $list = D("special_centre_code")->where($where)->order('year desc,month desc')->select();
-        dump($list);
+        //dump($list);
         //$list = D("special_centre_code")->where('department="'.$department.'"')->order('year desc,month desc')->select();
         $body = array(
             "special_list"=>$list,
@@ -238,7 +238,7 @@ class ContractController extends Controller {
         }
 
         $where['department']=$department;
-        $list = D("special_centre_code")->where($where)->field('*,getNum-remainNum as useNum')->select();
+        $list = D("special_centre_code")->where($where)->order('year desc,month desc')->select();
         if ($list){
             $this->ajaxReturn($list);
         }
@@ -405,7 +405,7 @@ class ContractController extends Controller {
         //select substr(a.centreno,7,1),count(*) from contract_flow a left join contract b on a.centreno=b.centreno where a.status in(5,6) and date_format(b.collectdate,'%Y-%m-%d')>='2017-01-01' group by substr(a.centreno,7,1);
 
         $countlist = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->where($where)->field("substr(a.centreno,7,1),count(*)")->group('substr(centreno,7,1)')->select();
-dump($countlist);
+//dump($countlist);
         foreach ($countlist as $value) {
             if($value['substr(a.centreno,7,1)']=='A'){
                 $A_count=$value['count(*)'];
@@ -429,7 +429,7 @@ dump($countlist);
 
         //select sum(b.arecord),sum(b.brecord),sum(b.crecord),sum(b.drecord),sum(b.erecord),sum(b.frecord),sum(b.dcopy),sum(b.donline),sum(b.drevise),sum(b.dother) from contract_flow a  left join test_cost b on a.centreno=b.centreNo where 1=1 and date_format(b.`costDate`,'%Y-%m-%d')>='2017-11-22' and a.status in(5,6)
         $sumlist = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."test_cost b on a.centreno=b.centreno","LEFT")->where($where)->field("sum(b.rarecord) as a,sum(b.rbrecord) as b,sum(b.rcrecord) as c,sum(b.rdrecord) as d,sum(b.rerecord) as e,sum(b.rfrecord) as f,sum(b.dcopy) as dcopy,sum(b.drevise) as drevise,sum(b.dother) as dother,sum(b.donline) as donline")->select();
-dump($sumlist);
+//dump($sumlist);
         $body = array(
             'count'=>$countlist[0],
             'sum'=>$sumlist[0],
