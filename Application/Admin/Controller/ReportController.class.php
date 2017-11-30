@@ -77,9 +77,15 @@ class ReportController extends Controller
             'verify_user_id'=>$userid,
             'verify_time'=>date("Y-m-d H:i:s"),
         );
+        M()->startTrans();
         if(D("contract_flow")->where("id=".$id)->save($data)){
             $rs['msg'] = 'succ';
-        }}
+            M()->commit();
+        }
+        else{
+           M()->rollback();
+        }
+        }
         $this->ajaxReturn($rs);
     }
     //审核不通过，退回
@@ -97,9 +103,15 @@ class ReportController extends Controller
                 'verify_user_id'=>$userid,
                 'verify_time'=>date("Y-m-d H:i:s"),
             );
+            M()->startTrans();
             if(D("contract_flow")->where("id=".$id)->save($data)){
                 $rs['msg'] = 'succ';
-            }}
+                M()->commit();
+            }
+            else{
+                M()->rollback();
+            }
+        }
         $this->ajaxReturn($rs);
     }
     //报告审批
@@ -244,9 +256,14 @@ class ReportController extends Controller
                 'inner_sign_time'=>date("Y-m-d H:i:s"),
                 'inner_sign_user_id'=>$userid,
             );
+            M()->startTrans();
             if(D("contract_flow")->where("id=".$id)->save($data)){
                 $rs['msg'] = 'succ';
-            }}
+                M()->commit();
+            }
+        else{
+                M()->rollback();
+        }}
         $this->ajaxReturn($rs);
     }
     //签发不通过，退回修改
@@ -264,9 +281,15 @@ class ReportController extends Controller
                 'inner_sign_time'=>date("Y-m-d H:i:s"),
                 'inner_sign_user_id'=>$userid,
             );
+            M()->startTrans();
             if(D("contract_flow")->where("id=".$id)->save($data)){
                 $rs['msg'] = 'succ';
-            }}
+                M()->commit();
+            }
+            else{
+                M()->rollback();
+            }
+        }
         $this->ajaxReturn($rs);
     }
     //盖章价格审核
@@ -388,8 +411,7 @@ class ReportController extends Controller
         $userid=$admin_auth['id'];
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
-        $role = D('common_role')->where('id='.$user)->find();
-        if($if_admin==1 || $role['rolename']=="前台人员") {
+        if($if_admin==1 || $user==7) {
             $where="centreno='{$centreno}'";
         $data=array(
             'status'=>6,
@@ -397,13 +419,18 @@ class ReportController extends Controller
             'external_sign_user_id'=>$userid,
         );
         $find=D("inspection_report")->where($where)->find();
+        M()->startTrans();
         if(!empty($find)){
             $data1=array('if_edit'=>0);
             D("inspection_report")->where($where)->save($data1);
         }
         if(D("contract_flow")->where($where)->save($data)){
             $rs['msg'] = 'succ';
-        }}
+            M()->commit();
+        }else{
+            M()->rollback();
+        }
+        }
         $this->ajaxReturn($rs);
     }
 
@@ -441,13 +468,20 @@ class ReportController extends Controller
         }
         $data = array("path" => $imgurl, "filename" => $filename,"type"=>$type,"subtype"=>$subtype);
         $report = D("tpl")->where("id=" . $id)->find();
+        M()->startTrans();
         if ($report) {
             if (D("tpl")->where("id=" . $report['id'])->save($data)) {
                 $result['msg'] = 'succ';
+                M()->commit();
             }
         } else {
             if (D("tpl")->data($data)->add()) {
                 $result['msg'] = 'succ';
+                M()->commit();
+            }
+            else{
+                $result['msg'] = 'fail';
+                M()->rollback();
             }
         }
         $this->ajaxReturn($result);
