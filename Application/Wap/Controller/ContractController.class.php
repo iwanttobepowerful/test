@@ -199,7 +199,9 @@ class ContractController extends Controller {
         }
 
         $where['department']=$department;
-        $list = D("special_centre_code")->where($where)->field('*,getNum-remainNum as useNum')->select();
+        $list = D("special_centre_code")->where($where)->order('year desc,month desc')->select();
+        //dump($list);
+        //$list = D("special_centre_code")->where('department="'.$department.'"')->order('year desc,month desc')->select();
         $body = array(
             "special_list"=>$list,
             "id"=>$id ? $id:1
@@ -236,7 +238,7 @@ class ContractController extends Controller {
         }
 
         $where['department']=$department;
-        $list = D("special_centre_code")->where($where)->field('*,getNum-remainNum as useNum')->select();
+        $list = D("special_centre_code")->where($where)->order('year desc,month desc')->select();
         if ($list){
             $this->ajaxReturn($list);
         }
@@ -307,43 +309,73 @@ class ContractController extends Controller {
     public function hetong(){//按收样日期算
         $begin_time = I("begin_time");
         $end_time = I("end_time");
-        $where = " a.status in(5,6)";
+        $where = "1=1";
 
         //来样日期(在contract表中)
-        $begin_time && $where .=" and date_format(b.collectdate,'%Y-%m-%d') >='{$begin_time}'";
-        $end_time && $where .=" and date_format(b.collectdate,'%Y-%m-%d') <='{$end_time}'";
+        $begin_time && $where .=" and date_format(costdate,'%Y-%m-%d') >='{$begin_time}'";
+        $end_time && $where  .=" and date_format(costdate,'%Y-%m-%d') <='{$end_time}'";
+
+
 
         //份数
-        $countlist =  D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->where($where)->field('collector_partment,count(collector_partment)')->group('collector_partment')->select();
-
+        $where1="1=1";
+        $begin_time && $where1.=" and date_format(collectdate,'%Y-%m-%d') >='{$begin_time}'";
+        $end_time && $where1  .=" and date_format(collectdate,'%Y-%m-%d') <='{$end_time}'";
+        //select substr(centreno,7,1),count(*) from contract  where collectdate  group by (substr(`centreno`,7,1)) ;
+        $countlist =  D("contract")->where($where1)->field('substr(centreno,7,1),count(*)')->group('substr(centreno,7,1)')->select();
+        //dump($countlist);
+        //$countlist =  D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->where($where)->field('collector_partment,count(collector_partment)')->group('collector_partment')->select();
+       // dump($countlist);
+       // $sumlist=D("contract")->where($where)->field('collector_partment,sum(testcost)')->group('collector_partment')->select();
+       // dump($sumlist);
         foreach ($countlist as $value) {
-            if($value['collector_partment']=='A'){
-                $A_count=$value['count(collector_partment)'];
+            if($value['substr(centreno,7,1)']=='A'){
+                $A_count=$value['count(*)'];
             }
-            if($value['collector_partment']=='B'){
-                $B_count=$value['count(collector_partment)'];
+            if($value['substr(centreno,7,1)']=='B'){
+                $B_count=$value['count(*)'];
             }
-            if($value['collector_partment']=='C'){
-                $C_count=$value['count(collector_partment)'];
+            if($value['substr(centreno,7,1)']=='C'){
+                $C_count=$value['count(*)'];
             }
-            if($value['collector_partment']=='D'){
-                $D_count=$value['count(collector_partment)'];
+            if($value['substr(centreno,7,1)']=='D'){
+                $D_count=$value['count(*)'];
             }
-            if($value['collector_partment']=='E'){
-                $E_count=$value['count(collector_partment)'];
+            if($value['substr(centreno,7,1)']=='E'){
+                $E_count=$value['count(*)'];
             }
-            if($value['collector_partment']=='F'){
-                $F_count=$value['count(collector_partment)'];
+            if($value['substr(centreno,7,1)']=='F'){
+                $F_count=$value['count(*)'];
             }
         }
 
-        $sumlist = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->join(C("DB_PREFIX")."test_cost c on a.centreno=c.centreno","LEFT")->where($where)->field("sum(b.testcost) as testcost,sum(c.rarecord) as arecord,sum(c.rbrecord) as brecord,sum(c.rcrecord) as crecord,sum(c.rdrecord) as drecord,sum(c.rerecord) as erecord,sum(c.rfrecord) as frecord,sum(c.dcopy) as dcopy,sum(c.drevise) as drevise,sum(c.dother) as dother,sum(c.donline) as donline")->find();
+//        foreach ($sumlist as $value) {
+//            if($value['collector_partment']=='A'){
+//                $A_sum=$value['sum(testcost)'];
+//            }
+//            if($value['collector_partment']=='B'){
+//                $B_sum=$value['sum(testcost)'];
+//            }
+//            if($value['collector_partment']=='C'){
+//                $C_sum=$value['sum(testcost)'];
+//            }
+//            if($value['collector_partment']=='D'){
+//                $D_sum=$value['sum(testcost)'];
+//            }
+//            if($value['collector_partment']=='E'){
+//                $E_sum=$value['sum(testcost)'];
+//            }
+//            if($value['collector_partment']=='F'){
+//                $F_sum=$value['sum(testcost)'];
+//            }
+//        }
+        //select sum(arecord),sum(brecord),sum(crecord),sum(drecord),sum(erecord),sum(frecord),sum(dcopy),sum(donline),sum(Drevise),sum(dother) from test_cost where 1=1 and date_format(`costDate`,'%Y-%m-%d')>='2017-11-22'
 
-        //$sumlist = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->join(C("DB_PREFIX")."test_cost c on a.centreno=c.centreno","LEFT")->where($where)->field("sum(b.testcost) as testcost,sum(c.arecord) as arecord,sum(c.brecord) as brecord,sum(c.crecord) as crecord,sum(c.drecord) as drecord,sum(c.erecord) as erecord,sum(c.frecord) as frecord,sum(c.dcopy) as dcopy,sum(c.drevise) as drevise,sum(c.dother) as dother,sum(c.donline) as donline")->find();
-
+        $otherlist = D("test_cost")->where($where)->field("sum(arecord) as a,sum(brecord) as b,sum(crecord) as c,sum(drecord) as d,sum(erecord) as e,sum(frecord) as f,sum(dcopy) as copy,sum(donline) as online,sum(Drevise) as revise,sum(dother) as other")->find();
 
         $body = array(
-            'sum'=>$sumlist,
+            //'sum'=>$sumlist,
+            'other'=>$otherlist,
             'begin_time'=>$begin_time,
             'end_time'=>$end_time,
             'A_count'=>$A_count?$A_count:0,
@@ -352,12 +384,13 @@ class ContractController extends Controller {
             'D_count'=>$D_count?$D_count:0,
             'E_count'=>$E_count?$E_count:0,
             'F_count'=>$F_count?$F_count:0,
+
         );
         $this->assign($body);
         $this->display();
     }
 
-    //contract_flow: a   |  contract: b   |  test_cost: c
+
     public function shiji(){//按盖样日期算
         $begin_time = I("begin_time");
         $end_time = I("end_time");
@@ -366,37 +399,40 @@ class ContractController extends Controller {
         $begin_time && $where .=" and date_format(a.inner_sign_time,'%Y-%m-%d') >='{$begin_time}'";
         $end_time && $where .=" and date_format(a.inner_sign_time,'%Y-%m-%d') <='{$end_time}'";
 
+//        $begin_time && $where .=" and date_format(a.inner_sign_time,'%Y-%m-%d') >='{$begin_time}'";
+//        $end_time && $where .=" and date_format(a.inner_sign_time,'%Y-%m-%d') <='{$end_time}'";
         //份数
-        $countlist =  D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->where($where)->field('collector_partment,count(collector_partment)')->group('collector_partment')->select();//->field('testdepartment,count(testdepartment)')->group('testdepartment')->select()
-        //dump($countlist);
+        //select substr(a.centreno,7,1),count(*) from contract_flow a left join contract b on a.centreno=b.centreno where a.status in(5,6) and date_format(b.collectdate,'%Y-%m-%d')>='2017-01-01' group by substr(a.centreno,7,1);
+
+        $countlist = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->where($where)->field("substr(a.centreno,7,1),count(*)")->group('substr(centreno,7,1)')->select();
+//dump($countlist);
         foreach ($countlist as $value) {
-            if($value['collector_partment']=='A'){
-                $A_count=$value['count(collector_partment)'];
+            if($value['substr(a.centreno,7,1)']=='A'){
+                $A_count=$value['count(*)'];
             }
-            if($value['collector_partment']=='B'){
-                $B_count=$value['count(collector_partment)'];
+            if($value['substr(a.centreno,7,1)']=='B'){
+                $B_count=$value['count(*)'];
             }
-            if($value['collector_partment']=='C'){
-                $C_count=$value['count(collector_partment)'];
+            if($value['substr(a.centreno,7,1)']=='C'){
+                $C_count=$value['count(*)'];
             }
-            if($value['collector_partment']=='D'){
-                $D_count=$value['count(collector_partment)'];
+            if($value['substr(a.centreno,7,1)']=='D'){
+                $D_count=$value['count(*)'];
             }
-            if($value['collector_partment']=='E'){
-                $E_count=$value['count(collector_partment)'];
+            if($value['substr(a.centreno,7,1)']=='E'){
+                $E_count=$value['count(*)'];
             }
-            if($value['collector_partment']=='F'){
-                $F_count=$value['count(collector_partment)'];
+            if($value['substr(a.centreno,7,1)']=='F'){
+                $F_count=$value['count(*)'];
             }
         }
-        $sumlist = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->join(C("DB_PREFIX")."test_cost c on a.centreno=c.centreno","LEFT")->where($where)->field("sum(b.testcost) as testcost,sum(c.rarecord) as arecord,sum(c.rbrecord) as brecord,sum(c.rcrecord) as crecord,sum(c.rdrecord) as drecord,sum(c.rerecord) as erecord,sum(c.rfrecord) as frecord,sum(c.dcopy) as dcopy,sum(c.drevise) as drevise,sum(c.dother) as dother,sum(c.donline) as donline")->find();
 
-       // $sumlist = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->join(C("DB_PREFIX")."test_cost c on a.centreno=c.centreno","LEFT")->where($where)->field("sum(b.testcost) as testcost,sum(c.arecord) as arecord,sum(c.brecord) as brecord,sum(c.crecord) as crecord,sum(c.drecord) as drecord,sum(c.erecord) as erecord,sum(c.frecord) as frecord,sum(c.dcopy) as dcopy,sum(c.drevise) as drevise,sum(c.dother) as dother,sum(c.donline) as donline")->find();
-
-
+        //select sum(b.arecord),sum(b.brecord),sum(b.crecord),sum(b.drecord),sum(b.erecord),sum(b.frecord),sum(b.dcopy),sum(b.donline),sum(b.drevise),sum(b.dother) from contract_flow a  left join test_cost b on a.centreno=b.centreNo where 1=1 and date_format(b.`costDate`,'%Y-%m-%d')>='2017-11-22' and a.status in(5,6)
+        $sumlist = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."test_cost b on a.centreno=b.centreno","LEFT")->where($where)->field("sum(b.rarecord) as a,sum(b.rbrecord) as b,sum(b.rcrecord) as c,sum(b.rdrecord) as d,sum(b.rerecord) as e,sum(b.rfrecord) as f,sum(b.dcopy) as dcopy,sum(b.drevise) as drevise,sum(b.dother) as dother,sum(b.donline) as donline")->select();
+//dump($sumlist);
         $body = array(
             'count'=>$countlist[0],
-            'sum'=>$sumlist,
+            'sum'=>$sumlist[0],
             'begin_time'=>$begin_time,
             'end_time'=>$end_time,
             'A_count'=>$A_count?$A_count:0,

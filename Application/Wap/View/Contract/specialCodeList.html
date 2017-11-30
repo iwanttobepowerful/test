@@ -49,7 +49,8 @@
             <thead >
                 <th>年</th>
                 <th>月</th>
-                <th>使用量</th>
+                <th>总量</th>
+                <!--<th>使用量</th>-->
                 <th>剩余量</th>
             </thead>
             <tbody id="show">
@@ -58,7 +59,8 @@
                 <tr>
                     <td>{$special.year}</td>
                     <td>{$special.month}</td>
-                    <td>{$special.usenum}</td>
+                    <td>{$special.getnum}</td>
+                    <!--<td>{$special.usenum}</td>-->
                     <td>{$special.remainnum}</td>
                 </tr>
             </volist>
@@ -96,7 +98,7 @@
             success:function(list){
                 var _html = '<tr>';
                 $.each(list,function(index,obj){
-                    _html += '<tr><td>'+obj.year+'</td>'+'<td>'+obj.month+'</td>'+'<td>'+obj.usenum+'</td>'+'<td>'+obj.remainnum+'</td></tr>';
+                    _html += '<tr><td>'+obj.year+'</td>'+'<td>'+obj.month+'</td>'+'<td>'+obj.getnum+'</td>'+'<td>'+obj.remainnum+'</td></tr>';
                 })
                 _html +='</tr>';
 
