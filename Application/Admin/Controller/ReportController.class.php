@@ -79,8 +79,8 @@ class ReportController extends Controller
         );
         M()->startTrans();
         if(D("contract_flow")->where("id=".$id)->save($data)){
-            $rs['msg'] = 'succ';
             M()->commit();
+            $rs['msg'] = 'succ';
         }
         else{
            M()->rollback();
@@ -105,8 +105,8 @@ class ReportController extends Controller
             );
             M()->startTrans();
             if(D("contract_flow")->where("id=".$id)->save($data)){
-                $rs['msg'] = 'succ';
                 M()->commit();
+                $rs['msg'] = 'succ';
             }
             else{
                 M()->rollback();
@@ -258,8 +258,8 @@ class ReportController extends Controller
             );
             M()->startTrans();
             if(D("contract_flow")->where("id=".$id)->save($data)){
-                $rs['msg'] = 'succ';
                 M()->commit();
+                $rs['msg'] = 'succ';
             }
         else{
                 M()->rollback();
@@ -283,8 +283,8 @@ class ReportController extends Controller
             );
             M()->startTrans();
             if(D("contract_flow")->where("id=".$id)->save($data)){
-                $rs['msg'] = 'succ';
                 M()->commit();
+                $rs['msg'] = 'succ';
             }
             else{
                 M()->rollback();
@@ -425,8 +425,8 @@ class ReportController extends Controller
             D("inspection_report")->where($where)->save($data1);
         }
         if(D("contract_flow")->where($where)->save($data)){
-            $rs['msg'] = 'succ';
             M()->commit();
+            $rs['msg'] = 'succ';
         }else{
             M()->rollback();
         }
@@ -471,17 +471,18 @@ class ReportController extends Controller
         M()->startTrans();
         if ($report) {
             if (D("tpl")->where("id=" . $report['id'])->save($data)) {
-                $result['msg'] = 'succ';
                 M()->commit();
+                $result['msg'] = 'succ';
             }
         } else {
             if (D("tpl")->data($data)->add()) {
-                $result['msg'] = 'succ';
                 M()->commit();
+                $result['msg'] = 'succ';
             }
             else{
-                $result['msg'] = 'fail';
                 M()->rollback();
+                $result['msg'] = 'fail';
+
             }
         }
         $this->ajaxReturn($result);
