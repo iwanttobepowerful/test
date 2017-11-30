@@ -5,12 +5,13 @@ return array(
     'DB_HOST'=>'101.200.140.10',
     'DB_NAME'=>'jiancai',
     'DB_USER'=>'jcuser',
-    'DB_PWD'=>'jC0090#usr!op',
+    //'DB_PWD'=>'svipcn@cx.com',
+	'DB_PWD'=>'jC0090#usr!op',
     'DB_PORT'=>'3306',
     'DB_PREFIX' => '',
     //分页参数配置
     'Page' => array(
 		'page_num' => 10,
 	),
-    'session_cache_expire' => 1800,
+    'session_cache_expire' => 2400,
 );
