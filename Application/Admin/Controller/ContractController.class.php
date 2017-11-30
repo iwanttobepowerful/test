@@ -1069,7 +1069,7 @@ class ContractController extends Controller
 				array_push($con_list,"'".$contract['centreno']."'");
 			}
 			$centreno_str = implode(',',$con_list);
-			$no_feed_list = D('report_feedback')->field('MAX(id),centreNo')->where('centreNo in('.$centreno_str.')')->group('centreNo')->select();
+			$no_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where centreNo in ('.$centreno_str.') group by centreNo)')->group('centreNo')->select();
 			$con_list = array();
 			if($no_feed_list){
 				foreach($no_feed_list as $no_feed){
@@ -1087,7 +1087,7 @@ class ContractController extends Controller
 				$list[$key] = $val;
 			}
 		}
-		//pr($con_list);
+		//pr($list);
 		$count = D("contract as c")->where($where)->count();
 		//pr($count);
 		$Page= new \Think\Page($count,$pagesize);
@@ -1678,7 +1678,7 @@ class ContractController extends Controller
         $quantity = I('quantity');
 		
 		if(empty($meterial) || empty($criteria)|| empty($item) || empty($fee)){
-			$rs['msg'] = '信息填写不完整';
+			$rs['msg'] = 'fail';
 			$this->ajaxReturn($rs);
 		}
 
