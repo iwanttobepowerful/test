@@ -1457,7 +1457,7 @@ class ContractController extends Controller
 		$productname = I('productname');
 		$where = 'criteria like "%'.$criteria.'%"';
 		if($productname){
-			$where.=' and productname like "%'.$productname.'%"';	
+			$where.=' and productname = "'.$productname.'"';	
 		}
         $item_list = D("test_fee")->where($where)->select();
 		//$item_list_arr = array();
