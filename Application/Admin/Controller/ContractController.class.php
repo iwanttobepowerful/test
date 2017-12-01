@@ -1087,7 +1087,7 @@ class ContractController extends Controller
 				$list[$key] = $val;
 			}
 		}
-		//pr($list);
+		//pr($list);die;
 		$count = D("contract as c")->where($where)->count();
 		//pr($count);
 		$Page= new \Think\Page($count,$pagesize);
@@ -1153,7 +1153,7 @@ class ContractController extends Controller
                 array_push($con_list,"'".$contract['centreno']."'");
             }
             $centreno_str = implode(',',$con_list);
-            $no_feed_list = D('report_feedback')->field('MAX(id),centreNo')->where('centreNo in('.$centreno_str.')')->group('centreNo')->select();
+            $no_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where centreNo in ('.$centreno_str.') group by centreNo)')->group('centreNo')->select();
             $con_list = array();
             if($no_feed_list){
                 foreach($no_feed_list as $no_feed){
@@ -1171,7 +1171,7 @@ class ContractController extends Controller
                 $list[$key] = $val;
             }
         }
-
+        //dump($list);die;
         $count = D("contract_flow as c")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");

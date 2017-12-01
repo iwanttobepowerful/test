@@ -42,9 +42,10 @@
                     <td>{$con.testcriteria}</td>
 
                     <td width="33%">
+                        <if condition="$user==10 || $if_admin==1">
                         <if condition="$con['status'] neq 8 and $con['status'] neq 7 and $con['status'] neq 0 and $con['status'] neq 6">
                             <a href="#" class="btn btn-primary btn-xs" onclick="return applyBack('{$con.centreno}',{$con.status})" >申请修改</a>
-                        </if>
+                        </if></if>
                         <if condition="$con[centreno1] or $con[centreno2] or $con[centreno3]">
                             <a href="{:U('/admin/contract/reWriteTest')}?id={$con.centreno}" class="btn btn-info btn-xs">更改单</a></if>
                         <a href="/admin/manager/contractDetail?id={$con.centreno}"  class="btn btn-info btn-xs" >检验受理合同</a>
@@ -68,7 +69,8 @@
                         </if>
                         <if condition="$if_edit==1">
                         <if condition="$con['status']==8 and $con['doc_path']">
-                            <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="confirmReport('{$con.centreno}')" >确认</a><p></p></if></if></if>
+                            <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="confirmReport('{$con.centreno}')" >确认</a><p></p></if></if>
+                        </if>
                         <if condition="$if_edit==1">
                             <if condition=" ($con['sub_status'] == 0) and ($con['if_report'] ==1)">
                                 <span style="color:green">申请修改中</span>

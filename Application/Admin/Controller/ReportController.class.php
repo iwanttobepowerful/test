@@ -77,9 +77,15 @@ class ReportController extends Controller
             'verify_user_id'=>$userid,
             'verify_time'=>date("Y-m-d H:i:s"),
         );
+        M()->startTrans();
         if(D("contract_flow")->where("id=".$id)->save($data)){
+            M()->commit();
             $rs['msg'] = 'succ';
-        }}
+        }
+        else{
+           M()->rollback();
+        }
+        }
         $this->ajaxReturn($rs);
     }
     //审核不通过，退回
@@ -96,10 +102,17 @@ class ReportController extends Controller
                 'status'=>7,
                 'verify_user_id'=>$userid,
                 'verify_time'=>date("Y-m-d H:i:s"),
+
             );
+            M()->startTrans();
             if(D("contract_flow")->where("id=".$id)->save($data)){
+                M()->commit();
                 $rs['msg'] = 'succ';
-            }}
+            }
+            else{
+                M()->rollback();
+            }
+        }
         $this->ajaxReturn($rs);
     }
     //报告审批
@@ -204,7 +217,7 @@ class ReportController extends Controller
         }
         $rs = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."common_system_user b on a.verify_user_id=b.id","LEFT")->join(C("DB_PREFIX")."test_report c on a.centreno=c.centreno","LEFT")->join(C("DB_PREFIX")."common_system_user f on a.inner_sign_user_id=f.id","LEFT")->join(C("DB_PREFIX")."contract as con on a.centreno=con.centreno","LEFT")
             ->where($where)
-            ->field('a.id,a.status,a.internalpass,a.centreNo,a.inner_sign_time,a.inner_sign_user_id,a.verify_user_id,a.verify_time,b.name,c.tplno,c.pdf_path,c.path,f.name as innername,con.centreno1,con.centreno2,con.centreno3')
+            ->field('a.id,a.status,a.internalpass,a.centreNo,a.inner_sign_time,a.inner_sign_user_id,a.verify_user_id,a.verify_time,a.ifback,b.name,c.tplno,c.pdf_path,c.path,f.name as innername,con.centreno1,con.centreno2,con.centreno3')
             ->limit("{$offset},{$pagesize}")
             ->order($orderby)->select();
 
@@ -243,10 +256,16 @@ class ReportController extends Controller
                 'internalpass'=>1,
                 'inner_sign_time'=>date("Y-m-d H:i:s"),
                 'inner_sign_user_id'=>$userid,
+                'ifback'=>0
             );
+            M()->startTrans();
             if(D("contract_flow")->where("id=".$id)->save($data)){
+                M()->commit();
                 $rs['msg'] = 'succ';
-            }}
+            }
+        else{
+                M()->rollback();
+        }}
         $this->ajaxReturn($rs);
     }
     //签发不通过，退回修改
@@ -263,10 +282,17 @@ class ReportController extends Controller
                 'status'=>3,//退回前台费用
                 'inner_sign_time'=>date("Y-m-d H:i:s"),
                 'inner_sign_user_id'=>$userid,
+                'ifback'=>1
             );
+            M()->startTrans();
             if(D("contract_flow")->where("id=".$id)->save($data)){
+                M()->commit();
                 $rs['msg'] = 'succ';
-            }}
+            }
+            else{
+                M()->rollback();
+            }
+        }
         $this->ajaxReturn($rs);
     }
     //盖章价格审核
@@ -388,8 +414,7 @@ class ReportController extends Controller
         $userid=$admin_auth['id'];
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
-        $role = D('common_role')->where('id='.$user)->find();
-        if($if_admin==1 || $role['rolename']=="前台人员") {
+        if($if_admin==1 || $user==7) {
             $where="centreno='{$centreno}'";
         $data=array(
             'status'=>6,
@@ -397,13 +422,18 @@ class ReportController extends Controller
             'external_sign_user_id'=>$userid,
         );
         $find=D("inspection_report")->where($where)->find();
+        M()->startTrans();
         if(!empty($find)){
             $data1=array('if_edit'=>0);
             D("inspection_report")->where($where)->save($data1);
         }
         if(D("contract_flow")->where($where)->save($data)){
+            M()->commit();
             $rs['msg'] = 'succ';
-        }}
+        }else{
+            M()->rollback();
+        }
+        }
         $this->ajaxReturn($rs);
     }
 
@@ -441,13 +471,21 @@ class ReportController extends Controller
         }
         $data = array("path" => $imgurl, "filename" => $filename,"type"=>$type,"subtype"=>$subtype);
         $report = D("tpl")->where("id=" . $id)->find();
+        M()->startTrans();
         if ($report) {
             if (D("tpl")->where("id=" . $report['id'])->save($data)) {
+                M()->commit();
                 $result['msg'] = 'succ';
             }
         } else {
             if (D("tpl")->data($data)->add()) {
+                M()->commit();
                 $result['msg'] = 'succ';
+            }
+            else{
+                M()->rollback();
+                $result['msg'] = 'fail';
+
             }
         }
         $this->ajaxReturn($result);
