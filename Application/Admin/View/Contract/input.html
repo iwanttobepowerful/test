@@ -649,7 +649,7 @@
 					return true;
 				},
 				success: function (re) {
-					console.log(re);
+					//console.log(re);
 					var fee_item = re['fee_item'];
 					var child_item_list = fee_item['child_item_list'];
 					var fee = fee_item['fee'];
@@ -663,7 +663,7 @@
 						//id = "items_"+id_list[i];
 						//$('#footer').append("<span class=" + id + ">" + $("#"+id).attr('name') + "(" +$("#"+id).val() + ")" + "&nbsp;&nbsp;&nbsp;</span>");
 					}
-					$("#fee_sum").html(fee);
+					//$("#fee_sum").html(fee);
 				}	
 			});
 		}

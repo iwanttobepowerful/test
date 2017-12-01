@@ -702,7 +702,7 @@ class ContractController extends Controller
 			$data_feedback = array(
             	"status"=>3
         	);
-			D("report_feedback")->where($where)->save($data_feedback);
+			D("report_feedback")->where('id = (SELECT a.id from (SELECT max(id) as id from report_feedback WHERE centreNo = "'.$centreno.'") a )')->save($data_feedback);
 		}
         $rs['msg']='修改提交成功';
         $this->ajaxReturn($rs);
