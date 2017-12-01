@@ -55,7 +55,7 @@ class ContractController extends Controller {
 
     public function add(){
         $dep=I("department");
-        dump($dep);
+        //dump($dep);
         if($dep=='1'){
             $dep='A';
         }
@@ -74,7 +74,7 @@ class ContractController extends Controller {
         if($dep=='6'){
             $dep='F';
         }
-        dump($dep);
+        //dump($dep);
         $body = array(
             "pagetitle"=>"新增",
             'backed'=>true,
