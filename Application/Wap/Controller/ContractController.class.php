@@ -54,12 +54,35 @@ class ContractController extends Controller {
     }
 
     public function add(){
+        $dep=I("department");
+        dump($dep);
+        if($dep=='1'){
+            $dep='A';
+        }
+        if($dep=='2'){
+            $dep='B';
+        }
+        if($dep=='3'){
+            $dep='C';
+        }
+        if($dep=='4'){
+            $dep='D';
+        }
+        if($dep=='5'){
+            $dep='E';
+        }
+        if($dep=='6'){
+            $dep='F';
+        }
+        dump($dep);
         $body = array(
             "pagetitle"=>"新增",
             'backed'=>true,
+            'dep'=>$dep,
         );
         $this->assign($body);
         $this->display();
+
     }
 
     public function over(){
@@ -238,9 +261,13 @@ class ContractController extends Controller {
         }
 
         $where['department']=$department;
+        $count=D("special_centre_code")->where($where)->count();
+
         $list = D("special_centre_code")->where($where)->order('year desc,month desc')->select();
-        if ($list){
+        if ($count){
             $this->ajaxReturn($list);
+        }else{
+            $this->ajaxReturn('');
         }
 
     }
@@ -323,11 +350,6 @@ class ContractController extends Controller {
         $end_time && $where1  .=" and date_format(collectdate,'%Y-%m-%d') <='{$end_time}'";
         //select substr(centreno,7,1),count(*) from contract  where collectdate  group by (substr(`centreno`,7,1)) ;
         $countlist =  D("contract")->where($where1)->field('substr(centreno,7,1),count(*)')->group('substr(centreno,7,1)')->select();
-        //dump($countlist);
-        //$countlist =  D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->where($where)->field('collector_partment,count(collector_partment)')->group('collector_partment')->select();
-       // dump($countlist);
-       // $sumlist=D("contract")->where($where)->field('collector_partment,sum(testcost)')->group('collector_partment')->select();
-       // dump($sumlist);
         foreach ($countlist as $value) {
             if($value['substr(centreno,7,1)']=='A'){
                 $A_count=$value['count(*)'];
@@ -348,28 +370,6 @@ class ContractController extends Controller {
                 $F_count=$value['count(*)'];
             }
         }
-
-//        foreach ($sumlist as $value) {
-//            if($value['collector_partment']=='A'){
-//                $A_sum=$value['sum(testcost)'];
-//            }
-//            if($value['collector_partment']=='B'){
-//                $B_sum=$value['sum(testcost)'];
-//            }
-//            if($value['collector_partment']=='C'){
-//                $C_sum=$value['sum(testcost)'];
-//            }
-//            if($value['collector_partment']=='D'){
-//                $D_sum=$value['sum(testcost)'];
-//            }
-//            if($value['collector_partment']=='E'){
-//                $E_sum=$value['sum(testcost)'];
-//            }
-//            if($value['collector_partment']=='F'){
-//                $F_sum=$value['sum(testcost)'];
-//            }
-//        }
-        //select sum(arecord),sum(brecord),sum(crecord),sum(drecord),sum(erecord),sum(frecord),sum(dcopy),sum(donline),sum(Drevise),sum(dother) from test_cost where 1=1 and date_format(`costDate`,'%Y-%m-%d')>='2017-11-22'
 
         $otherlist = D("test_cost")->where($where)->field("sum(rarecord) as a,sum(rbrecord) as b,sum(rcrecord) as c,sum(rdrecord) as d,sum(rerecord) as e,sum(rfrecord) as f,sum(dcopy) as copy,sum(donline) as online,sum(Drevise) as revise,sum(dother) as other")->find();
 
