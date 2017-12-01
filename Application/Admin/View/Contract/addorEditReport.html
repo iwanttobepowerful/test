@@ -108,8 +108,8 @@
         	<button class="btn btn-success" type="submit" onClick="saveData()">保存</button>
             <!--<a class="btn btn-success edit" href="/admin/contract/doUploadInsImage?centreno={$one.centreno}">上传附件</a>-->
         </if>
-        <if condition="!($sub_status['status'] == 1 or $sub_status['status'] == 0)">
-        	<a href="#" class="btn btn-success" onclick="return applyBack('{$centreNo}')" >申请</a>
+        <if condition="!($sub_status['status'] == 1 or $sub_status['status'] == 0) and ($count gt 0)">
+        	<a href="#" class="btn btn-success" onclick="return applyBack('{$centreNo}')" >确认申请</a>
         </if>
         <if condition="$count == 0 || $one.if_edit == 0">
 			

@@ -120,6 +120,7 @@
                         <label class="col-sm-3 control-label talign-right fz13">测试项目</label>
                         <div class="col-sm-7" id='text_item_edit'>
                              <input type="text" name="item_edit" value="{$con.item}" class="form-control">
+                             <input type="text" name="item_edit_hidden" value="{$con.item}" class="form-control">
                         </div>
                         <div class="clearfix"></div>
                 </div>
@@ -225,6 +226,7 @@
                         <label class="col-sm-3 control-label talign-right fz13"><span style="color:red; font-size:15px">*</span>测试项目</label>
                         <div class="col-sm-7" id="text_item">
                              <input type="text" name="item" value="{$con.item}" class="form-control">
+                             <input type="hidden" name="item_hidden" value="{$con.item}" class="form-control">
                         </div>
                         <div class="clearfix"></div>
                 </div>
@@ -403,12 +405,13 @@
 	//费用是否全项
 	function ifAllItem(){
 		if($("#quantity").val()==2){
-			$("#text_item input").val('全项');
+			$("#text_item input[name=item_hidden]").val($("#text_item input[name=item]").val());
+			$("#text_item input[name=item]").val('全项');
 			$("#child_item").html('<a href="#" class="btn btn-primary btn-xs"  onclick="doReflashChildItem()" >刷新子类</a>');
 			$("#c_child_item").css('display','block');
 		}else{
 			$("#c_child_item").css('display','none');
-			$("#text_item input").val("");
+			$("#text_item input[name=item]").val($("#text_item input[name=item_hidden]").val());
 		}
 	}
 	
@@ -416,7 +419,7 @@
 		var criteria =$.trim($("#criteria").val());
 		var productname =$.trim($("#productname").val());
 		if($.trim($("#criteria").val())==""){
-			alert("请输入执行标准");	
+			alert("请输入执行标准");
 			return false;
 		}else{
 			$.ajax({

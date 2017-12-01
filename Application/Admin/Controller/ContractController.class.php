@@ -197,11 +197,52 @@ class ContractController extends Controller
 			$this->ajaxReturn($rs);
 		}
 
-        if(empty($clientName)||empty($productUnit)||empty($sampleName)||empty($testCriteria)||empty($testItem)||empty($sampleQuantity)||empty($sampleStatus)||empty($sampleStaQuan)||empty($collector)||empty($testCost)||empty($collectDate)||empty($reportDate)){
+		//验证手机号
+		if(!empty($telephone)){
+			$isMob="/^(1(([35][0-9])|(47)|[8][0126789]))\d{8}$/";  //手机
+			$isTel="/^([0-9]|[-])+$/"; //电话
+			//if(!(funcmtel($telephone) || funcphone($telephone))){
+			if(!(preg_match($isTel,$telephone) || preg_match($isMob,$telephone))){
+				$rs['msg'] = '请输入正确的联系方式';
+				$this->ajaxReturn($rs);
+			}
+		}
+		
+		//验证传真
+		if(!empty($tax)){
+			$isPostcode="/^([0-9]|[-])+$/";
+			if(!(preg_match($isPostcode,$tax))){
+				$rs['msg'] = '请输入正确的传真';
+				$this->ajaxReturn($rs);
+			}
+		}
+
+		//验证邮政编码
+		if(!empty($postcode)){
+			$isPostcode="/^\d{6}$/";
+			if(!(preg_match($isPostcode,$postcode))){
+				$rs['msg'] = '请输入正确的邮政编码';
+				$this->ajaxReturn($rs);
+			}
+		}
+		
+		//验证邮箱
+		if(!empty($email)){
+			$isEmail="/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/";
+			if(!(preg_match($isEmail,$email))){
+				$rs['msg'] = '请输入正确的邮箱';
+				$this->ajaxReturn($rs);
+			}
+		}
+		
+		if(empty($clientName)||empty($productUnit)||empty($sampleName)||empty($testCriteria)||empty($testItem)||empty($sampleQuantity)||empty($sampleStatus)||empty($sampleStaQuan)||empty($collector)||empty($testCost)||empty($collectDate)||empty($reportDate)){
             $rs['msg'] = '信息填写不完整!';
             $this->ajaxReturn($rs);
         }
 		
+        
+		
+
         if(empty($productionDate)){
             $productionDate=null;
         }
@@ -533,7 +574,48 @@ class ContractController extends Controller
 				$rs['msg'] = '费用输入不正确!';
 				$this->ajaxReturn($rs);
 			}
-	
+			//验证手机号
+			if(!empty($telephone)){
+				$isMob="/^(1(([35][0-9])|(47)|[8][0126789]))\d{8}$/";  //手机
+				$isTel="/^([0-9]|[-])+$/"; //电话
+				//if(!(funcmtel($telephone) || funcphone($telephone))){
+				if(!(preg_match($isTel,$telephone) || preg_match($isMob,$telephone))){
+					$rs['msg'] = '请输入正确的联系方式';
+					$this->ajaxReturn($rs);
+				}
+			}
+			
+			//验证传真
+			if(!empty($tax)){
+				$isPostcode="/^([0-9]|[-])+$/";
+				if(!(preg_match($isPostcode,$tax))){
+					$rs['msg'] = '请输入正确的传真';
+					$this->ajaxReturn($rs);
+				}
+			}
+
+			//验证邮政编码
+			if(!empty($postcode)){
+				$isPostcode="/^\d{6}$/";
+				if(!(preg_match($isPostcode,$postcode))){
+					$rs['msg'] = '请输入正确的邮政编码';
+					$this->ajaxReturn($rs);
+				}
+			}
+			
+			//验证邮箱
+			if(!empty($email)){
+				$isEmail="/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/";
+				if(!(preg_match($isEmail,$email))){
+					$rs['msg'] = '请输入正确的邮箱';
+					$this->ajaxReturn($rs);
+				}
+			}
+			
+
+			
+
+
 			if(empty($clientName)||empty($productUnit)||empty($sampleName)||empty($testCriteria)||empty($testItem)||empty($sampleQuantity)||empty($sampleStatus)||empty($sampleStaQuan)||empty($collector)||empty($testCost)||empty($collectDate)||empty($reportDate)){
 				$rs['msg'] = '信息填写不完整!';
 				$this->ajaxReturn($rs);
@@ -1335,7 +1417,7 @@ class ContractController extends Controller
 		$applicant = I('applicant');
 		$handler = I('handler');
 		$handleDate = I('handleDate');
-		if(empty($edit_No) || empty($sampleName) || empty($clientName) || empty($update_item) || empty($imageurl)){
+		if(empty($edit_No) || empty($sampleName) || empty($clientName) || empty($update_item) || empty($imageurl)|| empty($update_reason)|| empty($applicant)|| empty($handler)|| (empty($update_item[0]) && empty($update_item[1]) && empty($update_item[2]) && empty($update_item[3]) && empty($update_item[4]) && empty($update_item[5]))){
 			$rs['msg']='信息填写不完整！';
 			$this->ajaxReturn($rs);
 		}
@@ -1556,7 +1638,7 @@ class ContractController extends Controller
             $department = $special['department'];
             $centreHead=$year.$month;
             //SELECT centreNo,SUBSTR(centreNo,9,3) from contract where ifHighQuantity=0 order by SUBSTR(centreNo,9,3) desc
-            $special = D("contract")->field('centreNo,SUBSTR(centreNo,9,3) as codes')->where('centreNo like "'.$centreHead.'%" and ifHighQuantity=0')->order('SUBSTR(centreNo,9,3) desc')->find();
+            $special = D("contract")->field('centreNo,SUBSTR(centreNo,9,3) as codes')->where('centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)>100')->order('SUBSTR(centreNo,9,3) desc')->find();
             //pr($special);
             //pr(D("contract")->getLastSql());
             //pr(count($special));
