@@ -417,6 +417,7 @@
 	
 	function doReflashChildItem(){
 		var criteria =$.trim($("#criteria").val());
+		criteria = criteria.replace(/\s/g,"");
 		var productname =$.trim($("#productname").val());
 		if($.trim($("#criteria").val())==""){
 			alert("请输入执行标准");

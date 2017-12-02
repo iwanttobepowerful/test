@@ -286,7 +286,9 @@
 
 						</div>
 						<p class="fis">总金额：<span id="fee_sum"></span></p>
-
+						<button type="button" class="btn btn-default" onclick="clearChose()">
+							清空选择
+						</button>
 						<button type="button" class="btn btn-primary" onclick="returnCost()" data-dismiss="modal">
 							提交更改
 						</button>
@@ -484,6 +486,7 @@
 						num = re.numList;
 						html="";
 						for(var i =0;i<data.length;i++){
+							if(num[i]>0)
 							html+="<button  type='button' id='spec_li_"+i+"' class='btn btn-default btn-xs' onclick=choseSpe('"+i+"')><span id='code'>"+data[i]+"</span> 剩余量：<span id='remain_code'>"+num[i]+"</span>(含当前)</button><br/>";
 							
 						}
@@ -529,13 +532,18 @@
 				keyboard: true,
 			});
 			$("#depar").val(de);
-			modal.modal();
+			$("#footer").html("");
+			$("#fee_sum").html("");
+			$("#accordion222").html("");
+			$("#criteria").val("");
 
 		}
 		
 		//查询标准号
 		function findCriteria(){
 			var criteria = $("#criteria").val();
+			criteria = criteria.replace(/\s/g,"");
+			console.log(criteria);
 			$.ajax({
 				url: "{:U('/admin/contract/findCriteria')}",
 				dataType: 'json',
@@ -568,6 +576,7 @@
 		function findProItem(ij,criteria,productname){
 			//alert(ij,criteria,productname);
 			criteria = decodeURIComponent(criteria);
+			criteria = criteria.replace(/\s/g,"");
 			var p_id = "collapseOne_"+ij;
 			var form_id = "form_"+ij;
 			$.ajax({
@@ -587,9 +596,9 @@
 						items_quantity = item_list[i]['quantity'];
 						items_fee = item_list[i]['fee'];
 						if(items_quantity==1){
-							html_list += '<input type="checkbox" id="items_'+items_id+'" name="items" value="'+items_fee+'" onchange=valid(this.id,"'+items_name+'")>'+items_name+'('+items_fee+')';
+							html_list += '<input type="checkbox" id="items_'+items_id+'" name="items" value="'+items_fee+'" onchange=valid(this.id,"'+encodeURIComponent(items_name)+'")>'+items_name+'('+items_fee+')';
 						}else if(items_quantity==2){
-							button_list +=  '<button type="button" class="btn btn-default btn-xs" id="items_all_'+items_id+'" name="items_all" value="'+items_fee+'" onclick=checkAllFee(this.id,"'+items_name+'")>'+items_name+'</button>';
+							button_list +=  '<button type="button" class="btn btn-default btn-xs" id="items_all_'+items_id+'" name="items_all" value="'+items_fee+'" onclick=checkAllFee(this.id,"'+encodeURIComponent(items_name)+'")>'+items_name+'</button>';
 						} 
 					}
 					html_list = button_list+"<br/>"+html_list; 
@@ -604,6 +613,7 @@
 			//console.log(num)
 			var input_id = "#" + num;
 			var input_class = "." + num;
+			name = decodeURIComponent(name);
 			var b_id_list =[];
 			if($(input_id)[0].checked) {
 				$('#footer').append("<span class=" + num + ">" + name + "(" +$(input_id).val() + ")" + "&nbsp;&nbsp;&nbsp;</span>");
@@ -655,6 +665,7 @@
 		function checkAllFee(num,name){
 			var cash=0;
 			var item_id;
+			name = decodeURIComponent(name);
 			item_id = num.replace("items_all_","");
 			
 			$.ajax({
@@ -679,7 +690,7 @@
 						//id = "items_"+id_list[i];
 						//$('#footer').append("<span class=" + id + ">" + $("#"+id).attr('name') + "(" +$("#"+id).val() + ")" + "&nbsp;&nbsp;&nbsp;</span>");
 					}
-					$("#fee_sum").html(fee);
+					//$("#fee_sum").html(fee);
 				}	
 			});
 		}
@@ -696,6 +707,12 @@
 			});
 			$("#"+de+"_id_list").val(id_list.join(","));
 			//computeSum();
+		}
+		
+		function clearChose(){
+			$("#accordion222 input[name=items]").prop('checked',false);
+			$("#footer").html("");
+			$("#fee_sum").html("");
 		}
 
 		<!-----------------------------------费用 end------------------------------------->

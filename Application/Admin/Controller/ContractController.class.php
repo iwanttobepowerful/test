@@ -1528,7 +1528,7 @@ class ContractController extends Controller
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
 		
-		$where = 'criteria like "%'.$criteria.'%"';
+		$where = 'criteria like replace("%'.$criteria.'%"," ","")';
 		
 		if($allChose==0){
 			
@@ -1557,12 +1557,13 @@ class ContractController extends Controller
 	//标准号查询
 	public function findCriteria(){
         $criterias = I('criteria');
-        $criteria_list=D("test_fee")->where('criteria like "%'.$criterias.'%"')->group("criteria")->limit(10)->select();
-        //pr(D("test_fee")->getLastSql());
+
+        $criteria_list=D("test_fee")->where('criteria like replace("%'.$criterias.'%"," ","")')->group("criteria")->limit(10)->select();
+		//pr(D("test_fee")->getLastSql());
 		$productname_list = array();
 		foreach($criteria_list as $c){
 			$criteria = $c['criteria'];
-			$productname=D("test_fee")->where('criteria like "%'.$criteria.'%"')->group("productname")->select();		
+			$productname=D("test_fee")->where('criteria like replace("%'.$criteria.'%"," ","")')->group("productname")->select();		
 			array_push($productname_list,$productname);
 		}
 		
@@ -1576,7 +1577,7 @@ class ContractController extends Controller
 	//标准号下的产品名称查询
 	public function findProduct(){
 		$criteria = I('criteria');
-        $productname_list=D("test_fee")->where('criteria like "%'.$criteria.'%"')->group("productname")->select();
+        $productname_list=D("test_fee")->where('criteria like replace("%'.$criteria.'%"," ","")')->group("productname")->select();
         //pr(D("test_fee")->getLastSql());
         $rs = array(
             'productname_list'=>$productname_list,
@@ -1588,7 +1589,7 @@ class ContractController extends Controller
 	public function findItem(){
 		$criteria = I('criteria');
 		$productname = I('productname');
-		$where = 'criteria like "%'.$criteria.'%"';
+		$where = 'criteria like replace("%'.$criteria.'%"," ","")';
 		if($productname){
 			$where.=' and productname = "'.$productname.'"';	
 		}
@@ -1747,6 +1748,7 @@ class ContractController extends Controller
 		$quantity = I('quantity');
         $meterial = I('meterial');
         $criteria = I('criteria');
+		$criteria = preg_replace('# #','',$criteria);
         $productname = I('productname');
 		$item = I('item');
 		if($quantity == 2){
@@ -1792,14 +1794,54 @@ class ContractController extends Controller
     //费用标准删除
     public function doDeleteFee(){
         $id = I('id');
-        M()->startTrans();
-        if(D("test_fee")->where('id='.$id)->delete()){
-            $rs['msg'] = '删除成功';
-            M()->commit();
-        }else{
-            $rs['msg'] = '删除失败';
-            M()->rollback();
-        }
+		$test_item = D("test_fee")->where('id='.$id)->find();
+		$quantity = $test_item['quantity'];
+		
+		M()->startTrans();
+		$flag = 1;
+		if($quantity==1){
+			$criteria = $test_item['criteria'];
+			$productname = $test_item['productname'];
+			$where = 'quantity=2';
+			$where .= ' and criteria like "%'.$criteria.'%"';
+			$where .= ' and productname="'.$productname.'"';
+			$test_all_item_list = D("test_fee")->where($where)->select();
+			foreach($test_all_item_list as $test_all_item){
+				$child_id_str = $test_all_item['child_item_list']; 
+				$child_id_list = explode(",",$child_id_str);
+				$child_id_new_list = array();
+				foreach($child_id_list as $child_id){
+					if($child_id != $id){
+						array_push($child_id_new_list,$child_id);
+					}
+				}
+				$child_id_new_str = implode(",",$child_id_new_list);
+				$all_id = $test_all_item['id'];
+				$update_status = D("test_fee")->where('id='.$all_id)->save(array('child_item_list' => $child_id_new_str,'modify_time'=>Date("Y-m-d H:i:s")));
+				if(!$update_status){
+					$flag = 0;
+					break;	
+				}
+				//pr("id:".$all_id." child:".$child_id_new_str);
+				//pr($flag);
+				//pr($flag);
+				
+			}
+		}
+		//pr($flag);
+        if($flag == 1){
+			if(D("test_fee")->where('id='.$id)->delete()){
+				$rs['msg'] = '删除成功';
+				M()->commit();
+			}else{
+				$rs['msg'] = '删除失败';
+				M()->rollback();
+			}
+		}else{
+			$rs['msg'] = '删除失败';
+			M()->rollback();
+		}
+
         $this->ajaxReturn($rs);
     }
 }
