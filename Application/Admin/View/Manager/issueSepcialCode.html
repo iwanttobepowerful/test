@@ -136,6 +136,7 @@
 		var de = $("#de_choose").val();
 		$("li[name='de']").removeClass("active");
 		$("#de_"+de).addClass("active");	
+		$("select[name=department]").val(de);
 	});
 	//显示新增弹框
 	function addSpecicalCode(){
@@ -162,12 +163,7 @@
 		$("#myform").ajaxForm(options);
 		return false;
 	}
-	
-	//分部门查询
-	function special_list(){
-		
-		
-	}
+
 	
 </script>
 <include file="Common:footer" />

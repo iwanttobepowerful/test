@@ -123,6 +123,7 @@
 				<th>盖章签发日期</th>
 				<th>外部签发日期</th>
 				<th>申请修改原因</th>
+				<th>更改单</th>
 				<th width="8%">申请时间</th>
 				<th width="12%">操作</th>
 				<th width="6%">状态</th>
@@ -133,6 +134,7 @@
 						<td>{$one.centreno}</td>
 						<td>{$one.inner_sign_time}</td>
 						<td>{$one.external_sign_time}</td>
+						<td>{$one.reason}</td>
 						<td>
 							<a href="{:U('/admin/contract/reWriteTest')}?id={$one.centreno}" class="btn btn-info btn-xs"  >更改单</a>
 							<!--<a href="" class="btn btn-info btn-xs" ><i class="glyphicon glyphicon-search"></i>附件</a>-->

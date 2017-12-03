@@ -120,6 +120,7 @@
                         <label class="col-sm-3 control-label talign-right fz13">测试项目</label>
                         <div class="col-sm-7" id='text_item_edit'>
                              <input type="text" name="item_edit" value="{$con.item}" class="form-control">
+                             <input type="text" name="item_edit_hidden" value="{$con.item}" class="form-control">
                         </div>
                         <div class="clearfix"></div>
                 </div>
@@ -201,14 +202,14 @@
                 <div class="clearfix"></div>
                 </div>
                 <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">类别</label>
+                        <label class="col-sm-3 control-label talign-right fz13"><span style="color:red; font-size:15px">*</span>类别</label>
                         <div class="col-sm-7">
                             <input type="text" name="meterial" id="meterial" value="{$con.meterial}" class="form-control">
                         </div>
                         <div class="clearfix"></div>
                 </div>
                 <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">执行标准</label>
+                        <label class="col-sm-3 control-label talign-right fz13"><span style="color:red; font-size:15px">*</span>执行标准</label>
                         <div class="col-sm-7">
                              <input type="text" name="criteria" id="criteria" value="" class="form-control">
                         </div>
@@ -222,9 +223,10 @@
                         <div class="clearfix"></div>
                 </div>
                 <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">测试项目</label>
+                        <label class="col-sm-3 control-label talign-right fz13"><span style="color:red; font-size:15px">*</span>测试项目</label>
                         <div class="col-sm-7" id="text_item">
                              <input type="text" name="item" value="{$con.item}" class="form-control">
+                             <input type="hidden" name="item_hidden" value="{$con.item}" class="form-control">
                         </div>
                         <div class="clearfix"></div>
                 </div>
@@ -259,7 +261,7 @@
                         <div class="clearfix"></div>
                 </div>
                 <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">单项费用</label>
+                        <label class="col-sm-3 control-label talign-right fz13"><span style="color:red; font-size:15px">*</span>单项费用</label>
                         <div class="col-sm-7">
                              <input type="text" name="fee" value="{$con.fee}" class="form-control">
                         </div>
@@ -392,7 +394,7 @@
 					_options.text = re.msg;
 					doAlertDialog(_options);	
 				}else{
-					alert(re.msg);
+					alert('信息填写不完整！');
 				}
 			}
 		};
@@ -403,20 +405,22 @@
 	//费用是否全项
 	function ifAllItem(){
 		if($("#quantity").val()==2){
-			$("#text_item input").val('全项');
-			$("#child_item").html("");
+			$("#text_item input[name=item_hidden]").val($("#text_item input[name=item]").val());
+			$("#text_item input[name=item]").val('全项');
+			$("#child_item").html('<a href="#" class="btn btn-primary btn-xs"  onclick="doReflashChildItem()" >刷新子类</a>');
 			$("#c_child_item").css('display','block');
 		}else{
 			$("#c_child_item").css('display','none');
-			$("#text_item input").val("");
+			$("#text_item input[name=item]").val($("#text_item input[name=item_hidden]").val());
 		}
 	}
 	
 	function doReflashChildItem(){
 		var criteria =$.trim($("#criteria").val());
+		criteria = criteria.replace(/\s/g,"");
 		var productname =$.trim($("#productname").val());
 		if($.trim($("#criteria").val())==""){
-			alert("请输入执行标准");	
+			alert("请输入执行标准");
 			return false;
 		}else{
 			$.ajax({

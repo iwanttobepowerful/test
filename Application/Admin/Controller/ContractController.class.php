@@ -197,11 +197,52 @@ class ContractController extends Controller
 			$this->ajaxReturn($rs);
 		}
 
-        if(empty($clientName)||empty($productUnit)||empty($sampleName)||empty($testCriteria)||empty($testItem)||empty($sampleQuantity)||empty($sampleStatus)||empty($sampleStaQuan)||empty($collector)||empty($testCost)||empty($collectDate)||empty($reportDate)){
+		//验证手机号
+		if(!empty($telephone)){
+			$isMob="/^(1(([35][0-9])|(47)|[8][0126789]))\d{8}$/";  //手机
+			$isTel="/^([0-9]|[-])+$/"; //电话
+			//if(!(funcmtel($telephone) || funcphone($telephone))){
+			if(!(preg_match($isTel,$telephone) || preg_match($isMob,$telephone))){
+				$rs['msg'] = '请输入正确的联系方式';
+				$this->ajaxReturn($rs);
+			}
+		}
+		
+		//验证传真
+		if(!empty($tax)){
+			$isPostcode="/^([0-9]|[-])+$/";
+			if(!(preg_match($isPostcode,$tax))){
+				$rs['msg'] = '请输入正确的传真';
+				$this->ajaxReturn($rs);
+			}
+		}
+
+		//验证邮政编码
+		if(!empty($postcode)){
+			$isPostcode="/^\d{6}$/";
+			if(!(preg_match($isPostcode,$postcode))){
+				$rs['msg'] = '请输入正确的邮政编码';
+				$this->ajaxReturn($rs);
+			}
+		}
+		
+		//验证邮箱
+		if(!empty($email)){
+			$isEmail="/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/";
+			if(!(preg_match($isEmail,$email))){
+				$rs['msg'] = '请输入正确的邮箱';
+				$this->ajaxReturn($rs);
+			}
+		}
+		
+		if(empty($clientName)||empty($productUnit)||empty($sampleName)||empty($testCriteria)||empty($testItem)||empty($sampleQuantity)||empty($sampleStatus)||empty($sampleStaQuan)||empty($collector)||empty($testCost)||empty($collectDate)||empty($reportDate)){
             $rs['msg'] = '信息填写不完整!';
             $this->ajaxReturn($rs);
         }
 		
+        
+		
+
         if(empty($productionDate)){
             $productionDate=null;
         }
@@ -533,7 +574,48 @@ class ContractController extends Controller
 				$rs['msg'] = '费用输入不正确!';
 				$this->ajaxReturn($rs);
 			}
-	
+			//验证手机号
+			if(!empty($telephone)){
+				$isMob="/^(1(([35][0-9])|(47)|[8][0126789]))\d{8}$/";  //手机
+				$isTel="/^([0-9]|[-])+$/"; //电话
+				//if(!(funcmtel($telephone) || funcphone($telephone))){
+				if(!(preg_match($isTel,$telephone) || preg_match($isMob,$telephone))){
+					$rs['msg'] = '请输入正确的联系方式';
+					$this->ajaxReturn($rs);
+				}
+			}
+			
+			//验证传真
+			if(!empty($tax)){
+				$isPostcode="/^([0-9]|[-])+$/";
+				if(!(preg_match($isPostcode,$tax))){
+					$rs['msg'] = '请输入正确的传真';
+					$this->ajaxReturn($rs);
+				}
+			}
+
+			//验证邮政编码
+			if(!empty($postcode)){
+				$isPostcode="/^\d{6}$/";
+				if(!(preg_match($isPostcode,$postcode))){
+					$rs['msg'] = '请输入正确的邮政编码';
+					$this->ajaxReturn($rs);
+				}
+			}
+			
+			//验证邮箱
+			if(!empty($email)){
+				$isEmail="/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/";
+				if(!(preg_match($isEmail,$email))){
+					$rs['msg'] = '请输入正确的邮箱';
+					$this->ajaxReturn($rs);
+				}
+			}
+			
+
+			
+
+
 			if(empty($clientName)||empty($productUnit)||empty($sampleName)||empty($testCriteria)||empty($testItem)||empty($sampleQuantity)||empty($sampleStatus)||empty($sampleStaQuan)||empty($collector)||empty($testCost)||empty($collectDate)||empty($reportDate)){
 				$rs['msg'] = '信息填写不完整!';
 				$this->ajaxReturn($rs);
@@ -702,7 +784,7 @@ class ContractController extends Controller
 			$data_feedback = array(
             	"status"=>3
         	);
-			D("report_feedback")->where($where)->save($data_feedback);
+			D("report_feedback")->where('id = (SELECT a.id from (SELECT max(id) as id from report_feedback WHERE centreNo = "'.$centreno.'") a )')->save($data_feedback);
 		}
         $rs['msg']='修改提交成功';
         $this->ajaxReturn($rs);
@@ -1062,7 +1144,32 @@ class ContractController extends Controller
         $offset = ( $page-1 ) * $pagesize;
 		//$list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,if(r.status is null,-1,r.status) as sub_status,r.if_report,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN (select * from report_feedback WHERE id in (select max(id) from report_feedback GROUP BY centreNo)) r on r.centreNo = c.centreNo')->where($where)->order('c.input_time DESC')->limit("{$offset},{$pagesize}")->select();
 		$list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id')->where($where)->order('c.input_time DESC')->limit("{$offset},{$pagesize}")->select();
-		//pr($list);
+		
+		if($list){
+			$con_list = array();//反馈
+			foreach($list as $contract){
+				array_push($con_list,"'".$contract['centreno']."'");
+			}
+			$centreno_str = implode(',',$con_list);
+			$no_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where centreNo in ('.$centreno_str.') group by centreNo)')->group('centreNo')->select();
+			$con_list = array();
+			if($no_feed_list){
+				foreach($no_feed_list as $no_feed){
+					$con_list[$no_feed['centreno']]	= $no_feed;
+				}
+			}
+			foreach($list as $key=>$val){
+				if($con_list[$val['centreno']]){
+					$val['sub_status'] = $con_list[$val['centreno']]['status'];
+					$val['if_report'] = $con_list[$val['centreno']]['if_report'];
+				}else{
+					$val['sub_status'] = -1;
+					$val['if_report'] = 0;
+				}
+				$list[$key] = $val;
+			}
+		}
+		//pr($list);die;
 		$count = D("contract as c")->where($where)->count();
 		//pr($count);
 		$Page= new \Think\Page($count,$pagesize);
@@ -1106,12 +1213,12 @@ class ContractController extends Controller
             $where .= " and SUBSTR(c.centreNo,7,1) = '{$department}'";
         }
         if(!empty($begin_time)){
-            $where.=" and date_format(c.contract_time,'%Y-%m-%d') >='{$begin_time}'";
+            $where .=" and date_format(c.contract_time,'%Y-%m-%d') >='{$begin_time}'";
         }
         if(!empty($end_time)){
-            $where.=" and date_format(c.contract_time,'%Y-%m-%d') <='{$end_time}'";
+            $where .=" and date_format(c.contract_time,'%Y-%m-%d') <='{$end_time}'";
         }
-       $where.= " and c.status != 7 and c.status != 0";
+       $where .= " and c.status != 7 and c.status != 0";
         $page = I("p",'int');
         $pagesize = 10;
         if($page<=0) $page = 1;
@@ -1119,9 +1226,34 @@ class ContractController extends Controller
 
         //判断是接单还是签发
         //$ifstatus =
-        $list = D("contract_flow as c")->field('if(c.id is null,-1,c.id) as flow_id,if(r.status is null,-1,r.status) as sub_status,r.if_report,r.if_outer,f.*,c.status,c.inner_sign_user_id,c.inner_sign_time,c.external_sign_time,c.takelist_user_id,c.takelist_time,u.name as takename,u1.name as innername,u2.name as externalname,v.doc_path,v.pdf_path,v.qrcode_path')
-            ->join('left join contract as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on c.takelist_user_id=u.id LEFT JOIN common_system_user u2 on c.external_sign_user_id=u2.id LEFT JOIN common_system_user u1 on c.inner_sign_user_id=u1.id left join test_report as v on c.centreNo=v.centreNo LEFT JOIN report_feedback as r on r.centreNo = c.centreNo' )
+        $list = D("contract_flow as c")->field('if(c.id is null,-1,c.id) as flow_id,f.*,c.status,c.inner_sign_user_id,c.inner_sign_time,c.external_sign_time,c.takelist_user_id,c.takelist_time,u.name as takename,u1.name as innername,u2.name as externalname,v.doc_path,v.pdf_path,v.qrcode_path')
+            ->join('left join contract as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on c.takelist_user_id=u.id LEFT JOIN common_system_user u2 on c.external_sign_user_id=u2.id LEFT JOIN common_system_user u1 on c.inner_sign_user_id=u1.id left join test_report as v on c.centreNo=v.centreNo ' )
             ->where($where)->order('c.takelist_all_time desc,f.id desc')->limit("{$offset},{$pagesize}")->select();
+        if($list){
+            $con_list = array();//反馈
+            foreach($list as $contract){
+                array_push($con_list,"'".$contract['centreno']."'");
+            }
+            $centreno_str = implode(',',$con_list);
+            $no_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where centreNo in ('.$centreno_str.') group by centreNo)')->group('centreNo')->select();
+            $con_list = array();
+            if($no_feed_list){
+                foreach($no_feed_list as $no_feed){
+                    $con_list[$no_feed['centreno']]	= $no_feed;
+                }
+            }
+            foreach($list as $key=>$val){
+                if($con_list[$val['centreno']]){
+                    $val['sub_status'] = $con_list[$val['centreno']]['status'];
+                    $val['if_report'] = $con_list[$val['centreno']]['if_report'];
+                }else{
+                    $val['sub_status'] = -1;
+                    $val['if_report'] = 0;
+                }
+                $list[$key] = $val;
+            }
+        }
+        //dump($list);die;
         $count = D("contract_flow as c")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
@@ -1285,7 +1417,7 @@ class ContractController extends Controller
 		$applicant = I('applicant');
 		$handler = I('handler');
 		$handleDate = I('handleDate');
-		if(empty($edit_No) || empty($sampleName) || empty($clientName) || empty($update_item) || empty($imageurl)){
+		if(empty($edit_No) || empty($sampleName) || empty($clientName) || empty($update_item) || empty($imageurl)|| empty($update_reason)|| empty($applicant)|| empty($handler)|| (empty($update_item[0]) && empty($update_item[1]) && empty($update_item[2]) && empty($update_item[3]) && empty($update_item[4]) && empty($update_item[5]))){
 			$rs['msg']='信息填写不完整！';
 			$this->ajaxReturn($rs);
 		}
@@ -1396,7 +1528,7 @@ class ContractController extends Controller
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
 		
-		$where = 'criteria like "%'.$criteria.'%"';
+		$where = 'criteria like replace("%'.$criteria.'%"," ","")';
 		
 		if($allChose==0){
 			
@@ -1425,12 +1557,13 @@ class ContractController extends Controller
 	//标准号查询
 	public function findCriteria(){
         $criterias = I('criteria');
-        $criteria_list=D("test_fee")->where('criteria like "%'.$criterias.'%"')->group("criteria")->limit(10)->select();
-        //pr(D("test_fee")->getLastSql());
+
+        $criteria_list=D("test_fee")->where('criteria like replace("%'.$criterias.'%"," ","")')->group("criteria")->limit(10)->select();
+		//pr(D("test_fee")->getLastSql());
 		$productname_list = array();
 		foreach($criteria_list as $c){
 			$criteria = $c['criteria'];
-			$productname=D("test_fee")->where('criteria like "%'.$criteria.'%"')->group("productname")->select();		
+			$productname=D("test_fee")->where('criteria like replace("%'.$criteria.'%"," ","")')->group("productname")->select();		
 			array_push($productname_list,$productname);
 		}
 		
@@ -1444,7 +1577,7 @@ class ContractController extends Controller
 	//标准号下的产品名称查询
 	public function findProduct(){
 		$criteria = I('criteria');
-        $productname_list=D("test_fee")->where('criteria like "%'.$criteria.'%"')->group("productname")->select();
+        $productname_list=D("test_fee")->where('criteria like replace("%'.$criteria.'%"," ","")')->group("productname")->select();
         //pr(D("test_fee")->getLastSql());
         $rs = array(
             'productname_list'=>$productname_list,
@@ -1456,8 +1589,8 @@ class ContractController extends Controller
 	public function findItem(){
 		$criteria = I('criteria');
 		$productname = I('productname');
-		$where = 'criteria like "%'.$criteria.'%"';
-		if($productname){
+		$where = 'criteria like replace("%'.$criteria.'%"," ","")';
+		if($productname && $productname!='null'){
 			$where.=' and productname = "'.$productname.'"';	
 		}
         $item_list = D("test_fee")->where($where)->select();
@@ -1506,7 +1639,7 @@ class ContractController extends Controller
             $department = $special['department'];
             $centreHead=$year.$month;
             //SELECT centreNo,SUBSTR(centreNo,9,3) from contract where ifHighQuantity=0 order by SUBSTR(centreNo,9,3) desc
-            $special = D("contract")->field('centreNo,SUBSTR(centreNo,9,3) as codes')->where('centreNo like "'.$centreHead.'%" and ifHighQuantity=0')->order('SUBSTR(centreNo,9,3) desc')->find();
+            $special = D("contract")->field('centreNo,SUBSTR(centreNo,9,3) as codes')->where('centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)>100')->order('SUBSTR(centreNo,9,3) desc')->find();
             //pr($special);
             //pr(D("contract")->getLastSql());
             //pr(count($special));
@@ -1615,6 +1748,7 @@ class ContractController extends Controller
 		$quantity = I('quantity');
         $meterial = I('meterial');
         $criteria = I('criteria');
+		$criteria = preg_replace('# #','',$criteria);
         $productname = I('productname');
 		$item = I('item');
 		if($quantity == 2){
@@ -1628,7 +1762,7 @@ class ContractController extends Controller
         $quantity = I('quantity');
 		
 		if(empty($meterial) || empty($criteria)|| empty($item) || empty($fee)){
-			$rs['msg'] = '信息填写不完整';
+			$rs['msg'] = 'fail';
 			$this->ajaxReturn($rs);
 		}
 
@@ -1660,14 +1794,54 @@ class ContractController extends Controller
     //费用标准删除
     public function doDeleteFee(){
         $id = I('id');
-        M()->startTrans();
-        if(D("test_fee")->where('id='.$id)->delete()){
-            $rs['msg'] = '删除成功';
-            M()->commit();
-        }else{
-            $rs['msg'] = '删除失败';
-            M()->rollback();
-        }
+		$test_item = D("test_fee")->where('id='.$id)->find();
+		$quantity = $test_item['quantity'];
+		
+		M()->startTrans();
+		$flag = 1;
+		if($quantity==1){
+			$criteria = $test_item['criteria'];
+			$productname = $test_item['productname'];
+			$where = 'quantity=2';
+			$where .= ' and criteria like "%'.$criteria.'%"';
+			$where .= ' and productname="'.$productname.'"';
+			$test_all_item_list = D("test_fee")->where($where)->select();
+			foreach($test_all_item_list as $test_all_item){
+				$child_id_str = $test_all_item['child_item_list']; 
+				$child_id_list = explode(",",$child_id_str);
+				$child_id_new_list = array();
+				foreach($child_id_list as $child_id){
+					if($child_id != $id){
+						array_push($child_id_new_list,$child_id);
+					}
+				}
+				$child_id_new_str = implode(",",$child_id_new_list);
+				$all_id = $test_all_item['id'];
+				$update_status = D("test_fee")->where('id='.$all_id)->save(array('child_item_list' => $child_id_new_str,'modify_time'=>Date("Y-m-d H:i:s")));
+				if(!$update_status){
+					$flag = 0;
+					break;	
+				}
+				//pr("id:".$all_id." child:".$child_id_new_str);
+				//pr($flag);
+				//pr($flag);
+				
+			}
+		}
+		//pr($flag);
+        if($flag == 1){
+			if(D("test_fee")->where('id='.$id)->delete()){
+				$rs['msg'] = '删除成功';
+				M()->commit();
+			}else{
+				$rs['msg'] = '删除失败';
+				M()->rollback();
+			}
+		}else{
+			$rs['msg'] = '删除失败';
+			M()->rollback();
+		}
+
         $this->ajaxReturn($rs);
     }
 }
