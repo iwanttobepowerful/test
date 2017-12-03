@@ -1590,7 +1590,7 @@ class ContractController extends Controller
 		$criteria = I('criteria');
 		$productname = I('productname');
 		$where = 'criteria like replace("%'.$criteria.'%"," ","")';
-		if($productname){
+		if($productname && $productname!='null'){
 			$where.=' and productname = "'.$productname.'"';	
 		}
         $item_list = D("test_fee")->where($where)->select();

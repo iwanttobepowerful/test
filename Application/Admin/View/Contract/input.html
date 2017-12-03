@@ -519,6 +519,7 @@
 
 		//查询标准号
 		function findCriteria(){
+			clearChose();
 			var criteria = $("#criteria").val();
 			criteria = criteria.replace(/\s/g,"");
 			console.log(criteria);
@@ -536,9 +537,11 @@
 					for(var i = 0;i<data_criteria.length;i++){
 						var html_productname = "";
 						for(var j=0;j<data_productname[i].length;j++){
-							data_productname[i][j]['productname'];
 							data_criteria_name = data_criteria[i]['criteria'];
-							html_productname += '<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion_'+i+'" href="#collapseOne_'+i+j+'" onclick=findProItem("'+i+j+'","'+encodeURIComponent(data_criteria_name)+'","'+data_productname[i][j]['productname']+'")>'+data_productname[i][j]['productname']+'</a></h4></div><div id="collapseOne_'+i+j+'" class="panel-collapse collapse"><div class="panel-body"><form class="checkbox-inlin" role="form" id="form_'+i+j+'"></form></div></div></div>';
+							if(data_productname[i][j]['productname']==""){
+								data_productname[i][j]['productname']="全项(多个产品名称)";
+							}			
+							html_productname += '<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion_'+i+'" href="#collapseOne_'+i+j+'" onclick=findProItem("'+i+j+'","'+encodeURIComponent(data_criteria_name)+'","'+encodeURIComponent(data_productname[i][j]['productname'])+'")>'+data_productname[i][j]['productname']+'</a></h4></div><div id="collapseOne_'+i+j+'" class="panel-collapse collapse"><div class="panel-body"><form class="checkbox-inlin form_item" role="form" id="form_'+i+j+'"></form></div></div></div>';
 							
 						}
 						html_list += '<div class="panel panel-default" id="fee_list_'+i+'"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion222" href="#collapseOne_'+i+'">'+data_criteria[i]['criteria']+'</a></h4></div><div id="collapseOne_'+i+'" class="panel-collapse collapse"><div class="panel-body"><div class="panel-group" id="accordion_'+i+'">'+html_productname+'</div></div></div></div>';
@@ -555,47 +558,59 @@
 			//alert(ij,criteria,productname);
 			criteria = decodeURIComponent(criteria);
 			criteria = criteria.replace(/\s/g,"");
+			productname = decodeURIComponent(productname);
+			if(productname == "全项(多个产品名称)"){
+				data={'criteria':criteria,'productname':'null'};
+			}else{
+				data={'criteria':criteria,'productname':productname};
+			}
 			var p_id = "collapseOne_"+ij;
 			var form_id = "form_"+ij;
-			$.ajax({
-				url: "{:U('/admin/contract/findItem')}",
-				dataType: 'json',
-				data:{'criteria':criteria,'productname':productname},
-				beforeSubmit: function(){
-					return true;
-				},
-				success: function (re) {
-					var item_list = re['item_list'];
-					var html_list = "";
-					var button_list = "";
-					for(var i=0 ;i<item_list.length;i++){
-						items_name = item_list[i]['item'];
-						items_id = item_list[i]['id'];
-						items_quantity = item_list[i]['quantity'];
-						items_fee = item_list[i]['fee'];
-						if(items_quantity==1){
-							html_list += '<input type="checkbox" id="items_'+items_id+'" name="items" value="'+items_fee+'" onchange=valid(this.id,"'+encodeURIComponent(items_name)+'")>'+items_name+'('+items_fee+')';
-						}else if(items_quantity==2){
-							button_list +=  '<button type="button" class="btn btn-default btn-xs" id="items_all_'+items_id+'" name="items_all" value="'+items_fee+'" onclick=checkAllFee(this.id,"'+encodeURIComponent(items_name)+'")>'+items_name+'</button>';
-						} 
-					}
-					html_list = button_list+"<br/>"+html_list; 
-					$("#"+p_id+" #"+form_id).html(html_list);
-				}	
-			});
-			
+			if($("#"+form_id+" input").length==0){
+				$.ajax({
+					url: "{:U('/admin/contract/findItem')}",
+					dataType: 'json',
+					data:data,
+					beforeSubmit: function(){
+						return true;
+					},
+					success: function (re) {
+						var item_list = re['item_list'];
+						var html_list = "";
+						var button_list = "";
+						for(var i=0 ;i<item_list.length;i++){
+							items_name = item_list[i]['item'];
+							items_id = item_list[i]['id'];
+							items_quantity = item_list[i]['quantity'];
+							items_fee = item_list[i]['fee'];
+							if(items_quantity==1){
+								html_list += '<input type="checkbox" id="items_'+items_id+'" name="items" value="'+items_fee+'" onchange=valid(this.id,"'+encodeURIComponent(items_name)+'","'+form_id+'")>'+items_name+'('+items_fee+')';
+							}else if(items_quantity==2){
+								button_list +=  '<button type="button" class="btn btn-default btn-xs" id="items_all_'+items_id+'" name="items_all" value="'+items_fee+'" onclick=checkAllFee(this.id,"'+encodeURIComponent(items_name)+'","'+form_id+'")>'+items_name+'</button>';
+							} 
+						}
+						html_list = button_list+"<br/>"+html_list; 
+						$("#"+p_id+" #"+form_id).html(html_list);
+					}	
+				});
+			}
 		}
 		
 		//单项点击定位
-		function valid(num,name) {
+		function valid(num,name,parent) {
 			//console.log(num)
 			var input_id = "#" + num;
-			var input_class = "." + num;
+			var input_parent_id = "#" + parent;
+			var input_class = "." + parent + "_" +num;		
 			name = decodeURIComponent(name);
 			var b_id_list =[];
-
-			if($(input_id)[0].checked) {
-				$('#footer').append("<span class=" + num + ">" + name + "(" +$(input_id).val() + ")" + "&nbsp;&nbsp;&nbsp;</span>");
+			//if($(input_id)[0].checked) {
+			//alert(input_parent_id+" "+input_id);
+			//alert($(input_parent_id+" "+input_id).prop('checked'));
+			if($(input_parent_id+" "+input_id).prop('checked')==true) {
+				if(!$('#footer').children().hasClass(parent + "_" +num)){
+					$('#footer').append("<span class=" + parent + "_" +num + ">" + name + "(" +$(input_parent_id+" "+input_id).val() + ")" + "&nbsp;&nbsp;&nbsp;</span>");
+				}				
 			} else {
 				$(input_class).remove();
 			}
@@ -605,44 +620,50 @@
 		//单项选择
 		function checkFee(){
 			cash = 0;
-			var flag_all = false;		
-			$("button[name=items_all]").each(function(index, element) {
-                var id = $(this).attr("id");
-				var flag = true;
-				if($(this).siblings().hasClass(id)){
-					$("."+id).each(function(index, element) {
-						if($(this).prop("checked") == false){
-							flag = false;
-						}
-					});
-					if(flag == true){
-						flag_all = true;
-						$("input[name='items']").each(function(index, element) {
-							if(!$(this).hasClass(id) && $(this).prop("checked") == true){
-								cash+=parseInt(element.value);
-							}	
+			
+			$("form.form_item").each(function(index, element) {
+				var flag_all = false;
+				var form_id = $(this).attr("id"); 
+				//console.log(form_id);
+                $("#"+form_id+" "+"button[name=items_all]").each(function(index, element) {
+					var id = $(this).attr("id");
+					var flag = true;
+					if($(this).siblings().hasClass(id)){
+						$("#"+form_id+" "+"."+id).each(function(index, element) {
+							if($(this).prop("checked") == false){
+								flag = false;
+							}
 						});
-						cash += parseInt($(this).val());
+						if(flag == true){
+							flag_all = true;
+							$("#"+form_id+" "+"input[name='items']").each(function(index, element) {
+								if(!$(this).hasClass(id) && $(this).prop("checked") == true){
+									cash+=parseInt(element.value);
+								}	
+							});
+							cash += parseInt($(this).val());
+						}
 					}
-				}
-				
-            });
-			//console.log("flag_all"+flag_all);
-			if(!flag_all){
-				$("input[name='items']").each(function(index, element) {
-					if($(this).prop("checked") == true){
-						cash+=parseInt(element.value);
-					}		
+					
 				});
-			}
+				//console.log("flag_all"+flag_all);
+				if(!flag_all){
+					$("#"+form_id+" "+"input[name='items']").each(function(index, element) {
+						if($(this).prop("checked") == true){
+							cash+=parseInt(element.value);
+						}		
+					});
+				}
+            });	
+			
 
 			$("#fee_sum").html(cash);
 		}
-		
+
 
 		
 		//计算本部门费用--全项选择
-		function checkAllFee(num,name){
+		function checkAllFee(num,name,parent){
 			var cash=0;
 			var item_id;
 			name = decodeURIComponent(name);
@@ -661,12 +682,15 @@
 					var child_item_list = fee_item['child_item_list'];
 					var fee = fee_item['fee'];
 					var id_list = child_item_list.split(",");
-					$("input[name=items]").prop('checked',false);
-					$("#footer").empty();
+					$("#"+parent+" input[name=items]").prop('checked',false);
+					$("#"+parent+" input[name=items]").trigger('onchange');
+					$("#"+parent+" input[name=items]").attr('class',"");
+					//$("#footer").empty();
 					for(var i=0;i<id_list.length;i++){
-						$("#items_"+id_list[i]).prop('checked',true);
-						$("#items_"+id_list[i]).addClass(num);
-						$("#items_"+id_list[i]).trigger("onchange");
+						$("#"+parent+" #items_"+id_list[i]).prop('checked',true);
+						//$("#items_"+id_list[i]).addClass(num);
+						$("#"+parent+" #items_"+id_list[i]).attr('class',num);
+						$("#"+parent+" #items_"+id_list[i]).trigger("onchange");
 						//id = "items_"+id_list[i];
 						//$('#footer').append("<span class=" + id + ">" + $("#"+id).attr('name') + "(" +$("#"+id).val() + ")" + "&nbsp;&nbsp;&nbsp;</span>");
 					}
