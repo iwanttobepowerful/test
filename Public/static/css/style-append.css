@@ -105,7 +105,7 @@ input:-webkit-autofill {-webkit-box-shadow: 0 0 0px 1000px white inset;outline:n
 .form-control.form-col-b-5{margin-bottom: 5px }
 
 
-.form-group-1 {margin-bottom: : 5px !important;}
+.form-group-1 {margin-bottom : 5px !important;}
 .form-group-2 {margin-bottom: 8px !important;}
 .form-group-3 {margin-bottom: 10px !important;}
 .form-group-4 {margin-bottom: 15px !important;}
@@ -183,8 +183,8 @@ input:-webkit-autofill {-webkit-box-shadow: 0 0 0px 1000px white inset;outline:n
 .loginbox .top_txt {float:left;font-size:30pt;display:inline-block}*/
 .loginbox .top {height:110px;width:1111px;margin:0 auto}
 .loginbox .top_pic {width:130px}
-.loginbox .top_one_txt {font-family:"黑体";font-size:30px}
-.loginbox .top_two_txt {font-family:"黑体";font-size:33px}
+.loginbox .top_one_txt {font-family:"黑体";font-size:30px;color:#0463ae}
+.loginbox .top_two_txt {font-family:"黑体";font-size:33px;color:#0463ae}
 .loginbox .bg {background:url(../images/index.png) no-repeat center center;height:500px;width:100%;}
 .loginbox .box {width:334px;height:334px;margin-top:95px;margin-right:75px;float:right;position:relative;}
 .loginbox .box .loginbg{background:#fff;width:334px;height:304px;border-radius:10px;opacity:0.2;filter:alpha(opacity=60);position:absolute;z-index:0;}
@@ -200,7 +200,7 @@ input:-webkit-autofill {-webkit-box-shadow: 0 0 0px 1000px white inset;outline:n
 
 /*** 重新修改 sui架构 **/
 #page-wrapper {background: transparent;padding: 0px !important;margin: 0;top:0;min-height: auto;padding: 18px !important;}
-#page-wrapper #page-inner{margin: 0;padding: 18px;min-height: auto;background: #fff !important;}
+#page-wrapper #page-inner{margin: 0;padding: 18px;min-height:auto;width:100%;background: #fff !important;}
 #page-wrapper .tab-wraped{padding: 0;border:0;}
 #page-wrapper .xui-flex-r,#page-wrapper .xui-flex-l{border-bottom: 0 !important;}
 #page-wrapper .xui-flex-r{background-color: #fff !important;padding-left: 10px !important;padding-bottom:10px !important;}
