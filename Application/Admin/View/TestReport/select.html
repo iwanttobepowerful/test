@@ -19,35 +19,53 @@
 		<script type="text/javascript" src="__PUBLIC__/static/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 		<style type="text/css">
 			.sel_img{
-				width: 88%;
-				height: 55vh;
+				width: 77%;
 				margin: 7% auto;
-			}		
+			}
+			td{
+				text-align: center;
+			}
+			.one{
+				width: 80%;
+			}
 			.img-rounded{
 				width: 100%;
+				height: 500px;
 			}
-			.btn{
-				margin-left:30%;
+			.btn-info{
+				width: 50%;
 			}
 		</style>
 	</head>
 
 
 	<body>
-      		<table border="3" class="sel_img" >
+      		<table class="sel_img" >
 			     <tr>
 					 <volist name="tpl" id="one">
 						 <td>
-							 <a href="javascript:void(0);" name="{$one.path}" onclick="return Check(this);"><img src="{$one.path}" class="img-rounded" /></a>
-							 <if condition="$type eq $one['type'] and $one['id'] neq 38">
-								 <a class="btn btn-primary" href="javascript:void(0);" onclick="select('{$one.id}','{$contactNo}')">选择</a><p></p>
-								 <if condition="$one['subtype'] == 2"><span class="btn btn-warning" disabled="">大中心</span></if>
-								 <if condition="$one['subtype'] == 1"><span class="btn btn-warning" disabled="">小中心</span></if>
-								 <elseif condition="$one['id'] eq 38 and ($department eq 'C' or $if_admin eq 1)"/>
-								 <a class="btn btn-primary" href="javascript:void(0);" onclick="select('{$one.id}','{$contactNo}')">选择</a><p></p>
-								 <span class="btn btn-warning" disabled="">大中心空气</span>
-								 <else />
-								 <a class="btn btn-primary" disabled>选择</a></if>
+							 <div class="panel panel-primary one">
+								 <div class="panel-heading">
+									 <if condition="$type eq $one['type'] and $one['id'] neq 38">
+										 <if condition="$one['subtype'] == 2"><h3 class="panel-title">大中心</h3></if>
+										 <if condition="$one['subtype'] == 1"><h3 class="panel-title">小中心</h3></if>
+										 <elseif condition="$one['id'] eq 38 and ($department eq 'C' or $if_admin eq 1)"/>
+										 <h3 class="panel-title">大中心空气</h3>
+									 </if>
+								 </div>
+								 <div class="panel-body">
+									 <a href="javascript:void(0);" name="{$one.path}" onclick="return Check(this);"><img src="{$one.path}" class="img-rounded" /></a>
+								 </div>
+								 <div class="panel-footer">
+									 <if condition="$type eq $one['type'] and $one['id'] neq 38">
+										 <a class="btn btn btn-info" href="javascript:void(0);" onclick="select('{$one.id}','{$contactNo}')">选择</a>
+										 <elseif condition="$one['id'] eq 38 and ($department eq 'C' or $if_admin eq 1)"/>
+										 <a class="btn btn btn-info" href="javascript:void(0);" onclick="select('{$one.id}','{$contactNo}')">选择</a>
+										 <else />
+										 <a class="btn btn btn-info" disabled></a>
+									 </if>
+								 </div>
+							 </div>
 						 </td>
 					 </volist>
 			     <tr>
