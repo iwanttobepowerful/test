@@ -184,7 +184,7 @@ input:-webkit-autofill {-webkit-box-shadow: 0 0 0px 1000px white inset;outline:n
 .loginbox .top {height:110px;width:1111px;margin:0 auto}
 .loginbox .top_pic {width:130px}
 .loginbox .top_one_txt {font-family:"黑体";font-size:30px;color:#0463ae}
-.loginbox .top_two_txt {font-family:"黑体";font-size:33px;color:#0463ae}
+.loginbox .top_two_txt {font-family:"黑体";font-size:30px;color:#0463ae}
 .loginbox .bg {background:url(../images/index.png) no-repeat center center;height:500px;width:100%;}
 .loginbox .box {width:334px;height:334px;margin-top:95px;margin-right:75px;float:right;position:relative;}
 .loginbox .box .loginbg{background:#fff;width:334px;height:304px;border-radius:10px;opacity:0.2;filter:alpha(opacity=60);position:absolute;z-index:0;}
