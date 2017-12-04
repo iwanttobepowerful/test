@@ -43,6 +43,7 @@ class AuditController extends Controller {
         $keyword = I("keyword");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
+        $useraudit=$admin_auth['audit'];
         $if_admin = $admin_auth['super_admin'];
         if($if_admin==1 || $user==13 ) {
             $view="1";
@@ -64,15 +65,22 @@ class AuditController extends Controller {
             if(!empty($keyword)){
                 $where="r.centreno like '%{$keyword}% ' and r.if_report=1";
             }else{
-                $where['r.if_report']=1;
+                $where="r.if_report=1";
             }}
         elseif($de =='C'){//外部修改申请
             if(!empty($keyword)){
                 $where="r.centreno like '%{$keyword}% ' and r.if_outer=1";
             }else{
-                $where['r.if_outer']=1;
+                $where="r.if_outer=1";
             }}
-
+        if(!empty($useraudit)){
+            $data=explode(',',$useraudit);
+            foreach($data as $v){
+                $s .="'".$v."',";
+            }
+            $s=substr($s,0,-1);//利用字符串截取函数消除最后一个逗号
+            $where .=" and SUBSTR(r.centreno,7,1) in({$s})";
+        }
         $rs=D("report_feedback")->alias("r")
             ->field('if(r.status is null,-1,r.status) as sub_status,r.reason,r.create_time,r.centreno,r.id as reid,a.clientname,a.samplename,a.testcriteria,a.testitem,c.*')
             ->join(' left join contract as a on r.centreNo=a.centreNo left join contract_flow as c on r.centreNo=c.centreNo')

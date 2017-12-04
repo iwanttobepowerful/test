@@ -1302,10 +1302,10 @@ class ContractController extends Controller
         $type_status = I('type_status',1,'intval');
         $a=D('report_feedback')->where($where)->find();
         if(!empty($a)){
-            if($a['ifreport']==1 and $a['status']==0){
+            if($a['if_report']==1){
             $rs['msg']='该申请审核员正在处理中，请勿重复提交！';
             }
-            elseif($a['ifreport']==0){
+            elseif($a['if_report']==0){
                 $rs['msg']='该报告前台正在申请修改，请稍后再试';
             }
         }
@@ -1328,6 +1328,33 @@ class ContractController extends Controller
 
         $this->ajaxReturn($rs);
     }
+    //报告管理下的修改完毕
+    public function doneAllUpdate(){
+        $rs = array('msg'=>'fail');
+        $centreno=I("centreno");
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $userid=$admin_auth['id'];
+        $user=$admin_auth['gid'];//判断是哪个角色
+        $if_admin = $admin_auth['super_admin'];
+        $where= "centreno='{$centreno}'";
+        $data=array(
+            'status'=>1,
+            'report_time'=>date("Y-m-d H:i:s"),
+            'report_user_id'=>$userid,
+        );
+        $data1=array(
+            'status'=>3
+        );
+        M()->startTrans();
+        if(D("contract_flow")->where($where)->save($data) and D('report_feedback')->where('id = (SELECT a.id from (SELECT max(id) as id from report_feedback WHERE centreNo = "'.$centreno.'") a )')->save($data1)){
+            M()->commit();
+            $rs['msg'] = 'succ';
+        }else{
+            $rs['msg']='操作失败';
+            M()->rollback();
+        }
+        $this->ajaxReturn($rs);
+    }
 	//申请修改
 	public function doSubmitFeedback(){
 		$rs = array('msg'=>'fail');
@@ -1335,7 +1362,7 @@ class ContractController extends Controller
 		$reason = I('reason');
 		$where['centreNo']=$centreno;
 		$type_status = I('type_status',0,'intval')== 6?1:0;
-        $where['status']=0;
+        $where['status']=array('in','0,1');
         $a=D('report_feedback')->where($where)->find();
         if(!empty($a)){
             if($a['if_report']==0){

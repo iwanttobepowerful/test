@@ -68,8 +68,12 @@
                             <a href="{$con.qrcode_path}" class="btn btn-primary btn-xs" download="{$con.centreno}">下载二维码</a><p></p>
                         </if>
                         <if condition="$if_edit==1">
-                        <if condition="$con['status']==8 and $con['doc_path']">
+                        <if condition="$con['status']==8 and $con['doc_path'] and !($con['sub_status'] == 1 and $con['if_report'] ==1)">
                             <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="confirmReport('{$con.centreno}')" >确认</a><p></p></if></if>
+                        </if>
+                        <if condition="$if_edit==1">
+                            <if condition="$con['status']==8 and $con['doc_path'] and ($con['sub_status'] == 1 and $con['if_report'] ==1)">
+                                <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="editconfirmReport('{$con.centreno}')" >修改完毕</a><p></p></if></if>
                         </if>
                         <if condition="$if_edit==1">
 
@@ -187,7 +191,28 @@
             }
         });
     }
+    function editconfirmReport(centreno) {
+        if(!centreno) return false;
+        var _options = {"flag":"error","text":"您确认已经修改完毕并提交生成的报告吗？","buttons":{"ok":{"action":function(){doEditConfirm(centreno);}},"cancel":{}}};
+        doConfirmDialog(_options);
+    }
+    function doEditConfirm(centreno) {
+        $.ajax({
+            type:"post",
+            url:"{:U('/admin/Contract/doneAllUpdate')}",
+            data:{"centreno":centreno},
+            dataType:"json",
+            success:function(ret){
+                if(ret.msg=='succ'){
+                    var _options = {"text":"操作成功！","action":function(){window.location.reload();}};
+                    doAlertDialog(_options);
+                }else{
+                    var _options = {"text":"Error！"};
 
+                }
+            }
+        });
+    }
 </script>
 
 <include file="Common:footer" />
