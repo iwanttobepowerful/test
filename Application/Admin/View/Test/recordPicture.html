@@ -46,7 +46,7 @@
                                 <a href="{:U('/admin/test/infoShow')}?id={$one.centreno}" class="btn btn-primary btn-xs">检测工作通知单</a>
                                 <a href="{:U('/admin/test/recordPictureUp')}?id={$one.centreno}" class="btn btn-primary btn-xs">检测图片上传</a>
 
-                                <if condition="$one[status] eq 7">
+                                <if condition="$one[status] eq 7 or $one[status] eq 0">
                                     <a herf="javascript:void(0);" class="btn btn-success btn-xs" onclick="allSave('{$one.centreno}')">上传完毕</a>
                                     <span style="color: orangered">正在检测中...</span>
                                 <else />
