@@ -5,6 +5,8 @@ return array(
 	'MODULE_ALLOW_LIST'	=> array('Home','Admin','Api','Wap'),
 	'APP_SUB_DOMAIN_DEPLOY'   =>    TRUE,
 	'APP_SUB_DOMAIN_RULES'    =>    array(
+		'm.dmtc.org.cn' => array('Wap/'),
+		//for test server
 		/*'adm.qoowan.net'  	=> array('/'),*/
 		'm.qooce.cn'   => array('Wap/'),
 		'wap.qooce.cn'   => array('Wap/'),

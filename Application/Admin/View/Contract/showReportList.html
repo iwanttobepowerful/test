@@ -68,10 +68,15 @@
                             <a href="{$con.qrcode_path}" class="btn btn-primary btn-xs" download="{$con.centreno}">下载二维码</a><p></p>
                         </if>
                         <if condition="$if_edit==1">
-                        <if condition="$con['status']==8 and $con['doc_path']">
+                        <if condition="$con['status']==8 and $con['doc_path'] and !($con['sub_status'] == 1 and $con['if_report'] ==1)">
                             <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="confirmReport('{$con.centreno}')" >确认</a><p></p></if></if>
                         </if>
                         <if condition="$if_edit==1">
+                            <if condition="$con['status']==8 and $con['doc_path'] and ($con['sub_status'] == 1 and $con['if_report'] ==1)">
+                                <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="editconfirmReport('{$con.centreno}')" >修改完毕</a><p></p></if></if>
+                        </if>
+                        <if condition="$if_edit==1">
+
                             <if condition=" ($con['sub_status'] == 0) and ($con['if_report'] ==1)">
                                 <span style="color:green">申请修改中</span>
                                 <elseif condition=" ($con['sub_status'] == 1) and ($con['if_report'] ==1) and $con['status']==8" />
@@ -140,23 +145,9 @@
 
 
 
-<script src="__PUBLIC__/static/js/jquery.form.js"></script>
 <script type="text/javascript">
     $('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true });
-   /* function externalSign(centreno){
-        if(confirm('确认已外部签发？')){
-            $.ajax({
-                url: "{:U('/admin/contract/externalSign')}",
-                dataType: 'json',
-                async: false,
-                data:{'centreno':centreno},
-                success: function (res) {
-                    alert(res.msg);
-                    window.location.reload();
-                }
-            });
-        }
-    }*/
+
     function applyBack(centreno){
         $("#back_reason").val("");
         var modal = $("#editModal");
@@ -168,35 +159,16 @@
         var centreno = $("#back_centreno").val();
         var reason = $("#back_reason").val();
         $.ajax({
+            type:"post",
             url: "{:U('/admin/contract/doEditReport')}",
+            data:{"centreno":centreno,"reason":reason},
             dataType: 'json',
-            data:{'centreno':centreno,'reason':reason},
-            beforeSubmit: function(){
-                return true;
-            },
-            success: function (re) {
-                alert(re.msg);
-                window.location.reload();
+            success: function (data) {
+                    alert(data.msg);
+                    window.location.reload();
             }
         });
     }
-
-    /*function doUpdateEditState(centreno){
-        if(confirm('确认后合同和抽样单均不可修改，是否已修改完毕？')){
-            $.ajax({
-                url: "{:U('/admin/contract/doUpdateEditState')}",
-                dataType: 'json',
-                data:{'centreno':centreno},
-                beforeSubmit: function(){
-                    return true;
-                },
-                success: function (re) {
-                    alert(re.msg);
-                    window.location.reload();
-                }
-            });
-        }
-    }*/
     function confirmReport(centreno) {
         if(!centreno) return false;
         var _options = {"flag":"error","text":"您确认提交生成的报告吗！","buttons":{"ok":{"action":function(){doConfirm(centreno);}},"cancel":{}}};
@@ -219,21 +191,28 @@
             }
         });
     }
-    /*function Check(path) {
-        var url=path.name;
-        if(!url) return false;//获取url
-        if(url.indexOf("http")==-1){
-            thisHost = location.hostname;
-            var newurl='http://'+thisHost+url;
-        }else{
-            var newurl=url;
-        }
-        //alert(newurl);
-        window.open(newurl);
+    function editconfirmReport(centreno) {
+        if(!centreno) return false;
+        var _options = {"flag":"error","text":"您确认已经修改完毕并提交生成的报告吗？","buttons":{"ok":{"action":function(){doEditConfirm(centreno);}},"cancel":{}}};
+        doConfirmDialog(_options);
     }
-    function qrcode(){
+    function doEditConfirm(centreno) {
+        $.ajax({
+            type:"post",
+            url:"{:U('/admin/Contract/doneAllUpdate')}",
+            data:{"centreno":centreno},
+            dataType:"json",
+            success:function(ret){
+                if(ret.msg=='succ'){
+                    var _options = {"text":"操作成功！","action":function(){window.location.reload();}};
+                    doAlertDialog(_options);
+                }else{
+                    var _options = {"text":"Error！"};
 
-    }*/
+                }
+            }
+        });
+    }
 </script>
 
 <include file="Common:footer" />

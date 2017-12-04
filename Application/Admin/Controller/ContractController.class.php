@@ -1169,7 +1169,7 @@ class ContractController extends Controller
 				$list[$key] = $val;
 			}
 		}
-		//pr($list);die;
+		//dump($list);die;
 		$count = D("contract as c")->where($where)->count();
 		//pr($count);
 		$Page= new \Think\Page($count,$pagesize);
@@ -1202,7 +1202,7 @@ class ContractController extends Controller
         }else{
             $if_edit = 0;
         }
-        D("contract_flow as f");
+        //D("contract_flow as f");
         $keyword = I("keyword");//获取参数
         $where="1=1";
         $keyword && $where .= " and c.centreNo like '%{$keyword}%'";
@@ -1235,7 +1235,7 @@ class ContractController extends Controller
                 array_push($con_list,"'".$contract['centreno']."'");
             }
             $centreno_str = implode(',',$con_list);
-            $no_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where centreNo in ('.$centreno_str.') group by centreNo)')->group('centreNo')->select();
+            $no_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where centreNo in ('.$centreno_str.') group by centreNo ) ')->group('centreNo')->select();
             $con_list = array();
             if($no_feed_list){
                 foreach($no_feed_list as $no_feed){
@@ -1253,7 +1253,7 @@ class ContractController extends Controller
                 $list[$key] = $val;
             }
         }
-        //dump($list);die;
+       //dump($list);die;
         $count = D("contract_flow as c")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
@@ -1298,19 +1298,59 @@ class ContractController extends Controller
         $centreno = I('centreno');
         $reason = I('reason');
         $where['centreNo']=$centreno;
+        $where['status']=array('in','0,1');
         $type_status = I('type_status',1,'intval');
-        $data = array(
-            'centreNo'=>$centreno,
-            'reason'=>$reason,
-            'if_report'=>$type_status
+        $a=D('report_feedback')->where($where)->find();
+        if(!empty($a)){
+            if($a['if_report']==1){
+            $rs['msg']='该申请审核员正在处理中，请勿重复提交！';
+            }
+            elseif($a['if_report']==0){
+                $rs['msg']='该报告前台正在申请修改，请稍后再试';
+            }
+        }
+        else{
+            $data = array(
+                'centreNo'=>$centreno,
+                'reason'=>$reason,
+                'if_report'=>$type_status
+            );
+            M()->startTrans();
+            if(D('report_feedback')->add($data)){
+                $rs['msg']='申请成功';
+                //申请中  审核单不可修改
+                M()->commit();
+            }else{
+                $rs['msg']='申请失败';
+                M()->rollback();
+            }
+        }
+
+        $this->ajaxReturn($rs);
+    }
+    //报告管理下的修改完毕
+    public function doneAllUpdate(){
+        $rs = array('msg'=>'fail');
+        $centreno=I("centreno");
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $userid=$admin_auth['id'];
+        $user=$admin_auth['gid'];//判断是哪个角色
+        $if_admin = $admin_auth['super_admin'];
+        $where= "centreno='{$centreno}'";
+        $data=array(
+            'status'=>1,
+            'report_time'=>date("Y-m-d H:i:s"),
+            'report_user_id'=>$userid,
+        );
+        $data1=array(
+            'status'=>3
         );
         M()->startTrans();
-        if(D('report_feedback')->add($data)){
-            $rs['msg']='申请成功';
-            //申请中  审核单不可修改
+        if(D("contract_flow")->where($where)->save($data) and D('report_feedback')->where('id = (SELECT a.id from (SELECT max(id) as id from report_feedback WHERE centreNo = "'.$centreno.'") a )')->save($data1)){
             M()->commit();
+            $rs['msg'] = 'succ';
         }else{
-            $rs['msg']='申请失败';
+            $rs['msg']='操作失败';
             M()->rollback();
         }
         $this->ajaxReturn($rs);
@@ -1322,7 +1362,17 @@ class ContractController extends Controller
 		$reason = I('reason');
 		$where['centreNo']=$centreno;
 		$type_status = I('type_status',0,'intval')== 6?1:0;
-
+        $where['status']=array('in','0,1');
+        $a=D('report_feedback')->where($where)->find();
+        if(!empty($a)){
+            if($a['if_report']==0){
+                $rs['msg']='该申请审核员正在处理中，请勿重复提交！';
+            }
+            elseif($a['if_report']==1){
+                $rs['msg']='该报告编制员正在申请修改，请稍后再试';
+            }
+        }
+        else{
 		//pr($type_status);
 		$data = array(
 			'centreNo'=>$centreno,
@@ -1341,7 +1391,7 @@ class ContractController extends Controller
 		}else{
 			$rs['msg']='申请失败';
 			M()->rollback();		
-		}
+		}}
 		$this->ajaxReturn($rs);
 	}
 	

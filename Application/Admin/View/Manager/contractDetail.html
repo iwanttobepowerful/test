@@ -502,7 +502,7 @@
     
 </div>
 <if condition="$user eq 7 or $if_admin eq 1">
-<if condition="$ifedit['ifedit']==0 OR $sub_status['status']==1">
+<if condition="($ifedit['ifedit']==0) OR ($sub_status['status']==1 and $sub_status['if_report']==0)">
 	<button onclick="window.print()" class="Noprint btn btn-primary final" disabled>打印</button>
 <else/>
 	<button onclick="window.print()" class="Noprint btn btn-primary final">打印</button>
