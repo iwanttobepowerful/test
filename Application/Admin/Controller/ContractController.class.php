@@ -772,7 +772,10 @@ class ContractController extends Controller
 			}
 			D('contract')->where($where)->save($data_contract);
 		}else if($type_status == 3){
-			$data_apply['status']=4;
+			$data_apply=array(
+			    'status'=>4,
+                'ifback'=>0
+            );
 		}
 		
         //M()->startTrans();
