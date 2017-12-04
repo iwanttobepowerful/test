@@ -211,7 +211,7 @@
     }
     function update(id,de){
         if(!id) return false;
-        var _options = {"flag":"error","text":"您确定拒绝该申请吗？:","buttons":{"ok":{"action":function(){notPass(id,de);}},"cancel":{}}};
+        var _options = {"flag":"error","text":"您确定拒绝该申请吗？","buttons":{"ok":{"action":function(){notPass(id,de);}},"cancel":{}}};
         doConfirmDialog(_options);
     }
     function notPass(id,de){
