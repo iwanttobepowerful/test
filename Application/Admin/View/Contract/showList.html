@@ -59,7 +59,7 @@
                             <a href="/admin/contract/addorEditReport?id={$con.centreno}" class="btn btn-info btn-xs" >更改检验报告单</a>
                         </if>
                         <if condition="($con['centreno1'] or $con['centreno2'] or $con['centreno3']) and ($con['sub_status'] == 1 or $con['sub_status'] == 3)" >
-                            <a href="{:U('/admin/contract/reWriteTest')}?id={$con.centreno}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-list"></i>更改单</a>
+                            <a href="{:U('/admin/contract/reWriteTest')}?id={$con.centreno}" class="btn btn-info btn-xs">更改单</a>
                         </if>
                     	<a href="/admin/manager/contractDetail?id={$con.centreno}"  class="btn btn-info btn-xs" >检验受理合同</a>
        
@@ -126,7 +126,7 @@
             <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                    <form class="form-horizontal" id="aform" action="" method="post">
+                    <div class="form-horizontal" id="aform" action="" method="post">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             <h4 class="modal-title" id="createModalLabel">申请修改</h4>
@@ -150,7 +150,7 @@
                             <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
                             <button type="submit" class="btn btn-primary" onclick="subFeedback()">确定</button>
                         </div>
-                    </form>
+                    </div>
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal -->
             </div>

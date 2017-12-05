@@ -1123,6 +1123,7 @@ class ContractController extends Controller
 		}
 
 		$keyword = I("keyword");//获取参数
+		$keyword = trim($keyword);
         $where = "1=1";
         $keyword && $where .= " and c.centreNo like '%{$keyword}%'";
 
@@ -1607,7 +1608,6 @@ class ContractController extends Controller
 	//标准号查询
 	public function findCriteria(){
         $criterias = I('criteria');
-
         $criteria_list=D("test_fee")->where('criteria like replace("%'.$criterias.'%"," ","")')->group("criteria")->limit(10)->select();
 		//pr(D("test_fee")->getLastSql());
 		$productname_list = array();
