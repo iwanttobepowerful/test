@@ -64,7 +64,7 @@
                     <td>{$one.lastmodifytime}</td>
                     <td>{$one.remark}</td>
                     <td>
-                        <if condition="($gid eq 1) and ($view eq 7)">
+                        <if condition="($gid eq 1) and ($view eq 7 or $view eq 0)">
                         <a href="javascript:void(0);" onclick="onDelete({$one.id})" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> 删除</a></if>
                         <a href="javascript:void(0);" name="{$one.path}" onclick="onPrint({$one.id});" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-print"></i> 打印</a>
                     </td>

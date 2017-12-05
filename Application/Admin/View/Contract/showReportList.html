@@ -43,7 +43,7 @@
 
                     <td width="33%">
                         <if condition="$user==10 || $if_admin==1">
-                        <if condition="$con['status'] neq 8 and $con['status'] neq 6 and $con['status'] neq 3 and (!(($con['sub_status'] == 1 or $con['sub_status'] == 0) and $if_report==1))">
+                        <if condition="$con['status'] neq 8 and $con['status'] neq 6 and $con['status'] neq 3 and (!(($con['sub_status'] == 1 or $con['sub_status'] == 0) and $con['if_report']==1))">
                             <a href="#" class="btn btn-primary btn-xs" onclick="return applyBack('{$con.centreno}')" >申请修改</a>
                         </if></if>
                         <if condition="$con[centreno1] or $con[centreno2] or $con[centreno3]">
