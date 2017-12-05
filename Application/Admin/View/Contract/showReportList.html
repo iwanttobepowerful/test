@@ -169,10 +169,10 @@
                     doAlertDialog(_options);
                 }else{
                     var _options = {"text":"Error！"};
-                    if(data.msg) _options.text = data.msg;
+                    if(data.msg) { _options={"text":data.msg,"action":function(){window.location.reload();}};
                     doAlertDialog(_options);
                 }
-            }
+            }}
         };
         $("#myform").ajaxForm(options);
         return false;
