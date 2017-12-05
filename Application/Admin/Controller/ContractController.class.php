@@ -1300,9 +1300,7 @@ class ContractController extends Controller
         $rs = array('msg'=>'fail');
         $centreno = I('back_centreno');
         $reason = I('back_reason');
-        $where['centreNo']=$centreno;
-        $where['status']=array('in','0,1');
-        $a=D('report_feedback')->where($where)->find();
+        $a=D('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$centreno.'") and status in("0,1")')->find();
         if(!empty($a)){
             if($a['if_report']==1){
             $rs['msg']='该申请审核员正在处理中，请勿重复提交！';
@@ -1365,7 +1363,7 @@ class ContractController extends Controller
 		$where['centreNo']=$centreno;
 		$type_status = I('type_status',0,'intval')== 6?1:0;
         $where['status']=array('in','0,1');
-        $a=D('report_feedback')->where($where)->find();
+        $a=D('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$centreno.'") and status in("0,1")')->find();//只允许处理后再次提出申请，不用查最大的id
         if(!empty($a)){
             if($a['if_report']==0){
                 $rs['msg']='该申请审核员正在处理中，请勿重复提交！';
