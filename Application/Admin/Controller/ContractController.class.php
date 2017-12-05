@@ -1298,11 +1298,10 @@ class ContractController extends Controller
     //申请修改报告
     public function doEditReport(){
         $rs = array('msg'=>'fail');
-        $centreno = I('centreno');
-        $reason = I('reason');
+        $centreno = I('back_centreno');
+        $reason = I('back_reason');
         $where['centreNo']=$centreno;
         $where['status']=array('in','0,1');
-        $type_status = I('type_status',1,'intval');
         $a=D('report_feedback')->where($where)->find();
         if(!empty($a)){
             if($a['if_report']==1){
@@ -1316,11 +1315,11 @@ class ContractController extends Controller
             $data = array(
                 'centreNo'=>$centreno,
                 'reason'=>$reason,
-                'if_report'=>$type_status
+                'if_report'=>1
             );
             M()->startTrans();
             if(D('report_feedback')->add($data)){
-                $rs['msg']='申请成功';
+                $rs['msg']='succ';
                 //申请中  审核单不可修改
                 M()->commit();
             }else{
@@ -1350,8 +1349,8 @@ class ContractController extends Controller
         );
         M()->startTrans();
         if(D("contract_flow")->where($where)->save($data) and D('report_feedback')->where('id = (SELECT a.id from (SELECT max(id) as id from report_feedback WHERE centreNo = "'.$centreno.'") a )')->save($data1)){
-            M()->commit();
             $rs['msg'] = 'succ';
+            M()->commit();
         }else{
             $rs['msg']='操作失败';
             M()->rollback();
