@@ -138,6 +138,7 @@
             <td  ><p align="center" ><span style="color:red; font-size:15px">*</span>中心编号 </p></td>
             <td   colspan="3" ><p>
               <input type="text" class="form-control"  name="centreNo" id="centreNo" readonly="readonly" size="9"/>
+              <input type="hidden" value="0" id="ifchoseSp" name="ifchoseSp"/>
               <!--<input type="button" name="button2" id="button2" value="生成中心编码" />-->
               <input name="ifHighQuantity" type="checkbox" value="0" onClick="upVIPCode()"/>
               前100号
@@ -279,6 +280,9 @@
 		makeCentreCode();
 		$("input[name = 'testCategory']").change(function(){
 			makeCentreCode();
+			$("#spec_checkbox").prop('checked',false);
+			special_code();
+			
 		});
 		
 
@@ -453,10 +457,13 @@
 		//特殊编码
 		function special_code(){
 			$("#spe_code").attr("display","block");
+			var type = $('input:radio[name="testCategory"]:checked').val();
+			type = (type == '委托检验')?'W':'C';
 			if($("#spec_checkbox").is(":checked")){
 				$.ajax({
 					url:"{:U('/admin/contract/findSpecialCode')}",
 					dataType:'json',
+					data:{'type':type},
 					success: function (re) {
 						data = re.codeList;;
 						num = re.numList;
@@ -475,6 +482,7 @@
 			}else{
 				$("#spe_code").css("display","none");
 				$("input[name=ifHighQuantity]").removeAttr("disabled");
+				$("#ifchoseSp").val(0);
 				makeCentreCode();
 			}
 		}
@@ -486,6 +494,7 @@
 			var code = $("#spec_li_"+id+" #code").html();
 			var remain_code = $("#spec_li_"+id+" #remain_code").html();
 			$("#centreNo").val(code);
+			$("#ifchoseSp").val(1);
 		}
 		
 		//分包备注是否显示

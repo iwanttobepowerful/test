@@ -346,6 +346,9 @@ class ContractController extends Controller
 			$data['ifedit']=1;
 		}*/
 		
+		$ifchoseSp = I("ifchoseSp");
+		//pr($ifchoseSp);
+		
 		if(D("contract")->where('centreNo="'.$centreNo.'"')->count()==0){
 		
 			M()->startTrans();
@@ -356,15 +359,16 @@ class ContractController extends Controller
 	
 	
 				//特殊编码操作
-				if($ifspecial==1){
+				if($ifspecial==1 && $ifchoseSp==1){
 					$year = substr($centreNo,0,4);
 					$month = substr($centreNo,4,2);
                     $department = substr($centreNo,6,1);
 					$where['year']=$year;
 					$where['month']=$month;
 					$where['department']=$department;
-					$specialItem = D("special_centre_code")->field('id,getNum')->where($where)->find();
-					$num = (int)$specialItem['getnum'];
+					$specialItem = D("special_centre_code")->field('id,getNum,remainNum')->where($where)->find();
+					//pr($specialItem);
+					$num = (int)$specialItem['remainnum'];
 					//pr("num=".$num);
 					$special_id = $specialItem['id'];
 					//if($num==1){
@@ -373,6 +377,7 @@ class ContractController extends Controller
 					$num = $num-1;
 					$editData['remainNum'] = $num;
 					D("special_centre_code")->where('id='.$special_id)->save($editData);
+					//pr(D("special_centre_code")->getLastSql());
 					//}
 				}
 	
@@ -1694,6 +1699,7 @@ class ContractController extends Controller
         $admin_auth = session("admin_auth");
         $department = $admin_auth['department'];
         $if_admin = $admin_auth['super_admin'];
+		$type = I('type');
         $where=array();
 
         //特殊编码管理员和该部门都可见
@@ -1730,7 +1736,7 @@ class ContractController extends Controller
             }*/
             $code = $code+1;
             $code3=str_pad($code,3,"0",STR_PAD_LEFT);
-            $special_no=$centreHead.$department.'W'.$code3;
+            $special_no=$centreHead.$department.$type.$code3;
             array_push($codeList,$special_no);
             array_push($numList,$num);
         }
