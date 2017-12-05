@@ -440,35 +440,75 @@
                 <td><span class="contract_txt">
                 	<php>
                     	$str = "";
-                        if($cost["rarecord"]>0){
-                        	$str.=$cost["rarecord"]."(A)+";
+                        if($cost["rarecord"]!=0){
+                        	if($cost["rarecord"]>0){
+                            	$str.=$cost["rarecord"]."(A)+";
+                            }else{
+                            	$str.="(".$cost["rarecord"].")(A)+";
+                            }                	
                         }
-                        if($cost["rbrecord"]>0){
-                        	$str.=$cost["rbrecord"]."(B)+";
+                        if($cost["rbrecord"]!=0){
+                        	if($cost["rbrecord"]>0){
+                            	$str.=$cost["rbrecord"]."(B)+";
+                            }else{
+                            	$str.="(".$cost["rbrecord"].")(B)+";
+                            }  
                         }
-                        if($cost["rcrecord"]>0){
-                        	$str.=$cost["rcrecord"]."(C)+";
+                        if($cost["rcrecord"]!=0){
+                       		if($cost["rcrecord"]>0){
+                            	$str.=$cost["rcrecord"]."(C)+";
+                            }else{
+                            	$str.="(".$cost["rcrecord"].")(C)+";
+                            } 
                         }
-                        if($cost["rdrecord"]>0){
-                        	$str.=$cost["rdrecord"]."(D)+";
+                        if($cost["rdrecord"]!=0){
+                        	if($cost["rdrecord"]>0){
+                            	$str.=$cost["rdrecord"]."(D)+";
+                            }else{
+                            	$str.="(".$cost["rdrecord"].")(D)+";
+                            }  
                         }
-                        if($cost["rerecord"]>0){
-                        	$str.=$cost["rerecord"]."(E)+";
+                        if($cost["rerecord"]!=0){
+                        	if($cost["rerecord"]>0){
+                            	$str.=$cost["rerecord"]."(E)+";
+                            }else{
+                            	$str.="(".$cost["rerecord"].")(E)+";
+                            }  
                         }
-                        if($cost["rfrecord"]>0){
-                        	$str.=$cost["rfrecord"]."(F)+";
+                        if($cost["rfrecord"]!=0){
+                        	if($cost["rfrecord"]>0){
+                            	$str.=$cost["rfrecord"]."(F)+";
+                            }else{
+                            	$str.="(".$cost["rfrecord"].")(F)+";
+                            }  
                         }
-                        if($cost["dcopy"]>0){
-                        	$str.=$cost["dcopy"]."(副本)+";
+                        if($cost["dcopy"]!=0){
+                        	if($cost["dcopy"]>0){
+                            	$str.=$cost["dcopy"]."(副本)+";
+                            }else{
+                            	$str.="(".$cost["dcopy"].")(副本)+";
+                            }  
                         }
-                        if($cost["donline"]>0){
-                        	$str.=$cost["donline"]."(上网费)+";
+                        if($cost["donline"]!=0){
+                        	if($cost["donline"]>0){
+                            	$str.=$cost["donline"]."(上网费)+";
+                            }else{
+                            	$str.="(".$cost["donline"].")(上网费)+";
+                            }  
                         }
-                        if($cost["drevise"]>0){
-                        	$str.=$cost["drevise"]."(修改)+";
+                        if($cost["drevise"]!=0){
+                        	if($cost["drevise"]>0){
+                            	$str.=$cost["drevise"]."(修改)+";
+                            }else{
+                            	$str.="(".$cost["drevise"].")(修改)+";
+                            }  
                         }
-                        if($cost["dother"]>0){
-                        	$str.=$cost["dother"]."(其他)+";
+                        if($cost["dother"]!=0){
+                        	if($cost["dother"]>0){
+                            	$str.=$cost["dother"]."(其他)+";
+                            }else{
+                            	$str.="(".$cost["dother"].")(其他)+";
+                            }  
                         }
                         echo substr($str,0,strlen($str)-1)."=".	$one["testcost"];
                     </php>

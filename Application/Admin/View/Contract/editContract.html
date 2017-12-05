@@ -65,7 +65,8 @@
           <tr >
             <td valign="center" ><p align="center" ><span style="color:red; font-size:15px">*</span>检验项目 </p></td>
             <td colspan="8" ><p>
-              <input name="testItem" type="text" class="form-control"  id="testItem" size="100" value="{$contract.testitem}"/>
+            	<textarea class="form-control"  name="testItem" id="testItem">{$contract.testitem}</textarea>
+              	<!--<input name="testItem" type="text" class="form-control"  id="testItem" size="100" value="{$contract.testitem}"/>-->
             </p></td>
           </tr>
           <tr >
@@ -569,6 +570,9 @@
 						html_list += '<div class="panel panel-default" id="fee_list_'+i+'"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion222" href="#collapseOne_'+i+'">'+data_criteria[i]['criteria']+'</a></h4></div><div id="collapseOne_'+i+'" class="panel-collapse collapse"><div class="panel-body"><div class="panel-group" id="accordion_'+i+'">'+html_productname+'</div></div></div></div>';
 						$("#accordion222").html(html_list);
 
+					}
+					if(data_criteria.length==0){
+						$("#accordion222").html("<span style='color:grey'>无此标准号</span>");
 					}
 				}	
 			});

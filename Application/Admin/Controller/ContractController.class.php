@@ -346,6 +346,9 @@ class ContractController extends Controller
 			$data['ifedit']=1;
 		}*/
 		
+		$ifchoseSp = I("ifchoseSp");
+		//pr($ifchoseSp);
+		
 		if(D("contract")->where('centreNo="'.$centreNo.'"')->count()==0){
 		
 			M()->startTrans();
@@ -356,15 +359,16 @@ class ContractController extends Controller
 	
 	
 				//特殊编码操作
-				if($ifspecial==1){
+				if($ifspecial==1 && $ifchoseSp==1){
 					$year = substr($centreNo,0,4);
 					$month = substr($centreNo,4,2);
                     $department = substr($centreNo,6,1);
 					$where['year']=$year;
 					$where['month']=$month;
 					$where['department']=$department;
-					$specialItem = D("special_centre_code")->field('id,getNum')->where($where)->find();
-					$num = (int)$specialItem['getnum'];
+					$specialItem = D("special_centre_code")->field('id,getNum,remainNum')->where($where)->find();
+					//pr($specialItem);
+					$num = (int)$specialItem['remainnum'];
 					//pr("num=".$num);
 					$special_id = $specialItem['id'];
 					//if($num==1){
@@ -373,6 +377,7 @@ class ContractController extends Controller
 					$num = $num-1;
 					$editData['remainNum'] = $num;
 					D("special_centre_code")->where('id='.$special_id)->save($editData);
+					//pr(D("special_centre_code")->getLastSql());
 					//}
 				}
 	
@@ -772,7 +777,10 @@ class ContractController extends Controller
 			}
 			D('contract')->where($where)->save($data_contract);
 		}else if($type_status == 3){
-			$data_apply['status']=4;
+			$data_apply=array(
+			    'status'=>4,
+                'ifback'=>0
+            );
 		}
 		
         //M()->startTrans();
@@ -812,8 +820,9 @@ class ContractController extends Controller
         $if_admin = $admin_auth['super_admin'];
         $roleid = $admin_auth['gid'];
 
-        $role = D('common_role')->where('id='.$roleid)->find();
-        if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
+        //$role = D('common_role')->where('id='.$roleid)->find();
+        //if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
+		if($roleid==8 || $if_admin==1 || $roleid==7){
             $if_edit = 1;
         }else{
             $if_edit = 0;
@@ -923,6 +932,25 @@ class ContractController extends Controller
             'tax'=>$tax,
             'address'=>$address
         );
+		//验证手机号
+		if(!empty($telephone)){
+			$isMob="/^(1(([35][0-9])|(47)|[8][0126789]))\d{8}$/";  //手机
+			$isTel="/^([0-9]|[-])+$/"; //电话
+			//if(!(funcmtel($telephone) || funcphone($telephone))){
+			if(!(preg_match($isTel,$telephone) || preg_match($isMob,$telephone))){
+				$rs['msg'] = '请输入正确的联系方式';
+				$this->ajaxReturn($rs);
+			}
+		}
+		
+		//验证传真
+		if(!empty($tax)){
+			$isPostcode="/^([0-9]|[-])+$/";
+			if(!(preg_match($isPostcode,$tax))){
+				$rs['msg'] = '请输入正确的传真';
+				$this->ajaxReturn($rs);
+			}
+		}
         //pr($data);
         $where['centreNo']=$centreno;
         //pr($centreno);
@@ -930,10 +958,10 @@ class ContractController extends Controller
         M()->startTrans();
         if(D('sampling_form')->where($where)->save($data)){
             M()->commit();
-            $rs['msg']='保存成功！';
+            $rs['msg']='succ';
         }else{
             M()->rollback();
-            $rs['msg']='数据未更改！';
+            $rs['msg']='数据没有修改！';
         }
         $this->ajaxReturn($rs);
     }
@@ -1114,8 +1142,9 @@ class ContractController extends Controller
         $end_time = I("end_time");
 		
 		if($admin_auth){
-			$role = D('common_role')->where('id='.$roleid)->find();
-			if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
+			//$role = D('common_role')->where('id='.$roleid)->find();
+			//if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
+			if($roleid==8 || $if_admin==1 || $roleid==7){
 				$if_edit = 1;	
 			}else{
 				$if_edit = 0;	
@@ -1123,10 +1152,12 @@ class ContractController extends Controller
 		}
 
 		$keyword = I("keyword");//获取参数
+		$keyword = trim($keyword);
         $where = "1=1";
         $keyword && $where .= " and c.centreNo like '%{$keyword}%'";
 
-		if($role['rolename']=="领导" || $role['rolename']=="审核员" || $role['rolename']=="盖章人员" || $if_admin==1){
+		//if($role['rolename']=="领导" || $role['rolename']=="审核员" || $role['rolename']=="盖章人员" || $if_admin==1){
+		if($roleid==8 || $roleid==13 || $roleid==15 || $if_admin==1){
 			//
 		}else{
 			$where .= " and SUBSTR(c.centreNo,7,1) = '{$department}'";
@@ -1151,7 +1182,7 @@ class ContractController extends Controller
 				array_push($con_list,"'".$contract['centreno']."'");
 			}
 			$centreno_str = implode(',',$con_list);
-			$no_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where centreNo in ('.$centreno_str.') group by centreNo)')->group('centreNo')->select();
+			$no_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where if_report=0 and centreNo in ('.$centreno_str.') group by centreNo)')->group('centreNo')->select();
 			$con_list = array();
 			if($no_feed_list){
 				foreach($no_feed_list as $no_feed){
@@ -1235,7 +1266,7 @@ class ContractController extends Controller
                 array_push($con_list,"'".$contract['centreno']."'");
             }
             $centreno_str = implode(',',$con_list);
-            $no_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where centreNo in ('.$centreno_str.') group by centreNo ) ')->group('centreNo')->select();
+            $no_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where if_report=1 and centreNo in ('.$centreno_str.') group by centreNo ) ')->group('centreNo')->select();
             $con_list = array();
             if($no_feed_list){
                 foreach($no_feed_list as $no_feed){
@@ -1295,12 +1326,9 @@ class ContractController extends Controller
     //申请修改报告
     public function doEditReport(){
         $rs = array('msg'=>'fail');
-        $centreno = I('centreno');
-        $reason = I('reason');
-        $where['centreNo']=$centreno;
-        $where['status']=array('in','0,1');
-        $type_status = I('type_status',1,'intval');
-        $a=D('report_feedback')->where($where)->find();
+        $centreno = I('back_centreno');
+        $reason = I('back_reason');
+        $a=D('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$centreno.'") and (status=0 or status=1)')->find();
         if(!empty($a)){
             if($a['if_report']==1){
             $rs['msg']='该申请审核员正在处理中，请勿重复提交！';
@@ -1313,11 +1341,11 @@ class ContractController extends Controller
             $data = array(
                 'centreNo'=>$centreno,
                 'reason'=>$reason,
-                'if_report'=>$type_status
+                'if_report'=>1
             );
             M()->startTrans();
             if(D('report_feedback')->add($data)){
-                $rs['msg']='申请成功';
+                $rs['msg']='succ';
                 //申请中  审核单不可修改
                 M()->commit();
             }else{
@@ -1347,8 +1375,8 @@ class ContractController extends Controller
         );
         M()->startTrans();
         if(D("contract_flow")->where($where)->save($data) and D('report_feedback')->where('id = (SELECT a.id from (SELECT max(id) as id from report_feedback WHERE centreNo = "'.$centreno.'") a )')->save($data1)){
-            M()->commit();
             $rs['msg'] = 'succ';
+            M()->commit();
         }else{
             $rs['msg']='操作失败';
             M()->rollback();
@@ -1363,7 +1391,7 @@ class ContractController extends Controller
 		$where['centreNo']=$centreno;
 		$type_status = I('type_status',0,'intval')== 6?1:0;
         $where['status']=array('in','0,1');
-        $a=D('report_feedback')->where($where)->find();
+        $a=D('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$centreno.'") and (status=0 or status=1)')->find();//只允许处理后再次提出申请，不用查最大的id
         if(!empty($a)){
             if($a['if_report']==0){
                 $rs['msg']='该申请审核员正在处理中，请勿重复提交！';
@@ -1566,7 +1594,8 @@ class ContractController extends Controller
 			$roleid = $admin_auth['gid'];
 			
 			$role = D('common_role')->where('id='.$roleid)->find();
-			if($role['rolename']=="领导" || $if_admin==1){
+			//if($role['rolename']=="领导" || $if_admin==1){
+			if($roleid==8 || $if_admin==1){
 				$if_leader = 1;	
 			}else{
 				$if_leader = 0;	
@@ -1607,7 +1636,6 @@ class ContractController extends Controller
 	//标准号查询
 	public function findCriteria(){
         $criterias = I('criteria');
-
         $criteria_list=D("test_fee")->where('criteria like replace("%'.$criterias.'%"," ","")')->group("criteria")->limit(10)->select();
 		//pr(D("test_fee")->getLastSql());
 		$productname_list = array();
@@ -1671,6 +1699,7 @@ class ContractController extends Controller
         $admin_auth = session("admin_auth");
         $department = $admin_auth['department'];
         $if_admin = $admin_auth['super_admin'];
+		$type = I('type');
         $where=array();
 
         //特殊编码管理员和该部门都可见
@@ -1707,7 +1736,7 @@ class ContractController extends Controller
             }*/
             $code = $code+1;
             $code3=str_pad($code,3,"0",STR_PAD_LEFT);
-            $special_no=$centreHead.$department.'W'.$code3;
+            $special_no=$centreHead.$department.$type.$code3;
             array_push($codeList,$special_no);
             array_push($numList,$num);
         }
@@ -1811,7 +1840,7 @@ class ContractController extends Controller
         $fee = I('fee',0,'intval');
         $quantity = I('quantity');
 		
-		if(empty($meterial) || empty($criteria)|| empty($item) || empty($fee)){
+		if(empty($meterial) || empty($criteria)|| empty($item) || !isset($fee)){
 			$rs['msg'] = 'fail';
 			$this->ajaxReturn($rs);
 		}
