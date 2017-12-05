@@ -41,6 +41,10 @@ class UserController extends Controller {
             $rs['msg'] = "输入的旧密码错误，请重新输入";
             $this->ajaxReturn($rs);
         }
+        if($admin['passwd'] == $newpassword){
+            $rs['msg'] = "新密码不能和旧密码相同，请重新输入";
+            $this->ajaxReturn($rs);
+        }
         //dump($admin_id);die;
         $updatepassword = D("common_system_user")->where("id=".$admin_id)->setField('passwd',$newpassword);
         if($updatepassword){
