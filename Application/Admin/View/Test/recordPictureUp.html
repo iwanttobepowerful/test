@@ -6,7 +6,7 @@
             <button onclick="window.history.back() " class="btn btn-primary">返回</button>
         </div><br/>
 
-        <if condition="$view eq 7">
+        <if condition="$view eq 7 or $view eq 0">
             <form class="form-horizontal" id="myform" action="" method="post">
                 <input type="hidden" name="idnum" value="{$pic['id']}" />
                 <input type="hidden" name="centreno" value="{$centreno}" /><!--!!!!!!!!-->

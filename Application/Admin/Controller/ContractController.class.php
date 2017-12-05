@@ -772,7 +772,10 @@ class ContractController extends Controller
 			}
 			D('contract')->where($where)->save($data_contract);
 		}else if($type_status == 3){
-			$data_apply['status']=4;
+			$data_apply=array(
+			    'status'=>4,
+                'ifback'=>0
+            );
 		}
 		
         //M()->startTrans();
@@ -1296,12 +1299,9 @@ class ContractController extends Controller
     //申请修改报告
     public function doEditReport(){
         $rs = array('msg'=>'fail');
-        $centreno = I('centreno');
-        $reason = I('reason');
-        $where['centreNo']=$centreno;
-        $where['status']=array('in','0,1');
-        $type_status = I('type_status',1,'intval');
-        $a=D('report_feedback')->where($where)->find();
+        $centreno = I('back_centreno');
+        $reason = I('back_reason');
+        $a=D('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$centreno.'") and status in("0,1")')->find();
         if(!empty($a)){
             if($a['if_report']==1){
             $rs['msg']='该申请审核员正在处理中，请勿重复提交！';
@@ -1314,11 +1314,11 @@ class ContractController extends Controller
             $data = array(
                 'centreNo'=>$centreno,
                 'reason'=>$reason,
-                'if_report'=>$type_status
+                'if_report'=>1
             );
             M()->startTrans();
             if(D('report_feedback')->add($data)){
-                $rs['msg']='申请成功';
+                $rs['msg']='succ';
                 //申请中  审核单不可修改
                 M()->commit();
             }else{
@@ -1348,8 +1348,8 @@ class ContractController extends Controller
         );
         M()->startTrans();
         if(D("contract_flow")->where($where)->save($data) and D('report_feedback')->where('id = (SELECT a.id from (SELECT max(id) as id from report_feedback WHERE centreNo = "'.$centreno.'") a )')->save($data1)){
-            M()->commit();
             $rs['msg'] = 'succ';
+            M()->commit();
         }else{
             $rs['msg']='操作失败';
             M()->rollback();
@@ -1364,7 +1364,7 @@ class ContractController extends Controller
 		$where['centreNo']=$centreno;
 		$type_status = I('type_status',0,'intval')== 6?1:0;
         $where['status']=array('in','0,1');
-        $a=D('report_feedback')->where($where)->find();
+        $a=D('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$centreno.'") and status in("0,1")')->find();//只允许处理后再次提出申请，不用查最大的id
         if(!empty($a)){
             if($a['if_report']==0){
                 $rs['msg']='该申请审核员正在处理中，请勿重复提交！';
