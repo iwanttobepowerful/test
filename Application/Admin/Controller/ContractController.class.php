@@ -815,8 +815,9 @@ class ContractController extends Controller
         $if_admin = $admin_auth['super_admin'];
         $roleid = $admin_auth['gid'];
 
-        $role = D('common_role')->where('id='.$roleid)->find();
-        if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
+        //$role = D('common_role')->where('id='.$roleid)->find();
+        //if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
+		if($roleid==8 || $if_admin==1 || $roleid==7){
             $if_edit = 1;
         }else{
             $if_edit = 0;
@@ -1117,8 +1118,9 @@ class ContractController extends Controller
         $end_time = I("end_time");
 		
 		if($admin_auth){
-			$role = D('common_role')->where('id='.$roleid)->find();
-			if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
+			//$role = D('common_role')->where('id='.$roleid)->find();
+			//if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
+			if($roleid==8 || $if_admin==1 || $roleid==7){
 				$if_edit = 1;	
 			}else{
 				$if_edit = 0;	
@@ -1130,7 +1132,8 @@ class ContractController extends Controller
         $where = "1=1";
         $keyword && $where .= " and c.centreNo like '%{$keyword}%'";
 
-		if($role['rolename']=="领导" || $role['rolename']=="审核员" || $role['rolename']=="盖章人员" || $if_admin==1){
+		//if($role['rolename']=="领导" || $role['rolename']=="审核员" || $role['rolename']=="盖章人员" || $if_admin==1){
+		if($roleid==8 || $roleid==13 || $roleid==15 || $if_admin==1){
 			//
 		}else{
 			$where .= " and SUBSTR(c.centreNo,7,1) = '{$department}'";
@@ -1567,7 +1570,8 @@ class ContractController extends Controller
 			$roleid = $admin_auth['gid'];
 			
 			$role = D('common_role')->where('id='.$roleid)->find();
-			if($role['rolename']=="领导" || $if_admin==1){
+			//if($role['rolename']=="领导" || $if_admin==1){
+			if($roleid==8 || $if_admin==1){
 				$if_leader = 1;	
 			}else{
 				$if_leader = 0;	
@@ -1811,7 +1815,7 @@ class ContractController extends Controller
         $fee = I('fee',0,'intval');
         $quantity = I('quantity');
 		
-		if(empty($meterial) || empty($criteria)|| empty($item) || empty($fee)){
+		if(empty($meterial) || empty($criteria)|| empty($item) || !isset($fee)){
 			$rs['msg'] = 'fail';
 			$this->ajaxReturn($rs);
 		}
