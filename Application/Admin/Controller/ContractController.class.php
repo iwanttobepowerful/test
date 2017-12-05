@@ -1154,7 +1154,7 @@ class ContractController extends Controller
 				array_push($con_list,"'".$contract['centreno']."'");
 			}
 			$centreno_str = implode(',',$con_list);
-			$no_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where centreNo in ('.$centreno_str.') group by centreNo)')->group('centreNo')->select();
+			$no_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where if_report=0 and centreNo in ('.$centreno_str.') group by centreNo)')->group('centreNo')->select();
 			$con_list = array();
 			if($no_feed_list){
 				foreach($no_feed_list as $no_feed){
@@ -1238,7 +1238,7 @@ class ContractController extends Controller
                 array_push($con_list,"'".$contract['centreno']."'");
             }
             $centreno_str = implode(',',$con_list);
-            $no_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where centreNo in ('.$centreno_str.') group by centreNo ) ')->group('centreNo')->select();
+            $no_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where if_report=1 and centreNo in ('.$centreno_str.') group by centreNo ) ')->group('centreNo')->select();
             $con_list = array();
             if($no_feed_list){
                 foreach($no_feed_list as $no_feed){
@@ -1300,7 +1300,7 @@ class ContractController extends Controller
         $rs = array('msg'=>'fail');
         $centreno = I('back_centreno');
         $reason = I('back_reason');
-        $a=D('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$centreno.'") and status in("0,1")')->find();
+        $a=D('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$centreno.'") and (status=0 or status=1)')->find();
         if(!empty($a)){
             if($a['if_report']==1){
             $rs['msg']='该申请审核员正在处理中，请勿重复提交！';
@@ -1363,7 +1363,7 @@ class ContractController extends Controller
 		$where['centreNo']=$centreno;
 		$type_status = I('type_status',0,'intval')== 6?1:0;
         $where['status']=array('in','0,1');
-        $a=D('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$centreno.'") and status in("0,1")')->find();//只允许处理后再次提出申请，不用查最大的id
+        $a=D('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$centreno.'") and (status=0 or status=1)')->find();//只允许处理后再次提出申请，不用查最大的id
         if(!empty($a)){
             if($a['if_report']==0){
                 $rs['msg']='该申请审核员正在处理中，请勿重复提交！';
