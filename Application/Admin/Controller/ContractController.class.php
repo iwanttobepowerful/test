@@ -927,6 +927,25 @@ class ContractController extends Controller
             'tax'=>$tax,
             'address'=>$address
         );
+		//验证手机号
+		if(!empty($telephone)){
+			$isMob="/^(1(([35][0-9])|(47)|[8][0126789]))\d{8}$/";  //手机
+			$isTel="/^([0-9]|[-])+$/"; //电话
+			//if(!(funcmtel($telephone) || funcphone($telephone))){
+			if(!(preg_match($isTel,$telephone) || preg_match($isMob,$telephone))){
+				$rs['msg'] = '请输入正确的联系方式';
+				$this->ajaxReturn($rs);
+			}
+		}
+		
+		//验证传真
+		if(!empty($tax)){
+			$isPostcode="/^([0-9]|[-])+$/";
+			if(!(preg_match($isPostcode,$tax))){
+				$rs['msg'] = '请输入正确的传真';
+				$this->ajaxReturn($rs);
+			}
+		}
         //pr($data);
         $where['centreNo']=$centreno;
         //pr($centreno);
@@ -934,10 +953,10 @@ class ContractController extends Controller
         M()->startTrans();
         if(D('sampling_form')->where($where)->save($data)){
             M()->commit();
-            $rs['msg']='保存成功！';
+            $rs['msg']='succ';
         }else{
             M()->rollback();
-            $rs['msg']='数据未更改！';
+            $rs['msg']='数据没有修改！';
         }
         $this->ajaxReturn($rs);
     }

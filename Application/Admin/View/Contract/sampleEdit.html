@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>抽样单查询</title>
-    <script src="__PUBLIC__/script/jquery.min.js" type="text/JavaScript"></script>
+    <script src="__PUBLIC__/static/js/jquery-2.1.3.min.js" type="text/JavaScript"></script>
     <script>
 		$(function(){
+			$('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,	autoclose:true });
 			//只有超级管理员、领导、前台人员可修改
 			if($('#if_edit').val()==0){
 				$('input,a,button').attr('disabled','disabled');
@@ -60,8 +61,13 @@
 				async: false,
 				data:data,
 				success: function (res) {
-					alert(res.msg);
-					window.location.reload();
+					if(res.msg!='succ'){
+						alert(res.msg);
+					}else{
+						alert('保存成功！');
+					    window.location.reload();
+					}
+					
 				}
 			});
 			
@@ -128,10 +134,7 @@
 			return flag;
 		}
 		
-		//时间
-		$(document).ready(function(){
-			$('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,	autoclose:true });
-		});	
+	
     </script>
 </head>
 <body>
