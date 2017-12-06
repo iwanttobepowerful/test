@@ -757,11 +757,13 @@ class ContractController extends Controller
         $rs = array('msg'=>'fail');
         $where['centreNo']=$centreno;
         $data_apply = array(
-            "status"=>0
+            'isaudit'=>0,
+            'internalpass'=>0,
+            'status'=>0
         );
 		
 		if($type_status == 6){
-			$data_apply['status']=7;
+			//$data_apply['status']=7;
 			$contract = D("contract")->where($where)->find();
 			$data_contract = array();
 			//pr($contract);
@@ -776,6 +778,12 @@ class ContractController extends Controller
 				$data_contract['centreNo3']=$centreNoNew;
 			}
 			D('contract')->where($where)->save($data_contract);
+			//删除contract_flow表里的isaudit和interalpass
+            $data_apply=array(
+                'isaudit'=>0,
+                'internalpass'=>0,
+                'status'=>7
+            );
 		}else if($type_status == 3){
 			$data_apply=array(
 			    'status'=>4,
