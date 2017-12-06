@@ -42,7 +42,7 @@
                     <td>{$con.testcriteria}</td>
 
                     <td width="33%">
-                        <if condition="$user==10 || $if_admin==1">
+                        <if condition="$if_edit==1">
                         <if condition="$con['status'] neq 8 and $con['status'] neq 6 and $con['status'] neq 3 and (!(($con['sub_status'] == 1 or $con['sub_status'] == 0) and $con['if_report']==1))">
                             <a href="#" class="btn btn-primary btn-xs" onclick="return applyBack('{$con.centreno}')" >申请修改</a>
                         </if></if>
@@ -55,27 +55,23 @@
                             <a href="/admin/test/infoShow?id={$con.centreno}"  class="btn btn-info btn-xs" >检验工作通知单</a>
                         </if>
                         <if condition="$if_edit==1">
-                        <if condition="$con['status'] eq 8">
+                        <if condition="$con['status']==8">
                             <a href="/admin/TestReport/seleteKey?mod={$con.centreno}" class="btn btn-primary btn-xs">生成报告</a></if></if>
                         <!--<if condition="$con['status'] eq 6">
                             <a href="javascript:void(0);" class="btn btn-info btn-xs" name="{$con.pdf_path}" onclick="return Check(this);">检测报告</a>
                         </if>-->
                     </td>
                     <td>
-                        <if condition="$user==10 || $if_admin==1">
+                        <if condition="$if_edit==1">
                         <if condition="$con['doc_path']">
                         <a href="{$con.doc_path}"  class="btn btn-primary btn-xs" >报告预览</a><p></p>
                             <a href="{$con.qrcode_path}" class="btn btn-primary btn-xs" download="{$con.centreno}">下载二维码</a><p></p>
                         </if>
-                        <if condition="$if_edit==1">
                         <if condition="$con['status']==8 and $con['doc_path'] and !($con['sub_status'] == 1 and $con['if_report'] ==1)">
-                            <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="confirmReport('{$con.centreno}')" >确认</a><p></p></if></if>
-                        </if>
-                        <if condition="$if_edit==1">
+                            <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="confirmReport('{$con.centreno}')" >确认</a><p></p></if>
                             <if condition="$con['status']==8 and $con['doc_path'] and ($con['sub_status'] == 1 and $con['if_report'] ==1)">
-                                <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="editconfirmReport('{$con.centreno}')" >修改完毕</a><p></p></if></if>
-                        </if>
-                        <if condition="$if_edit==1">
+                                <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="editconfirmReport('{$con.centreno}')" >修改完毕</a><p></p></if>
+
 
                             <if condition=" ($con['sub_status'] == 0) and ($con['if_report'] ==1)">
                                 <span style="color:green">申请修改中</span>

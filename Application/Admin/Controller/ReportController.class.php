@@ -48,7 +48,7 @@ class ReportController extends Controller
             ->field('contract_flow.id,contract_flow.centreNo,contract_flow.status,contract_flow.uploadreport_time,common_system_user.name,test_report.pdf_path,a.centreno1,a.centreno2,a.centreno3')
             ->limit("{$offset},{$pagesize}")
             ->order('contract_flow.report_time desc,contract_flow.id desc')->select();
-        //查找条件为已经批准并且内部尚未签发的报告
+        //dump($where);die;
         $count = D("contract_flow")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
@@ -187,6 +187,7 @@ class ReportController extends Controller
 //盖章签发
     public function internalIssue(){
         $centreno = I("centreno");
+        $centreno = trim($centreno);
         $begin_time = I("begin_time");
         $end_time = I("end_time");
         $sortby=I("sortby");
@@ -220,7 +221,7 @@ class ReportController extends Controller
             ->field('a.id,a.status,a.internalpass,a.centreNo,a.inner_sign_time,a.inner_sign_user_id,a.verify_user_id,a.verify_time,a.ifback,b.name,c.tplno,c.pdf_path,c.path,f.name as innername,con.centreno1,con.centreno2,con.centreno3')
             ->limit("{$offset},{$pagesize}")
             ->order($orderby)->select();
-
+        //dump($where);die;
         $count = D("contract_flow")->alias("a")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
@@ -352,12 +353,13 @@ class ReportController extends Controller
     //外部签发
     public function externalIssue(){
         $keyword = I("keyword");
+        $keyword = trim($keyword);
         $begin_time = I("begin_time");
         $end_time = I("end_time");
-        $where = "contract_flow.status=5 or contract_flow.status=6";
+        $where = "(c.status=5 or c.status=6)";
         if(!empty($keyword)){
             //查询合同编号
-            $where .=" and contract_flow.centreno like '%{$keyword}%'";
+            $where .=" and c.centreno like '%{$keyword}%'";
         }
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
@@ -366,33 +368,33 @@ class ReportController extends Controller
         if($user==8 || $user==15 || $user==13 || $if_admin==1){
             //
         }else{
-            $where .= " and SUBSTR(contract_flow.centreNo,7,1) = '{$department}'";
+            $where .= " and SUBSTR(c.centreno,7,1) = '{$department}'";
         }
         if(!empty($begin_time)){
-            $where.=" and date_format(contract_flow.external_sign_time,'%Y-%m-%d') >='{$begin_time}'";
+            $where .=" and date_format(c.external_sign_time,'%Y-%m-%d') >='{$begin_time}'";
         }
         if(!empty($end_time)){
-            $where.=" and date_format(contract_flow.external_sign_time,'%Y-%m-%d') <='{$end_time}'";
+            $where .=" and date_format(c.external_sign_time,'%Y-%m-%d') <='{$end_time}'";
         }
         if($if_admin==1 || $user==7) {//只有前台，超级管理员才能签发
             $view="";
         }else{
             $view="disabled";
         }
+        //dump($where);die;
         $page = I("p",'int');
         $pagesize = 10;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
-        $contract_flow=M("contract_flow");//实例化对象
-        $rs=$contract_flow->where($where)
-            ->join('common_system_user ON contract_flow.inner_sign_user_id = common_system_user.id')
-            ->join('contract ON contract_flow.centreno = contract.centreno')
-            ->join('test_report on contract_flow.centreno=test_report.centreno')
-            ->field('contract_flow.id,contract_flow.status,contract_flow.centreNo,contract_flow.inner_sign_time,common_system_user.name,contract.productUnit,contract.clientSign,contract.telephone,contract.postmethod,contract.address,contract.centreno1,contract.centreno2,contract.centreno3,test_report.pdf_sign_path')
+        $rs=D("contract_flow as c")->where($where)
+            ->join('common_system_user as b ON c.inner_sign_user_id = b.id')
+            ->join('contract as a ON c.centreno = a.centreno')
+            ->join('test_report as t on c.centreno=t.centreno')
+            ->field('c.id,c.status,c.centreno,c.inner_sign_time,b.name,a.productUnit,a.clientSign,a.telephone,a.postmethod,a.address,a.centreno1,a.centreno2,a.centreno3,t.pdf_sign_path')
             ->limit("{$offset},{$pagesize}")
-            ->order('contract_flow.inner_sign_time desc,contract_flow.id desc')->select();
+            ->order('c.inner_sign_time desc,c.id desc')->select();
         //查找条件为已经批准并且内部尚未签发的报告
-        $count = D("contract_flow")->where($where)->count();
+        $count = D("contract_flow as c")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
         $pagination= $Page->show();// 分页显示输出

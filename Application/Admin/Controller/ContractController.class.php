@@ -757,11 +757,13 @@ class ContractController extends Controller
         $rs = array('msg'=>'fail');
         $where['centreNo']=$centreno;
         $data_apply = array(
-            "status"=>0
+            'isaudit'=>0,
+            'internalpass'=>0,
+            'status'=>0
         );
 		
 		if($type_status == 6){
-			$data_apply['status']=7;
+			//$data_apply['status']=7;
 			$contract = D("contract")->where($where)->find();
 			$data_contract = array();
 			//pr($contract);
@@ -776,6 +778,12 @@ class ContractController extends Controller
 				$data_contract['centreNo3']=$centreNoNew;
 			}
 			D('contract')->where($where)->save($data_contract);
+			//删除contract_flow表里的isaudit和interalpass
+            $data_apply=array(
+                'isaudit'=>0,
+                'internalpass'=>0,
+                'status'=>7
+            );
 		}else if($type_status == 3){
 			$data_apply=array(
 			    'status'=>4,
@@ -1195,7 +1203,7 @@ class ContractController extends Controller
 					$val['if_report'] = $con_list[$val['centreno']]['if_report'];
 				}else{
 					$val['sub_status'] = -1;
-					$val['if_report'] = 0;
+					$val['if_report'] = -1;
 				}
 				$list[$key] = $val;
 			}
@@ -1235,6 +1243,7 @@ class ContractController extends Controller
         }
         //D("contract_flow as f");
         $keyword = I("keyword");//获取参数
+        $keyword = trim($keyword);
         $where="1=1";
         $keyword && $where .= " and c.centreNo like '%{$keyword}%'";
 
@@ -1279,7 +1288,7 @@ class ContractController extends Controller
                     $val['if_report'] = $con_list[$val['centreno']]['if_report'];
                 }else{
                     $val['sub_status'] = -1;
-                    $val['if_report'] = 0;
+                    $val['if_report'] = -1;
                 }
                 $list[$key] = $val;
             }
@@ -1296,9 +1305,7 @@ class ContractController extends Controller
             'if_edit'=>$if_edit,
             'begin_time'=>$begin_time,
             'end_time'=>$end_time,
-            'keyword'=>$keyword,
-            'user'=>$user,
-            'if_admin'=>$if_admin
+            'keyword'=>$keyword
         );
         //dump($body);
         $this->assign($body);
@@ -1826,9 +1833,11 @@ class ContractController extends Controller
 		$id = I('edit_id');
 		$quantity = I('quantity');
         $meterial = I('meterial');
+		$meterial = preg_replace('# #','',$meterial);
         $criteria = I('criteria');
 		$criteria = preg_replace('# #','',$criteria);
         $productname = I('productname');
+		$productname = preg_replace('# #','',$productname);
 		$item = I('item');
 		if($quantity == 2){
 			$checkbox_item = I('checkbox_item');
