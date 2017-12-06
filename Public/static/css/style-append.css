@@ -180,10 +180,11 @@ input:-webkit-autofill {-webkit-box-shadow: 0 0 0px 1000px white inset;outline:n
 #page-wrapper .fee_title {width: 50%;float: left;text-align: center}
 #page-wrapper .fee_refer {width: 40%;float: left;text-align: center;margin-left: 5%}
 #page-wrapper .fee_true {width: 40%;float: left;text-align: center;margin-left: 5%}
-#page-wrapper .fee_true_two {width: 100%;float: left;text-align: center}
+#page-wrapper .fee_true_two {width: 80%;float: left;text-align: center}
 #page-wrapper .space {clear: both;padding-left: 70%;}
-#page-wrapper .space_two {clear: both;padding-left: 50%;}
+#page-wrapper .space_two {clear: both;padding-left:40%;}
 #page-wrapper .fee_bor {width: 40%;float: left;border: 0px solid #000000;margin-left: 5%}
+#page-wrapper .fee_bor_right {width: 50%;float: left;border: 0px solid #000000;margin-left: 5%}
 #page-wrapper .fee_remark_title {text-align: center;}
 
 
