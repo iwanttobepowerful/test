@@ -187,6 +187,7 @@ class ReportController extends Controller
 //盖章签发
     public function internalIssue(){
         $centreno = I("centreno");
+        $centreno = trim($centreno);
         $begin_time = I("begin_time");
         $end_time = I("end_time");
         $sortby=I("sortby");
@@ -352,6 +353,7 @@ class ReportController extends Controller
     //外部签发
     public function externalIssue(){
         $keyword = I("keyword");
+        $keyword = trim($keyword);
         $begin_time = I("begin_time");
         $end_time = I("end_time");
         $where = "contract_flow.status=5 or contract_flow.status=6";

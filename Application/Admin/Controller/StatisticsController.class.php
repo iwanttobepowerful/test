@@ -13,6 +13,7 @@ class StatisticsController extends Controller {
 
     public function base(){
         $centreno = I("centreno");
+        $centreno = trim($centreno);//去空格查询
         $begin_time = I("begin_time");
         $end_time = I("end_time");
         $sortby = I("sortby");
