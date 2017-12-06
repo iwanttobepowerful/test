@@ -158,6 +158,7 @@ class TestController extends Controller{
         $user=$admin_auth['gid'];//判断是哪个角色
         $department=$admin_auth['department'];//判断是哪个部门的
         $keyword = I("keyword");//获取参数
+        $keyword = trim($keyword);
         if($user==8||$user==15||$if_admin ==1){
             if(!empty($keyword)){
                 $where =" contract_flow.centreno like '%{$keyword}%'";

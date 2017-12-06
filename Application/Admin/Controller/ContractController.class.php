@@ -1235,6 +1235,7 @@ class ContractController extends Controller
         }
         //D("contract_flow as f");
         $keyword = I("keyword");//获取参数
+        $keyword = trim($keyword);
         $where="1=1";
         $keyword && $where .= " and c.centreNo like '%{$keyword}%'";
 
@@ -1296,9 +1297,7 @@ class ContractController extends Controller
             'if_edit'=>$if_edit,
             'begin_time'=>$begin_time,
             'end_time'=>$end_time,
-            'keyword'=>$keyword,
-            'user'=>$user,
-            'if_admin'=>$if_admin
+            'keyword'=>$keyword
         );
         //dump($body);
         $this->assign($body);
