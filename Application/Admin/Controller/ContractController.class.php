@@ -1826,9 +1826,11 @@ class ContractController extends Controller
 		$id = I('edit_id');
 		$quantity = I('quantity');
         $meterial = I('meterial');
+		$meterial = preg_replace('# #','',$meterial);
         $criteria = I('criteria');
 		$criteria = preg_replace('# #','',$criteria);
         $productname = I('productname');
+		$productname = preg_replace('# #','',$productname);
 		$item = I('item');
 		if($quantity == 2){
 			$checkbox_item = I('checkbox_item');
