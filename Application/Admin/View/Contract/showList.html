@@ -92,7 +92,7 @@
                             	<span style="color:red">申请修改拒绝<br/></span>
                             </if>
                         </if>
-                    	<if condition="($con['takename']) and !($con['sub_status'] == 0)  and !($con['sub_status'] == 1)">
+                    	<if condition="($con['takename'] and ($con['status']==0 or $con['status']==7)) and !($con['sub_status'] == 0)  and !($con['sub_status'] == 1)">
                         	<span style="color:green">{$con.takename}已接单<br/>{$con.takelist_time}</span>
                         <elseif condition="$con['status']==5"/>
                         	<span style="color:green">{$con.innername}已内部签发&nbsp;&nbsp;&nbsp;
