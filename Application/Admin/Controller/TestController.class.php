@@ -159,13 +159,14 @@ class TestController extends Controller{
         $department=$admin_auth['department'];//判断是哪个部门的
         $keyword = I("keyword");//获取参数
         $keyword = trim($keyword);
+        $where="1=1";
         if($user==8||$user==15||$if_admin ==1){
             if(!empty($keyword)){
-                $where =" contract_flow.centreno like '%{$keyword}%'";
+                $where .=" and contract_flow.centreno like '%{$keyword}%'";
             }
         }
         else{
-        $where = "SUBSTR(contract_flow.centreNo,7,1) = '{$department}'";
+        $where .=" and SUBSTR(contract_flow.centreNo,7,1) = '{$department}'";
         if(!empty($keyword)){
             $where .="and contract_flow.centreno like '%{$keyword}%'";
         }}

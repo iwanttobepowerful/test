@@ -1195,7 +1195,7 @@ class ContractController extends Controller
 					$val['if_report'] = $con_list[$val['centreno']]['if_report'];
 				}else{
 					$val['sub_status'] = -1;
-					$val['if_report'] = 0;
+					$val['if_report'] = -1;
 				}
 				$list[$key] = $val;
 			}
@@ -1280,7 +1280,7 @@ class ContractController extends Controller
                     $val['if_report'] = $con_list[$val['centreno']]['if_report'];
                 }else{
                     $val['sub_status'] = -1;
-                    $val['if_report'] = 0;
+                    $val['if_report'] = -1;
                 }
                 $list[$key] = $val;
             }
