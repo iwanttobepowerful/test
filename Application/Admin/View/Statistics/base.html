@@ -5,16 +5,17 @@
         <ul class="nav nav-tabs">
             <li role="presentation" class="active" id="de_A" name="de"><a href="/admin/statistics/base?de=A" >应收</a></li>
             <li role="presentation" id="de_B" name="de"><a href="/admin/statistics/base?de=B">实收</a></li>
-            <input hidden id="de_choose" value="{$de}">
+            <input type="hidden" id="de_choose" value="{$de}"/>
         </ul>
 
         <div class="search-form">
             <form class="form-inline" method="GET" action="">
-                <div class="form-group">
-                    <label>中心编号：</label>
-                    <input type="text" class="form-control input-sm" name="centreno" value="{$centreno}" />
+            <div class="form-group">
+                <label>中心编号：</label>
+                <input type="text" class="form-control input-sm" name="centreno" value="{$centreno}" />
+                <input type="hidden" name="p" value="1" />
+                开始时间：<input type="text" readonly class="form-control f-datetime input-sm" name="begin_time" value="{$begin_time}"> 结束时间：<input type="text" readonly class="form-control f-datetime input-sm" name="end_time" value="{$end_time}" />
                     <input type="hidden" name="de" value="{$de}"/>
-                    开始时间：<input type="text" readonly class="form-control f-datetime input-sm" name="begin_time" value="{$begin_time}"> 结束时间：<input type="text" readonly class="form-control f-datetime input-sm" name="end_time" value="{$end_time}" />
                     分部门查询：<select class="form-control input-sm" name="searchby">
                     <option value="0" <php>if($searchby==0){echo 'selected';}</php>>请选择</option>
                     <option value="1" <php>if($searchby==1){echo 'selected';}</php>>A部门</option>
@@ -144,10 +145,12 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>
+
 <script type="text/javascript">
-$('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true });
+
 $("th").addClass("text-center");
 $(function(){
+    $('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true });
     var de = $("#de_choose").val();
     $("li[name='de']").removeClass("active");
     $("#de_"+de).addClass("active");
