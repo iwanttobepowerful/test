@@ -216,9 +216,9 @@ class ReportController extends Controller
         }else{
             $view="disabled";
         }
-        $rs = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."common_system_user b on a.verify_user_id=b.id","LEFT")->join(C("DB_PREFIX")."test_report c on a.centreno=c.centreno","LEFT")->join(C("DB_PREFIX")."common_system_user f on a.inner_sign_user_id=f.id","LEFT")->join(C("DB_PREFIX")."contract as con on a.centreno=con.centreno","LEFT")
+        $rs = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."common_system_user b on a.verify_user_id=b.id","LEFT")->join(C("DB_PREFIX")."test_report c on a.centreno=c.centreno","LEFT")->join(C("DB_PREFIX")."common_system_user f on a.inner_sign_user_id=f.id","LEFT")->join(C("DB_PREFIX")."common_system_user y on a.external_sign_user_id=y.id","LEFT")->join(C("DB_PREFIX")."contract as con on a.centreno=con.centreno","LEFT")
             ->where($where)
-            ->field('a.id,a.status,a.internalpass,a.centreNo,a.inner_sign_time,a.inner_sign_user_id,a.verify_user_id,a.verify_time,a.ifback,b.name,c.tplno,c.pdf_path,c.path,f.name as innername,con.centreno1,con.centreno2,con.centreno3')
+            ->field('a.id,a.status,a.internalpass,a.centreNo,a.inner_sign_time,a.external_sign_time,a.inner_sign_user_id,a.verify_user_id,a.verify_time,a.ifback,b.name,c.tplno,c.pdf_path,c.path,f.name as innername,y.name as externalname,con.centreno1,con.centreno2,con.centreno3')
             ->limit("{$offset},{$pagesize}")
             ->order($orderby)->select();
         //dump($where);die;
