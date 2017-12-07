@@ -1242,6 +1242,11 @@ class ContractController extends Controller
         }else{
             $if_edit = 0;
         }
+        if($user==8){
+          $leader=1;
+        }else{
+            $leader=0;
+        }
         //D("contract_flow as f");
         $keyword = I("keyword");//获取参数
         $keyword = trim($keyword);
@@ -1306,7 +1311,9 @@ class ContractController extends Controller
             'if_edit'=>$if_edit,
             'begin_time'=>$begin_time,
             'end_time'=>$end_time,
-            'keyword'=>$keyword
+            'keyword'=>$keyword,
+            'leader'=>$leader,
+            'if_admin'=>$if_admin
         );
         //dump($body);
         $this->assign($body);
