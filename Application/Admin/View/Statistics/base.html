@@ -14,7 +14,7 @@
                     <label>中心编号：</label>
                     <input type="text" class="form-control input-sm" name="centreno" value="{$centreno}" />
                     <input type="hidden" name="de" value="{$de}"/>
-                    开始时间：<input type="text" readonly class="form-control f-datetime input-sm" name="begin_time" value="{$begin_time}"> 结束时间<input type="text" readonly class="form-control f-datetime input-sm" name="end_time" value="{$end_time}" />
+                    开始时间：<input type="text" readonly class="form-control f-datetime input-sm" name="begin_time" value="{$begin_time}"> 结束时间：<input type="text" readonly class="form-control f-datetime input-sm" name="end_time" value="{$end_time}" />
                     分部门查询：<select class="form-control input-sm" name="searchby">
                     <option value="0" <php>if($searchby==0){echo 'selected';}</php>>请选择</option>
                     <option value="1" <php>if($searchby==1){echo 'selected';}</php>>A部门</option>
@@ -68,7 +68,7 @@
                 </tr>
 			<volist name="lists" id="one">
 				<tr>
-					<td>{$one.inner_sign_time|strtotime|date='Y年m月d日',###}</td>
+					<td><if condition="$one['inner_sign_time']">{$one.inner_sign_time|strtotime|date='Y年m月d日',###}</if></td>
                     <td><if condition="$one[centreno1] or $one[centreno2] or $one[centreno3]">
                         <span style="color: red"><i class="glyphicon glyphicon-star">{$one.centreno}</i></span><else />
                     <span>{$one.centreno}</span></if></td>
