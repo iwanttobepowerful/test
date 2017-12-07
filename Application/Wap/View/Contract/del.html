@@ -84,22 +84,23 @@
             },
 
             function(ret){
-                if(!ret['index']) return false;
-                numuu = ret['index'];
-                $.ajax({
-                    type:"post",
-                    url:"{:U('/contract/dep')}",
-                    data:{"id":ret['index']},
-                    dataType:"json",
-                    success:function(list){
-                        var _html = '';
-                        $.each(list,function(index,obj){
-                            _html += '<tr><td>'+obj.year+'</td>'+'<td>'+obj.month+'</td>'+'<td>'+obj.getnum+'</td>'+'<td>'+obj.remainnum+'</td>'+'<td>'+'<div class="aui-btn aui-btn-sm aui-btn-info">'+'删除'+'</div>'+'</td></tr>';
-                        })
-
-                        $("#show").html(_html);
-                    }
-                });
+                window.location.href="/contract/del?id="+ret['index'];
+//                if(!ret['index']) return false;
+//                numuu = ret['index'];
+//                $.ajax({
+//                    type:"post",
+//                    url:"{:U('/contract/dep')}",
+//                    data:{"id":ret['index']},
+//                    dataType:"json",
+//                    success:function(list){
+//                        var _html = '';
+//                        $.each(list,function(index,obj){
+//                            _html += '<tr><td>'+obj.year+'</td>'+'<td>'+obj.month+'</td>'+'<td>'+obj.getnum+'</td>'+'<td>'+obj.remainnum+'</td>'+'<td>'+'<div class="aui-btn aui-btn-sm aui-btn-info" onclick="dele({$special.id})">删除</div>'+'</td></tr>';
+//                        })
+//
+//                        $("#show").html(_html);
+//                    }
+//                });
 
             }
         );
