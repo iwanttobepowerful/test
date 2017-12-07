@@ -179,6 +179,7 @@ class ContractController extends Controller
 			'e'=>explode(",",$E_id_list),
 			'f'=>explode(",",$F_id_list),
 		);
+		//pr($arr_id_list);
 		$idList = serialize($arr_id_list);
 		
 		$fee_remark = I("fee_remark");
