@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,aItemress=no">
+    <title>删除特殊编号</title>
+
+
+
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/wap/css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/wap/css/aui-append.css" />
+    <script type="text/javascript" src="__PUBLIC__/wap/script/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/wap/script/jquery.form.js"></script>
+    <style type="text/css">html,body{background:#FFFFFF;}</style>
+    <!--end -->
+</head>
+<body>
+<!-- <header class="aui-bar aui-bar-nav aui-font-size-12">我的控制台</header> -->
+<php>if(session('admin_auth')){</php>
+<header class="aui-bar aui-bar-nav">
+    <div class="aui-pull-left aui-btn aui-font-size-12" onclick="window.location.href='/index/index.html'" >
+        <span class="aui-iconfont aui-icon-left"></span>返回
+    </div>
+    <div class="aui-title aui-font-size-14"> 删除特殊编号</div>
+    <a class="aui-pull-right aui-btn" href="{:U('account/logout')}">
+        <span class="aui-iconfont aui-icon-my aui-font-size-12">退出登录</span>
+    </a>
+</header>
+<php>}else{</php>
+
+<php>}</php>
+<br>
+
+<div style="background-color: white">
+
+    <section class="hot-class-sec">
+        <div class="aui-bar aui-bar-btn aui-bar-btn-full" id="tab">
+            <div class="aui-bar-btn-item">A</div>
+            <div class="aui-bar-btn-item">B</div>
+            <div class="aui-bar-btn-item">C</div>
+            <div class="aui-bar-btn-item">D</div>
+            <div class="aui-bar-btn-item">E</div>
+            <div class="aui-bar-btn-item">F</div>
+        </div>
+    </section>
+    <div class="aui-margin-15">
+        <table width="100%" border="1px" bordercolor="#D1D1D1" cellspacing="0px" style="border-collapse:collapse " height="90" class=" aui-margin-r-15 aui-margin-b-15 aui-text-center">
+            <thead >
+            <th>年</th>
+            <th>月</th>
+            <th>总量</th>
+            <!--<th>使用量</th>-->
+            <th>剩余量</th>
+            <th>操作</th>
+            </thead>
+            <tbody id="show">
+
+            <volist name="special_list" id="special">
+                <tr>
+                    <td>{$special.year}</td>
+                    <td>{$special.month}</td>
+                    <td>{$special.getnum}</td>
+                    <!--<td>{$special.id}</td>-->
+                    <td>{$special.remainnum}</td>
+                    <td><div class="aui-btn aui-btn-sm aui-btn-info" onclick="dele({$special.id})">删除</div></td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+
+
+
+    <script src="__PUBLIC__/static/js/jquery.form.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/wap/script/aui-tab.js" ></script>
+    <script type="text/javascript" src="__PUBLIC__/static/js/aui-dialog.js" ></script>
+    <script type="text/javascript">
+
+        numuu=0;
+        var tab = new auiTab({
+                element:document.getElementById("tab"),
+                index:'{$id}',
+                repeatClick:false
+            },
+
+            function(ret){
+                if(!ret['index']) return false;
+                numuu = ret['index'];
+                $.ajax({
+                    type:"post",
+                    url:"{:U('/contract/dep')}",
+                    data:{"id":ret['index']},
+                    dataType:"json",
+                    success:function(list){
+                        var _html = '';
+                        $.each(list,function(index,obj){
+                            _html += '<tr><td>'+obj.year+'</td>'+'<td>'+obj.month+'</td>'+'<td>'+obj.getnum+'</td>'+'<td>'+obj.remainnum+'</td>'+'<td>'+'<div class="aui-btn aui-btn-sm aui-btn-info">'+'删除'+'</div>'+'</td></tr>';
+                        })
+
+                        $("#show").html(_html);
+                    }
+                });
+
+            }
+        );
+
+        function dele(id){
+            $.ajax({
+                type:"post",
+                url:"{:U('/contract/dele')}",
+                data:{"id":id},
+                dataType:"json",
+                success:function(rs){
+//                    alert(rs.msg);
+//                    window.location.reload();
+                    var dialog = new auiDialog();
+                    if(rs.msg=='删除成功'){
+                        dialog.alert({
+                            title:"提示",
+                            msg:'删除成功',
+                            buttons:['确定']
+                        },function(ret){
+                            //console.log(ret)
+                            window.location.reload();
+                        })
+                    }
+                    else {
+                        dialog.alert({
+                            title:"提示",
+                            msg:'删除失败',
+                            buttons:['确定']
+                        },function(ret){
+                            //console.log(ret)
+                            window.location.reload();
+                        })
+                    }
+
+                }
+            });
+        }
+    </script>
+
+
+    <include file="Common:footer" />
+</div>
+</div>

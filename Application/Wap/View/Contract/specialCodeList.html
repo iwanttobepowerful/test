@@ -71,6 +71,10 @@
     <div class="aui-margin-r-15 aui-margin-l-15" onclick="go()">
         <button  class="aui-btn aui-btn-block aui-btn-outlined aui-btn-outlined2 aui-btn-sm ">新增</button>
     </div>
+    <br>
+    <div class="aui-margin-r-15 aui-margin-l-15" onclick="del()">
+        <button  class="aui-btn aui-btn-block aui-btn-outlined aui-btn-outlined2 aui-btn-sm ">删除</button>
+    </div>
 </div>
 <!--<div class="aui-col-xs-5" onclick="javascript:window.open('/contract/add.html','_self')" >-->
     <!--<div class="aui-grid-label">新增</div>-->
@@ -117,6 +121,10 @@
     function go(){
         //alert(numuu);
         window.open('/contract/add.html?department='+numuu,'_self');
+    }
+
+    function del(){
+        window.open('/contract/del.html?department='+numuu,'_self');
     }
 </script>
 

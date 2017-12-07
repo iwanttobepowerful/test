@@ -64,7 +64,7 @@
                     <td>
                         <if condition="$if_edit==1">
                         <if condition="$con['doc_path']">
-                        <a href="{$con.doc_path}"  class="btn btn-primary btn-xs" >报告预览</a><p></p>
+                        <a href="{$con.doc_path}"  class="btn btn-primary btn-xs" >报告模板下载</a><p></p>
                             <a href="{$con.qrcode_path}" class="btn btn-primary btn-xs" download="{$con.centreno}">下载二维码</a><p></p>
                         </if>
                         <if condition="$con['status']==8 and $con['doc_path'] and !($con['sub_status'] == 1 and $con['if_report'] ==1)">
