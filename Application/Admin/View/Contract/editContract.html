@@ -184,52 +184,116 @@
             </td>
             <td  ><p align="center" ><span style="color:red; font-size:15px">*</span>检验费用 </p></td>
             <td  colspan="4" >
-              <div class="col-xs-6">
-              <p align="center">参考价格</p>
-                  <input name="Arecord" type="text" class="form-control"  id="Arecord" size="5" placeholder="A部门" readonly   onClick="Cost('A')" value="{$feeItem.arecord}"/>
-                  +
-                  <input name="Brecord" type="text" class="form-control"  id="Brecord" size="5" placeholder="B部门" readonly  onClick="Cost('B')" value="{$feeItem.brecord}"/>
-                  +
-                  <input name="Crecord" type="text" class="form-control"  id="Crecord" size="5" placeholder="C部门" readonly  onClick="Cost('C')" value="{$feeItem.crecord}"/>
-                  +
-                  <input name="Drecord" type="text" class="form-control"  id="Drecord" size="5" placeholder="D部门" readonly  onClick="Cost('D')" value="{$feeItem.drecord}"/>
-                  +
-                  <input name="Erecord" type="text" class="form-control"  id="Erecord" size="5" placeholder="E部门" readonly  onClick="Cost('E')" value="{$feeItem.erecord}"/>
-                  +
-                  <input name="Frecord" type="text" class="form-control"  id="Frecord" size="5" placeholder="F部门" readonly  onClick="Cost('F')" value="{$feeItem.frecord}"/>
-                 <p align="center">备注</p>
-             	 <textarea class="form-control fee type3" rows="10" name="fee_remark">{$feeItem.remark}</textarea>
-              </div>
-              <div class="col-xs-6">
-              <p align="center">报告应收价格</p>
-              	  <input name="RArecord" type="text" class="form-control two-col type3"  id="RArecord" size="5" placeholder="A部门" value="{$feeItem.rarecord}" onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hint">A部门</p>
-                  <input name="A_id_list" id="A_id_list" type="hidden" value="{$a_id_list}"/>
-                  <div>+</div>
-                  <input name="RBrecord" type="text" class="form-control two-col type3"  id="RBrecord" size="5" placeholder="B部门" value="{$feeItem.rbrecord}" onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hint">B部门</p>
-                  <input name="B_id_list" id="B_id_list" type="hidden" value="{$b_id_list}"/>
-                  <div>+</div>
-                  <input name="RCrecord" type="text" class="form-control two-col type3"  id="RCrecord" size="5" placeholder="C部门" value="{$feeItem.rcrecord}" onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hint">C部门</p>
-                  <input name="C_id_list" id="C_id_list" type="hidden" value="{$c_id_list}"/>
-                  <div>+</div>
-                  <input name="RDrecord" type="text" class="form-control two-col type3"  id="RDrecord" size="5" placeholder="D部门" value="{$feeItem.rdrecord}" onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hint">D部门</p>
-                  <input name="D_id_list" id="D_id_list" type="hidden" value="{$d_id_list}"/>
-                  <div>+</div>
-                  <input name="RErecord" type="text" class="form-control two-col type3"  id="RErecord" size="5" placeholder="E部门" value="{$feeItem.rerecord}" onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hint">E部门</p>
-                  <input name="E_id_list" id="E_id_list" type="hidden" value="{$e_id_list}"/>
-                  <div>+</div>
-                  <input name="RFrecord" type="text" class="form-control two-col type3"  id="RFrecord" size="5" placeholder="F部门" value="{$feeItem.rfrecord}" onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hint">F部门</p>
-                  <input name="F_id_list" id="F_id_list" type="hidden" value="{$f_id_list}"/>
-                   <div>+</div>
-                  <input name="Dcopy" type="text" class="form-control fee two-col type3"  id="Dcopy" placeholder="副本" onKeyUp="computeSum()" value="{$feeItem.dcopy}"/>&nbsp;&nbsp;&nbsp;<p class="hint">副本</p>
-                  <div>+</div>
-                  <input name="Donline" type="text" class="form-control two-col type3"  id="Donline" placeholder="上网费" onKeyUp="computeSum()" value="{$feeItem.donline}" />&nbsp;&nbsp;&nbsp;<p class="hint">上网费</p>
-              	  <div>+</div>
-                  <input name="Drevise" type="text" class="form-control fee two-col type3"  id="Drevise" placeholder="项目修改" onKeyUp="computeSum()" value="{$feeItem.drevise}" />&nbsp;&nbsp;&nbsp;<p class="hint">项目修改</p>
-                  <div>+</div>
-                  <input name="Dother" type="text" class="form-control fee two-col type3"  id="Dother" placeholder="其他"  onKeyUp="computeSum()" value="{$feeItem.dother}"/>&nbsp;&nbsp;&nbsp;<p class="hint">其他</p>
-                  <div>=</div>
-                  <input name="testCost" type="text" class="form-control two-col"  id="sumCost" placeholder="总计"  size="8" readonly value="{$contract.testcost}"/>
-              </div>
+              <!--<div class="col-xs-6">-->
+              <!--<p align="center">参考价格</p>-->
+                  <!--<input name="Arecord" type="text" class="form-control"  id="Arecord" size="5" placeholder="A部门" readonly   onClick="Cost('A')" value="{$feeItem.arecord}"/>-->
+                  <!--+-->
+                  <!--<input name="Brecord" type="text" class="form-control"  id="Brecord" size="5" placeholder="B部门" readonly  onClick="Cost('B')" value="{$feeItem.brecord}"/>-->
+                  <!--+-->
+                  <!--<input name="Crecord" type="text" class="form-control"  id="Crecord" size="5" placeholder="C部门" readonly  onClick="Cost('C')" value="{$feeItem.crecord}"/>-->
+                  <!--+-->
+                  <!--<input name="Drecord" type="text" class="form-control"  id="Drecord" size="5" placeholder="D部门" readonly  onClick="Cost('D')" value="{$feeItem.drecord}"/>-->
+                  <!--+-->
+                  <!--<input name="Erecord" type="text" class="form-control"  id="Erecord" size="5" placeholder="E部门" readonly  onClick="Cost('E')" value="{$feeItem.erecord}"/>-->
+                  <!--+-->
+                  <!--<input name="Frecord" type="text" class="form-control"  id="Frecord" size="5" placeholder="F部门" readonly  onClick="Cost('F')" value="{$feeItem.frecord}"/>-->
+                 <!--<p align="center">备注</p>-->
+             	 <!--<textarea class="form-control fee type3" rows="10" name="fee_remark">{$feeItem.remark}</textarea>-->
+              <!--</div>-->
+              <!--<div class="col-xs-6">-->
+              <!--<p align="center">报告应收价格</p>-->
+              	  <!--<input name="RArecord" type="text" class="form-control two-col type3"  id="RArecord" size="5" placeholder="A部门" value="{$feeItem.rarecord}" onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hints">A部门</p>-->
+                  <!--<input name="A_id_list" id="A_id_list" type="hidden" value="{$a_id_list}"/>-->
+                  <!--<div>+</div>-->
+                  <!--<input name="RBrecord" type="text" class="form-control two-col type3"  id="RBrecord" size="5" placeholder="B部门" value="{$feeItem.rbrecord}" onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hint">B部门</p>-->
+                  <!--<input name="B_id_list" id="B_id_list" type="hidden" value="{$b_id_list}"/>-->
+                  <!--<div>+</div>-->
+                  <!--<input name="RCrecord" type="text" class="form-control two-col type3"  id="RCrecord" size="5" placeholder="C部门" value="{$feeItem.rcrecord}" onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hint">C部门</p>-->
+                  <!--<input name="C_id_list" id="C_id_list" type="hidden" value="{$c_id_list}"/>-->
+                  <!--<div>+</div>-->
+                  <!--<input name="RDrecord" type="text" class="form-control two-col type3"  id="RDrecord" size="5" placeholder="D部门" value="{$feeItem.rdrecord}" onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hint">D部门</p>-->
+                  <!--<input name="D_id_list" id="D_id_list" type="hidden" value="{$d_id_list}"/>-->
+                  <!--<div>+</div>-->
+                  <!--<input name="RErecord" type="text" class="form-control two-col type3"  id="RErecord" size="5" placeholder="E部门" value="{$feeItem.rerecord}" onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hint">E部门</p>-->
+                  <!--<input name="E_id_list" id="E_id_list" type="hidden" value="{$e_id_list}"/>-->
+                  <!--<div>+</div>-->
+                  <!--<input name="RFrecord" type="text" class="form-control two-col type3"  id="RFrecord" size="5" placeholder="F部门" value="{$feeItem.rfrecord}" onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hint">F部门</p>-->
+                  <!--<input name="F_id_list" id="F_id_list" type="hidden" value="{$f_id_list}"/>-->
+                   <!--<div>+</div>-->
+                  <!--<input name="Dcopy" type="text" class="form-control fee two-col type3"  id="Dcopy" placeholder="副本" onKeyUp="computeSum()" value="{$feeItem.dcopy}"/>&nbsp;&nbsp;&nbsp;<p class="hint">副本</p>-->
+                  <!--<div>+</div>-->
+                  <!--<input name="Donline" type="text" class="form-control two-col type3"  id="Donline" placeholder="上网费" onKeyUp="computeSum()" value="{$feeItem.donline}" />&nbsp;&nbsp;&nbsp;<p class="hint">上网费</p>-->
+              	  <!--<div>+</div>-->
+                  <!--<input name="Drevise" type="text" class="form-control fee two-col type3"  id="Drevise" placeholder="项目修改" onKeyUp="computeSum()" value="{$feeItem.drevise}" />&nbsp;&nbsp;&nbsp;<p class="hint">项目修改</p>-->
+                  <!--<div>+</div>-->
+                  <!--<input name="Dother" type="text" class="form-control fee two-col type3"  id="Dother" placeholder="其他"  onKeyUp="computeSum()" value="{$feeItem.dother}"/>&nbsp;&nbsp;&nbsp;<p class="hint">其他</p>-->
+                  <!--<div>=</div>-->
+                  <!--<input name="testCost" type="text" class="form-control two-col"  id="sumCost" placeholder="总计"  size="8" readonly value="{$contract.testcost}"/>-->
+              <!--</div>-->
+                <p class="fee_title">参考价格</p>
+                <p class="fee_title">报告应收价格</p>
+                <div>
+                    <input name="Arecord" type="text" class="form-control fee_refer"  id="Arecord" size="5" placeholder="A部门" readonly   onClick="Cost('A')" value="{$feeItem.arecord}"/>
+                    <input name="RArecord" type="text" class="form-control fee_true type3"  id="RArecord" size="5" placeholder="A部门" value="{$feeItem.rarecord}" onKeyUp="computeSum()"/><p class="hint">A部门</p>
+                    <input name="A_id_list" id="A_id_list" type="hidden" value=""/>
+                    <div class="space">+</div>
+                </div>
+                <div>
+                    <input name="Brecord" type="text" class="form-control fee_refer"  id="Brecord" size="5" placeholder="B部门" readonly  onClick="Cost('B')" value="{$feeItem.brecord}"/>
+                    <input name="RBrecord" type="text" class="form-control fee_true type3"  id="RBrecord" size="5" placeholder="B部门" value="{$feeItem.rbrecord}" onKeyUp="computeSum()"/><p class="hint">B部门</p>
+                    <input name="B_id_list" id="B_id_list" type="hidden" value=""/>
+                    <div class="space">+</div>
+                </div>
+                <div>
+                    <input name="Crecord" type="text" class="form-control fee_refer"  id="Crecord" size="5" placeholder="C部门" readonly  onClick="Cost('C')" value="{$feeItem.brecord}"/>
+                    <input name="RCrecord" type="text" class="form-control fee_true type3"  id="RCrecord" size="5" placeholder="C部门" value="{$feeItem.rcrecord}" onKeyUp="computeSum()"/><p class="hint">C部门</p>
+                    <input name="C_id_list" id="C_id_list" type="hidden" value=""/>
+                    <div class="space">+</div>
+                </div>
+                <div>
+                    <input name="Drecord" type="text" class="form-control fee_refer"  id="Drecord" size="5" placeholder="D部门" readonly  onClick="Cost('D')" value="{$feeItem.drecord}"/>
+                    <input name="RDrecord" type="text" class="form-control fee_true type3"  id="RDrecord" size="5" placeholder="D部门" value="{$feeItem.rdrecord}" onKeyUp="computeSum()"/><p class="hint">D部门</p>
+                    <input name="D_id_list" id="D_id_list" type="hidden" value=""/>
+                    <div class="space">+</div>
+                </div>
+                <div>
+                    <input name="Erecord" type="text" class="form-control fee_refer"  id="Erecord" size="5" placeholder="E部门" readonly  onClick="Cost('E')" value="{$feeItem.erecord}"/>
+                    <input name="RErecord" type="text" class="form-control fee_true type3"  id="RErecord" size="5" placeholder="E部门" value="{$feeItem.rerecord}" onKeyUp="computeSum()"/><p class="hint">E部门</p>
+                    <input name="E_id_list" id="E_id_list" type="hidden" value=""/>
+                    <div class="space">+</div>
+                </div>
+                <div>
+                    <input name="Frecord" type="text" class="form-control fee_refer"  id="Frecord" size="5" placeholder="F部门" readonly  onClick="Cost('F')" value="{$feeItem.frecord}"/>
+                    <input name="RFrecord" type="text" class="form-control fee_true type3"  id="RFrecord" size="5" placeholder="F部门" value="{$feeItem.rfrecord}" onKeyUp="computeSum()"/><p class="hint">F部门</p>
+                    <input name="F_id_list" id="F_id_list" type="hidden" value=""/>
+                    <div class="space">+</div>
+                </div>
+                <div class="fee_bor">
+                    <p align="center">备注</p>
+                    <textarea class="form-control" rows="10" name="fee_remark"></textarea>
+                </div>
+                <div class="fee_bor_right">
+                    <div>
+                        <input name="Dcopy" type="text" class="form-control fee_true_two type3"  id="Dcopy" placeholder="副本" onKeyUp="computeSum()" value="{$feeItem.dcopy}"/><p class="hint">副本</p>
+                        <div class="space_two">+</div>
+                    </div>
+                    <div>
+                        <input name="Donline" type="text" class="form-control fee_true_two type3"  id="Donline" placeholder="上网费" onKeyUp="computeSum()" value="{$feeItem.donline}" /><p class="hint">上网</p>
+                        <div class="space_two">+</div>
+                    </div>
+                    <div>
+                        <input name="Drevise" type="text" class="form-control fee_true_two type3"  id="Drevise" placeholder="项目修改" onKeyUp="computeSum()" value="{$feeItem.drevise}" /><p class="hint">修改</p>
+                        <div class="space_two">+</div>
+                    </div>
+                    <div>
+                        <input name="Dother" type="text" class="form-control fee_true_two type3"  id="Dother" placeholder="其他"  onKeyUp="computeSum()" value="{$feeItem.dother}"/><p class="hint">其他</p>
+                        <div class="space_two">=</div>
+                    </div>
+                    <div>
+                        <input name="testCost" type="text" class="form-control fee_true_two"  id="sumCost" placeholder="总计"  value="100" readonly />
+                        <div class="space_two"></div>
+                    </div>
+                </div>
               </td>
           </tr>
           <tr >

@@ -167,7 +167,6 @@ input:-webkit-autofill {-webkit-box-shadow: 0 0 0px 1000px white inset;outline:n
 .form-group .thumb-image {width: 120px;height: 80px;display: inline-block;}
 /**合同录入**/
 #page-wrapper .hint {font-family: simhei;font-size:10pt;color:#999999;display:inline-block}
-#page-wrapper .two-col {width:40%;display:inline-block}
 #page-wrapper .main_content{height: 333px;}
 #page-wrapper .modal-header{height: 100px;}
 #page-wrapper .sco{overflow: auto;}
@@ -180,10 +179,11 @@ input:-webkit-autofill {-webkit-box-shadow: 0 0 0px 1000px white inset;outline:n
 #page-wrapper .fee_title {width: 50%;float: left;text-align: center}
 #page-wrapper .fee_refer {width: 40%;float: left;text-align: center;margin-left: 5%}
 #page-wrapper .fee_true {width: 40%;float: left;text-align: center;margin-left: 5%}
-#page-wrapper .fee_true_two {width: 100%;float: left;text-align: center}
+#page-wrapper .fee_true_two {width: 80%;float: left;text-align: center}
 #page-wrapper .space {clear: both;padding-left: 70%;}
-#page-wrapper .space_two {clear: both;padding-left: 50%;}
+#page-wrapper .space_two {clear: both;padding-left:40%;}
 #page-wrapper .fee_bor {width: 40%;float: left;border: 0px solid #000000;margin-left: 5%}
+#page-wrapper .fee_bor_right {width: 50%;float: left;border: 0px solid #000000;margin-left: 5%}
 #page-wrapper .fee_remark_title {text-align: center;}
 
 
