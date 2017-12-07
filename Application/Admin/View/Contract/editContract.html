@@ -270,7 +270,7 @@
                 </div>
                 <div class="fee_bor">
                     <p align="center">备注</p>
-                    <textarea class="form-control" rows="10" name="fee_remark"></textarea>
+                    <textarea class="form-control type3" rows="10" name="fee_remark"></textarea>
                 </div>
                 <div class="fee_bor_right">
                     <div>
@@ -335,8 +335,8 @@
 							费用管理
 						</h4>
 						<div class="col-sm-10 search">
-							<input type="text" class="form-control col-sm-10 standard" placeholder="请输入标准号" id="criteria">
-							<button class="btn btn-primary search_btn"  onclick="findCriteria()" >搜索</button>
+							<input type="text" class="form-control col-sm-10 standard type3" placeholder="请输入标准号" id="criteria">
+							<button class="btn btn-primary search_btn "  onclick="findCriteria()" >搜索</button>
                             <input type="hidden" id="depar" value="" />
 						</div>
 					</div>
@@ -377,10 +377,9 @@
 		
 		//时间
 		$(document).ready(function(){
-			
+
 					//计算费用
 			var type_status = $('#type_status').val();
-			
 			if(type_status == 6){
 				$('input,select,textarea').prop('disabled',true);
 				$('.fee').prop('disabled',false);
