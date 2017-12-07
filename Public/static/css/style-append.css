@@ -26,6 +26,7 @@ input:-webkit-autofill {-webkit-box-shadow: 0 0 0px 1000px white inset;outline:n
 /*.pnav .logo {height:78px;width:209px;text-indent:-9999px;float:left;width: 210px;height: 70px;background-size: auto 48px;}
 .pnav .logo a{display:block;width:100%;height:100%;text-indent:-9999px;}
 */
+.pnav .hnav .img_left_logo {width: 20%}
 .pnav .hnav {width:100%;position: relative;}
 .pnav .hnav li{height:50px;width:150px;padding:0;float:left;margin:0;text-align:center;line-height:50px;font-size:14px;color:#e0e0e0;}
 .pnav .hnav li a,.pnav .hnav li a:active,.pnav .hnav li a:link{color: #555;text-decoration: none;}
