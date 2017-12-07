@@ -114,7 +114,7 @@ class AuditController extends Controller {
             $data=array(
                 'status'=>1,
             );
-        if ($user==13||$if_admin==1) {//审核员和超级管理员的权限
+        if ($user==16||$if_admin==1) {//审核员和超级管理员的权限
             if ($de != 'B') {
                 if (D("report_feedback")->where("id=" . $id)->save($data)) {
                     $rs['msg'] = 'succ';
@@ -147,7 +147,7 @@ class AuditController extends Controller {
         $data1=array(
             'if_edit'=>0,
         );
-        if ($user==13||$if_admin==1){//审核员和超级管理员的权限
+        if ($user==16||$if_admin==1){//审核员和超级管理员的权限
             M()->startTrans();
             $result=D("report_feedback")->where($where)->save($data);
             $result1=D("inspection_report")->where("centreno='{$arr}'")->save($data1);
