@@ -514,6 +514,7 @@
 		
 		//合同修改
 		function doEditContract(){
+			computeSum();
 			var type_status = $('#type_status').val();		
 			var options = {
 				url: "{:U('/admin/contract/doEditContract')}",

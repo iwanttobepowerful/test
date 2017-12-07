@@ -1762,6 +1762,16 @@ class ContractController extends Controller
         $this->ajaxReturn($rs);
     }
 
+	//删除特殊编号
+	public function doDeleteSpec(){
+		$id=I('id');
+		if(D("special_centre_code")->where('id='.$id)->delete()){
+			$rs['msg']='succ';
+		}else{
+			$rs['msg']='fail';
+		}	
+		$this->ajaxReturn($rs);
+	}
 
     //检验报告单详情
     public function checkDetail(){
