@@ -16,34 +16,30 @@ class StatisticsController extends Controller {
         $centreno = trim($centreno);//去空格查询
         $begin_time = I("begin_time");
         $end_time = I("end_time");
-        $sortby = I("sortby");
+        $de = I('de','A');
         $searchby=I("searchby");
-        $where = " a.status in(5,6)";
-
-
         $page = I("p",'int');
         $pagesize = 10;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
 
-        if(!empty($centreno)){
-            //查询合同编号
-            $where .=" and a.centreno like '%{$centreno}%'";
-        }
-        if($sortby==1){
+        if($de=='B'){
             //盖章日期
+            $where = " a.status in(5,6)";
             $orderby = "a.inner_sign_time desc";
             $begin_time && $where .=" and date_format(a.inner_sign_time,'%Y-%m-%d') >='{$begin_time}'";
             $end_time && $where .=" and date_format(a.inner_sign_time,'%Y-%m-%d') <='{$end_time}'";
 
-        }elseif($sortby==2){
+        }elseif($de=='A'){
             //来样日期
-            $orderby = "b.collectdate desc";
+            $where="1=1";
+            $orderby = "a.collectdate desc";
             $begin_time && $where .=" and date_format(b.collectdate,'%Y-%m-%d') >='{$begin_time}'";
             $end_time && $where .=" and date_format(b.collectdate,'%Y-%m-%d') <='{$end_time}'";
         }
-        else{
-            $orderby = "a.external_sign_time desc";//默认排序
+        if(!empty($centreno)){
+            //查询合同编号
+            $where .=" and a.centreno like '%{$centreno}%'";
         }
         if($searchby==1)
         {
@@ -65,11 +61,12 @@ class StatisticsController extends Controller {
             $where .=" and SUBSTR(a.centreNo,7,1) = 'F'";
         }
         //小计
+        if($de=='B'){
         $sumlist = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->join(C("DB_PREFIX")."test_cost c on a.centreno=c.centreno","LEFT")->where($where)->field("sum(b.testcost) as testcost,sum(c.rarecord) as arecord,sum(c.rbrecord) as brecord,sum(c.rcrecord) as crecord,sum(c.rdrecord) as drecord,sum(c.rerecord) as erecord,sum(c.rfrecord) as frecord,sum(c.dcopy) as dcopy,sum(c.drevise) as drevise,sum(c.dother) as dother,sum(c.donline) as donline")->find();
         $list = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->join(C("DB_PREFIX")."test_cost c on a.centreno=c.centreno","LEFT")->where($where)->order($orderby)
             ->field("a.id,a.status,a.external_sign_time,a.inner_sign_time,a.centreno,a.takelist_user_id,b.clientname,b.productunit,b.samplename,b.testcriteria,b.testitem,b.testcost,b.remark,b.testcriteria,b.collectdate,b.samplequantity,b.collector,b.centreno1,b.centreno2,b.centreno3,c.rarecord,c.rbrecord,c.rcrecord,c.rdrecord,c.rerecord,c.rfrecord,c.dcopy,c.donline,c.drevise,c.dother")->limit("{$offset},{$pagesize}")->select();
         //dump($where);
-        if($list){            
+        if($list){
         	$centrenoIds = array();
             $userIds = array();
         	foreach ($list as $value) {
@@ -84,6 +81,27 @@ class StatisticsController extends Controller {
             }
         }
         $count = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->join(C("DB_PREFIX")."test_cost c on a.centreno=c.centreno","LEFT")->where($where)->field("count(*) as total")->select();
+        }elseif ($de=='A'){
+            $sumlist = D("contract")->alias("a")->join(C("DB_PREFIX")."test_cost c on a.centreno=c.centreno","LEFT")->where($where)->field("sum(a.testcost) as testcost,sum(c.rarecord) as arecord,sum(c.rbrecord) as brecord,sum(c.rcrecord) as crecord,sum(c.rdrecord) as drecord,sum(c.rerecord) as erecord,sum(c.rfrecord) as frecord,sum(c.dcopy) as dcopy,sum(c.drevise) as drevise,sum(c.dother) as dother,sum(c.donline) as donline")->find();
+            $list = D("contract")->alias("a")->join(C("DB_PREFIX")."contract_flow b on a.centreno=b.centreno","LEFT")->join(C("DB_PREFIX")."test_cost c on a.centreno=c.centreno","LEFT")->where($where)->order($orderby)
+                ->field("b.id,b.status,b.external_sign_time,b.inner_sign_time,b.takelist_user_id,a.centreno,a.clientname,a.productunit,a.samplename,a.testcriteria,a.testitem,a.testcost,a.remark,a.testcriteria,a.collectdate,a.samplequantity,a.collector,a.centreno1,a.centreno2,a.centreno3,c.rarecord,c.rbrecord,c.rcrecord,c.rdrecord,c.rerecord,c.rfrecord,c.dcopy,c.donline,c.drevise,c.dother")->limit("{$offset},{$pagesize}")->select();
+            //dump($where);
+            if($list){
+                $centrenoIds = array();
+                $userIds = array();
+                foreach ($list as $value) {
+                    $centrenoIds[] = "'".$value['centreno']."'";
+                    $value['takelist_user_id'] && $userIds[] = $value['takelist_user_id'];
+                }
+                $userIds && $user = D("common_system_user")->where("id in(".implode(',', $userIds).")")->field("id,name")->select();
+                $user && $user = assColumn($user);
+                foreach ($list as $key => $value) {
+                    $value['takelist_user'] = $value['takelist_user_id'] ? $user[$value['takelist_user_id']]['name']:"";
+                    $list[$key] = $value;
+                }
+            }
+            $count = D("contract")->alias("a")->join(C("DB_PREFIX")."contract_flow b on a.centreno=b.centreno","LEFT")->join(C("DB_PREFIX")."test_cost c on a.centreno=c.centreno","LEFT")->where($where)->field("count(*) as total")->select();
+        }
         $Page= new \Think\Page(intval($count[0]['total']),$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
         $pagination= $Page->show();// 分页显示输出
@@ -95,7 +113,7 @@ class StatisticsController extends Controller {
             'centreno'=>$centreno,
             'begin_time'=>$begin_time,
             'end_time'=>$end_time,
-            'sortby'=>$sortby,
+            'de'=>$de,
             'searchby'=>$searchby,
         );
         $this->assign($body);

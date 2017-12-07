@@ -2,17 +2,19 @@
 <div id="page-wrapper">
 	<include file="Common:breadcrumb" />
 	<div id="page-inner" class="container">
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="active" id="de_A" name="de"><a href="/admin/statistics/base?de=A" >应收</a></li>
+            <li role="presentation" id="de_B" name="de"><a href="/admin/statistics/base?de=B">实收</a></li>
+            <input hidden id="de_choose" value="{$de}">
+        </ul>
+
         <div class="search-form">
             <form class="form-inline" method="GET" action="">
                 <div class="form-group">
                     <label>中心编号：</label>
                     <input type="text" class="form-control input-sm" name="centreno" value="{$centreno}" />
-
+                    <input type="hidden" name="de" value="{$de}"/>
                     开始时间：<input type="text" readonly class="form-control f-datetime input-sm" name="begin_time" value="{$begin_time}"> 结束时间<input type="text" readonly class="form-control f-datetime input-sm" name="end_time" value="{$end_time}" />
-                    排序规则：<select class="form-control input-sm" name="sortby">
-                        <option value="1" <php>if($sortby==1){echo 'selected';}</php>>盖章日期</option>
-                        <option value="2" <php>if($sortby==2){echo 'selected';}</php>>来样日期</option>
-                    </select>
                     分部门查询：<select class="form-control input-sm" name="searchby">
                     <option value="0" <php>if($searchby==0){echo 'selected';}</php>>请选择</option>
                     <option value="1" <php>if($searchby==1){echo 'selected';}</php>>A部门</option>
@@ -24,7 +26,7 @@
                 </select>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-sm" >查询</button>
+                <button type="submit" class="btn btn-primary btn-sm">查询</button>
             </form>
         </div>
       
@@ -33,7 +35,7 @@
                 <th width="7%">盖章日期</th>
                 <th width="10%">中心编号</th>
                 <th width="5%">详情</th>
-                <th width="7%">应收金额(元)</th>
+                <th width="7%"><php>if($de=='A'){echo "应收金额(元)";}elseif($de=='B'){echo "实收金额(元)";}</php></th>
                 <th width="6%">A记录(元)</th>
                 <th width="6%">B记录(元)</th>
                 <th width="6%">C记录(元)</th>
@@ -145,6 +147,11 @@
 <script type="text/javascript">
 $('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true });
 $("th").addClass("text-center");
+$(function(){
+    var de = $("#de_choose").val();
+    $("li[name='de']").removeClass("active");
+    $("#de_"+de).addClass("active");
+});
 function details(centreno,clientname,productunit,samplename,testcriteria,testitem) {
     var modal = $("#detailModal");
     modal.find("input[name='clientname']").val(clientname);
