@@ -538,10 +538,10 @@ class TestController extends Controller{
                 waterMark($tmpSavefile,'./Public/static/images/sign.png',$tmpSavefile2,array(350,0));
                 @rename($tmpSavefile2,$imageFiles[1]);               
 //加水印
-                $base = pathinfo($imageFiles[]);
+                /*$base = pathinfo($imageFiles[]);
                 $tmpSavefile4 = $base['dirname'] . '/'.$base['filename'].'-sign.'.$base['extension'];
                 waterMark($imageFiles[],'./Public/static/images/shuiyin.png',$tmpSavefile4,array(350,1200));
-                $imgFiles[] = $tmpSavefile4;
+                $imgFiles[] = $tmpSavefile4;*/
 
                 //再转换成pdf
                 $signPdf = './Public/attached/report/'.$centreno.'-sign.pdf';
