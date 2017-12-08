@@ -1488,7 +1488,7 @@ class ContractController extends Controller
 	public function saveInspecReport(){
 		$rs['msg']='fail';
 		
-		$edit_No = I('edit_No');
+		//$edit_No = I('edit_No');
 		$centreNo = I('centreNo');
 		$sampleName = I('sampleName');
 		$clientName = I('clientName');
@@ -1503,7 +1503,7 @@ class ContractController extends Controller
 		$applicant = I('applicant');
 		$handler = I('handler');
 		$handleDate = I('handleDate');
-		if(empty($edit_No) || empty($sampleName) || empty($clientName) || empty($update_item) || empty($imageurl)|| empty($update_reason)|| empty($applicant)|| empty($handler)|| (empty($update_item[0]) && empty($update_item[1]) && empty($update_item[2]) && empty($update_item[3]) && empty($update_item[4]) && empty($update_item[5]))){
+		if(empty($sampleName) || empty($clientName) || empty($update_item) || empty($imageurl)|| empty($update_reason)|| empty($applicant)|| empty($handler)|| (empty($update_item[0]) && empty($update_item[1]) && empty($update_item[2]) && empty($update_item[3]) && empty($update_item[4]) && empty($update_item[5]))){
 			$rs['msg']='信息填写不完整！';
 			$this->ajaxReturn($rs);
 		}
@@ -1512,7 +1512,7 @@ class ContractController extends Controller
 		$data_list = array(
 			"handler"=>$handler,
 			'handleDate'=>$handleDate,
-			'edit_No'=>$edit_No,
+			//'edit_No'=>$edit_No,
 			'centreNo'=>$centreNo,
 			'sampleName'=>$sampleName,
 			'clientName'=>$clientName,
