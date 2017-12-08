@@ -60,7 +60,7 @@ class SeeReportController extends Controller
 
             $report = D('test_report')->where("centreno='{$contract['centreno']}'")->find();
 
-            $pdf_path=$report['pdf_path'];
+            $pdf_path=$report['pdf_sign_path'];
             if(strpos($pdf_path,'http')===false){
 
                  $pdf_path = getCurrentHost().$pdf_path;
