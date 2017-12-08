@@ -493,6 +493,7 @@ class TestController extends Controller{
             //对外签加公章
             if(file_exists($imageFiles[0]) && file_exists($imageFiles[1])){
                 $baseinfo = pathinfo($imageFiles[0]);
+
                 if($tpl['subtype'] == 2){
                     //小中心
                     $tmpSavefile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-mark.'.$baseinfo['extension'];
@@ -536,8 +537,11 @@ class TestController extends Controller{
                 $tmpSavefile2 = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-sign2.'.$baseinfo['extension'];
                 waterMark($tmpSavefile,'./Public/static/images/sign.png',$tmpSavefile2,array(350,0));
                 @rename($tmpSavefile2,$imageFiles[1]);               
-
-                $imgFiles[] = $tmpSavefile;
+//加水印
+                /*$base = pathinfo($imageFiles[]);
+                $tmpSavefile4 = $base['dirname'] . '/'.$base['filename'].'-sign.'.$base['extension'];
+                waterMark($imageFiles[],'./Public/static/images/shuiyin.png',$tmpSavefile4,array(350,1200));
+                $imgFiles[] = $tmpSavefile4;*/
 
                 //再转换成pdf
                 $signPdf = './Public/attached/report/'.$centreno.'-sign.pdf';

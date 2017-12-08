@@ -54,9 +54,14 @@
                         <if condition="$con.flow_id != -1">
                             <a href="/admin/test/infoShow?id={$con.centreno}"  class="btn btn-info btn-xs" >检验工作通知单</a>
                         </if>
+                        <if condition="$leader==1 or $if_admin==1"><!--如果是领导-->
+                            <a href="javascript:void(0);" class="btn btn-info btn-xs" onclick="recordDetail('{$con.centreno}')">检测记录</a>
+                            <if condition="$con['pdf_path'] ">
+                            <a href="javascript:void(0);" class="btn btn-info btn-xs" name="{$con.pdf_path}" onclick="return Check(this);">检测报告</a></if>
+                        </if>
                         <if condition="$if_edit==1">
                         <if condition="$con['status']==8">
-                            <a href="/admin/TestReport/seleteKey?mod={$con.centreno}" class="btn btn-primary btn-xs">生成报告</a></if></if>
+                            <p></p><a href="/admin/TestReport/seleteKey?mod={$con.centreno}" class="btn btn-primary btn-xs">生成报告</a></if></if>
                         <!--<if condition="$con['status'] eq 6">
                             <a href="javascript:void(0);" class="btn btn-info btn-xs" name="{$con.pdf_path}" onclick="return Check(this);">检测报告</a>
                         </if>-->
@@ -172,6 +177,24 @@
         };
         $("#myform").ajaxForm(options);
         return false;
+    }
+
+    function recordDetail(centreno) {
+        var newurl='/admin/test/doPrint.html?id='+centreno+'&type=2';
+        console.log(newurl);
+        window.open(newurl,'_self');
+    }
+    function Check(path) {
+        var url=path.name;
+        if(!url) return false;//获取url
+        if(url.indexOf("http")==-1){
+            thisHost = location.hostname;
+            var newurl='http://'+thisHost+url;
+        }else{
+            var newurl=url;
+        }
+        //alert(newurl);
+        window.open(newurl);
     }
     function confirmReport(centreno) {
         if(!centreno) return false;
