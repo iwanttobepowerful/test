@@ -486,6 +486,7 @@
 		
 		//合同入库
 		function doInputContract(){
+			computeSum();
 			//alert('start');
 			//查找是否是特殊编码
 			//if(confirm('若是委托检验提交后不可更改，确认提交吗？')){
@@ -548,6 +549,14 @@
 				$("#spe_code").css("display","none");
 				$("input[name=ifHighQuantity]").removeAttr("disabled");
 				$("#ifchoseSp").val(0);
+				$("#collectDate").removeClass("f-datetime input-sm");
+				$("#collectDate").datetimepicker('remove');
+				var date = new Date();	
+				var years = date.getFullYear();
+				var month = add_zero(date.getMonth()+1);
+				var day = add_zero(date.getDate());
+				var now_date = years+"-"+month+"-"+day;
+				$("#collectDate").val(now_date);
 				makeCentreCode();
 			}
 		}
@@ -560,6 +569,8 @@
 			var remain_code = $("#spec_li_"+id+" #remain_code").html();
 			$("#centreNo").val(code);
 			$("#ifchoseSp").val(1);
+			$("#collectDate").addClass("f-datetime input-sm");
+			$("#collectDate").datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,	autoclose:true });
 		}
 		
 		//分包备注是否显示

@@ -233,6 +233,57 @@ class ContractController extends Controller {
         $this->display();
     }
 
+    public function del(){
+        $id = I("id");
+        switch ($id)
+        {
+            case '2':
+                $department='B';
+                break;
+            case '3':
+                $department='C';
+                break;
+            case '4':
+                $department='D';
+                break;
+            case '5':
+                $department='E';
+                break;
+            case '6':
+                $department='F';
+                break;
+            default:
+                $department='A';
+                break;
+
+        }
+
+        $where['department']=$department;
+        $list = D("special_centre_code")->where($where)->order('year desc,month desc')->select();
+        //dump($list);
+        //$list = D("special_centre_code")->where('department="'.$department.'"')->order('year desc,month desc')->select();
+        $body = array(
+            "special_list"=>$list,
+            "id"=>$id ? $id:1
+        );
+        $this->assign($body);
+        $this->display();
+    }
+
+    public function dele(){
+        $id = I('id');
+
+        $flag=D("special_centre_code")->where('id='.$id)->delete();
+
+        if($flag){
+                $rs['msg'] = '删除成功';
+        }else{
+            $rs['msg'] = '删除失败';
+        }
+
+        $this->ajaxReturn($rs);
+    }
+
     //查看各个部门的情况
     public function dep(){
         $id = I("id");

@@ -184,7 +184,7 @@ class ContractController extends Controller
 		
 		$fee_remark = I("fee_remark");
 		
-        $Dcopy = I("Dcopy",0,'s');
+        $Dcopy = I("Dcopy",0,'intval');
         $Donline = I("Donline",0,'intval');
         $Drevise = I("Drevise",0,'intval');
         $Dother = I("Dother",0,'intval');
@@ -333,7 +333,7 @@ class ContractController extends Controller
             'costDate'=>Date("Y-m-d H:i:s"),
 			'idList'=>$idList
         );
-
+		
         //$contract_user_id = $admin_auth['id'];
         //pr($contract_user_id);
         /*$data_flow = array(
@@ -1242,6 +1242,11 @@ class ContractController extends Controller
         }else{
             $if_edit = 0;
         }
+        if($user==8){
+          $leader=1;
+        }else{
+            $leader=0;
+        }
         //D("contract_flow as f");
         $keyword = I("keyword");//获取参数
         $keyword = trim($keyword);
@@ -1306,7 +1311,9 @@ class ContractController extends Controller
             'if_edit'=>$if_edit,
             'begin_time'=>$begin_time,
             'end_time'=>$end_time,
-            'keyword'=>$keyword
+            'keyword'=>$keyword,
+            'leader'=>$leader,
+            'if_admin'=>$if_admin
         );
         //dump($body);
         $this->assign($body);
@@ -1762,6 +1769,16 @@ class ContractController extends Controller
         $this->ajaxReturn($rs);
     }
 
+	//删除特殊编号
+	public function doDeleteSpec(){
+		$id=I('id');
+		if(D("special_centre_code")->where('id='.$id)->delete()){
+			$rs['msg']='succ';
+		}else{
+			$rs['msg']='fail';
+		}	
+		$this->ajaxReturn($rs);
+	}
 
     //检验报告单详情
     public function checkDetail(){

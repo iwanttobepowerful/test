@@ -30,6 +30,7 @@
             <!--<th>使用量</th>-->
             <th>剩余量</th>
             <th>备注</th>
+            <th>操作</th>
             </thead>
             <tbody>
             <volist name="special_list" id="special">
@@ -41,6 +42,7 @@
                     <!--<td>{$special.usenum}</td>-->
                     <td>{$special.remainnum}</td>
                     <td>{$special.remark}</td>
+                    <td><a href="javascript:void(0);" onclick="onDelete({$special.id})" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> 删除</a></td>
                 </tr>
             </volist>
             </tbody>
@@ -163,7 +165,33 @@
 		$("#myform").ajaxForm(options);
 		return false;
 	}
+	
+	//删除图片
+	function onDelete(id){
+		if(!id) return false;
+		var _options = {"flag":"error","text":"您确定要删除吗！","buttons":{"ok":{"action":function(){doneDel(id);}},"cancel":{}}};
+		doConfirmDialog(_options);
+	}
 
+	function doneDel(id){
+		if(!id) return false;
+		$.ajax({
+			type:"post",
+			url:"{:U('/admin/contract/doDeleteSpec')}",
+			data:{"id":id},
+			dataType:"json",
+			success:function(ret){
+				if(ret.msg=='succ'){
+					var _options = {"text":"删除成功！","action":function(){window.location.reload();}};
+					doAlertDialog(_options);
+				}else{
+					var _options = {"text":"删除失败！"};
+					if(data.msg) _options.text = data.msg;
+					doAlertDialog(_options);
+				}
+			}
+		});
+	}
 	
 </script>
 <include file="Common:footer" />
