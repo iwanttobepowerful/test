@@ -984,7 +984,11 @@ class ContractController extends Controller
         //$result=M('sampling_form')->where($where)->find();
         //$status=M('contract_flow')->where($where)->find();
         $ifedit=M('contract')->where($where)->find();
-        $sub_status=M('report_feedback')->where($where)->find();
+        //$sub_status=M('report_feedback')->where($where)->find();
+		
+		$centreno_str = implode(',',$con_list);
+		$sub_status = D('report_feedback')->where(' id in (select max(id) from report_feedback where if_report=0 and centreNo = "'.$centreno.'" group by centreNo)')->group('centreNo')->find();
+			
         if(empty($sub_status)){
             $sub_status['status']=-1;
         }
@@ -1002,6 +1006,7 @@ class ContractController extends Controller
             'sub_status'=>$sub_status,
 			'type'=>$type,
         );
+		//pr($sub_status);
         $this->assign($body);
         $this->display();
     }
