@@ -345,6 +345,9 @@
 		makeCentreCode();
 		$("input[name = 'testCategory']").change(function(){
 			makeCentreCode();
+			$("input[name='ifHighQuantity']").prop('checked',false);
+			upVIPCode();
+			$('input[name="ifHighQuantity"]').val(0);
 			$("#spec_checkbox").prop('checked',false);
 			special_code();
 			
