@@ -41,7 +41,7 @@ class Image{
     const IMAGE_WATER_SOUTHWEST =   7 ; //常量，标识左下角水印
     const IMAGE_WATER_SOUTH     =   8 ; //常量，标识下居中水印
     const IMAGE_WATER_SOUTHEAST =   9 ; //常量，标识右下角水印
-
+    const IMAGE_WATER_FULL      =   10; //常量，标识全面平铺
     /**
      * 图片资源
      * @var resource
@@ -64,7 +64,6 @@ class Image{
             default:
                 E('不支持的图片处理库类型');
         }
-
         /* 引入处理库，实例化图片处理对象 */
         $class  =    "Think\\Image\\Driver\\{$class}";
         $this->img = new $class($imgname);

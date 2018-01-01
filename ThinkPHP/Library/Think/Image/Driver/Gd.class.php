@@ -367,7 +367,17 @@ class Gd{
                 $x = 0;
                 $y = ($this->info['height'] - $info[1])/2;
                 break;
-
+            /* 平铺 */
+            case Image::IMAGE_WATER_FULL:
+                $tmpXY = array();
+                for ($x = 0; $x < $this->info['width']; $x) {
+                    for ($y = 0; $y < $this->info['height']; $y) {
+                        $tmpXY[] = array($x,$y);
+                        $y += $info[1];
+                    }
+                    $x += $info[0];
+                }
+                break;
             default:
                 /* 自定义水印坐标 */
                 if(is_array($locate)){
@@ -384,10 +394,18 @@ class Gd{
             $color = imagecolorallocate($src, 255, 255, 255);
             imagefill($src, 0, 0, $color);
 
-            imagecopy($src, $this->img, 0, 0, $x, $y, $info[0], $info[1]);
-            imagecopy($src, $water, 0, 0, 0, 0, $info[0], $info[1]);
-            imagecopymerge($this->img, $src, $x, $y, 0, 0, $info[0], $info[1], $alpha);
+            if($tmpXY && is_array($tmpXY)){
+                foreach ($tmpXY as $value) {
+                    imagecopy($src, $this->img, 0, 0, $value[0], $value[1], $info[0], $info[1]);
+                    imagecopy($src, $water, 0, 0, 0, 0, $info[0], $info[1]);
+                    imagecopymerge($this->img, $src, $value[0], $value[1], 0, 0, $info[0], $info[1], $alpha);
+                }
+            }else{
+                imagecopy($src, $this->img, 0, 0, $x, $y, $info[0], $info[1]);
+                imagecopy($src, $water, 0, 0, 0, 0, $info[0], $info[1]);
+                imagecopymerge($this->img, $src, $x, $y, 0, 0, $info[0], $info[1], $alpha);
 
+            }
             //销毁零时图片资源
             imagedestroy($src);
         } while(!empty($this->gif) && $this->gifNext());
