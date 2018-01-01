@@ -411,7 +411,7 @@ if(!function_exists('convertImageToPdf')){
 				$height = ceil($height/$width);
 				$image->thumb($scaleWidth,$height)->save($tmpSavefile);
                 if($watermark){
-                    $image->open($tmpSavefile)->water($watermark,\Think\Image::IMAGE_WATER_FULL,80)->save($tmpWmfile); 
+                    $image->open($tmpSavefile)->water($watermark,\Think\Image::IMAGE_WATER_FULL,60)->save($tmpWmfile); 
                     $tmp[]=$tmpWmfile;
                 }else{
                     $tmp[] = $tmpSavefile;
