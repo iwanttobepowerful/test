@@ -114,24 +114,21 @@ class AuditController extends Controller {
             $data=array(
                 'status'=>1,
             );
-        if($d = D("test_report")->where("centreno='{$centreno}'")->find()){
-            $pdf_path='.'.$d['pdf_path'];
-            if(file_exists($pdf_path)){
-                pr($pdf_path);
-                //@unlink($pdf_path);
-            }
-        }
-        die;
+        
         if ($user==16||$if_admin==1) {//审核员和超级管理员的权限
             if ($de != 'B') {
 
                 if (D("report_feedback")->where("id=" . $id)->save($data)) {
                     if($d = D("test_report")->where("centreno='{$centreno}'")->find()){
-                        $pdf_path='.'.$d['pdf_path'];
-                        if(file_exists($pdf_path)){
-                            @unlink($pdf_path);
-                        }
-                    }
+						$pdf_path='.'.$d['pdf_path'];
+						$pdf_sign = '.'.$d['pdf_sign_path'];
+						if(file_exists($pdf_path)){
+							@unlink($pdf_path);
+						}
+						if(file_exists($pdf_sign)){
+							@unlink($pdf_sign);
+						}
+					}
                     $rs['msg'] = 'succ';
                 }
             } else {
