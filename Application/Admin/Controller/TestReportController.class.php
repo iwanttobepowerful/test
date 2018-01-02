@@ -135,10 +135,10 @@ class TestReportController extends Controller
             $cd=$contract['collectdate'];
             $arr1 = explode("-",$cd);
             $collectdate="$arr1[0]年$arr1[1]月$arr1[2]日";}
-            if($contract['productiondate']){
-                $pd=$contract['productiondate'];
-                $arr2 = explode("-",$pd);
-                $productiondate="$arr2[0]年$arr2[1]月$arr2[2]日";}
+            //if($contract['productiondate']){
+                //$pd=$contract['productiondate'];
+                //$arr2 = explode("-",$pd);
+                //$productiondate="$arr2[0]年$arr2[1]月$arr2[2]日";}
 
             //dump($newCentreNo);die;
             //dump($contract);
@@ -148,7 +148,7 @@ class TestReportController extends Controller
                 'sampleName'=>$contract['samplename'],
                 'clientName'=>$contract['clientname'],
                 'testCategory'=>$contract['testcategory'],
-                'productionDate'=>$contract['productiondate'] ? $productiondate:"——",
+                'productionDate'=>$contract['productiondate'] ? $contract['productiondate'] :"——",
                 'productUnit'=>$contract['productunit'] ? $contract['productunit']:"——",
                 'trademark'=>$contract['trademark'] ? $contract['trademark']:"——",
                 'grade'=>$contract['grade'] ? $contract['grade']:"——",
