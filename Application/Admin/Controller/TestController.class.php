@@ -545,7 +545,7 @@ class TestController extends Controller{
 
                 //再转换成pdf
                 $signPdf = './Public/attached/report/'.$centreno.'-sign.pdf';
-                convertImageToPdf(ROOT_PATH,substr($signPdf,1),$imageFiles,1024);
+                convertImageToPdf(ROOT_PATH,substr($signPdf,1),$imageFiles,1024,'./Public/static/images/wmfull.png');
 
                 $imgFiles[] = $tmpSavefile;
                 $imgFiles[] = $tmpSavefile2;

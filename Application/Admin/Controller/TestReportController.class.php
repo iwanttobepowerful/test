@@ -131,6 +131,15 @@ class TestReportController extends Controller
             }else{
                 $newCentreNo = $centreNo;
             }
+            if($contract['collectdate']){
+            $cd=$contract['collectdate'];
+            $arr1 = explode("-",$cd);
+            $collectdate="$arr1[0]年$arr1[1]月$arr1[2]日";}
+            //if($contract['productiondate']){
+                //$pd=$contract['productiondate'];
+                //$arr2 = explode("-",$pd);
+                //$productiondate="$arr2[0]年$arr2[1]月$arr2[2]日";}
+
             //dump($newCentreNo);die;
             //dump($contract);
 
@@ -139,7 +148,7 @@ class TestReportController extends Controller
                 'sampleName'=>$contract['samplename'],
                 'clientName'=>$contract['clientname'],
                 'testCategory'=>$contract['testcategory'],
-                'productionDate'=>$contract['productiondate'] ? $contract['productiondate']:"——",
+                'productionDate'=>$contract['productiondate'] ? $contract['productiondate'] :"——",
                 'productUnit'=>$contract['productunit'] ? $contract['productunit']:"——",
                 'trademark'=>$contract['trademark'] ? $contract['trademark']:"——",
                 'grade'=>$contract['grade'] ? $contract['grade']:"——",
@@ -147,16 +156,20 @@ class TestReportController extends Controller
                 'sampleStatus'=>$contract['samplestatus'] ? $contract['samplestatus']:"——",
                 'testCriteria'=>$contract['testcriteria'],
                 'testItem'=>$contract['testitem'],
-                'collectDate'=>$contract['collectdate'] ? $contract['collectdate']:"——",
+                'collectDate'=>$contract['collectdate'] ? $collectdate:"——",
                 'sampleCode'=>$contract['samplecode'] ? $contract['samplecode']:"——",
                 'sampleQuantity'=>$contract['samplequantity'] ? $contract['samplequantity']:"——",
             );
 
             $samplingForm = D("sampling_form")->where("centreno='{$centreNo}'")->find();
             if($samplingForm){
+                if($samplingForm['sampledate']){
+                    $sd=$samplingForm['sampledate'];
+                    $arr3 = explode("-",$sd);
+                    $sampledate="$arr3[0]年$arr3[1]月$arr3[2]日";}
                 $data['samplePlace'] = $samplingForm['sampleplace'] ? $samplingForm['sampleplace'] : "——";
                 $data['simplerSign'] = $samplingForm['simplersign'].' '.$samplingForm['sealersign'];
-                $data['sampleDate'] = $samplingForm['sampledate'] ? $samplingForm['sampledate']:"——";
+                $data['sampleDate'] = $samplingForm['sampledate'] ?  $sampledate:"——";
                 $data['sampleQuantity'] = $samplingForm['samplequantity'] ? $samplingForm['samplequantity']:"——";
                 $data['sampleBase'] = $samplingForm['samplebase'] ? $samplingForm['samplebase']:"——";
             }

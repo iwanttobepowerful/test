@@ -387,7 +387,7 @@ if(!function_exists('convertPdf2Image')){
     }
 }
 if(!function_exists('convertImageToPdf')){
-    function convertImageToPdf($root_path,$pdfFileName,$imagePaths,$scaleWidth=false){
+    function convertImageToPdf($root_path,$pdfFileName,$imagePaths,$scaleWidth=false,$watermark=null){
         vendor("Pdflib.vendor.autoload");
         $pdfLib = new \ImalH\PDFLib\PDFLib();
 
@@ -403,13 +403,19 @@ if(!function_exists('convertImageToPdf')){
 				$image->open($val);
 				$baseinfo = pathinfo($val);
                 $tmpSavefile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-thumb.'.$baseinfo['extension'];
-				
+				$watermark && $tmpWmfile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-wmthumb.'.$baseinfo['extension'];//加水印平铺
+
 				$width = $image->width(); // 返回图片的宽度
 				$height = $image->height();
 				$width = $width/$scaleWidth; //取得图片的长宽比  190是要输出的图片的宽度
 				$height = ceil($height/$width);
 				$image->thumb($scaleWidth,$height)->save($tmpSavefile);
-				$tmp[] = $tmpSavefile;
+                if($watermark){
+                    $image->open($tmpSavefile)->water($watermark,\Think\Image::IMAGE_WATER_FULL,30)->save($tmpWmfile); 
+                    $tmp[]=$tmpWmfile;
+                }else{
+                    $tmp[] = $tmpSavefile;
+                }
 			}
 			$imagePaths = $tmp;
 		
