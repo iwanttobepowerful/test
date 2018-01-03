@@ -514,7 +514,7 @@ class ContractController extends Controller
 			$sampleQuantity = I("sampleQuantity");
 			//$sampleunti = I("sampleunti");
 			$sampleStatus = I("sampleStatus");
-			$ration = I("ration",0,'intval');
+			$ration = I("ration");
 			$testCriteria = I("testCriteria");
 			$testItem = I("testItem");
 			//$testCategory = I("testCategory");
