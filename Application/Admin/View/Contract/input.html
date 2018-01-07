@@ -4,9 +4,11 @@
     <div id="page-inner" class="container">
       <form id="form2" name="form1" method="post" action="">
         <table class="table table-bordered table-striped table-hover">
+          <span id="error" style="color:red;display:none">还有未录入完毕的合同，请先录入完毕后再添加新合同</span>
           <tr>
             <td  colspan="9" ><p align="center" >委 托 人 填 写 </p></td>
             <input name="department" type="hidden"  id="department" value="{$department}" />  
+            <input name="count_unfinish" type="hidden"  id="count_unfinish" value="{$count_unfinish}" />  
           </tr> 
           <tr > 
             <td><p align="center" ><span style="color:red; font-size:15px">*</span>委托单位 </p></td>
@@ -357,6 +359,12 @@
 		
 		//时间
 		$(document).ready(function(){
+			var count_unfinish = $("#count_unfinish").val();
+			//alert(count_unfinish);
+			if(count_unfinish>=1){
+				$('input,select,textarea').prop('disabled',true);
+				$("#error").css('display','block');
+			}
 			$('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,	autoclose:true });
 					//计算费用
 			var date = new Date();	

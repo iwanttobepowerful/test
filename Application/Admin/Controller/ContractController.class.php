@@ -90,7 +90,7 @@ class ContractController extends Controller
         $admin_auth = session("admin_auth");
         $collector = $admin_auth['name'];
         $department = $admin_auth['department'];
-		
+		$if_admin = $admin_auth['super_admin'];
 		//费用查询
 		$criteria = I('criteria');
 		$page = I("p",'int');
@@ -99,6 +99,12 @@ class ContractController extends Controller
         $offset = ( $page-1 ) * $pagesize;
 		$list = D("test_fee")->where('criteria like "%'.$criteria.'%"')->limit("{$offset},{$pagesize}")->select();
 		$count = D("test_fee")->where('criteria like "%'.$criteria.'%"')->count();
+		$count_unfinish=0;
+		if($if_admin!=1){
+			$count_unfinish = D("contract c")->join('LEFT JOIN contract_flow f on c.centreNo=f.centreNo')->where('SUBSTR(c.centreNo,7,1) ="'.$department.'" and f.centreNo is null')->count();
+		}
+		//pr(D("contract c")->getLastSql());
+		
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</ a></ul>");
         $pagination= $Page->show();// 分页显示输出		
@@ -108,6 +114,7 @@ class ContractController extends Controller
             'department'=>$department,
 			"fee_list"=>$list,
             'pagination'=>$pagination,
+			'count_unfinish'=>$count_unfinish,
         );
         $this->assign($body);
         $this->display();
