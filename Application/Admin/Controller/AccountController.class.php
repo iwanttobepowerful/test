@@ -69,8 +69,15 @@ class AccountController extends Controller {
 				}
 				
 			}
-			session('admin_auth', $admin);
-			$rs['msg'] = 'succ';
+			//单点登录，更新user_token的值
+			$token=md5($username.'#$@%!^*'.date("Y-m-d H:i:s").$yzm);
+			//dump($token);die;
+            $updatesucc=D("common_system_user")->where("id=".$admin['id'])->save(array("token"=>$token));
+            $admin1 = D("common_system_user")->where($where)->find();
+            session('admin_auth', $admin1);
+            if($updatesucc !== false){
+                $rs['msg'] = 'succ';
+            }
 		}else{
 			$rs['msg'] = "账号或密码错误！";
 		}

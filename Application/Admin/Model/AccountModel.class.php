@@ -6,8 +6,14 @@ class AccountModel extends Model{
     public function checkLogin(){
         $admin_auth = session("admin_auth");
         if($admin_auth){
-            return $admin_auth;
+            $token=D("common_system_user")->where("id=".$admin_auth['id'])->field('token')->find();
+            $user_token = $admin_auth['token'];
+            if($token['token'] == $user_token) {
+                return $admin_auth;
+            }
+
         }
+        session('admin_auth',null);
         $loginUrl = U('/admin/account/login');
         @header("Location:{$loginUrl}");
     }
