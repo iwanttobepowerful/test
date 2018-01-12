@@ -132,7 +132,11 @@ class AuditController extends Controller {
                     $rs['msg'] = 'succ';
                 }
             } else {
-                $data1['status'] = 8;
+                $data1=array(
+                    'status'=>8,
+                    'isaudit'=>0,
+                    'internalpass'=>0,
+                );
                 if (D("contract_flow")->where("centreno='{$centreno}'")->save($data1) and D("report_feedback")->where("id=" . $id)->save($data)) {
                     $rs['msg'] = 'succ';
                 }
