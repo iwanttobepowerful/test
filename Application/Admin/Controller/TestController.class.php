@@ -460,13 +460,13 @@ class TestController extends Controller{
             "path"=>$fileurl,
             'modify_time'=>date("Y-m-d H:i:s"),
         );
-        $pdf = convert2Pdf(ROOT_PATH,$data['path'],$centreno);
-        
+        //$pdf = convert2Pdf(ROOT_PATH,$data['path'],$centreno);
+
         $imgFiles = array();//delete image
         //$distfile = "/Public/attached/2017-11-21/SJ-4-77_2017_01.pdf";
         //转image,在测试服务器上测试，本地需要配置环境
         //demo
-        $imageFiles = convertPdf2Image(ROOT_PATH,$pdf,$centreno);
+        $imageFiles = convertPdf2Image(ROOT_PATH,$data['path'],$centreno);
         if($imageFiles){
             //转换成功,合并二维码
             /*
@@ -538,10 +538,6 @@ class TestController extends Controller{
                 waterMark($tmpSavefile,'./Public/static/images/sign.png',$tmpSavefile2,array(350,0));
                 @rename($tmpSavefile2,$imageFiles[1]);               
 //加水印
-                /*$base = pathinfo($imageFiles[]);
-                $tmpSavefile4 = $base['dirname'] . '/'.$base['filename'].'-sign.'.$base['extension'];
-                waterMark($imageFiles[],'./Public/static/images/shuiyin.png',$tmpSavefile4,array(350,1200));
-                $imgFiles[] = $tmpSavefile4;*/
 
                 //再转换成pdf
                 $signPdf = './Public/attached/report/'.$centreno.'-sign.pdf';
@@ -550,7 +546,7 @@ class TestController extends Controller{
                 $imgFiles[] = $tmpSavefile;
                 $imgFiles[] = $tmpSavefile2;
             }
-            $data['pdf_path'] = $pdf;
+            $data['pdf_path'] = $data['path'];
             $data['pdf_sign_path'] = substr($signPdf,1);
 
 

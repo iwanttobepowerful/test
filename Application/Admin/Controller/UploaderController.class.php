@@ -16,7 +16,7 @@ class UploaderController extends Controller {
     public function word($return=false){
         $upload = new \Think\Upload();
         $upload->maxSize   =    0;//不限制上传大小
-        $upload->exts      =     array('doc','docx','docm','dotm','txt','dot');
+        $upload->exts      =     array('doc','docx','docm','dotm','txt','dot','pdf');
         $upload->rootPath  =     './Public/attached/'; // 设置附件上传根目录
         $upload->savePath  =     '';
         $upload->saveName = 'time';
