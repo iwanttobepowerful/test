@@ -100,6 +100,7 @@ class ReportController extends Controller
         if($user==8 || $if_admin==1 || $user==13) {
             $data=array(
                 'status'=>7,
+                'ifback'=>2,
                 'verify_user_id'=>$userid,
                 'verify_time'=>date("Y-m-d H:i:s"),
 

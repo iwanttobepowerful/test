@@ -181,18 +181,43 @@ class TestController extends Controller{
         $pagesize = 10;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
-        $result=M('contract_flow')->where($where)
+        $list=M('contract_flow')->where($where)
             ->join('work_inform_form ON contract_flow.centreNo = work_inform_form.centreNo')//从工作通知单取数据
             ->join('contract as a on contract_flow.centreno=a.centreno')
             ->field('contract_flow.takelist_user_id,contract_flow.status,work_inform_form.workDate,work_inform_form.centreNo,work_inform_form.sampleName,work_inform_form.testCreiteria,a.centreno1,a.centreno2,a.centreno3')
             ->order('work_inform_form.workDate desc,work_inform_form.id desc')
             ->limit("{$offset},{$pagesize}")->select();//从合同表!!!!里取出对应中心编号的信息
+        if($list){
+            $con_list = array();//反馈
+            foreach($list as $contract){
+                array_push($con_list,"'".$contract['centreno']."'");
+            }
+            $centreno_str = implode(',',$con_list);
+            $no_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where if_report=0 and centreNo in ('.$centreno_str.') group by centreNo)')->group('centreNo')->select();
+            $con_list = array();
+            if($no_feed_list){
+                foreach($no_feed_list as $no_feed){
+                    $con_list[$no_feed['centreno']]	= $no_feed;
+                }
+            }
+            foreach($list as $key=>$val){
+                if($con_list[$val['centreno']]){
+                    $val['sub_status'] = $con_list[$val['centreno']]['status'];
+                    $val['if_outer'] = $con_list[$val['centreno']]['if_outer'];
+                }else{
+                    $val['sub_status'] = -1;
+                    $val['if_outer'] = -1;
+                }
+                $list[$key] = $val;
+            }
+        }
+        //dump($list);die;
         $count = D("contract_flow")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
         $pagination= $Page->show();// 分页显示输出
         $body=array(
-            'lists'=>$result,
+            'lists'=>$list,
             'pagination'=>$pagination,
             'userid'=>$userid,
             'view'=>$view,

@@ -47,13 +47,15 @@
                                 <a href="{:U('/admin/test/recordPictureUp')}?id={$one.centreno}" class="btn btn-primary btn-xs">检测图片上传</a>
 
                                 <if condition="$one[status] eq 7 or $one[status] eq 0">
-                                    <a herf="javascript:void(0);" class="btn btn-success btn-xs" onclick="allSave('{$one.centreno}')">上传完毕</a>
+                                    <if condition="($one[sub_status]==0 or $one[sub_status]==1) and ($one[if_outer]==0)"><button class="btn btn-success btn-xs" onclick="allSave('{$one.centreno}')" disabled>上传完毕</button>
+                                        <else />
+                                        <button class="btn btn-success btn-xs" onclick="allSave('{$one.centreno}')">上传完毕</button></if>
                                     <span style="color: orangered">正在检测中...</span>
                                 <else />
                                     <span style="color: green">检测完毕</span></if>
                                 <elseif condition="($one[status] eq 0) AND ($one[takelist_user_id] eq 0)"/>
                                     <a href="{:U('/admin/test/infoShow')}?id={$one.centreno}" class="btn btn-primary btn-xs">检测工作通知单</a>
-                                    <a href="javascript:void(0);" onclick="takeList('{$one.centreno}')" class="btn btn-primary btn-xs">接单</a>
+                                <if condition="($one[sub_status]==0 or $one[sub_status]==1) and ($one[if_outer]==0)"><button onclick="takeList('{$one.centreno}')" class="btn btn-primary btn-xs" disabled>接单</button><else /><button onclick="takeList('{$one.centreno}')" class="btn btn-primary btn-xs">接单</button></if>
                                     <else />
                                     <a class="btn btn-primary btn-xs disabled">已被接单</a>
                             </if>
