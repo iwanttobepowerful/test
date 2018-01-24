@@ -51,8 +51,13 @@
                     </td>
                     <td>
                         <if condition="$vo[status] eq 4">
+                            <if condition="$vo[sub_status]==0 or $vo[status]==1">
+                                <button name="btn_change"  class="btn btn-success btn-xs" disabled><i class="glyphicon glyphicon-ok-circle"></i>签发</button>
+                                <button name="btn_change" class="btn btn-danger btn-xs" disabled><i class="glyphicon glyphicon-remove-circle"></i>退回</button>
+                                <else />
                             <button name="btn_change" onclick="onUpdate({$vo.id})" class="btn btn-success btn-xs" {$view}><i class="glyphicon glyphicon-ok-circle"></i>签发</button>
                             <button name="btn_change" onclick="onBack({$vo.id})" class="btn btn-danger btn-xs" {$view}><i class="glyphicon glyphicon-remove-circle"></i>退回</button>
+                            </if>
                         </if>
                     </td>
                     <td>

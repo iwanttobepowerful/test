@@ -407,18 +407,40 @@ class TestController extends Controller{
             //
         }else{
         $where .= " and SUBSTR(contract_flow .centreno,7,1) = '{$department}'";}
-        $result=D("contract_flow ")->where($where)
+        $list=D("contract_flow ")->where($where)
             ->join('left join contract as a on contract_flow .centreno=a.centreno left join test_report as t on contract_flow .centreno=t.centreno')
             ->field('contract_flow .*,a.*,t.path,t.doc_path,t.pdf_path')
             ->order('contract_flow .report_time desc,a.id desc')->limit("{$offset},{$pagesize}")->select();
             //当已经生成报告，状态为1的时候，才能上传检测报告
+        if($list){
+            $con_list = array();//反馈
+            foreach($list as $contract){
+                array_push($con_list,"'".$contract['centreno']."'");
+            }
+            $centreno_str = implode(',',$con_list);
+            $no_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where centreNo in ('.$centreno_str.') group by centreNo)')->group('centreNo')->select();
+            $con_list = array();
+            if($no_feed_list){
+                foreach($no_feed_list as $no_feed){
+                    $con_list[$no_feed['centreno']]	= $no_feed;
+                }
+            }
+            foreach($list as $key=>$val){
+                if($con_list[$val['centreno']]){
+                    $val['sub_status'] = $con_list[$val['centreno']]['status'];
+                }else{
+                    $val['sub_status'] = -1;
+                }
+                $list[$key] = $val;
+            }
+        }
         $count = D("contract_flow")->where($where)->count();//!!!!!!!!!!!!!!
         $Page       = new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
         $pagination       = $Page->show();// 分页显示输出
             $body=array(
                 'pagination'=>$pagination,
-                'lists'=>$result,
+                'lists'=>$list,
             );
             $this->assign($body);
         $this->display();

@@ -1294,10 +1294,17 @@ class ContractController extends Controller
             }
             $centreno_str = implode(',',$con_list);
             $no_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where if_report=1 and centreNo in ('.$centreno_str.') group by centreNo ) ')->group('centreNo')->select();
+            $to_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where if_report=0 and centreNo in ('.$centreno_str.') group by centreNo ) ')->group('centreNo')->select();//查前台是否申请修改
             $con_list = array();
+            $feed_list =array();
             if($no_feed_list){
                 foreach($no_feed_list as $no_feed){
                     $con_list[$no_feed['centreno']]	= $no_feed;
+                }
+            }
+            if($to_feed_list){
+                foreach($to_feed_list as $to_feed){
+                    $feed_list[$to_feed['centreno']]= $to_feed;
                 }
             }
             foreach($list as $key=>$val){
@@ -1310,8 +1317,20 @@ class ContractController extends Controller
                 }
                 $list[$key] = $val;
             }
+            foreach($list as $key=>$num){
+                if($feed_list[$num['centreno']]){
+                    $num['to_status'] = $feed_list[$num['centreno']]['status'];
+                    $num['if_outer'] = $feed_list[$num['centreno']]['if_outer'];
+                }else{
+                    $num['to_status'] = -1;
+                    $num['if_outer'] = -1;
+                }
+                $list[$key] = $num;
+            }
         }
-       //dump($list);die;
+        //dump($no_feed_list);
+        //dump($to_feed_list);
+      // dump($list);die;
         $count = D("contract_flow as c")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");

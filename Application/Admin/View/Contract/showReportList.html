@@ -61,7 +61,8 @@
                         </if>
                         <if condition="$if_edit==1">
                         <if condition="$con['status']==8">
-                            <p></p><a href="/admin/TestReport/seleteKey?mod={$con.centreno}" class="btn btn-primary btn-xs">生成报告</a></if></if>
+                            <p></p><if condition="($con[to_status]==0 or $con[to_status]==1) and ($con[if_outer]==0)"><button  class="btn btn-primary btn-xs" disabled>生成报告</button><else />
+                            <a href="/admin/TestReport/seleteKey?mod={$con.centreno}" class="btn btn-primary btn-xs">生成报告</a></if></if></if>
                         <!--<if condition="$con['status'] eq 6">
                             <a href="javascript:void(0);" class="btn btn-info btn-xs" name="{$con.pdf_path}" onclick="return Check(this);">检测报告</a>
                         </if>-->
@@ -73,7 +74,9 @@
                             <a href="{$con.qrcode_path}" class="btn btn-primary btn-xs" download="{$con.centreno}">下载二维码</a><p></p>
                         </if>
                         <if condition="$con['status']==8 and $con['doc_path'] and !($con['sub_status'] == 1 and $con['if_report'] ==1)">
-                            <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="confirmReport('{$con.centreno}')" >确认</a><p></p></if>
+                            <if condition="($con[to_status]==0 or $con[to_status]==1) and ($con[if_outer]==0)">
+                                <button  class="btn btn-primary btn-xs" disabled>确认</button><p></p><else />
+                                <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="confirmReport('{$con.centreno}')" >确认</a><p></p></if></if>
                             <if condition="$con['status']==8 and $con['doc_path'] and ($con['sub_status'] == 1 and $con['if_report'] ==1)">
                                 <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="editconfirmReport('{$con.centreno}')" >修改完毕</a><p></p></if>
 

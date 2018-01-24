@@ -49,6 +49,32 @@ class ReportController extends Controller
             ->limit("{$offset},{$pagesize}")
             ->order('contract_flow.report_time desc,contract_flow.id desc')->select();
         //dump($where);die;
+        if($rs){
+            $con_list = array();//反馈
+            foreach($rs as $contract){
+                array_push($con_list,"'".$contract['centreno']."'");
+            }
+            $centreno_str = implode(',',$con_list);
+            $no_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where centreNo in ('.$centreno_str.') group by centreNo)')->group('centreNo')->select();
+            $con_list = array();
+            if($no_feed_list){
+                foreach($no_feed_list as $no_feed){
+                    $con_list[$no_feed['centreno']]	= $no_feed;
+                }
+            }
+            foreach($rs as $key=>$val){
+                if($con_list[$val['centreno']]){
+                    $val['sub_status'] = $con_list[$val['centreno']]['status'];
+                    $val['if_outer'] = $con_list[$val['centreno']]['if_outer'];
+                    $val['if_report'] = $con_list[$val['centreno']]['if_report'];
+                }else{
+                    $val['sub_status'] = -1;
+                    $val['if_outer'] = -1;
+                    $val['if_report'] = -1;
+                }
+                $rs[$key] = $val;
+            }
+        }
         $count = D("contract_flow")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
@@ -222,6 +248,32 @@ class ReportController extends Controller
             ->field('a.id,a.status,a.internalpass,a.centreNo,a.inner_sign_time,a.external_sign_time,a.inner_sign_user_id,a.verify_user_id,a.verify_time,a.ifback,b.name,c.tplno,c.pdf_path,c.path,f.name as innername,y.name as externalname,con.centreno1,con.centreno2,con.centreno3')
             ->limit("{$offset},{$pagesize}")
             ->order($orderby)->select();
+        if($rs){
+            $con_list = array();//反馈
+            foreach($rs as $contract){
+                array_push($con_list,"'".$contract['centreno']."'");
+            }
+            $centreno_str = implode(',',$con_list);
+            $no_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where centreNo in ('.$centreno_str.') group by centreNo)')->group('centreNo')->select();
+            $con_list = array();
+            if($no_feed_list){
+                foreach($no_feed_list as $no_feed){
+                    $con_list[$no_feed['centreno']]	= $no_feed;
+                }
+            }
+            foreach($rs as $key=>$val){
+                if($con_list[$val['centreno']]){
+                    $val['sub_status'] = $con_list[$val['centreno']]['status'];
+                    $val['if_outer'] = $con_list[$val['centreno']]['if_outer'];
+                    $val['if_report'] = $con_list[$val['centreno']]['if_report'];
+                }else{
+                    $val['sub_status'] = -1;
+                    $val['if_outer'] = -1;
+                    $val['if_report'] = -1;
+                }
+                $rs[$key] = $val;
+            }
+        }
         //dump($where);die;
         $count = D("contract_flow")->alias("a")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
@@ -394,7 +446,33 @@ class ReportController extends Controller
             ->field('c.id,c.status,c.centreno,c.inner_sign_time,b.name,a.productUnit,a.clientSign,a.telephone,a.postmethod,a.address,a.centreno1,a.centreno2,a.centreno3,t.pdf_sign_path')
             ->limit("{$offset},{$pagesize}")
             ->order('c.inner_sign_time desc,c.id desc')->select();
-        //查找条件为已经批准并且内部尚未签发的报告
+        //查找条件为已经批准并且外部尚未签发的报告
+        if($rs){
+            $con_list = array();//反馈
+            foreach($rs as $contract){
+                array_push($con_list,"'".$contract['centreno']."'");
+            }
+            $centreno_str = implode(',',$con_list);
+            $no_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where centreNo in ('.$centreno_str.') group by centreNo)')->group('centreNo')->select();
+            $con_list = array();
+            if($no_feed_list){
+                foreach($no_feed_list as $no_feed){
+                    $con_list[$no_feed['centreno']]	= $no_feed;
+                }
+            }
+            foreach($rs as $key=>$val){
+                if($con_list[$val['centreno']]){
+                    $val['sub_status'] = $con_list[$val['centreno']]['status'];
+                    $val['if_outer'] = $con_list[$val['centreno']]['if_outer'];
+                    $val['if_report'] = $con_list[$val['centreno']]['if_report'];
+                }else{
+                    $val['sub_status'] = -1;
+                    $val['if_outer'] = -1;
+                    $val['if_report'] = -1;
+                }
+                $rs[$key] = $val;
+            }
+        }
         $count = D("contract_flow as c")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
