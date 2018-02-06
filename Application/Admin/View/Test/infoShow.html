@@ -179,7 +179,7 @@
 					<td><span class="notice_txt">
 						{$one.testdepartment}
 					</span></td>
-					<td class="cn">水料比</td>
+					<td class="cn">料水比</td>
 					<td><span class="notice_txt">
                     	<if condition="$one[ration]">
                         	{$one.ration}
@@ -221,7 +221,7 @@
 						{$one.filler}
 					</span></td>
 					<td colspan="2" class="cn left_gone right_gone left_txt">&nbsp;&nbsp;填表日期：<span class="notice_txt">
-						<if condition="$one[filldate]">{$one.filldate|strtotime|date=Y年m月d日,###}<else/></if>
+						<if condition="$ifedit[collectdate]">{$ifedit.collectdate|strtotime|date=Y年m月d日,###}<else/></if>
 					</span></td>
 				</tr>
 			</table>
