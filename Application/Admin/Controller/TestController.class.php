@@ -152,6 +152,7 @@ class TestController extends Controller{
     }
 //检测记录
     public function recordPicture(){
+        $de=I("de",'A');
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $if_admin = $admin_auth['super_admin'];//是否是超级管理员
         $userid=$admin_auth['id'];
@@ -159,7 +160,24 @@ class TestController extends Controller{
         $department=$admin_auth['department'];//判断是哪个部门的
         $keyword = I("keyword");//获取参数
         $keyword = trim($keyword);
+        $begin_time = I("begin_time");
+        $end_time = I("end_time");
+        $sortby=I("sortby");
         $where="1=1";
+        if ($de=='A'){
+            $where .=" and contract_flow.status in('0','7') ";
+        }
+        elseif ($de=='B'){
+            $where .=" and contract_flow.status  not in('0','7') ";
+        }
+        if($sortby==1){
+            $begin_time && $where .=" and date_format(work_inform_form.workDate,'%Y-%m-%d') >='{$begin_time}'";
+            $end_time && $where .=" and date_format(work_inform_form.workDate,'%Y-%m-%d') <='{$end_time}'";
+        }
+        elseif($sortby==2){
+            $begin_time && $where .=" and date_format(contract_flow.takelist_all_time,'%Y-%m-%d') >='{$begin_time}'";
+            $end_time && $where .=" and date_format(contract_flow.takelist_all_time,'%Y-%m-%d') <='{$end_time}'";
+        }
         if($user==8||$user==15||$if_admin ==1){
             if(!empty($keyword)){
                 $where .=" and contract_flow.centreno like '%{$keyword}%'";
@@ -184,8 +202,8 @@ class TestController extends Controller{
         $list=M('contract_flow')->where($where)
             ->join('work_inform_form ON contract_flow.centreNo = work_inform_form.centreNo')//从工作通知单取数据
             ->join('contract as a on contract_flow.centreno=a.centreno')
-            ->field('contract_flow.takelist_user_id,contract_flow.status,work_inform_form.workDate,work_inform_form.centreNo,work_inform_form.sampleName,work_inform_form.testCreiteria,a.centreno1,a.centreno2,a.centreno3')
-            ->order('work_inform_form.workDate desc,work_inform_form.id desc')
+            ->field('contract_flow.back_time,contract_flow.back_reason,contract_flow.img_path,contract_flow.ifback,contract_flow.takelist_user_id,contract_flow.status,work_inform_form.workDate,work_inform_form.centreNo,work_inform_form.sampleName,work_inform_form.testCreiteria,a.centreno1,a.centreno2,a.centreno3')
+            ->order('contract_flow.back_time desc,work_inform_form.workDate desc,work_inform_form.id desc')
             ->limit("{$offset},{$pagesize}")->select();//从合同表!!!!里取出对应中心编号的信息
         if($list){
             $con_list = array();//反馈
@@ -221,6 +239,10 @@ class TestController extends Controller{
             'pagination'=>$pagination,
             'userid'=>$userid,
             'view'=>$view,
+            'de'=>$de,
+            'begin_time'=>$begin_time,
+            'end_time'=>$end_time,
+            'sortby'=>$sortby,
         );
         $this->assign($body);
         $this->display();
@@ -269,6 +291,30 @@ class TestController extends Controller{
         }
         $this->ajaxReturn($rs);
     }
+    //有退回的检测记录上传完毕按钮
+    public function doAllSave1(){
+        $centreno=I("centreno");
+        $sortby = I('sortby');
+        $where= "centreno='{$centreno}'";
+        $record=D('test_record')->where($where)->select();
+        if(empty($record)){
+            $rs['msg'] = 'error';
+            $this->ajaxReturn($rs);
+        }
+        $rs = array("msg"=>"fail");
+
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $userid=$admin_auth['id'];
+        $data=array(
+            'status'=>$sortby,
+            'ifback'=>0,
+            'takelist_all_time'=>date("Y-m-d H:i:s"),
+        );
+        if(D("contract_flow")->where($where)->save($data)){
+            $rs['msg'] = 'succ';
+        }
+        $this->ajaxReturn($rs);
+    }
     //检测记录上传图片
     public function recordPictureUp(){
         $admin_auth = session("admin_auth");//获取当前登录用户信息
@@ -286,7 +332,7 @@ class TestController extends Controller{
             $pic = D('test_record')->where("id=".$id)->find();
         }
         $result=D('test_record')
-            ->limit("{$offset},{$pagesize}")->where($where)->select();
+            ->limit("{$offset},{$pagesize}")->where($where)->order('name,id')->select();
         $status=D("contract_flow")->where($where)->find();
         $view =$status['status'];
         $count = D("test_record")->where($where)->count();//!!!!!!!!!!!!!!
@@ -324,13 +370,21 @@ class TestController extends Controller{
         $id = I("id",0,'intval');
         $centreno=I("centreno");//!!!!!!!!!!!!!!!!
         $imgurl = I("imgurl");
-        $remark = I("remark");
+        $filename = I('filename');
+        //截掉后缀名
+        $name = strpos($filename,".");
+        $filename = substr($filename,0,$name);
+
         $result = array("msg"=>"fail");
         if(empty($imgurl)){
             $result['msg'] = "无效的提交！";
             $this->ajaxReturn($result);
         }
-        $data = array("centreno"=>$centreno,"path"=>$imgurl,"remark"=>$remark,'lastmodifytime'=>date("Y-m-d H:i:s"));//!!!!!!!!!"centreno"=>$centreno,  'lastmodifytime'=>date("Y-m-d H:i:s")
+        $a = substr($imgurl, 0, 1);
+        if($a == '.'){
+            $imgurl = substr($imgurl,1);
+        }
+        $data = array("name"=>$filename,"centreno"=>$centreno,"path"=>$imgurl,'lastmodifytime'=>date("Y-m-d H:i:s"));//!!!!!!!!!"centreno"=>$centreno,  'lastmodifytime'=>date("Y-m-d H:i:s")
         $pic = D("test_record")->where("id=".$id)->find();
         if($pic){
             if(D("test_record")->where("id=".$pic['id'])->save($data)){
@@ -394,6 +448,7 @@ class TestController extends Controller{
     }
 //上传检测报告显示页面
     public function record(){
+        //phpinfo();die;
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $if_admin = $admin_auth['super_admin'];//是否是超级管理员
         $user=$admin_auth['gid'];//判断是哪个角色
@@ -410,7 +465,7 @@ class TestController extends Controller{
         $list=D("contract_flow ")->where($where)
             ->join('left join contract as a on contract_flow .centreno=a.centreno left join test_report as t on contract_flow .centreno=t.centreno')
             ->field('contract_flow .*,a.*,t.path,t.doc_path,t.pdf_path')
-            ->order('contract_flow .report_time desc,a.id desc')->limit("{$offset},{$pagesize}")->select();
+            ->order('contract_flow.back_time desc,contract_flow .report_time desc,a.id desc')->limit("{$offset},{$pagesize}")->select();
             //当已经生成报告，状态为1的时候，才能上传检测报告
         if($list){
             $con_list = array();//反馈
@@ -638,6 +693,28 @@ class TestController extends Controller{
         M()->startTrans();
         if(D("contract_flow")->where("centreno='{$centreno}'")->save($data1)){
             $rs['msg'] = "succ";
+            M()->commit();
+        }else{
+            M()->rollback();
+        }
+        $this->ajaxReturn($rs);
+    }
+    //退回后修改完毕提交
+    public function doUpd1(){
+        $centreno=I("centreno");
+        $sortby = I('sortby');
+        $rs = array("msg"=>"fail");
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $userid=$admin_auth['id'];
+        $data1=array(
+            'status'=>$sortby,
+            'ifback'=>0,
+            'uploadreport_user_id'=>$userid,
+            'uploadreport_time'=>date("Y-m-d H:i:s"),
+        );
+        M()->startTrans();
+        if(D("contract_flow")->where("centreno='{$centreno}'")->save($data1)){
+            $rs['msg'] = "操作成功！";
             M()->commit();
         }else{
             M()->rollback();

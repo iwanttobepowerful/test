@@ -1242,6 +1242,8 @@ class ContractController extends Controller
 	}
 	//报告管理下的合同列表
     public function showReportList(){
+        $de = I("de",'A');
+
         //判断角色，确定是否可以修改
         $admin_auth = session("admin_auth");
         $if_admin = $admin_auth['super_admin'];
@@ -1264,6 +1266,15 @@ class ContractController extends Controller
         $keyword = trim($keyword);
         $where="1=1";
         $keyword && $where .= " and c.centreNo like '%{$keyword}%'";
+        if($de =='A'){
+            $where .= " and c.status = 8";
+        }
+        elseif ($de =='B'){
+            $where .= " and c.status = 1";
+        }
+        else {
+            $where .= " and c.status != 8 and c.status != 1 ";
+        }
 
         if($user==8 || $user==15 || $user==13 || $if_admin==1){
             //
@@ -1282,11 +1293,9 @@ class ContractController extends Controller
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
 
-        //判断是接单还是签发
-        //$ifstatus =
-        $list = D("contract_flow as c")->field('if(c.id is null,-1,c.id) as flow_id,f.*,c.status,c.inner_sign_user_id,c.inner_sign_time,c.external_sign_time,c.takelist_user_id,c.takelist_time,u.name as takename,u1.name as innername,u2.name as externalname,v.doc_path,v.pdf_path,v.qrcode_path')
+        $list = D("contract_flow as c")->field('if(c.id is null,-1,c.id) as flow_id,f.*,c.back_reason,c.back_time,c.img_path,c.ifback,c.status,c.inner_sign_user_id,c.inner_sign_time,c.external_sign_time,c.takelist_user_id,c.takelist_time,u.name as takename,u1.name as innername,u2.name as externalname,v.doc_path,v.pdf_path,v.qrcode_path')
             ->join('left join contract as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on c.takelist_user_id=u.id LEFT JOIN common_system_user u2 on c.external_sign_user_id=u2.id LEFT JOIN common_system_user u1 on c.inner_sign_user_id=u1.id left join test_report as v on c.centreNo=v.centreNo ' )
-            ->where($where)->order('c.takelist_all_time desc,f.id desc')->limit("{$offset},{$pagesize}")->select();
+            ->where($where)->order('c.back_time desc,c.takelist_all_time desc,f.id desc')->limit("{$offset},{$pagesize}")->select();
         if($list){
             $con_list = array();//反馈
             foreach($list as $contract){
@@ -1338,6 +1347,7 @@ class ContractController extends Controller
 
         $body = array(
             "list"=>$list,
+            'de'=>$de,
             'pagination'=>$pagination,
             'if_edit'=>$if_edit,
             'begin_time'=>$begin_time,
@@ -1374,6 +1384,7 @@ class ContractController extends Controller
         $rs = array('msg'=>'fail');
         $centreno = I('back_centreno');
         $reason = I('back_reason');
+        $sortby = I('sortby');
         $a=D('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$centreno.'") and (status=0 or status=1)')->find();
         if(!empty($a)){
             if($a['if_report']==1){

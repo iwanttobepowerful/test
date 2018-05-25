@@ -14,7 +14,7 @@
 
  * GPL Ghostscript 9.19: **** Could not open temporary file /var/folders/r0/6br2l3h52nzgjtw30g7sdcfw0000gn/T/gs_C8J9yA
 
-*/
+ */
 
 namespace ImalH\PDFLib;
 
@@ -40,7 +40,7 @@ class PDFLib{
     private $gs_version = null;
     private $gs_is_64 = null;
     private $gs_path = null;
-	private $prefix;
+    private $prefix;
     public function __construct(){
 
         $this->resolution = 0;
@@ -53,7 +53,7 @@ class PDFLib{
         $this->imageDeviceCommand = "";
         $this->imageExtention = "";
         $this->pngDownScaleFactor = "";
-		$this->prefix = "";
+        $this->prefix = "";
         $this->setDPI(self::$MAX_RESOLUTION);
         $this->setImageFormat(self::$IMAGE_FORMAT_JPEG);
         $this->initSystem();
@@ -77,9 +77,9 @@ class PDFLib{
     public function setImageQuality($jpeg_quality){
         $this->jpeg_quality = $jpeg_quality;
     }
-	public function setPrefix($val){
-		$this->prefix = $val;
-	}
+    public function setPrefix($val){
+        $this->prefix = $val;
+    }
     public function setPageRange($start, $end){
         $this->page_start = $start;
         $this->page_end = $end;
@@ -103,9 +103,9 @@ class PDFLib{
 
     public function getNumberOfPages(){
         if($this->number_of_pages == -1){
-			if($this->is_os_win){
-				$this->pdf_path = str_replace('\\','/',$this->pdf_path);
-			}
+            if($this->is_os_win){
+                $this->pdf_path = str_replace('\\','/',$this->pdf_path);
+            }
             $pages = $this->executeGS('-q -dNODISPLAY -c "('.$this->pdf_path.') (r) file runpdfbegin pdfpagecount = quit"',true);
             $this->number_of_pages = intval($pages);
         }
@@ -121,7 +121,7 @@ class PDFLib{
         if(!(($this->page_end <= $this->getNumberOfPages()) && ($this->page_end >= $this->page_start))){
             $this->page_end = $this->getNumberOfPages();
         }
-		
+
 
         if(!($this->resolution <= self::$MAX_RESOLUTION)){
             $this->resolution = self::$MAX_RESOLUTION;
@@ -147,18 +147,18 @@ class PDFLib{
     public function makePDF($ouput_path_pdf_name, $imagePathArray){
         $imagesources ="";
         foreach ($imagePathArray as $singleImage) {
-			if($this->is_os_win){
-				$imagesources .= '('.str_replace('\\','/',$singleImage).')  viewJPEG showpage ';
-			}else{
-				$imagesources .= '('.$singleImage.')  viewJPEG showpage ';
-			}
+            if($this->is_os_win){
+                $imagesources .= '('.str_replace('\\','/',$singleImage).')  viewJPEG showpage ';
+            }else{
+                $imagesources .= '('.$singleImage.')  viewJPEG showpage ';
+            }
         }
-		if($this->is_os_win){
-			$ouput_path_pdf_name = str_replace('\\','/',$ouput_path_pdf_name);
-		}
+        if($this->is_os_win){
+            $ouput_path_pdf_name = str_replace('\\','/',$ouput_path_pdf_name);
+        }
         $psfile  = $this->getGSLibFilePath("viewjpeg.ps");
         $command = '-dBATCH -dNOPAUSE -sDEVICE=pdfwrite -o"'.$ouput_path_pdf_name.'" "'.$psfile.'" -c "'.$imagesources.'"';
-		$command_results = $this->executeGS($command);
+        $command_results = $this->executeGS($command);
 
         if(!$this->checkFilesExists("",[$ouput_path_pdf_name])){
             throw new \Exception("Unable to make PDF : ".$command_results[2],500);
@@ -191,9 +191,9 @@ class PDFLib{
                     $this->gs_version = doubleval($output[0]);
                 }
             }else{
-                $output = $this->execute('gs --version 2>&1');
+                $output = $this->execute('/usr/local/Cellar/ghostscript/9.22/bin/gs --version 2>&1');
                 if(!((is_array($output) && (strpos($output[0], 'is not recognized as an internal or external command') !== false)) || !is_array($output) && trim($output) == "")){
-                    $this->gs_command = "gs";
+                    $this->gs_command = "/usr/local/Cellar/ghostscript/9.22/bin/gs";
                     $this->gs_version = $output[0];
                     $this->gs_path = "/usr/local/share/ghostscript/".$this->gs_version;
                     $this->gs_is_64 = "NOT WIN";

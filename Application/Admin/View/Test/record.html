@@ -30,7 +30,12 @@
                             <if condition="$one[sub_status]==0 or $one[sub_status]==1">
                                 <button class="btn btn-success btn-xs" disabled>提交审核</button>
                                 <else />
-                                <a href="javascript:void(0);" class="btn btn-success btn-xs" onclick="doUpdate('{$one.centreno}')">提交审核</a></if></if>
+                                <if condition="$one['ifback'] neq 0 and $one['back_time']">
+                                    <a href="javascript:void(0);" class="btn btn-success btn-xs" onclick="onBack('{$one.centreno}','{$one.ifback}')">提交审核</a>
+                                    <else />
+                                <a href="javascript:void(0);" class="btn btn-success btn-xs" onclick="doUpdate('{$one.centreno}')">提交审核</a>
+                                </if>
+                                </if></if>
                     </td>
                 </tr>
             </volist>
@@ -42,6 +47,43 @@
 
     </div>
 </div>
+
+<div>
+    <!-- 模态框（Modal) -->
+    <div class="modal fade" id="editModal3" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="form-horizontal"  action="" method="post">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" >返回报告</h4>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13"></label>
+                        <div class="col-sm-7">
+                            <input type="hidden" name="subid" id="subid" value="" />
+
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">报告将返回至:</label>
+                        <div class="col-sm-7">
+                            <select class="form-control input-sm" name="sortby" id="sortby">
+                                <option value="2" >审核员</option>
+                                <option value="4" id="gaizhang" >盖章人员</option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary" onclick="Feedback()">确定</button>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
 </div>
 <script type="text/javascript">
     function doUpdate(centreno) {
@@ -78,6 +120,31 @@
         }
         //alert(newurl);
         window.open(newurl);
+    }
+    function onBack(centreno,ifback){
+        var modal = $("#editModal3");
+        modal.find("input[name='subid']").val(centreno);
+        modal.find("input[name='modid']").val(0);
+        if(ifback == 2){
+            $("#gaizhang").attr("disabled","disabled");
+        }
+        modal.modal();
+    }
+    function Feedback(){
+        var centreno = $("#subid").val();
+        var sortby = $("#sortby").val();
+        $.ajax({
+            url: "{:U('/admin/Test/doUpd1')}",
+            dataType: 'json',
+            data:{'centreno':centreno,'sortby':sortby},
+            beforeSubmit: function(){
+                return true;
+            },
+            success: function (re) {
+                alert(re.msg);
+                window.location.reload();
+            }
+        });
     }
     </script>
 <include file="Common:footer" />

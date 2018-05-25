@@ -24,16 +24,31 @@ class ReportController extends Controller
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
         $useraudit=$admin_auth['audit'];
-        $where="contract_flow.status =2";
+        if($user==16){
+            $de=I("de",'A');
+            if ($de=='A') {
+                $where = "contract_flow.status =2 ";
+            }
+            elseif ($de=='B'){
+                $where =" contract_flow.status in('3','4','5','6')";
+            }
+        }
+        else{
+            $where="contract_flow.status =2";
+        }
         if(!empty($useraudit)){
             $data=explode(',',$useraudit);
-            foreach($data as $v){
-                $s .="'".$v."',";
-            }
-            $s=substr($s,0,-1);//利用字符串截取函数消除最后一个逗号
-            $where .=" and SUBSTR(contract_flow.centreno,7,1) in({$s})";
+                foreach($data as $v){
+                    $s .="'".$v."',";
+                }
+                $s=substr($s,0,-1);//利用字符串截取函数消除最后一个逗号
+                $where .=" and SUBSTR(contract_flow.centreno,7,1) in({$s})";
+
         }
-        if($user==8 || $if_admin==1 || $user==13) {//只有领导，审核人员，超级管理员才能审核
+        elseif(($user==16 or $user==13) and empty($useraudit)){//要是角色是审核员，但是什么都不选，默认看不到
+            $where="contract_flow.status = -100";
+        }
+        if($user==8 || $if_admin==1 || $user==13 || $user==16) {//只有领导，审核人员，超级管理员，审核批准员才能审核
             $view="";
         }else{
             $view="disabled";
@@ -45,9 +60,9 @@ class ReportController extends Controller
         $contract_flow=M("contract_flow");//实例化对象
         $rs=$contract_flow->where($where)
             ->join('left join common_system_user ON contract_flow.uploadreport_user_id = common_system_user.id left join test_report on contract_flow.centreno=test_report.centreno left join contract as a on contract_flow.centreno=a.centreno')
-            ->field('contract_flow.id,contract_flow.centreNo,contract_flow.status,contract_flow.uploadreport_time,common_system_user.name,test_report.pdf_path,a.centreno1,a.centreno2,a.centreno3')
+            ->field('contract_flow.back_reason,contract_flow.img_path,contract_flow.ifback,contract_flow.id,contract_flow.centreNo,contract_flow.status,contract_flow.uploadreport_time,common_system_user.name,test_report.pdf_path,a.centreno1,a.centreno2,a.centreno3')
             ->limit("{$offset},{$pagesize}")
-            ->order('contract_flow.report_time desc,contract_flow.id desc')->select();
+            ->order('contract_flow.back_time desc,contract_flow.report_time desc,contract_flow.id desc')->select();
         //dump($where);die;
         if($rs){
             $con_list = array();//反馈
@@ -79,11 +94,24 @@ class ReportController extends Controller
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
         $pagination= $Page->show();// 分页显示输出
-        $body = array(
-            'rs'=>$rs,
-            'pagination'=>$pagination,
-            'view'=>$view,
-        );
+        if($user==16){
+            $body = array(
+                'rs'=>$rs,
+                'de'=>$de,
+                'pagination'=>$pagination,
+                'view'=>$view,
+                'user'=>$user
+            );
+        }
+        else{
+            $body = array(
+                'rs'=>$rs,
+                'pagination'=>$pagination,
+                'view'=>$view,
+                'user'=>$user
+            );
+        }
+
         $this->assign($body);
         $this->display();
     }
@@ -96,10 +124,11 @@ class ReportController extends Controller
         $userid=$admin_auth['id'];
         $if_admin = $admin_auth['super_admin'];
         //$role = D('common_role')->where('id='.$user)->find();
-        if($user==8 || $if_admin==1 || $user==13) {
+        if($user==8 || $if_admin==1 || $user==13 || $user==16) {
         $data=array(
             'status'=>4,
             'isaudit'=>1,
+            'ifback'=>0,
             'verify_user_id'=>$userid,
             'verify_time'=>date("Y-m-d H:i:s"),
         );
@@ -117,24 +146,45 @@ class ReportController extends Controller
     //审核不通过，退回
     public function notApprove(){
         $id =I("id",0,'intval');
+        $sortby= I('sortby');
+        $reason = I('reason');
+        $img_path = I('imgurl');
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
         //$role = D('common_role')->where('id='.$user)->find();
-        if($user==8 || $if_admin==1 || $user==13) {
-            $data=array(
-                'status'=>7,
-                'ifback'=>2,
-                'verify_user_id'=>$userid,
-                'verify_time'=>date("Y-m-d H:i:s"),
+        if($user==8 || $if_admin==1 || $user==13 || $user==16) {
+            if($sortby ==1){
+                $data=array(
+                    'status'=>7,
+                    'ifback'=>2,
+                    'back_time'=>date("Y-m-d H:i:s"),
+                    'back_reason'=>$reason,
+                    'img_path'=>$img_path,
+                    'verify_user_id'=>$userid,
+                    'verify_time'=>date("Y-m-d H:i:s"),
 
-            );
+                );
+            }
+            else{
+                $data=array(
+                    'status'=>8,
+                    'ifback'=>2,
+                    'back_time'=>date("Y-m-d H:i:s"),
+                    'back_reason'=>$reason,
+                    'img_path'=>$img_path,
+                    'verify_user_id'=>$userid,
+                    'verify_time'=>date("Y-m-d H:i:s"),
+
+                );
+            }
+
             M()->startTrans();
             if(D("contract_flow")->where("id=".$id)->save($data)){
                 M()->commit();
-                $rs['msg'] = 'succ';
+                $rs['msg'] = '退回成功！';
             }
             else{
                 M()->rollback();
@@ -213,6 +263,7 @@ class ReportController extends Controller
     }
 //盖章签发
     public function internalIssue(){
+        $de = I("de",'A');
         $centreno = I("centreno");
         $centreno = trim($centreno);
         $begin_time = I("begin_time");
@@ -225,8 +276,17 @@ class ReportController extends Controller
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
-        $where="a.isaudit=1";
+        $where="a.isaudit=1";//审核过了
         $orderby = "a.verify_time desc";
+        if ($de=='A'){
+            $where .= " and a.status !=5 and a.status !=6";
+        }
+        elseif ($de=='B'){
+            $where .= " and a.status=5";
+        }
+        elseif ($de=='C'){
+            $where .= " and a.status=6";
+        }
         if(!empty($centreno)){
             $where .=" and a.centreno like'%{$centreno}%'";
         }
@@ -287,7 +347,7 @@ class ReportController extends Controller
             'end_time'=>$end_time,
             'sortby'=>$sortby,
             'centreno'=>$centreno,
-            'data'=>$data,
+            'de'=>$de,
         );
 
         $this->assign($body);
@@ -325,6 +385,9 @@ class ReportController extends Controller
     //签发不通过，退回修改
     public function doneBack(){
         $id =I("id",0,'intval');
+        $sortby= I('sortby');
+        $reason = I('reason');
+        $img_path = I('imgurl');
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
@@ -332,16 +395,55 @@ class ReportController extends Controller
         $if_admin = $admin_auth['super_admin'];
         //$role = D('common_role')->where('id='.$user)->find();
         if($if_admin==1 || $user==15) {
-            $data=array(
-                'status'=>3,//退回前台费用
-                'inner_sign_time'=>date("Y-m-d H:i:s"),
-                'inner_sign_user_id'=>$userid,
-                'ifback'=>1
-            );
+            if($sortby == 0){
+                $data=array(
+                    'status'=>3,//退回前台费用
+                    'back_reason'=>$reason,
+                    'img_path'=>$img_path,
+                    'inner_sign_time'=>date("Y-m-d H:i:s"),
+                    'inner_sign_user_id'=>$userid,
+                    'back_time'=>date("Y-m-d H:i:s"),
+                    'ifback'=>1
+                );
+            }
+            elseif($sortby == 1){
+                $data=array(
+                    'status'=>7,//退回实验员
+                    'back_reason'=>$reason,
+                    'img_path'=>$img_path,
+                    'inner_sign_time'=>date("Y-m-d H:i:s"),
+                    'inner_sign_user_id'=>$userid,
+                    'back_time'=>date("Y-m-d H:i:s"),
+                    'ifback'=>1
+                );
+            }
+            elseif($sortby == 2){
+                $data=array(
+                    'status'=>8,//退回编制员
+                    'back_reason'=>$reason,
+                    'img_path'=>$img_path,
+                    'inner_sign_time'=>date("Y-m-d H:i:s"),
+                    'inner_sign_user_id'=>$userid,
+                    'back_time'=>date("Y-m-d H:i:s"),
+                    'ifback'=>1
+                );
+            }
+            else{
+                $data=array(
+                    'status'=>2,//退回审核员
+                    'back_reason'=>$reason,
+                    'img_path'=>$img_path,
+                    'inner_sign_time'=>date("Y-m-d H:i:s"),
+                    'inner_sign_user_id'=>$userid,
+                    'back_time'=>date("Y-m-d H:i:s"),
+                    'ifback'=>1
+                );
+            }
+
             M()->startTrans();
             if(D("contract_flow")->where("id=".$id)->save($data)){
                 M()->commit();
-                $rs['msg'] = 'succ';
+                $rs['msg'] = '操作成功！';
             }
             else{
                 M()->rollback();
@@ -599,5 +701,33 @@ class ReportController extends Controller
         }
         $this->ajaxReturn($rs);
     }
+    //报告编制退回实验员
+    public function bianzhiBack()
+    {
+        $reason = I('reason');
+        $centreno = I('centreno');
+        $where = "centreno='{$centreno}'";
+        $rs = array("msg" => "fail");
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $userid = $admin_auth['id'];
+        $user = $admin_auth['gid'];//判断是哪个角色
+        $if_admin = $admin_auth['super_admin'];
+        $data = array(
+            'status' => 7,
+            'ifback'=>3,
+            'back_reason' => $reason,
+            'back_time'=>date("Y-m-d H:i:s"),
 
+        );
+
+        M()->startTrans();
+        if (D("contract_flow")->where($where)->save($data)) {
+            M()->commit();
+            $rs['msg'] = '退回成功！';
+        } else {
+            M()->rollback();
+        }
+        $this->ajaxReturn($rs);
+
+    }
 }

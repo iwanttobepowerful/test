@@ -3,6 +3,15 @@
     <include file="Common:breadcrumb" />
     <div id="page-inner" class="container">
         <!-- 主要模板 starting -->
+        <if condition="$user eq 16">
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active" id="de_A" name="de"><a href="/admin/report/auditReport?de=A" >未出报告</a></li>
+                <li role="presentation" id="de_B" name="de"><a href="/admin/report/auditReport?de=B">已出报告</a></li>
+                <input type="hidden" id="de_choose" value="{$de}"/>
+            </ul>
+            <p></p>
+        </if>
+
         <table class="table table-bordered table-striped table-hover" id="tb">
             <thead>
             <th width="6%">序号</th>
@@ -24,6 +33,9 @@
                     <td>
                         <if condition="$vo[centreno1] or $vo[centreno2] or $vo[centreno3]">
                             <a href="{:U('/admin/contract/reWriteTest')}?id={$vo.centreno}" class="btn btn-info btn-xs">更改单</a></if>
+                        <if condition="$vo['back_reason']">
+                            <button onclick="module('{$vo[back_reason]}','{$vo[img_path]}')" class="btn btn-warning btn-xs">退回原因</button>
+                        </if>
                         <a href="/admin/manager/contractDetail?id={$vo.centreno}" class="btn btn-info btn-xs">检验受理合同</a>
                         <if condition="mb_substr($vo[centreno],7,1)=='C'">
                             <a href="{:U('/admin/test/sampleShow')}?id={$vo.centreno}" class="btn btn-info btn-xs">抽样单</a></if>
@@ -46,6 +58,8 @@
                     </td>
                     <td><if condition="$vo['status'] eq 2">
                         <span>未审核</span>
+                        <else/>
+                        <span>已审核</span>
                         </if>
                     </td>
                 </tr>
@@ -60,8 +74,147 @@
 
     </div>
 </div>
+
+<div>
+    <!-- 模态框（Modal) -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="form-horizontal" id="aform" action="" method="post">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="createModalLabel">退回原因</h4>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13"></label>
+                        <div class="col-sm-7">
+                            <input type="hidden" name="id" id="id" value="" />
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">退回理由</label>
+                        <div class="col-sm-7">
+                            <textarea id="back_reason" name="back_reason" class="form-control" rows="5" required></textarea>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">上传问题截图</label>
+                        <div class="col-sm-7">
+                            <div class="face" id="attachment" style="width: 120px;height: 80px;" onclick="onFileUpload()"><img src="" onerror="this.src='__PUBLIC__/static/images/default-timg.gif'" style="height: 100%;" /></div>
+                            <input type="hidden" name="imgurl" value="" />
+                            <input type="file" name="file" onchange="ajaxFileUpload()" id="addfile" style="display:none;"  />
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">报告将退回至</label>
+                        <div class="col-sm-7">
+                            <select class="form-control input-sm" name="sortby" id="sortby">
+                                <option value="1" <php>if($sortby==1){echo 'selected';}</php>>实验员</option>
+                                <option value="2" <php>if($sortby==2){echo 'selected';}</php>>报告编制员</option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary" onclick="subFeedback()">确定</button>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
 </div>
+
+<div>
+    <!-- 模态框（Modal) -->
+    <div class="modal fade" id="editModal2" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="form-horizontal"  action="" method="get">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" >退回原因</h4>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13"></label>
+                        <div class="col-sm-7">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">退回理由</label>
+                        <div class="col-sm-7">
+                            <p id="reason" name="reason" class="form-control" rows="5" ></p>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">问题截图</label>
+                        <div class="col-sm-7">
+                            <a href="javascript:void(0);" id=yuantu name="" onclick="return Checkorgin(this);"><img src="" onerror="this.src='__PUBLIC__/static/images/default-timg.gif'" style="height: 100%;" id="turn_img"/></a>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</div>
+<script src="__PUBLIC__/static/js/jquery.form.js"></script>
+<script src="__PUBLIC__/static/js/ajaxfileupload.js"></script>
 <script type="text/javascript">
+    $(function(){
+        $('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true });
+        var de = $("#de_choose").val();
+        $("li[name='de']").removeClass("active");
+        $("#de_"+de).addClass("active");
+    });
+    function ajaxFileUpload(){
+        var modal = $("#editModal");
+        var file = $("#addfile").val();
+        if(file){
+            $.ajaxFileUpload({
+                url: "{:U('Uploader/start')}",
+                secureuri: false,
+                fileElementId: 'addfile',
+                dataType: 'JSON',
+                success: function (data, status) {
+                    var ret = JSON.parse(data);
+
+                    $("#addfile").val("");
+
+                    if(ret.info=='succ'){
+                        var modal = $("#editModal");
+                        $("input[name='imgurl']").val(ret.url);
+
+                        $("#attachment img").attr("src",ret.url);
+
+                    }else{
+                        var _options = {"text":"上传失败","flag":"error"};
+                        if(ret.info) _options.text = ret.info;
+                        doAlertDialog(_options);
+                    }
+
+                },
+                error: function (data, status, e){
+                    var _options = {"text":"上传失败","flag":"error"};
+                    doAlertDialog(_options);
+                }
+            });
+        }
+        return false;
+    }
+
+    function onFileUpload() {
+        $('#addfile').click();
+        return false;
+    }
     function onUpdate(id){
         if(!id) return false;
         var _options = {"flag":"error","text":"该项目将通过审核","buttons":{"ok":{"action":function(){pass(id);}},"cancel":{}}};
@@ -86,27 +239,35 @@
         });
     }
     function onBack(id){
-        if(!id) return false;
-        var _options = {"flag":"error","text":"该项目将被退回修改","buttons":{"ok":{"action":function(){notPass(id);}},"cancel":{}}};
-        doConfirmDialog(_options);
+        var modal = $("#editModal");
+        $("#back_reason").val("");
+        modal.find("input[name='id']").val(id);
+        modal.find("input[name='modid']").val(0);
+        modal.modal();
     }
-    function notPass(id){
-        $.ajax({
-            type:"post",
-            url:"{:U('/admin/Report/notApprove')}",
-            data:{"id":id},
-            dataType:"json",
-            success:function(ret){
-                if(ret.msg=='succ'){
-                    var _options = {"text":"操作成功！","action":function(){window.location.reload();}};
-                    doAlertDialog(_options);
-                }else{
-                    var _options = {"text":"Error！"};
-                    if(ret.msg) _options.text = ret.msg;
-                    doAlertDialog(_options);
+    function subFeedback(){
+        var id = $("#id").val();
+        var reason = $("#back_reason").val();
+        var sortby = $("#sortby").val();
+        var imgurl =  $("input[name='imgurl']").val();
+        if(reason){
+            $.ajax({
+                url: "{:U('/admin/Report/notApprove')}",
+                dataType: 'json',
+                data:{'id':id,'reason':reason,'sortby':sortby,'imgurl':imgurl},
+                beforeSubmit: function(){
+                    return true;
+                },
+                success: function (re) {
+                    alert(re.msg);
+                    window.location.reload();
                 }
-            }
-        });
+            });
+        }
+        else {
+            alert("退回原因不能为空");
+            window.location.reload();
+        }
     }
     function recordDetail(centreno) {
         var newurl='/admin/test/doPrint.html?id='+centreno+'&type=2';
@@ -123,6 +284,21 @@
             var newurl=url;
         }
         //alert(newurl);
+        window.open(newurl);
+    }
+    //退回原因按钮模态框
+    function module(reason,imgpath){
+        var modal = $("#editModal2");
+        $("#reason").html(reason);
+        $("#turn_img").attr("src",imgpath);
+        $("#yuantu").attr("name",imgpath);
+        modal.modal();
+    }
+    //点击查看原图
+    function Checkorgin(path) {
+        var url=path.name;
+        if(!url) return false;//获取缩略图url
+        var newurl=url.replace("_thumb","");//重写
         window.open(newurl);
     }
 </script>
