@@ -60,7 +60,7 @@ class ReportController extends Controller
         $contract_flow=M("contract_flow");//实例化对象
         $rs=$contract_flow->where($where)
             ->join('left join common_system_user ON contract_flow.uploadreport_user_id = common_system_user.id left join test_report on contract_flow.centreno=test_report.centreno left join contract as a on contract_flow.centreno=a.centreno')
-            ->field('contract_flow.ifback,contract_flow.id,contract_flow.centreNo,contract_flow.status,contract_flow.uploadreport_time,common_system_user.name,test_report.pdf_path,a.centreno1,a.centreno2,a.centreno3')
+            ->field('contract_flow.ifback,contract_flow.gz_back,contract_flow.sh_back,contract_flow.bz_back,contract_flow.id,contract_flow.centreNo,contract_flow.status,contract_flow.uploadreport_time,common_system_user.name,test_report.pdf_path,a.centreno1,a.centreno2,a.centreno3')
             ->limit("{$offset},{$pagesize}")
             ->order('contract_flow.back_time desc,contract_flow.report_time desc,contract_flow.id desc')->select();
         //dump($where);die;
@@ -123,17 +123,22 @@ class ReportController extends Controller
         $user=$admin_auth['gid'];//判断是哪个角色
         $userid=$admin_auth['id'];
         $if_admin = $admin_auth['super_admin'];
+        $check = D('contract_flow')->where('id='.$id)->find();
+        $centreno =$check['centreno'];
+        $where1 = "centreno = '$centreno' and type = 2";
         //$role = D('common_role')->where('id='.$user)->find();
         if($user==8 || $if_admin==1 || $user==13 || $user==16) {
         $data=array(
             'status'=>4,
             'isaudit'=>1,
             'ifback'=>0,
+            'sh_back'=>0,
             'verify_user_id'=>$userid,
             'verify_time'=>date("Y-m-d H:i:s"),
         );
         M()->startTrans();
         if(D("contract_flow")->where("id=".$id)->save($data)){
+            D('back_report')->where($where1)->delete();
             M()->commit();
             $rs['msg'] = 'succ';
         }
@@ -211,6 +216,7 @@ class ReportController extends Controller
                 $data=array(
                     'status'=>7,
                     'ifback'=>2,
+                    'sh_back'=>1,
                     'back_time'=>date("Y-m-d H:i:s"),
                     'verify_user_id'=>$userid,
                     'verify_time'=>date("Y-m-d H:i:s"),
@@ -221,6 +227,7 @@ class ReportController extends Controller
                 $data=array(
                     'status'=>8,
                     'ifback'=>2,
+                    'sh_back'=>1,
                     'back_time'=>date("Y-m-d H:i:s"),
                     'verify_user_id'=>$userid,
                     'verify_time'=>date("Y-m-d H:i:s"),
@@ -353,7 +360,7 @@ class ReportController extends Controller
         }
         $rs = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."common_system_user b on a.verify_user_id=b.id","LEFT")->join(C("DB_PREFIX")."test_report c on a.centreno=c.centreno","LEFT")->join(C("DB_PREFIX")."common_system_user f on a.inner_sign_user_id=f.id","LEFT")->join(C("DB_PREFIX")."common_system_user y on a.external_sign_user_id=y.id","LEFT")->join(C("DB_PREFIX")."contract as con on a.centreno=con.centreno","LEFT")
             ->where($where)
-            ->field('a.id,a.status,a.internalpass,a.centreNo,a.inner_sign_time,a.external_sign_time,a.inner_sign_user_id,a.verify_user_id,a.verify_time,a.ifback,b.name,c.tplno,c.pdf_path,c.path,f.name as innername,y.name as externalname,con.centreno1,con.centreno2,con.centreno3')
+            ->field('a.id,a.status,a.internalpass,a.centreNo,a.inner_sign_time,a.external_sign_time,a.inner_sign_user_id,a.verify_user_id,a.verify_time,a.ifback,a.bz_back,a.sh_back,a.gz_back,b.name,c.tplno,c.pdf_path,c.path,f.name as innername,y.name as externalname,con.centreno1,con.centreno2,con.centreno3')
             ->limit("{$offset},{$pagesize}")
             ->order($orderby)->select();
         if($rs){
@@ -411,17 +418,21 @@ class ReportController extends Controller
         $userid=$admin_auth['id'];
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
-        //$role = D('common_role')->where('id='.$user)->find();
+       $check = D('contract_flow')->where('id='.$id)->find();
+       $centreno =$check['centreno'];
+       $where1 = "centreno = '$centreno' and type = 1";
         if($if_admin==1 || $user==15) {
             $data=array(
                 'status'=>5,
                 'internalpass'=>1,
                 'inner_sign_time'=>date("Y-m-d H:i:s"),
                 'inner_sign_user_id'=>$userid,
+                'gz_back'=>0,
                 'ifback'=>0
             );
             M()->startTrans();
             if(D("contract_flow")->where("id=".$id)->save($data)){
+                D('back_report')->where($where1)->delete();
                 M()->commit();
                 $rs['msg'] = 'succ';
             }
@@ -435,6 +446,8 @@ class ReportController extends Controller
         $id =I("id",0,'intval');
         $sortby= I('sortby');
         $reason = I('reason');
+        $check = D("contract_flow")->where("id=".$id)->find();
+        $centreno = $check['centreno'];
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
@@ -445,11 +458,18 @@ class ReportController extends Controller
             if($sortby == 0){
                 $data=array(
                     'status'=>3,//退回前台费用
-                    'back_reason'=>$reason,
                     'inner_sign_time'=>date("Y-m-d H:i:s"),
                     'inner_sign_user_id'=>$userid,
                     'back_time'=>date("Y-m-d H:i:s"),
+                    'gz_back'=>1,
                     'ifback'=>1
+                );
+                $data1=array(
+                    'type'=>1,//退回前台费用
+                    'back_reason'=>$reason,
+                    'back_time'=>date("Y-m-d H:i:s"),
+                    'back_to'=>0,
+                    'centreNo'=>$centreno
                 );
             }
             elseif($sortby == 1){
@@ -459,7 +479,15 @@ class ReportController extends Controller
                     'inner_sign_time'=>date("Y-m-d H:i:s"),
                     'inner_sign_user_id'=>$userid,
                     'back_time'=>date("Y-m-d H:i:s"),
+                    'gz_back'=>1,
                     'ifback'=>1
+                );
+                $data1=array(
+                    'type'=>1,//退回前台费用
+                    'back_reason'=>$reason,
+                    'back_time'=>date("Y-m-d H:i:s"),
+                    'back_to'=>7,
+                    'centreNo'=>$centreno
                 );
             }
             elseif($sortby == 2){
@@ -469,22 +497,38 @@ class ReportController extends Controller
                     'inner_sign_time'=>date("Y-m-d H:i:s"),
                     'inner_sign_user_id'=>$userid,
                     'back_time'=>date("Y-m-d H:i:s"),
+                    'gz_back'=>1,
                     'ifback'=>1
                 );
+                $data1=array(
+                    'type'=>1,//退回前台费用
+                    'back_reason'=>$reason,
+                    'back_time'=>date("Y-m-d H:i:s"),
+                    'back_to'=>8,
+                    'centreNo'=>$centreno
+                );
             }
-            else{
+            elseif($sortby ==3){
                 $data=array(
                     'status'=>2,//退回审核员
                     'back_reason'=>$reason,
                     'inner_sign_time'=>date("Y-m-d H:i:s"),
                     'inner_sign_user_id'=>$userid,
                     'back_time'=>date("Y-m-d H:i:s"),
+                    'gz_back'=>1,
                     'ifback'=>1
+                );
+                $data1=array(
+                    'type'=>1,//退回前台费用
+                    'back_reason'=>$reason,
+                    'back_time'=>date("Y-m-d H:i:s"),
+                    'back_to'=>2,
+                    'centreNo'=>$centreno
                 );
             }
 
             M()->startTrans();
-            if(D("contract_flow")->where("id=".$id)->save($data)){
+            if(D("contract_flow")->where("id=".$id)->save($data) and D("back_report")->add($data1)){
                 M()->commit();
                 $rs['msg'] = '操作成功！';
             }
@@ -758,13 +802,19 @@ class ReportController extends Controller
         $data = array(
             'status' => 7,
             'ifback'=>3,
-            'back_reason' => $reason,
             'back_time'=>date("Y-m-d H:i:s"),
 
         );
+        $data1 = array(
+            'centreNo'=>$centreno,
+            'type'=>'3',
+            'back_reason' => $reason,
+            'back_time'=>date("Y-m-d H:i:s"),
+            'back_to'=>7
+        );
 
         M()->startTrans();
-        if (D("contract_flow")->where($where)->save($data)) {
+        if (D("contract_flow")->where($where)->save($data) and D("back_report")->add($data1)) {
             M()->commit();
             $rs['msg'] = '退回成功！';
         } else {

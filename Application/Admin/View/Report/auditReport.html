@@ -33,8 +33,8 @@
                     <td>
                         <if condition="$vo[centreno1] or $vo[centreno2] or $vo[centreno3]">
                             <a href="{:U('/admin/contract/reWriteTest')}?id={$vo.centreno}" class="btn btn-info btn-xs">更改单</a></if>
-                        <if condition="$vo['back_reason'] and ($vo['ifback'] neq 2) ">
-                            <button onclick="module('{$vo[back_reason]}')" class="btn btn-warning btn-xs">退回原因</button>
+                        <if condition="($vo['gz_back'] neq 0) or ($vo['sh_back'] neq 0) ">
+                            <button onclick="module('{$vo[centreno]}')" class="btn btn-warning btn-xs">退回原因</button>
                         </if>
                         <a href="/admin/manager/contractDetail?id={$vo.centreno}" class="btn btn-info btn-xs">检验受理合同</a>
                         <if condition="mb_substr($vo[centreno],7,1)=='C'">
@@ -186,7 +186,11 @@
         console.log(newurl);
         window.open(newurl,'_self');
     }
-
+    //跳转退回原因页面
+    function module(centreno){
+        var newurl = "/admin/Report/backShowPage.html?centreno="+centreno//url
+        window.open(newurl);
+    }
 
 </script>
 <include file="Common:footer" />

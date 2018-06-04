@@ -54,7 +54,7 @@
                             <if condition="$one[takelist_user_id] eq $userid">
                                 <if condition="$one[centreno1] or $one[centreno2] or $one[centreno3]">
                                     <a href="{:U('/admin/contract/reWriteTest')}?id={$one.centreno}" class="btn btn-primary btn-xs">更改单</a></if>
-                                <if condition="$one['back_time'] and ($one['ifback'] neq 0)">
+                                <if condition="$one['back_time'] and ($one['ifback'] eq 2)">
                                     <button onclick="module('{$one[centreno]}')" class="btn btn-warning btn-xs">退回原因</button>
                                 </if>
                                 <a href="{:U('/admin/test/infoShow')}?id={$one.centreno}" class="btn btn-primary btn-xs">检测工作通知单</a>
@@ -226,6 +226,7 @@
             }
         });
     }
+
     //跳转退回原因页面
     function module(centreno){
         var newurl = "/admin/Report/backShowPage.html?centreno="+centreno//url
