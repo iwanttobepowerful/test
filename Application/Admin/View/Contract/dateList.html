@@ -1,0 +1,101 @@
+<include file="Common:header" title="后台首页"/>
+<div id="page-wrapper">
+    <include file="Common:breadcrumb" />
+    <div id="page-inner" class="container">
+        <!-- 主要模板 starting -->
+        <div class="search-form">
+            <form class="form-inline" method="GET" action="">
+                <div class="form-group">
+                    <label>搜索：</label>
+                    <input type="text" class="form-control input-sm" name="keyword" placeholder="中心编号"/>
+                    <input type="hidden" name="p" value="1" />
+                    合同录入日期：
+                    <input type="text" readonly class="form-control f-datetime input-sm" name="begin_time" value="{$begin_time}" placeholder="开始日期" /> 
+                    —&nbsp;<input type="text" readonly class="form-control f-datetime input-sm" name="end_time" value="{$end_time}" placeholder="结束日期"/> 
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm" >查询</button>
+            </form>
+        </div>
+
+
+
+        <table class="table table-bordered table-striped table-hover" id="tb">
+            <thead>
+            <th>收样日期</th>
+            <th>中心编号</th>
+            <th>样品名称</th>
+            <th>生产单位</th>
+            <th>检验依据</th>
+            <th>操作</th>
+            <th>状态</th>
+            </thead>
+            <tbody>
+            <volist name="list" id="con">
+                <tr>
+                    <td>{$con.collectdate}</td>
+                    <td>
+                    	{$con.centreno}
+                    </td>
+                    <td>{$con.samplename}</td>
+                    <td>{$con.productunit}</td>
+                    <td>{$con.testcriteria}</td>
+                           
+                    <td width="28%">
+
+                    	<a href="/admin/manager/contractDetail?id={$con.centreno}"  class="btn btn-info btn-xs" >检验受理合同</a>
+       
+                        <!--<a href="{:U('/admin/test/sampleShow')}?id={$con.centreno}" style="display:none" class="btn btn-info btn-xs" >抽样单</a>-->
+                    	<if condition="mb_substr($con['centreno'],7,1) == 'C'">
+                        	<a href="{:U('/admin/test/sampleShow')}?id={$con.centreno}"  class="btn btn-info btn-xs" >抽样单</a>
+                        </if>
+                        <if condition="$con.flow_id != -1">
+                       		<a href="/admin/test/infoShow?id={$con.centreno}"  class="btn btn-info btn-xs" >检验工作通知单</a>
+                        </if>
+                    </td>
+                    <td>
+                   		 <if condition="$if_edit==1">
+                        	<if condition="$con['status'] == -1">
+                            	<a class="btn btn-primary btn-xs disabled">已作废</a>
+                            <else />
+                            	<button  onclick="delContract('{$con.centreno}')"  class="btn btn-info btn-xs" >作废</button>
+                            </if>
+                        </if>
+                    </td>
+                </tr>
+            </volist>
+            
+            </tbody>
+        </table>
+        <div class=" pull-right"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
+
+
+
+        <!-- main end-->
+
+	</div>
+</div>
+
+<script src="__PUBLIC__/static/js/jquery.form.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("li[name='type']").removeClass("active");
+		$('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true })
+		
+	});
+	
+	function delContract(id){
+		if(confirm("确认作废此合同吗？")){
+			$.ajax({
+				url:"{:U('/admin/contract/contarctDelete')}",
+				dataType:"json",
+				async:false,
+				data:{'id':id},
+				success:function(){
+					window.location.reload();
+				}
+			});
+		}
+	}
+</script>
+
+<include file="Common:footer" />
