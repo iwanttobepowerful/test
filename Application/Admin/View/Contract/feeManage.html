@@ -9,9 +9,9 @@
             <form class="form-inline" method="GET" action="">
                 <if condition="$if_leader == 1">
                     <button type="button" class="btn btn-primary btn-sm" onclick="editFee()"><i class="glyphicon glyphicon-plus"></i> 添加</button>                </if>
-               	<span></span>
+                <span></span>
                 <div class="form-group" style="margin-left:20px">
-                    <label>执行标准：</label>
+                    <label>关键词：</label>
                     <input type="hidden" name="p" value="1" />
                     <input type="text" class="form-control input-sm" name="criteria_find" />
                 </div>
@@ -26,7 +26,7 @@
         </div>
         <table class="table table-bordered table-striped table-hover">
             <thead>
-             <th>类别</th>
+            <th>类别</th>
             <th>执行标准</th>
             <th>产品名称</th>
             <th>测试项目</th>
@@ -35,7 +35,7 @@
             <th>备注</th>
             <th>单项费用(元)</th>
             <if condition="$if_leader == 1">
-            <th>操作</th>
+                <th>操作</th>
             </if>
             </thead>
             <tbody>
@@ -50,18 +50,18 @@
                     <td>{$con.remark}</td>
                     <td>{$con.fee}</td>
                     <if condition="$if_leader == 1">
-                    <td width="20%">
-                    	<!--<a href="/admin/manager/contractDetail?id={$con.centreno}" class="btn btn-info btn-xs" type="button">-->
-                        <input type="hidden" name="id" id="test_fee_id" value="{$con.id}" />
-                        <button class="btn btn-info btn-xs" onclick="editFee({$con.id})">修改</button>
-                        <button class="btn btn-info btn-xs" onclick="deleteFee({$con.id})">删除</button>
-                    </td>
+                        <td width="20%">
+                            <!--<a href="/admin/manager/contractDetail?id={$con.centreno}" class="btn btn-info btn-xs" type="button">-->
+                            <input type="hidden" name="id" id="test_fee_id" value="{$con.id}" />
+                            <button class="btn btn-info btn-xs" onclick="editFee({$con.id})">修改</button>
+                            <button class="btn btn-info btn-xs" onclick="deleteFee({$con.id})">删除</button>
+                        </td>
                     </if>
-                    
-                    
+
+
                 </tr>
             </volist>
-            
+
             </tbody>
         </table>
         <div class="pull-right"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
@@ -80,274 +80,274 @@
     <div class="modal fade" id="editModal1" tabindex="-1" role="dialog" aria-labelledby="editModal1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-            <form class="form-horizontal" id="myform1" action="" method="post">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="createModalLabel">费用添加</h4> 
-                    <input type="hidden" name="edit_id" value="" />           
-                </div>
-                <div class="modal-body">
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label talign-right fz13">是否为全项</label>
-                    <div class="col-sm-7">
-                        <select id="quantity" name="quantity" onchange="ifAllItem()" class="form-control">
-                            <option value="1">非全项</option>
-                            <option value="2">全项</option>
-                        </select>
-                	</div>
-                <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13"><span style="color:red; font-size:15px">*</span>类别</label>
-                        <div class="col-sm-7">
-                            <input type="text" name="meterial" id="meterial" value="{$con.meterial}" class="form-control">
+                <form class="form-horizontal" id="myform1" action="" method="post">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="createModalLabel">费用添加</h4>
+                        <input type="hidden" name="edit_id" value="" />
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label talign-right fz13">是否为全项</label>
+                            <div class="col-sm-7">
+                                <select id="quantity" name="quantity" onchange="ifAllItem()" class="form-control">
+                                    <option value="1">非全项</option>
+                                    <option value="2">全项</option>
+                                </select>
+                            </div>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13"><span style="color:red; font-size:15px">*</span>执行标准</label>
-                        <div class="col-sm-7">
-                             <input type="text" name="criteria" id="criteria" value="" class="form-control">
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label talign-right fz13"><span style="color:red; font-size:15px">*</span>类别</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="meterial" id="meterial" value="{$con.meterial}" class="form-control">
+                            </div>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">产品名称</label>
-                        <div class="col-sm-7">
-                             <input type="text" name="productname" id="productname" value="" class="form-control">
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label talign-right fz13"><span style="color:red; font-size:15px">*</span>执行标准</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="criteria" id="criteria" value="" class="form-control">
+                            </div>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13"><span style="color:red; font-size:15px">*</span>测试项目</label>
-                        <div class="col-sm-7" id="text_item">
-                             <input type="text" name="item" value="{$con.item}" class="form-control">
-                             <input type="hidden" name="item_hidden" value="{$con.item}" class="form-control">
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label talign-right fz13">产品名称</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="productname" id="productname" value="" class="form-control">
+                            </div>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm" id="c_child_item" style="display:none">
-                        <label class="col-sm-3 control-label talign-right fz13">子类项目</label>           
-                        <!--全项子类-->
-                        <div class="col-sm-7" id="child_item">
-                              <a href="#" class="btn btn-primary btn-xs"  onclick="doReflashChildItem()" >刷新子类</a>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label talign-right fz13"><span style="color:red; font-size:15px">*</span>测试项目</label>
+                            <div class="col-sm-7" id="text_item">
+                                <input type="text" name="item" value="{$con.item}" class="form-control">
+                                <input type="hidden" name="item_hidden" value="{$con.item}" class="form-control">
+                            </div>
+                            <div class="clearfix"></div>
                         </div>
-                        
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">样品数量</label>
-                        <div class="col-sm-7">
-                             <input type="text" name="samplequantity" value="{$con.samplequantity}" class="form-control">
+                        <div class="form-group form-group-sm" id="c_child_item" style="display:none">
+                            <label class="col-sm-3 control-label talign-right fz13">子类项目</label>
+                            <!--全项子类-->
+                            <div class="col-sm-7" id="child_item">
+                                <a href="#" class="btn btn-primary btn-xs"  onclick="doReflashChildItem()" >刷新子类</a>
+                            </div>
+
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">试验周期</label>
-                        <div class="col-sm-7">
-                             <input type="text" name="testperiod" value="{$con.testperiod}" class="form-control">
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label talign-right fz13">样品数量</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="samplequantity" value="{$con.samplequantity}" class="form-control">
+                            </div>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">备注</label>
-                        <div class="col-sm-7">
-                             <input type="text" name="remark" value="{$con.remark}" class="form-control">
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label talign-right fz13">试验周期</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="testperiod" value="{$con.testperiod}" class="form-control">
+                            </div>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13"><span style="color:red; font-size:15px">*</span>单项费用</label>
-                        <div class="col-sm-7">
-                             <input type="text" name="fee" value="{$con.fee}" class="form-control">
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label talign-right fz13">备注</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="remark" value="{$con.remark}" class="form-control">
+                            </div>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="clearfix"></div>
-                </div>
-                </div>
-                <!--<div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">样品数量</label>
-                        <div class="col-sm-7">
-                             <input type="text" name="quantity" value="" class="form-control">
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label talign-right fz13"><span style="color:red; font-size:15px">*</span>单项费用</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="fee" value="{$con.fee}" class="form-control">
+                            </div>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="clearfix"></div>
-                </div>-->
-                <div class="modal-footer">
-                    <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="submit" class="btn btn-primary" onclick="doAddFee()">确定</button>
-                </div>
-            </form>
+                    </div>
+                    <!--<div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label talign-right fz13">样品数量</label>
+                            <div class="col-sm-7">
+                                 <input type="text" name="quantity" value="" class="form-control">
+                            </div>
+                            <div class="clearfix"></div>
+                    </div>-->
+                    <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary" onclick="doAddFee()">确定</button>
+                    </div>
+                </form>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
-</div>
-<script src="__PUBLIC__/static/js/jquery.form.js"></script>
-<script type="text/javascript">
-	function editFee(id){
-		var modal = $("#editModal1");
-		$.ajax({
-			url: "{:U('/admin/contract/doUpdateFee')}",
-			dataType: 'json',
-			data:{'id':id},
-			beforeSubmit: function(){
-				return true;
-			},
-			success: function (re) {
-				if(re.rs != 'add'){			
-					$("input[name=meterial]").val(re.rs.meterial);
-					$("input[name=criteria]").val(re.rs.criteria);
-					$("input[name=productname]").val(re.rs.productname);
-					$("input[name=item]").val(re.rs.item);
-					$("input[name=samplequantity]").val(re.rs.samplequantity);
-					$("input[name=testperiod]").val(re.rs.testperiod);
-					$("input[name=remark]").val(re.rs.remark);
-					$("input[name=fee]").val(re.rs.fee);
-					$("input[name=edit_id]").val(re.rs.id);
-					//下拉框被选中
-					//$("#quantity").find("option").removeAttr("selected");
-					//$("#quantity").find("option[value="+re.rs.quantity+"]").attr("selected",true);
-					$("#quantity").val(re.rs.quantity);
-					if(re.rs.quantity==2){
-						var child_item_list = re.child_item_list;				
-						$("#c_child_item").css('display','block');
-						doReflashChildItem();
-						for(var i = 0;i<child_item_list.length;i++){
-							$("#child_item a").remove();
-							$("#child_item input:checkbox[value="+child_item_list[i]+"]").attr("checked",'checked');
-							//alert($("#child_item").html());
-						}
-						
-					}else{
-						ifAllItem();
-						$("input[name=item]").val(re.rs.item);
-					}
-					//$("input[name=quantity]").val(re.quantity);
-					
-				}else{
-					$("#myform1 input").val("");
-					$("#quantity").val(1);
-					ifAllItem();
-					//$("select option").eq(0).attr('checked','checked');
-				}				
-			}
-		});
-		modal.modal();
-	}
-	
-	function deleteFee(id){
-		if(confirm("确认删除此条费用吗")){
-			$.ajax({
-				url: "{:U('/admin/contract/doDeleteFee')}",
-				dataType: 'json',
-				data:{'id':id},
-				beforeSubmit: function(){
-					return true;
-				},
-				success: function (re) {
-					alert(re.msg);
-					window.location.reload();				
-				}
-			});
-		}
+    </div>
+    <script src="__PUBLIC__/static/js/jquery.form.js"></script>
+    <script type="text/javascript">
+        function editFee(id){
+            var modal = $("#editModal1");
+            $.ajax({
+                url: "{:U('/admin/contract/doUpdateFee')}",
+                dataType: 'json',
+                data:{'id':id},
+                beforeSubmit: function(){
+                    return true;
+                },
+                success: function (re) {
+                    if(re.rs != 'add'){
+                        $("input[name=meterial]").val(re.rs.meterial);
+                        $("input[name=criteria]").val(re.rs.criteria);
+                        $("input[name=productname]").val(re.rs.productname);
+                        $("input[name=item]").val(re.rs.item);
+                        $("input[name=samplequantity]").val(re.rs.samplequantity);
+                        $("input[name=testperiod]").val(re.rs.testperiod);
+                        $("input[name=remark]").val(re.rs.remark);
+                        $("input[name=fee]").val(re.rs.fee);
+                        $("input[name=edit_id]").val(re.rs.id);
+                        //下拉框被选中
+                        //$("#quantity").find("option").removeAttr("selected");
+                        //$("#quantity").find("option[value="+re.rs.quantity+"]").attr("selected",true);
+                        $("#quantity").val(re.rs.quantity);
+                        if(re.rs.quantity==2){
+                            var child_item_list = re.child_item_list;
+                            $("#c_child_item").css('display','block');
+                            doReflashChildItem();
+                            for(var i = 0;i<child_item_list.length;i++){
+                                $("#child_item a").remove();
+                                $("#child_item input:checkbox[value="+child_item_list[i]+"]").attr("checked",'checked');
+                                //alert($("#child_item").html());
+                            }
 
-	}
-	
-	function updateFee(){
-		var id = $("input[name=edit_id]").val();
-		var options = {
-			url: "{:U('/admin/contract/updateFee')}",
-			dataType: 'json',
-			data:{'id':id},
-			beforeSubmit: function(){
-				return true;
-			},
-			success: function (re) {
-				if(re.msg=='succ'){
-					var _options = {"text":"修改成功！","action":function(){window.location.reload();}};
-					doAlertDialog(_options);	
-				}else{
-					var _options = {"text":"修改失败！","action":function(){window.location.reload();}};
-					doAlertDialog(_options);
-				}
-			}
-		};
-		$("#myform").ajaxForm(options);
-		return false;
-	}
+                        }else{
+                            ifAllItem();
+                            $("input[name=item]").val(re.rs.item);
+                        }
+                        //$("input[name=quantity]").val(re.quantity);
 
-	//添加费用入库
-	function doAddFee(){
-		var id = $("input[name=edit_id]").val();
-		var options = {
-			url: "{:U('/admin/contract/doAddFee')}",
-			dataType: 'json',
-			data:{'id':id},
-			beforeSubmit: function(){
-				return true;
-			},
-			success: function (re) {
-				if(re.msg!='fail'){
-					var _options = {"text":"添加成功","action":function(){window.location.reload();}};
-					_options.text = re.msg;
-					doAlertDialog(_options);	
-				}else{
-					alert('信息填写不完整！');
-				}
-			}
-		};
-		$("#myform1").ajaxForm(options);
-		return false;
-	}
-	
-	//费用是否全项
-	function ifAllItem(){
-		if($("#quantity").val()==2){
-			$("#text_item input[name=item_hidden]").val($("#text_item input[name=item]").val());
-			$("#text_item input[name=item]").val('全项');
-			$("#child_item").html('<a href="#" class="btn btn-primary btn-xs"  onclick="doReflashChildItem()" >刷新子类</a>');
-			$("#c_child_item").css('display','block');
-		}else{
-			$("#c_child_item").css('display','none');
-			$("#text_item input[name=item]").val($("#text_item input[name=item_hidden]").val());
-		}
-	}
-	
-	function doReflashChildItem(){
-		var criteria =$.trim($("#criteria").val());
-		criteria = criteria.replace(/\s/g,"");
-		var productname =$.trim($("#productname").val());
-		if($.trim($("#criteria").val())==""){
-			alert("请输入执行标准");
-			return false;
-		}else{
-			$.ajax({
-				url: "{:U('/admin/contract/findItem')}",
-				dataType: 'json',
-				data:{'criteria':criteria,'productname':productname},
-				async:false,
-				beforeSubmit: function(){
-					return true;
-				},
-				success: function (re) {
-					var data_item = re['item_list']; 
-					var add_item;
-					var add_item_id;
-					var add_item_html="";
-					$("#child_item input,.checkbox_item").remove();
-					for(var i=0;i< data_item.length;i++){
-						add_item = data_item[i]['item'];
-						add_item_id = data_item[i]['id'];
-						if(data_item[i]['quantity']!=2){
-							add_item_html += '<input type="checkbox" name="checkbox_item[]" value="'+add_item_id+'"><span class="checkbox_item">'+add_item+'</span>';
-						}	
-						console.log(add_item_html);
-					}
-					$("#child_item").append(add_item_html);
-				}
-			});
-		}
-	
-	}
+                    }else{
+                        $("#myform1 input").val("");
+                        $("#quantity").val(1);
+                        ifAllItem();
+                        //$("select option").eq(0).attr('checked','checked');
+                    }
+                }
+            });
+            modal.modal();
+        }
 
-</script>
+        function deleteFee(id){
+            if(confirm("确认删除此条费用吗")){
+                $.ajax({
+                    url: "{:U('/admin/contract/doDeleteFee')}",
+                    dataType: 'json',
+                    data:{'id':id},
+                    beforeSubmit: function(){
+                        return true;
+                    },
+                    success: function (re) {
+                        alert(re.msg);
+                        window.location.reload();
+                    }
+                });
+            }
 
-<include file="Common:footer" />
+        }
+
+        function updateFee(){
+            var id = $("input[name=edit_id]").val();
+            var options = {
+                url: "{:U('/admin/contract/updateFee')}",
+                dataType: 'json',
+                data:{'id':id},
+                beforeSubmit: function(){
+                    return true;
+                },
+                success: function (re) {
+                    if(re.msg=='succ'){
+                        var _options = {"text":"修改成功！","action":function(){window.location.reload();}};
+                        doAlertDialog(_options);
+                    }else{
+                        var _options = {"text":"修改失败！","action":function(){window.location.reload();}};
+                        doAlertDialog(_options);
+                    }
+                }
+            };
+            $("#myform").ajaxForm(options);
+            return false;
+        }
+
+        //添加费用入库
+        function doAddFee(){
+            var id = $("input[name=edit_id]").val();
+            var options = {
+                url: "{:U('/admin/contract/doAddFee')}",
+                dataType: 'json',
+                data:{'id':id},
+                beforeSubmit: function(){
+                    return true;
+                },
+                success: function (re) {
+                    if(re.msg!='fail'){
+                        var _options = {"text":"添加成功","action":function(){window.location.reload();}};
+                        _options.text = re.msg;
+                        doAlertDialog(_options);
+                    }else{
+                        alert('信息填写不完整！');
+                    }
+                }
+            };
+            $("#myform1").ajaxForm(options);
+            return false;
+        }
+
+        //费用是否全项
+        function ifAllItem(){
+            if($("#quantity").val()==2){
+                $("#text_item input[name=item_hidden]").val($("#text_item input[name=item]").val());
+                $("#text_item input[name=item]").val('全项');
+                $("#child_item").html('<a href="#" class="btn btn-primary btn-xs"  onclick="doReflashChildItem()" >刷新子类</a>');
+                $("#c_child_item").css('display','block');
+            }else{
+                $("#c_child_item").css('display','none');
+                $("#text_item input[name=item]").val($("#text_item input[name=item_hidden]").val());
+            }
+        }
+
+        function doReflashChildItem(){
+            var criteria =$.trim($("#criteria").val());
+            criteria = criteria.replace(/\s/g,"");
+            var productname =$.trim($("#productname").val());
+            if($.trim($("#criteria").val())==""){
+                alert("请输入执行标准");
+                return false;
+            }else{
+                $.ajax({
+                    url: "{:U('/admin/contract/findItem')}",
+                    dataType: 'json',
+                    data:{'criteria':criteria,'productname':productname},
+                    async:false,
+                    beforeSubmit: function(){
+                        return true;
+                    },
+                    success: function (re) {
+                        var data_item = re['item_list'];
+                        var add_item;
+                        var add_item_id;
+                        var add_item_html="";
+                        $("#child_item input,.checkbox_item").remove();
+                        for(var i=0;i< data_item.length;i++){
+                            add_item = data_item[i]['item'];
+                            add_item_id = data_item[i]['id'];
+                            if(data_item[i]['quantity']!=2){
+                                add_item_html += '<input type="checkbox" name="checkbox_item[]" value="'+add_item_id+'"><span class="checkbox_item">'+add_item+'</span>';
+                            }
+                            console.log(add_item_html);
+                        }
+                        $("#child_item").append(add_item_html);
+                    }
+                });
+            }
+
+        }
+
+    </script>
+
+    <include file="Common:footer" />

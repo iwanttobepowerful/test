@@ -1,243 +1,247 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<meta charset="UTF-8">
-		<title>检验工作通知单</title>
-        <link rel="stylesheet" type="text/css" href="__PUBLIC__/static/css/bootstrap.min.css" />
-        <script src="__PUBLIC__/static/js/jquery-2.1.3.min.js" type="text/javascript" charset="utf-8"></script>
-		<style type="text/css">
-			.not {
-				margin: 0 auto;
-				width: 90%;
-				height: 88%;
-                border: #000000 solid 1px;
-			}
-			
-			.middle {
-				margin: 0 auto;
-				width: 90%;
-			}
-			
-			
-			td {
-				text-align: center;
-                border: solid #000000 1px;
-			}
-			.no_border{
-			     border:none;
-			}
-			.en {
-				font-family: "times new roman";
-			}
-			
-			.cn {
-				font-family: SimSun;
-				font-size: 12pt;
-			}
-			
-			.notice_one_col {
-				width: 23%;
-			}
-			.notice_two_col{
-				width: 27%;
-			}
-			
-			.notice_head {
-				font-size: 22pt;
-				font-family: SimHei;
-			}
-			
-			.contract_txt_detail {
-				height: 56%;
-                text-align: left;
-                vertical-align: top;
-				border-top-style: none;
-			}
-            .other_txt{
-                font-family: SimSun;
-				font-size: 12pt;
-            }
-			.other{
-				border-bottom-style: none;
-				font-family: SimSun;
-				font-size: 12pt;
-			}
-            .left_txt{
-                text-align: left;
-            }
-			.head_title {
-				margin: 0 auto;
-                margin-top: 20px;
-				width: 90%;
-				height: 5%;
-			}
-			
-			.right_gone {
-				border-right-style: none;
-			}
-			
-			.left_gone {
-				border-left-style: none;
-			}
-			.notice_txt{
-				font-family: SimSun;
-				font-size: 12pt;
-			}
-			
-			.sam_sign {
-				border-top: none;
-				border-bottom: none;
-			}
-			
-			.page {
-				width: 210mm;
-				height: 29.7cm;
-				padding: 0.5cm;
-				margin: 1cm auto;
-				border: 1px #1B6D85 solid;
-				border-radius: 5px;
-				background: white;
-				box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-			}
-           .final{
-                display: block;
-                margin: 0 auto;
-            }
-		</style>
-		<style type="text/css" media="print">
-			/*以下是打印格式*/
-			
-			* {
-				box-sizing: border-box;
-				-moz-box-sizing: border-box;
-			}
-			.Noprint{
-				display:none;
-				}
-			
-			@page {
-				size: A4;
-				margin: 0.3cm;
-			}
-			
-			.page {
-				margin: 0;
-				border: initial;
-				padding: 1cm;
-				border-radius: initial;
-				/*width: initial;*/
-				min-height: 29.7cm;
-				box-shadow: initial;
-				background: initial;
-				page-break-after: avoid;
-			}
-		</style>
+<head>
+	<meta charset="UTF-8">
+	<title>检验工作通知单</title>
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/css/bootstrap.min.css" />
+	<script src="__PUBLIC__/static/js/jquery-2.1.3.min.js" type="text/javascript" charset="utf-8"></script>
+	<style type="text/css">
+		.not {
+			margin: 0 auto;
+			width: 90%;
+			height: 88%;
+			border: #000000 solid 1px;
+		}
 
-	</head>
+		.middle {
+			margin: 0 auto;
+			width: 90%;
+		}
 
-	<body>
-		<div class="page">
-			<table class="head_title">
-				<tr>
-					<td class="no_border">
-						<font class="notice_head">检验工作通知单</font>
-					</td>
-				</tr>
 
-			</table>
-			<table class="middle">
-				<tr>
-					<td class="en no_border" style="text-align: left;">SJ－4－25</td>
-				</tr>
-			</table>
-			<table class="not">
-				<tr>
-					<td class="notice_one_col cn">中心编号</td>
-					<td class="notice_two_col"><span class="notice_txt">
+		td {
+			text-align: center;
+			border: solid #000000 1px;
+		}
+		.no_border{
+			border:none;
+		}
+		.en {
+			font-family: "times new roman";
+		}
+
+		.cn {
+			font-family: SimSun;
+			font-size: 12pt;
+		}
+
+		.notice_one_col {
+			width: 23%;
+		}
+		.notice_two_col{
+			width: 27%;
+		}
+
+		.notice_head {
+			font-size: 22pt;
+			font-family: SimHei;
+		}
+
+		.contract_txt_detail {
+			height: 56%;
+			text-align: left;
+			vertical-align: top;
+			border-top-style: none;
+		}
+		.other_txt{
+			font-family: SimSun;
+			font-size: 12pt;
+		}
+		.other{
+			border-bottom-style: none;
+			font-family: SimSun;
+			font-size: 12pt;
+		}
+		.left_txt{
+			text-align: left;
+		}
+		.head_title {
+			margin: 0 auto;
+			margin-top: 20px;
+			width: 90%;
+			height: 5%;
+		}
+
+		.right_gone {
+			border-right-style: none;
+		}
+
+		.left_gone {
+			border-left-style: none;
+		}
+		.notice_txt{
+			font-family: SimSun;
+			font-size: 12pt;
+		}
+
+		.sam_sign {
+			border-top: none;
+			border-bottom: none;
+		}
+
+		.page {
+			width: 210mm;
+			height: 29.7cm;
+			padding: 0.5cm;
+			margin: 1cm auto;
+			border: 1px #1B6D85 solid;
+			border-radius: 5px;
+			background: white;
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+		}
+		.final{
+			display: block;
+			margin: 0 auto;
+		}
+	</style>
+	<style type="text/css" media="print">
+		/*以下是打印格式*/
+
+		* {
+			box-sizing: border-box;
+			-moz-box-sizing: border-box;
+		}
+		.Noprint{
+			display:none;
+		}
+
+		@page {
+			size: A4;
+			margin: 0.3cm;
+		}
+
+		.page {
+			margin: 0;
+			border: initial;
+			padding: 1cm;
+			border-radius: initial;
+			/*width: initial;*/
+			min-height: 29.7cm;
+			box-shadow: initial;
+			background: initial;
+			page-break-after: avoid;
+		}
+	</style>
+
+</head>
+
+<body>
+<div class="page">
+	<table class="head_title">
+		<tr>
+			<td class="no_border">
+				<font class="notice_head">检验工作通知单</font>
+			</td>
+		</tr>
+
+	</table>
+	<table class="middle">
+		<tr>
+			<td class="en no_border" style="text-align: left;">SJ－4－25</td>
+		</tr>
+	</table>
+	<table class="not">
+		<tr>
+			<td class="notice_one_col cn">中心编号</td>
+			<td class="notice_two_col"><span class="notice_txt">
 						{$one.centreno}
 					</span></td>
-					<td class="notice_one_col cn">样品名称</td>
-					<td><span class="notice_txt">
+			<td class="notice_one_col cn">样品名称</td>
+			<td><span class="notice_txt">
 						{$one.samplename}
 					</span></td>
-				</tr>
-				<tr>
-					<td class="cn">检验依据</td>
-					<td colspan="3"><span class="notice_txt">
+		</tr>
+		<tr>
+			<td class="cn">检验依据</td>
+			<td colspan="3"><span class="notice_txt">
 						{$one.testcreiteria}
 					</span></td>
-				</tr>
-				<tr>
-					<td class="cn">检验项目</td>
-					<td colspan="3" style="height: 10%;"><span class="notice_txt">
+		</tr>
+		<tr>
+			<td class="cn">检验项目</td>
+			<td colspan="3" style="height: 10%;"><span class="notice_txt">
 						{$one.testitem}
 					</span></td>
-				</tr>
-				<tr>
-					<td class="cn">检验科</td>
-					<td><span class="notice_txt">
+		</tr>
+		<tr>
+			<td class="cn">检验科</td>
+			<td><span class="notice_txt">
 						{$one.testdepartment}
 					</span></td>
-					<td class="cn">料水比</td>
-					<td><span class="notice_txt">
+			<td class="cn">料水比</td>
+			<td><span class="notice_txt">
                     	<if condition="$one[ration]">
                         	{$one.ration}
                         <else />
 							<span>——</span>
                         </if>
 					</span></td>
-				</tr>
-				<tr>
-					<td class="cn">下任务日期</td>
-					<td><span class="notice_txt">
+		</tr>
+		<tr>
+			<td class="cn">下任务日期</td>
+			<td><span class="notice_txt">
 						 <if condition="$one[workdate]">{$one.workdate|strtotime|date=Y年m月d日,###}<else/></if>
 					</span></td>
-					<td class="cn">完成日期</td>
-					<td><span class="notice_txt">
+			<td class="cn">完成日期</td>
+			<td><span class="notice_txt">
 						<if condition="$one[finishdate]">{$one.finishdate|strtotime|date=Y年m月d日,###}<else/></if>
 					</span></td>
-				</tr>
-				<tr>
-					<td class="cn">样品数量</td>
-					<td><span class="notice_txt">
+		</tr>
+		<tr>
+			<td class="cn">样品数量</td>
+			<td><span class="notice_txt">
 						{$one.sampleauantity}
 					</span></td>
-					<td class="cn">样品状态</td>
-					<td><span class="notice_txt">
+			<td class="cn">样品状态</td>
+			<td><span class="notice_txt">
 						{$one.samplestatus}
 					</span></td>
-				</tr>
-				<tr>
-					<td colspan="4" class="other">其&nbsp;&nbsp;它&nbsp;&nbsp;说&nbsp;&nbsp;明</td>
-				</tr>
-				<tr>
-					<td colspan="4" class="contract_txt_detail"><span class="other_txt">
-						&nbsp;&nbsp;{$one.othercomments}
+		</tr>
+		<tr>
+			<td colspan="4" class="other">其&nbsp;&nbsp;它&nbsp;&nbsp;说&nbsp;&nbsp;明</td>
+		</tr>
+		<tr>
+			<td colspan="4" class="contract_txt_detail"><span class="other_txt">
+						&nbsp;&nbsp;{$one.othercomments}<br/>
+                        <if condition="$contract[grade]">&nbsp;&nbsp;等级:{$contract.grade}<br/></if>
+                        <if condition="$contract[samplecode]">&nbsp;&nbsp;样品编号:{$contract.samplecode}<br/></if>
+                        <if condition="$contract[specification]">&nbsp;&nbsp;规格型号:{$contract.specification}<br/></if>
+                        <if condition="$contract[productiondate]">&nbsp;&nbsp;生产日期/批号:{$contract.productiondate}<br/></if>
 					</span></td>
-				</tr>
-				<tr>
-					<td colspan="2" class="cn right_gone left_txt">&nbsp;&nbsp;填表人：<span class="notice_txt">
+		</tr>
+		<tr>
+			<td colspan="2" class="cn right_gone left_txt">&nbsp;&nbsp;填表人：<span class="notice_txt">
 						{$one.filler}
 					</span></td>
-					<td colspan="2" class="cn left_gone right_gone left_txt">&nbsp;&nbsp;填表日期：<span class="notice_txt">
+			<td colspan="2" class="cn left_gone right_gone left_txt">&nbsp;&nbsp;填表日期：<span class="notice_txt">
 						<if condition="$ifedit[collectdate]">{$ifedit.collectdate|strtotime|date=Y年m月d日,###}<else/></if>
 					</span></td>
-				</tr>
-			</table>
-		</div>
-		<if condition="$user eq 7">
-        <if condition="$ifedit['ifedit']==0 OR $sub_status['status']==1">
-			<button onclick="window.print()" class="Noprint btn btn-primary final" disabled>打印</button>
-			<else />
-			<button onclick="window.print()" class="Noprint btn btn-primary final">打印</button>
-		</if></if>
-		<if condition="$if_admin eq 1">
-			<button onclick="window.print()" class="Noprint btn btn-primary final">打印</button>
-		</if>
-		<if condition="$user eq 9">
-            <button onclick="window.print()" class="Noprint btn btn-primary final">打印</button>
-				</if>
-	</body>
+		</tr>
+	</table>
+</div>
+<if condition="$user eq 7">
+	<if condition="$ifedit['ifedit']==0 OR $sub_status['status']==1">
+		<button onclick="window.print()" class="Noprint btn btn-primary final" disabled>打印</button>
+		<else />
+		<button onclick="window.print()" class="Noprint btn btn-primary final">打印</button>
+	</if></if>
+<if condition="$if_admin eq 1">
+	<button onclick="window.print()" class="Noprint btn btn-primary final">打印</button>
+</if>
+<if condition="$user eq 9">
+	<button onclick="window.print()" class="Noprint btn btn-primary final">打印</button>
+</if>
+</body>
 
 </html>

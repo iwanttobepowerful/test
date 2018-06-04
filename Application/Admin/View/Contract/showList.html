@@ -2,16 +2,21 @@
 <div id="page-wrapper">
     <include file="Common:breadcrumb" />
     <div id="page-inner" class="container">
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="active" id="type_no" name="type"><a href="/admin/contract/showList?type=no">未出报告</a></li>
+            <li role="presentation"  id="type_yes" name="type"><a href="/admin/contract/showList?type=yes" >已出报告</a></li>
+        </ul>
         <!-- 主要模板 starting -->
         <div class="search-form">
             <form class="form-inline" method="GET" action="">
+                <input type='hidden' id="type" name="type" value="{$type}">
                 <div class="form-group">
-                    <label>中心编号：</label>
+                    <label>搜索：</label>
                     <input type="text" class="form-control input-sm" name="keyword" />
                     <input type="hidden" name="p" value="1" />
                     合同录入日期：
-                    <input type="text" readonly class="form-control f-datetime input-sm" name="begin_time" value="{$begin_time}" placeholder="开始日期" /> 
-                    —&nbsp;<input type="text" readonly class="form-control f-datetime input-sm" name="end_time" value="{$end_time}" placeholder="结束日期"/> 
+                    <input type="text" readonly class="form-control f-datetime input-sm" name="begin_time" value="{$begin_time}" placeholder="开始日期" />
+                    —&nbsp;<input type="text" readonly class="form-control f-datetime input-sm" name="end_time" value="{$end_time}" placeholder="结束日期"/>
                 </div>
                 <button type="submit" class="btn btn-primary btn-sm" >查询</button>
             </form>
@@ -34,25 +39,24 @@
                 <tr>
                     <td>{$con.collectdate}</td>
                     <td>
-                    <if condition="$con['centreno1'] or $con['centreno2'] or $con['centreno3']" >
-                    	<span style="color: red"><i class="glyphicon glyphicon-star">{$con.centreno}</i></span>
-                    <else />
-                    	{$con.centreno}
-                    </if>
+                        <if condition="$con['centreno1'] or $con['centreno2'] or $con['centreno3']" >
+                            <span style="color: red"><i class="glyphicon glyphicon-star">{$con.centreno}</i></span>
+                            <else />
+                            {$con.centreno}
+                        </if>
                     </td>
                     <td>{$con.samplename}</td>
                     <td>{$con.productunit}</td>
                     <td>{$con.testcriteria}</td>
-                           
+
                     <td width="33%">
-                    	<!--<a href="{:U('/admin/contract/editContract')}?id={$con.centreno}" id="editContract" target="_blank" class="btn btn-info btn-xs" ><i class="glyphicon glyphicon-search"></i>修改</a>-->
-                        <if condition="$if_edit==1">
-                        	
-                        	<if condition="($con['ifedit'] == 0) OR (($con['ifedit'] == 1) and ($con['sub_status'] == 1) and ($con['if_report']==0)) OR $con['status']==3">
-                       	 		<a href="{:U('/admin/contract/editContract')}?id={$con.centreno}&type_status={$con.status}" class="btn btn-info btn-xs" >修改</a>
-                                
-                            <elseif condition="($con['ifedit'] == 1) and (!(($con['sub_status'] == 1 or $con['sub_status'] == 0) and $con['if_report'] == 0)) and $con['status']!=6"/>
-                            	<a href="#" class="btn btn-info btn-xs" onclick="return applyBack('{$con.centreno}',{$con.status})" >申请修改</a>
+                        <!--<a href="{:U('/admin/contract/editContract')}?id={$con.centreno}" id="editContract" target="_blank" class="btn btn-info btn-xs" ><i class="glyphicon glyphicon-search"></i>修改</a>-->
+                        <if condition="$if_edit==1 and $con['status'] != -1">
+                            <if condition="($con['ifedit'] == 0) OR (($con['ifedit'] == 1) and ($con['sub_status'] == 1) and ($con['if_report']==0)) OR $con['status']==3 OR ($con['ifback']==2 and $con['status']==0)">
+                                <a href="{:U('/admin/contract/editContract')}?id={$con.centreno}&type_status={$con.status}" class="btn btn-info btn-xs" >修改</a>
+
+                                <elseif condition="($con['ifedit'] == 1) and (!(($con['sub_status'] == 1 or $con['sub_status'] == 0) and $con['if_report'] == 0)) and $con['status']!=6"/>
+                                <a href="#" class="btn btn-info btn-xs" onclick="return applyBack('{$con.centreno}',{$con.status})" >申请修改</a>
                             </if>
                         </if>
                         <if condition="$con['status']==6" >
@@ -61,59 +65,74 @@
                         <if condition="($con['centreno1'] or $con['centreno2'] or $con['centreno3']) and ($con['sub_status'] == 1 or $con['sub_status'] == 3)" >
                             <a href="{:U('/admin/contract/reWriteTest')}?id={$con.centreno}" class="btn btn-info btn-xs">更改单</a>
                         </if>
-                    	<a href="/admin/manager/contractDetail?id={$con.centreno}"  class="btn btn-info btn-xs" >检验受理合同</a>
-       
+                        <a href="/admin/manager/contractDetail?id={$con.centreno}"  class="btn btn-info btn-xs" >检验受理合同</a>
+
                         <!--<a href="{:U('/admin/test/sampleShow')}?id={$con.centreno}" style="display:none" class="btn btn-info btn-xs" >抽样单</a>-->
-                    	<if condition="mb_substr($con['centreno'],7,1) == 'C'">
-                        	<a href="{:U('/admin/contract/sampleEdit')}?id={$con.centreno}"  class="btn btn-info btn-xs" >抽样单</a>
+                        <if condition="mb_substr($con['centreno'],7,1) == 'C'">
+                            <if condition="$con['status'] == -1">
+                                <a href="{:U('/admin/test/sampleShow')}?id={$con.centreno}"  class="btn btn-info btn-xs" >抽样单</a>
+                                <else/>
+                                <a href="{:U('/admin/contract/sampleEdit')}?id={$con.centreno}"  class="btn btn-info btn-xs" >抽样单</a>
+                            </if>
                         </if>
                         <if condition="$con.flow_id != -1">
-                       		<a href="/admin/test/infoShow?id={$con.centreno}"  class="btn btn-info btn-xs" >检验工作通知单</a>
+                            <a href="/admin/test/infoShow?id={$con.centreno}"  class="btn btn-info btn-xs" >检验工作通知单</a>
                         </if>
-                        
+
                         <if condition="$con.flow_id == -1">
-                        	<a href="#"  class="btn btn-primary btn-xs" onclick="return doFinish('{$con.centreno}')">录入完毕</a>
+                            <a href="#"  class="btn btn-primary btn-xs" onclick="return doFinish('{$con.centreno}')">录入完毕</a>
                         </if>
 
                         <if condition="$if_edit==1">
-                       		<if condition="(($con['ifedit'] == 1) and ($con['sub_status'] == 1) and ($con['if_report']==0)) OR $con.status == 3" >
-                                <a href="#" class="btn btn-primary btn-xs"  onclick="doUpdateEditState('{$con.centreno}','{$con.status}')" >修改完毕</a>
+                            <if condition="($con['ifedit'] == 1) and ($con['sub_status'] == 1) and ($con['if_report']==0) and ($con['if_outer']==0)" >
+                                <a href="#" class="btn btn-primary btn-xs"  onclick="doUpdateApplyState('{$con.centreno}','{$con.status}')" >修改完毕1</a>
+                                <elseif condition="$con.status == 3 OR ($con.ifback == 2 and $con.status == 0) OR ($con['sub_status'] == 1 and $con['if_outer'] == 1) " />
+                                <a href="#" class="btn btn-primary btn-xs"  onclick="displayEdit('{$con.centreno}','{$con.status}','{$con.ifback}')" >修改完毕2</a>
                             </if>
+                        </if>
+                        <if condition="($con['ifback']==2 or $con['ifback']==1) and $con.status == 0">
+                            <a class="btn btn-warning btn-xs" onclick="alert('退回原因：'+'{$con.back_reason}')">退回原因</a>
                         </if>
                     </td>
                     <td>
-                   		 <if condition="$if_edit==1">
-                        	<if condition="($con['ifedit'] == 1) and ($con['sub_status'] == 0) and ($con['if_report']==0)">
-                            	<span style="color:green">申请修改中<br/></span>
-                            <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == 1) and ($con['if_report']==0)" />
-                            	<span style="color:green">申请修改通过<br/></span>
-                                <!--<a href="#" class="btn btn-info btn-xs"  onclick="doUpdateEditState('{$con.centreno}','{$con.status}')" >修改完毕</a>-->	
-                            <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == 2) and ($con['if_report']==0)" />
-                            	<span style="color:red">申请修改拒绝<br/></span>
+
+                        <if condition="$con['status'] == -1">
+                            <a class="btn btn-primary btn-xs disabled">已作废</a>
+                        </if>
+                        <if condition="$if_edit==1 and $con['status'] != -1">
+                            <if condition="($con['ifedit'] == 1) and ($con['sub_status'] == 0) and ($con['if_report']==0)">
+                                <span style="color:green">申请修改中<br/></span>
+                                <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == 1) and ($con['if_report']==0)" />
+                                <span style="color:green">申请修改通过<br/></span>
+                                <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == 2) and ($con['if_report']==0)" />
+                                <span style="color:red">申请修改拒绝<br/></span>
                             </if>
                         </if>
-                    	<if condition="($con['takename'] and ($con['status']==0 or $con['status']==7)) and !($con['sub_status'] == 0)  and !($con['sub_status'] == 1)">
-                        	<span style="color:green">{$con.takename}已接单<br/>{$con.takelist_time}</span><if condition="$con['ifback']==2"> <br/><span style="color:red">{$con.auditname}审核退回&nbsp;&nbsp;&nbsp;<br/>{$con.verify_time}</span></if>
+
+                        <if condition="($con['takename'] and ($con['status']==0 or $con['status']==7)) and !($con['sub_status'] == 0)  and !($con['sub_status'] == 1) and $con['status'] != -1">
+                            <span style="color:green">{$con.takename}已接单<br/>{$con.takelist_time}</span>
+                            <if condition="$con['ifback']==2"> <br/><span style="color:red">{$con.auditname}审核退回&nbsp;&nbsp;&nbsp;<br/>{$con.verify_time}</span></if>
                             <elseif condition="$con['status']==4"/>
                             <span style="color:green">{$con.auditname}已审核&nbsp;&nbsp;&nbsp;
                             <br/>
                             {$con.verify_time}</span>
                             <elseif condition="$con['status']==3"/>
                             <span style="color:red">{$con.innername}盖章退回&nbsp;&nbsp;&nbsp;
+
                             <br/>
                             {$con.inner_sign_time}</span>
-                        <elseif condition="$con['status']==5"/>
-                        	<span style="color:green">{$con.innername}已内部签发&nbsp;&nbsp;&nbsp;
-                            <!--<a href="#" class="btn btn-info btn-xs" onclick="externalSign('{$con.centreno}')" >外部签发完毕</a>-->
+                            <elseif condition="$con['status']==5"/>
+                            <span style="color:green">{$con.innername}已内部签发&nbsp;&nbsp;&nbsp;
+                                <!--<a href="#" class="btn btn-info btn-xs" onclick="externalSign('{$con.centreno}')" >外部签发完毕</a>-->
                             <br/>
                             {$con.inner_sign_time}</span>
-                        <elseif condition="($con['status']==6) and !($con['sub_status'] == 0) and !($con['sub_status'] == 1)"/>
-                        	<span style="color:green">已外部签发</span>
+                            <elseif condition="($con['status']==6) and !($con['sub_status'] == 0) and !($con['sub_status'] == 1)"/>
+                            <span style="color:green">已外部签发</span>
                         </if>
                     </td>
                 </tr>
             </volist>
-            
+
             </tbody>
         </table>
         <div class=" pull-left"><i class="glyphicon glyphicon-star" style="color: red">代表合同有变更</i></div>
@@ -123,179 +142,246 @@
 
         <!-- main end-->
 
-	</div>
+    </div>
 </div>
 
 
-		<div>
-            <!-- 模态框（Modal) -->
-            <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                    <div class="form-horizontal" id="aform" action="" method="post">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="createModalLabel">申请修改</h4>
-                        </div>
-                        <div class="form-group form-group-sm">
-                                <label class="col-sm-3 control-label talign-right fz13">中心编号</label>
-                                <div class="col-sm-7">
-                                    <input type="text" readonly="readonly" id="back_centreno" name="back_centreno" class="form-control"/>
-                                    <input type="hidden" id="type_status" name="type_status" value="" />
-                                </div>
-                                <div class="clearfix"></div>
-                        </div>
-                        <div class="form-group form-group-sm">
-                                <label class="col-sm-3 control-label talign-right fz13">理由</label>
-                                <div class="col-sm-7">
-                                    <textarea id="back_reason" name="back_reason" class="form-control" rows="5" ></textarea>
-                                </div>
-                                <div class="clearfix"></div>
-                        </div>
-                        <div class="modal-footer">
-                            <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
-                            <button type="submit" class="btn btn-primary" onclick="subFeedback()">确定</button>
-                        </div>
+<div>
+    <!-- 模态框（Modal) -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="form-horizontal" id="aform" action="" method="post">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="createModalLabel">申请修改</h4>
                     </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal -->
-            </div>
-    	</div>	
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">中心编号</label>
+                        <div class="col-sm-7">
+                            <input type="text" readonly="readonly" id="back_centreno" name="back_centreno" class="form-control"/>
+                            <input type="hidden" id="type_status" name="type_status" value="" />
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">理由</label>
+                        <div class="col-sm-7">
+                            <textarea id="back_reason" name="back_reason" class="form-control" rows="5" ></textarea>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
+                        <button type="submit" class="btn btn-primary" onclick="subFeedback()">确定</button>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</div>
 
-
+<div>
+    <!-- 模态框（Modal)修改完毕 -->
+    <div class="modal fade" id="editModal1" tabindex="-1" role="dialog" aria-labelledby="editModal1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="form-horizontal" id="aform" action="" method="post">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="createModalLabel">修改完毕</h4>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">中心编号</label>
+                        <div class="col-sm-7">
+                            <input type="text" readonly="readonly" id="edit_centreno" name="edit_centreno" class="form-control"/>
+                            <input type="hidden" id="edit_status" name="edit_status" value="" />
+                            <input type="hidden" id="edit_ifback" name="edit_ifback" value="" />
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">发送到</label>
+                        <div class="col-sm-7">
+                            <select id="select_status" class="form-control">
+                                <option value=7>实验员</option>
+                                <option value=8>报告编制员</option>
+                                <option value=2 id="shenhe">审核人员</option>
+                                <option value=4 id="gaizhang">盖章人员</option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
+                        <button type="submit" class="btn btn-primary" onclick="doUpdateEditState()">确定</button>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</div>
 <script src="__PUBLIC__/static/js/jquery.form.js"></script>
 <script type="text/javascript">
-	$(function(){
-		$('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true });
-		/*$("#tb tr").each(function(){
-            var text = $(this).children("td").eq(1).text();
-			//alert(text+":"+text.substr(6,1))
-			if (text.substr(7,1)=='C'){
-				//alert($(this).children("td:last").children("a:last").html());
-				//$(this).children("td").eq(5).children("a").eq(2).css("display","inline-block");
-				
-				$(this).children("td").eq(5).find("[id=but_sample]").css("display","inline-block");
-			}
-        });*/
-		
-	});
-	
-	/*function externalSign(centreno){
-		if(confirm('确认已外部签发？')){
-			$.ajax({
-				url: "{:U('/admin/contract/externalSign')}",
-				dataType: 'json',			
-				async: false,
-				data:{'centreno':centreno},
-				success: function (res) {
-					alert(res.msg);
-					window.location.reload();
-				}
-			});	
-		}
-	}*/
-	
-	function applyBack(centreno,status){
-		
-		var flag = true;
-		if(status==6){
-			alert("提示：先填写更改检验报告单,再申请修改");
-			$.ajax({
-				url: "{:U('/admin/contract/checkEditList')}",
-				dataType: 'json',			
-				async: false,
-				data:{'centreno':centreno},
-				success: function (res) {
-					if(res.count==0){
-						alert('请填更改检验报告单');
-						flag=false;	
-					}
-				}
-			});		
-		}
-		if(!flag) return flag;
-		$("#back_reason").val("");
-		var modal = $("#editModal");
-		$("#back_centreno").val(centreno);
-		$("#type_status").val(status);
-		modal.modal();
-	}
-	
-	function subFeedback(){
-		var centreno = $("#back_centreno").val();
-		var reason = $("#back_reason").val();
-		var type_status = $("#type_status").val();
-		$.ajax({
-			url: "{:U('/admin/contract/doSubmitFeedback')}",
-			dataType: 'json',
-			data:{'centreno':centreno,'reason':reason,'type_status':type_status},
-			beforeSubmit: function(){
-				return true;
-			},
-			success: function (re) {
-				alert(re.msg);
-				window.location.reload();
-			}
-		});
-	}
-	
-	function doUpdateEditState(centreno,type_status){
-		if(confirm('确认后合同和抽样单均不可修改，是否已修改完毕？')){
-			$.ajax({
-				url: "{:U('/admin/contract/doUpdateEditState')}",
-				dataType: 'json',
-				data:{'centreno':centreno,'type_status':type_status},
-				beforeSubmit: function(){
-					return true;
-				},
-				success: function (re) {
-					alert(re.msg);
-					window.location.reload();
-				}
-			});	
-		}
-	}
-	
-	function checkFinish(centreno){
-		var flag=true;
-		$.ajax({
-				url: "{:U('/admin/contract/checkFinish')}",
-				dataType: 'json',			
-				async: false,
-				data:{'centreno':centreno},
-				success: function (res) {
-					if(res.if_finish==0){
-						if(res.if_sample_save==0){
-							alert("抽样单信息不全！");
-							flag=false;	
-						}else if(res.picture_count==0){
-							alert("请上传现场图片！");
-							flag=false;	
-						}						
-					}
-				}
-		});	
-		return flag;
-	}
-	//录入完毕确认
-	function doFinish(centreno){
-		if(!checkFinish(centreno)){
-			return false;	
-		}else{
-			if(confirm('确定后不可更改，确认是否录入完毕？')){
-				$.ajax({
-					url: "{:U('/admin/contract/doUpdateState')}",
-					dataType: 'json',			
-					async: false,
-					data:{'centreno':centreno},
-					success: function (res) {
-						alert(res.msg);
-						window.location.reload();
-					}
-				});		
-			}
-		}
-	}
+    $(function(){
+        $("li[name='type']").removeClass("active");
+        $('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true });
+        var type = $("#type").val();
+        $("#type_"+type).addClass("active");
+
+    });
+
+    /*function externalSign(centreno){
+     if(confirm('确认已外部签发？')){
+     $.ajax({
+     url: "{:U('/admin/contract/externalSign')}",
+     dataType: 'json',
+     async: false,
+     data:{'centreno':centreno},
+     success: function (res) {
+     alert(res.msg);
+     window.location.reload();
+     }
+     });
+     }
+     }*/
+
+    function applyBack(centreno,status){
+
+        var flag = true;
+        if(status==6){
+            alert("提示：先填写更改检验报告单,再申请修改");
+            $.ajax({
+                url: "{:U('/admin/contract/checkEditList')}",
+                dataType: 'json',
+                async: false,
+                data:{'centreno':centreno},
+                success: function (res) {
+                    if(res.count==0){
+                        alert('请填更改检验报告单');
+                        flag=false;
+                    }
+                }
+            });
+        }
+        if(!flag) return flag;
+        $("#back_reason").val("");
+        var modal = $("#editModal");
+        $("#back_centreno").val(centreno);
+        $("#type_status").val(status);
+        modal.modal();
+    }
+
+    function subFeedback(){
+        var centreno = $("#back_centreno").val();
+        var reason = $("#back_reason").val();
+        var type_status = $("#type_status").val();
+        $.ajax({
+            url: "{:U('/admin/contract/doSubmitFeedback')}",
+            dataType: 'json',
+            data:{'centreno':centreno,'reason':reason,'type_status':type_status},
+            beforeSubmit: function(){
+                return true;
+            },
+            success: function (re) {
+                alert(re.msg);
+                window.location.reload();
+            }
+        });
+    }
+
+    //被退回的 修改完毕弹框
+    function displayEdit(centreno,type_status,ifback){
+        $("#edit_centreno").val(centreno);
+        //当前状态
+        $("#edit_status").val(type_status);
+        $("#edit_ifback").val(ifback);
+        if(ifback==2){
+            $("#gaizhang").attr("disabled","disabled");
+        }
+        $("#editModal1").modal();
+    }
+
+    //彈框确定后触发ajax-申请后的
+    function doUpdateApplyState(centreno,type_status){
+        if(confirm('确认后合同和抽样单均不可修改，是否已修改完毕？')){
+            $.ajax({
+                url: "{:U('/admin/contract/doUpdateApplyState')}",
+                dataType: 'json',
+                data:{'centreno':centreno,'type_status':type_status},
+                beforeSubmit: function(){
+                    return true;
+                },
+                success: function (re) {
+                    alert(re.msg);
+                    window.location.reload();
+                }
+            });
+        }
+    }
+
+    //彈框确定后出发ajax-退回 或者外部签发后申请修改
+    function doUpdateEditState(){
+        if(confirm('确认后合同和抽样单均不可修改，是否已修改完毕？')){
+            var edit_status = $("#edit_status").val();
+            var type_status = $("#select_status").val();
+            var ifback = $("#edit_ifback").val();
+            var centreno = $("#edit_centreno").val();
+            $.ajax({
+                url: "{:U('/admin/contract/doUpdateEditState')}",
+                dataType: 'json',
+                data:{'centreno':centreno,'type_status':type_status,'edit_status':edit_status,'ifback':ifback},
+                beforeSubmit: function(){
+                    return true;
+                },
+                success: function (re) {
+                    alert(re.msg);
+                    window.location.reload();
+                }
+            });
+        }
+    }
+
+    function checkFinish(centreno){
+        var flag=true;
+        $.ajax({
+            url: "{:U('/admin/contract/checkFinish')}",
+            dataType: 'json',
+            async: false,
+            data:{'centreno':centreno},
+            success: function (res) {
+                if(res.if_finish==0){
+                    if(res.if_sample_save==0){
+                        alert("抽样单信息不全！");
+                        flag=false;
+                    }else if(res.picture_count==0){
+                        alert("请上传现场图片！");
+                        flag=false;
+                    }
+                }
+            }
+        });
+        return flag;
+    }
+    //录入完毕确认
+    function doFinish(centreno){
+        if(!checkFinish(centreno)){
+            return false;
+        }else{
+            if(confirm('确定后不可更改，确认是否录入完毕？')){
+                $.ajax({
+                    url: "{:U('/admin/contract/doUpdateState')}",
+                    dataType: 'json',
+                    async: false,
+                    data:{'centreno':centreno},
+                    success: function (res) {
+                        alert(res.msg);
+                        window.location.reload();
+                    }
+                });
+            }
+        }
+    }
 </script>
 
 <include file="Common:footer" />
