@@ -60,7 +60,7 @@ class ReportController extends Controller
         $contract_flow=M("contract_flow");//实例化对象
         $rs=$contract_flow->where($where)
             ->join('left join common_system_user ON contract_flow.uploadreport_user_id = common_system_user.id left join test_report on contract_flow.centreno=test_report.centreno left join contract as a on contract_flow.centreno=a.centreno')
-            ->field('contract_flow.back_reason,contract_flow.img_path,contract_flow.ifback,contract_flow.id,contract_flow.centreNo,contract_flow.status,contract_flow.uploadreport_time,common_system_user.name,test_report.pdf_path,a.centreno1,a.centreno2,a.centreno3')
+            ->field('contract_flow.ifback,contract_flow.id,contract_flow.centreNo,contract_flow.status,contract_flow.uploadreport_time,common_system_user.name,test_report.pdf_path,a.centreno1,a.centreno2,a.centreno3')
             ->limit("{$offset},{$pagesize}")
             ->order('contract_flow.back_time desc,contract_flow.report_time desc,contract_flow.id desc')->select();
         //dump($where);die;
@@ -144,11 +144,62 @@ class ReportController extends Controller
         $this->ajaxReturn($rs);
     }
     //审核不通过，退回
-    public function notApprove(){
-        $id =I("id",0,'intval');
-        $sortby= I('sortby');
+    //清空记录
+    public function clean(){
+        $rs = array("msg"=>"fail");
+        $centreno = I('centreno');
+        $type = 2;
+        $where ="centreno = '$centreno' and type = $type";
+        $result = D('back_report')->where($where)->delete();
+        if($result !== false){
+            $rs['msg'] = 'succ';
+        }
+        $this->ajaxReturn($rs);
+    }
+    //审核退回单子填写
+    public function auditBack(){
+        $centreno = I('id');
+        $type = I('type');
+        $where ="centreno = '$centreno' and type = $type";
+        $result =D('back_report')->where($where)->select();
+        $body = array(
+          'rs'=>$result,
+          'centreno'=>$centreno,
+          'type'=>$type
+        );
+        $this->assign($body);
+        $this->display();
+    }
+
+    public function auditBackSave(){
+        $rs = array("msg"=>"fail");
+        $centreno =I("centreno");
+        $type = I("type");
         $reason = I('reason');
         $img_path = I('imgurl');
+        $pic_path = str_replace("_thumb",'',$img_path);
+        $data = array(
+            'centreNo'=>$centreno,
+            'type'=>$type,
+            'back_reason'=>$reason,
+            "img_path"=>$img_path,
+            "pic_path"=>$pic_path,
+            'back_time'=>date("Y-m-d H:i:s")
+        );
+        M()->startTrans();
+        if(D("back_report")->add($data)){
+            M()->commit();
+            $rs['msg'] = 'succ';
+        }
+        else{
+            M()->rollback();
+        }
+        $this->ajaxReturn($rs);
+    }
+    public function notApprove(){
+        $centreno =I("centreno");
+        $sortby= I('sortby');
+        $data1['back_to'] = $sortby;
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
@@ -156,13 +207,11 @@ class ReportController extends Controller
         $if_admin = $admin_auth['super_admin'];
         //$role = D('common_role')->where('id='.$user)->find();
         if($user==8 || $if_admin==1 || $user==13 || $user==16) {
-            if($sortby ==1){
+            if($sortby ==7){
                 $data=array(
                     'status'=>7,
                     'ifback'=>2,
                     'back_time'=>date("Y-m-d H:i:s"),
-                    'back_reason'=>$reason,
-                    'img_path'=>$img_path,
                     'verify_user_id'=>$userid,
                     'verify_time'=>date("Y-m-d H:i:s"),
 
@@ -173,8 +222,6 @@ class ReportController extends Controller
                     'status'=>8,
                     'ifback'=>2,
                     'back_time'=>date("Y-m-d H:i:s"),
-                    'back_reason'=>$reason,
-                    'img_path'=>$img_path,
                     'verify_user_id'=>$userid,
                     'verify_time'=>date("Y-m-d H:i:s"),
 
@@ -182,7 +229,8 @@ class ReportController extends Controller
             }
 
             M()->startTrans();
-            if(D("contract_flow")->where("id=".$id)->save($data)){
+            if(D("contract_flow")->where("centreno = '$centreno'")->save($data)){
+                D("back_report")->where("centreno = '$centreno' and type = 2")->save($data1);
                 M()->commit();
                 $rs['msg'] = '退回成功！';
             }
@@ -387,7 +435,6 @@ class ReportController extends Controller
         $id =I("id",0,'intval');
         $sortby= I('sortby');
         $reason = I('reason');
-        $img_path = I('imgurl');
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
@@ -399,7 +446,6 @@ class ReportController extends Controller
                 $data=array(
                     'status'=>3,//退回前台费用
                     'back_reason'=>$reason,
-                    'img_path'=>$img_path,
                     'inner_sign_time'=>date("Y-m-d H:i:s"),
                     'inner_sign_user_id'=>$userid,
                     'back_time'=>date("Y-m-d H:i:s"),
@@ -410,7 +456,6 @@ class ReportController extends Controller
                 $data=array(
                     'status'=>7,//退回实验员
                     'back_reason'=>$reason,
-                    'img_path'=>$img_path,
                     'inner_sign_time'=>date("Y-m-d H:i:s"),
                     'inner_sign_user_id'=>$userid,
                     'back_time'=>date("Y-m-d H:i:s"),
@@ -421,7 +466,6 @@ class ReportController extends Controller
                 $data=array(
                     'status'=>8,//退回编制员
                     'back_reason'=>$reason,
-                    'img_path'=>$img_path,
                     'inner_sign_time'=>date("Y-m-d H:i:s"),
                     'inner_sign_user_id'=>$userid,
                     'back_time'=>date("Y-m-d H:i:s"),
@@ -432,7 +476,6 @@ class ReportController extends Controller
                 $data=array(
                     'status'=>2,//退回审核员
                     'back_reason'=>$reason,
-                    'img_path'=>$img_path,
                     'inner_sign_time'=>date("Y-m-d H:i:s"),
                     'inner_sign_user_id'=>$userid,
                     'back_time'=>date("Y-m-d H:i:s"),
@@ -729,5 +772,15 @@ class ReportController extends Controller
         }
         $this->ajaxReturn($rs);
 
+    }
+    //退回原因显示框
+    public function backShowPage(){
+        $centreno = I('centreno');
+        $data = D('back_report')->where("centreNo ='$centreno'")->select();
+        $body = array(
+        'list'=>$data
+        );
+        $this->assign($body);
+        $this->display();
     }
 }

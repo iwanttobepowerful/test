@@ -86,15 +86,16 @@
                         </if>
                         <if condition="$con['status']==8 and $con['doc_path'] and !($con['sub_status'] == 1 and $con['if_report'] ==1)">
                             <if condition="($con[to_status]==0 or $con[to_status]==1) and ($con[if_outer]==0)">
+                                <!--如果正在修改则不允许进行操作-->
                                 <button  class="btn btn-primary btn-xs" disabled>确认</button><p></p><else />
                                 <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="confirmReport('{$con.centreno}')" >确认</a><p></p>
-                                <button name="btn_change" onclick="onBack('{$con.centreno}')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove-circle"></i>退回</button>
                             </if></if>
                             <if condition="$con['status']==8 and $con['doc_path'] and ($con['sub_status'] == 1 and $con['if_report'] ==1)">
                                 <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="editconfirmReport('{$con.centreno}')" >修改完毕</a><p></p>
+                            </if>
+                            <if condition="$con['isaudit'] eq 0">
                                 <button name="btn_change" onclick="onBack('{$con.centreno}')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove-circle"></i>退回</button>
                             </if>
-
 
                             <if condition=" ($con['sub_status'] == 0) and ($con['if_report'] ==1)">
                                 <span style="color:green">申请修改中</span>
@@ -149,16 +150,6 @@
                         <label class="col-sm-3 control-label talign-right fz13">理由</label>
                         <div class="col-sm-7">
                             <textarea id="back_reason" name="back_reason" class="form-control" rows="5" ></textarea>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">修改选项</label>
-                        <div class="col-sm-7">
-                            <select class="form-control input-sm" name="sortby" id="sortby">
-                                <option value="1" <php>if($sortby==1){echo 'selected';}</php>>单项修改</option>
-                                <option value="2" <php>if($sortby==2){echo 'selected';}</php>>全项修改</option>
-                            </select>
                         </div>
                         <div class="clearfix"></div>
                     </div>
