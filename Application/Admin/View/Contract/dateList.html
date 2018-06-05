@@ -54,10 +54,16 @@
                     </td>
                     <td>
                    		 <if condition="$if_edit==1">
+
                         	<if condition="$con['status'] == -1">
                             	<a class="btn btn-primary btn-xs disabled">已作废</a>
-                            <else />
-                            	<button  onclick="delContract('{$con.centreno}')"  class="btn btn-info btn-xs" >作废</button>
+                            <elseif condition="$con['sub_status'] == 0 and $con['if_invalid'] == 1" />
+                                <span style="color:green">申请中</span>
+                            <elseif condition="$con['sub_status'] == 2 and $con['if_invalid'] == 1" />
+                                <button  onclick="delContract('{$con.centreno}')"  class="btn btn-info btn-xs" >申请作废</button><br/>
+                                <span style="color:red">拒绝申请</span>
+                            <else/>
+                                <button  onclick="delContract('{$con.centreno}')"  class="btn btn-info btn-xs" >申请作废</button>
                             </if>
                         </if>
                     </td>
@@ -67,14 +73,39 @@
             </tbody>
         </table>
         <div class=" pull-right"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
-
-
-
         <!-- main end-->
-
-	</div>
-</div>
-
+    </div></div>
+    <!--申请作废模态框-->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="form-horizontal" id="aform" action="" method="post">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="createModalLabel">申请作废</h4>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">中心编号</label>
+                        <div class="col-sm-7">
+                            <input type="text" readonly="readonly" id="apply_centreno" name="apply_centreno" class="form-control"/>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">申请理由</label>
+                        <div class="col-sm-7">
+                            <textarea id="apply_reason" name="apply_reason" class="form-control" rows="5" ></textarea>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
+                        <button type="submit" class="btn btn-primary" onclick="subApply()">申请</button>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
 <script src="__PUBLIC__/static/js/jquery.form.js"></script>
 <script type="text/javascript">
 	$(function(){
@@ -82,20 +113,29 @@
 		$('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true })
 		
 	});
-	
+
+	//申请作废弹框
 	function delContract(id){
-		if(confirm("确认作废此合同吗？")){
-			$.ajax({
-				url:"{:U('/admin/contract/contarctDelete')}",
-				dataType:"json",
-				async:false,
-				data:{'id':id},
-				success:function(){
-					window.location.reload();
-				}
-			});
-		}
+	    $("#apply_centreno").val(id);
+	    $("#editModal").modal();
 	}
+
+	//申请作废
+	function subApply(){
+        var centreno = $("#apply_centreno").val();
+        var reason = $("#apply_reason").val();
+        if(confirm("确认申请作废此合同吗？")){
+            $.ajax({
+                url:"{:U('/admin/contract/applyDelCon')}",
+                dataType:"json",
+                async:false,
+                data:{'centreno':centreno,'reason':reason},
+                success:function(){
+                    window.location.reload();
+                }
+            });
+        }
+    }
 </script>
 
 <include file="Common:footer" />

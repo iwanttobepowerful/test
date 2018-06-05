@@ -1259,8 +1259,9 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
                 $list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id')->where($where)->order('c.input_time DESC')->limit("{$offset},{$pagesize}")->select();
         */
 
-        $list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,c.*,f.status,f.ifback,f.back_reason,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.verify_time,f.takelist_time,u.name as takename,u1.name as innername,u2.name as auditname')
-            ->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN common_system_user u2 on f.verify_user_id=u2.id')
+        $list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,c.*,f.status,f.ifback,back.back_reason,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.verify_time,f.takelist_time,u.name as takename,u1.name as innername,u2.name as auditname')
+            ->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN common_system_user u2 on f.verify_user_id=u2.id
+             left join back_report as back on c.centreNo=back.centreNo')
             ->where($where)->order('f.back_time DESC,c.input_time DESC')
             ->limit("{$offset},{$pagesize}")
             ->select();
@@ -1352,14 +1353,42 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
         if(!empty($end_time)){
             $where.=" and date_format(c.collectDate,'%Y-%m-%d') <='{$end_time}'";
         }
-        //0合同 1检测 3盖章退回 -4 批退回  7 已接单  8待上传报告
-        $where.=" and (f.status in (0,-1) or f.id is null) and c.centreNo1 is null and c.centreNo2 is null and c.centreNo3 is null";
+        //-1 合同作废 0合同 1检测 2提交审核 3盖章退回 -4 批退回  7 已接单  8待上传报告
+        //$where.=" and (f.status not in (2,4,5,6) or f.id is null) and c.centreNo1 is null and c.centreNo2 is null and c.centreNo3 is null";
+        $where.=" and (f.status not in (2,4,5,6)) and c.centreNo1 is null and c.centreNo2 is null and c.centreNo3 is null";
         $page = I("p",'int');
         $pagesize = 10;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
 
-        $list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,c.*,f.status,f.ifback,f.ifback,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.verify_time,f.takelist_time,u.name as takename,u1.name as innername,u2.name as auditname')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN common_system_user u2 on f.verify_user_id=u2.id')->where($where)->order('c.input_time DESC')->limit("{$offset},{$pagesize}")->select();
+        $list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,c.*,f.status,f.ifback,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.verify_time,f.takelist_time,u.name as takename,u1.name as innername,u2.name as auditname')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN common_system_user u2 on f.verify_user_id=u2.id')->where($where)->order('c.input_time DESC')->limit("{$offset},{$pagesize}")->select();
+
+        if($list){
+            $con_list = array();//反馈
+            foreach($list as $contract){
+                array_push($con_list,"'".$contract['centreno']."'");
+            }
+            $centreno_str = implode(',',$con_list);
+            $no_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where centreNo in ('.$centreno_str.') ) ')->group('centreNo')->select();
+            $feed_list =array();
+            if($no_feed_list){
+                foreach($no_feed_list as $no_feed){
+                    $con_list[$no_feed['centreno']]	= $no_feed;
+                }
+            }
+
+            foreach($list as $key=>$val){
+                if($con_list[$val['centreno']]){
+                    //申请作废状态sub_status
+                    $val['sub_status'] = $con_list[$val['centreno']]['status'];
+                    $val['if_invalid'] = $con_list[$val['centreno']]['if_invalid'];
+                }else{
+                    $val['sub_status'] = -1;
+                    $val['if_invalid'] = -1;
+                }
+                $list[$key] = $val;
+            }
+        }
 
         //dump($list);die;
         $count = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,c.*,f.status,f.ifback,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.verify_time,f.takelist_time,u.name as takename,u1.name as innername,u2.name as auditname')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN common_system_user u2 on f.verify_user_id=u2.id')->where($where)->count();
@@ -1381,6 +1410,37 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
         $this->display();
     }
 
+    //申请作废
+    public function applyDelCon(){
+        $rs = array('msg'=>'fail');
+        $centreno = I('centreno');
+        $reason = I('reason');
+        $a=D('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$centreno.'") and (status=0 or status=1)')->find();
+        if(!empty($a)){
+            if($a['if_invalid']==1){
+                $rs['msg']='该审核员正在处理中，请勿重复提交！';
+            }
+        }
+        else{
+            $data = array(
+                'centreNo'=>$centreno,
+                'reason'=>$reason,
+                'if_invalid'=>1
+            );
+            M()->startTrans();
+            if(D('report_feedback')->add($data)){
+                $rs['msg']='succ';
+                //申请中  审核单不可修改
+                M()->commit();
+            }else{
+                $rs['msg']='申请失败';
+                M()->rollback();
+            }
+        }
+
+        $this->ajaxReturn($rs);
+    }
+    //作废合同
     public function contarctDelete(){
         $id = I("id");
         $admin_auth = session("admin_auth");
@@ -1482,8 +1542,8 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
                 array_push($con_list,"'".$contract['centreno']."'");
             }
             $centreno_str = implode(',',$con_list);
-            $no_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where if_report=1 and centreNo in ('.$centreno_str.') group by centreNo ) ')->group('centreNo')->select();
-            $to_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where if_report=0 and centreNo in ('.$centreno_str.') group by centreNo ) ')->group('centreNo')->select();//查前台是否申请修改
+            $no_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where if_report=1 and centreNo in ('.$centreno_str.') ) ')->group('centreNo')->select();
+            $to_feed_list = D('report_feedback')->where(' id in (select max(id) from report_feedback where if_report=0 and centreNo in ('.$centreno_str.') ) ')->group('centreNo')->select();//查前台是否申请修改
             $con_list = array();
             $feed_list =array();
             if($no_feed_list){
@@ -1563,30 +1623,20 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
         $rs = array('msg'=>'fail');
         $centreno = I('back_centreno');
         $reason = I('back_reason');
-        $a=D('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$centreno.'") and (status=0 or status=1)')->find();
-        if(!empty($a)){
-            if($a['if_report']==1){
-                $rs['msg']='该申请审核员正在处理中，请勿重复提交！';
-            }
-            elseif($a['if_report']==0){
-                $rs['msg']='该报告前台正在申请修改，请稍后再试';
-            }
-        }
-        else{
-            $data = array(
-                'centreNo'=>$centreno,
-                'reason'=>$reason,
-                'if_report'=>1
-            );
-            M()->startTrans();
-            if(D('report_feedback')->add($data)){
-                $rs['msg']='succ';
-                //申请中  审核单不可修改
-                M()->commit();
-            }else{
-                $rs['msg']='申请失败';
-                M()->rollback();
-            }
+
+        $data = array(
+            'centreNo'=>$centreno,
+            'reason'=>$reason,
+            'if_report'=>1
+        );
+        M()->startTrans();
+        if(D('report_feedback')->add($data)){
+            $rs['msg']='succ';
+            //申请中  审核单不可修改
+            M()->commit();
+        }else{
+            $rs['msg']='申请失败';
+            M()->rollback();
         }
 
         $this->ajaxReturn($rs);
