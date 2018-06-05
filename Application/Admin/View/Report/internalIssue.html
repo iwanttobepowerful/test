@@ -47,6 +47,8 @@
                     <td>
                         <if condition="$vo[centreno1] or $vo[centreno2] or $vo[centreno3]">
                             <a href="{:U('/admin/contract/reWriteTest')}?id={$vo.centreno}" class="btn btn-info btn-xs">更改单</a></if>
+                        <if condition="$vo[gz_back] neq 0">
+                        <button onclick="module('{$vo[centreno]}')" class="btn btn-warning btn-xs">退回原因</button></if>
                         <a href="/admin/manager/contractDetail?id={$vo.centreno}" class="btn btn-info btn-xs">检验受理合同</a>
                         <if condition="mb_substr($vo['centreno'],7,1) eq 'C' ">
                         <a href="{:U('/admin/test/sampleShow')}?id={$vo.centreno}" class="btn btn-info btn-xs" >抽样单</a></if>
@@ -117,15 +119,6 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label talign-right fz13">上传问题截图</label>
-                    <div class="col-sm-7">
-                        <div class="face" id="attachment" style="width: 120px;height: 80px;" onclick="onFileUpload()"><img src="" onerror="this.src='__PUBLIC__/static/images/default-timg.gif'" style="height: 100%;" /></div>
-                        <input type="hidden" name="imgurl" value="" />
-                        <input type="file" name="file" onchange="ajaxFileUpload()" id="addfile" style="display:none;"  />
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="form-group form-group-sm">
                     <label class="col-sm-3 control-label talign-right fz13">报告将退回至</label>
                     <div class="col-sm-7">
                         <select class="form-control input-sm" name="sortby" id="sortby">
@@ -180,46 +173,6 @@
         });
     }
     //退回
-    function ajaxFileUpload(){
-        var modal = $("#editModal");
-        var file = $("#addfile").val();
-        if(file){
-            $.ajaxFileUpload({
-                url: "{:U('Uploader/start')}",
-                secureuri: false,
-                fileElementId: 'addfile',
-                dataType: 'JSON',
-                success: function (data, status) {
-                    var ret = JSON.parse(data);
-
-                    $("#addfile").val("");
-
-                    if(ret.info=='succ'){
-                        var modal = $("#editModal");
-                        $("input[name='imgurl']").val(ret.url);
-
-                        $("#attachment img").attr("src",ret.url);
-
-                    }else{
-                        var _options = {"text":"上传失败","flag":"error"};
-                        if(ret.info) _options.text = ret.info;
-                        doAlertDialog(_options);
-                    }
-
-                },
-                error: function (data, status, e){
-                    var _options = {"text":"上传失败","flag":"error"};
-                    doAlertDialog(_options);
-                }
-            });
-        }
-        return false;
-    }
-
-    function onFileUpload() {
-        $('#addfile').click();
-        return false;
-    }
     function onBack(id){
         var modal = $("#editModal");
         $("#back_reason").val("");
@@ -231,11 +184,11 @@
         var id = $("#id").val();
         var reason = $("#back_reason").val();
         var sortby = $("#sortby").val();
-        var imgurl =  $("input[name='imgurl']").val();
+        if(reason){
         $.ajax({
             url: "{:U('/admin/Report/doneBack')}",
             dataType: 'json',
-            data:{'id':id,'reason':reason,'sortby':sortby,'imgurl':imgurl},
+            data:{'id':id,'reason':reason,'sortby':sortby},
             beforeSubmit: function(){
                 return true;
             },
@@ -244,6 +197,11 @@
                 window.location.reload();
             }
         });
+        }
+        else {
+            alert("退回原因不能为空");
+            window.location.reload();
+        }
     }
     function recordDetail(centreno) {
         var newurl='/admin/test/doPrint.html?id='+centreno+'&type=2';
@@ -260,6 +218,11 @@
             var newurl=url;
         }
         //alert(newurl);
+        window.open(newurl);
+    }
+    //跳转退回原因页面
+    function module(centreno){
+        var newurl = "/admin/Report/backShowPage.html?centreno="+centreno//url
         window.open(newurl);
     }
 </script>

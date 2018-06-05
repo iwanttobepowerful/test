@@ -202,7 +202,7 @@ class TestController extends Controller{
         $list=M('contract_flow')->where($where)
             ->join('work_inform_form ON contract_flow.centreNo = work_inform_form.centreNo')//从工作通知单取数据
             ->join('contract as a on contract_flow.centreno=a.centreno')
-            ->field('contract_flow.back_time,contract_flow.back_reason,contract_flow.img_path,contract_flow.ifback,contract_flow.takelist_user_id,contract_flow.status,work_inform_form.workDate,work_inform_form.centreNo,work_inform_form.sampleName,work_inform_form.testCreiteria,a.centreno1,a.centreno2,a.centreno3')
+            ->field('contract_flow.back_time,contract_flow.gz_back,contract_flow.sh_back,contract_flow.bz_back,contract_flow.ifback,contract_flow.takelist_user_id,contract_flow.status,work_inform_form.workDate,work_inform_form.centreNo,work_inform_form.sampleName,work_inform_form.testCreiteria,a.centreno1,a.centreno2,a.centreno3')
             ->order('contract_flow.back_time desc,work_inform_form.workDate desc,work_inform_form.id desc')
             ->limit("{$offset},{$pagesize}")->select();//从合同表!!!!里取出对应中心编号的信息
         if($list){
@@ -685,13 +685,16 @@ class TestController extends Controller{
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
+        $where1 = "centreno = '{$centreno}' and type = 3";
         $data1=array(
             'status'=>2,
+            'bz_back'=>0,
             'uploadreport_user_id'=>$userid,
             'uploadreport_time'=>date("Y-m-d H:i:s"),
         );
         M()->startTrans();
         if(D("contract_flow")->where("centreno='{$centreno}'")->save($data1)){
+            D('back_report')->where($where1)->delete();
             $rs['msg'] = "succ";
             M()->commit();
         }else{

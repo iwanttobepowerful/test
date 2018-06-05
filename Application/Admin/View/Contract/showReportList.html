@@ -56,8 +56,8 @@
                         </if></if>
                         <if condition="$con[centreno1] or $con[centreno2] or $con[centreno3]">
                             <a href="{:U('/admin/contract/reWriteTest')}?id={$con.centreno}" class="btn btn-info btn-xs">更改单</a></if>
-                        <if condition="$con['back_reason']">
-                            <button onclick="module('{$con[back_reason]}','{$con[img_path]}')" class="btn btn-warning btn-xs">退回原因</button>
+                        <if condition="($con['gz_back'] neq 0 or $con['sh_back'] neq 0 or $con['bz_back'] neq 0) and ($con['status'] eq 8 or $con['status'] eq 1)">
+                            <button onclick="module('{$con[centreno]}')" class="btn btn-warning btn-xs">退回原因</button>
                         </if>
                         <a href="/admin/manager/contractDetail?id={$con.centreno}"  class="btn btn-info btn-xs" >检验受理合同</a>
                         <if condition="mb_substr($con[centreno],7,1)=='C'">
@@ -86,15 +86,17 @@
                         </if>
                         <if condition="$con['status']==8 and $con['doc_path'] and !($con['sub_status'] == 1 and $con['if_report'] ==1)">
                             <if condition="($con[to_status]==0 or $con[to_status]==1) and ($con[if_outer]==0)">
+                                <!--如果正在修改则不允许进行操作-->
                                 <button  class="btn btn-primary btn-xs" disabled>确认</button><p></p><else />
                                 <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="confirmReport('{$con.centreno}')" >确认</a><p></p>
-                                <button name="btn_change" onclick="onBack('{$con.centreno}')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove-circle"></i>退回</button>
                             </if></if>
                             <if condition="$con['status']==8 and $con['doc_path'] and ($con['sub_status'] == 1 and $con['if_report'] ==1)">
                                 <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="editconfirmReport('{$con.centreno}')" >修改完毕</a><p></p>
-                                <button name="btn_change" onclick="onBack('{$con.centreno}')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove-circle"></i>退回</button>
                             </if>
 
+                            <if condition="$con['isaudit'] eq 0 and (!(($con['sub_status'] == 1 or $con['sub_status'] == 0) and $con['if_report']==1))"><!--未审批并且没有在修改-->
+                                <button name="btn_change" onclick="onBack('{$con.centreno}')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove-circle"></i>退回</button>
+                            </if>
 
                             <if condition=" ($con['sub_status'] == 0) and ($con['if_report'] ==1)">
                                 <span style="color:green">申请修改中</span>
@@ -152,16 +154,6 @@
                         </div>
                         <div class="clearfix"></div>
                     </div>
-                    <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">修改选项</label>
-                        <div class="col-sm-7">
-                            <select class="form-control input-sm" name="sortby" id="sortby">
-                                <option value="1" <php>if($sortby==1){echo 'selected';}</php>>单项修改</option>
-                                <option value="2" <php>if($sortby==2){echo 'selected';}</php>>全项修改</option>
-                            </select>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
                     <div class="modal-footer">
                         <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
                         <button type="submit" class="btn btn-primary" onclick="subFeedback()">确定</button>
@@ -172,45 +164,6 @@
     </div>
 </div>
 
-<div>
-    <!-- 模态框（Modal) -->
-    <div class="modal fade" id="editModal2" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="form-horizontal" id="aform" action="" method="post">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="ModalLabel">退回原因</h4>
-                    </div>
-                    <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13"></label>
-                        <div class="col-sm-7">
-                            <input type="hidden" name="id" id="id" value="" />
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">退回理由</label>
-                        <div class="col-sm-7">
-                            <p id="reason" name="reason" class="form-control" rows="5" ></p>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">问题截图</label>
-                        <div class="col-sm-7">
-                            <a href="javascript:void(0);" id=yuantu name="" onclick="return Checkorgin(this);"><img src="" onerror="this.src='__PUBLIC__/static/images/default-timg.gif'" style="height: 100%;" id="turn_img"/></a>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    </div>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-    </div>
-</div>
 <div>
     <!-- 模态框（Modal) -->
     <div class="modal fade" id="editModal3" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
@@ -347,18 +300,9 @@
             }
         });
     }
-    function module(reason,imgpath){
-        var modal = $("#editModal2");
-        $("#reason").html(reason);
-        $("#turn_img").attr("src",imgpath);
-        $("#yuantu").attr("name",imgpath);
-        modal.modal();
-    }
-    //点击查看原图
-    function Checkorgin(path) {
-        var url=path.name;
-        if(!url) return false;//获取缩略图url
-        var newurl=url.replace("_thumb","");//重写
+    //跳转退回原因页面
+    function module(centreno){
+        var newurl = "/admin/Report/backShowPage.html?centreno="+centreno//url
         window.open(newurl);
     }
     function onBack(centreno){
