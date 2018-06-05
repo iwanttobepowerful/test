@@ -7,6 +7,7 @@
 			<li role="presentation" class="active" id="de_A" name="de"><a href="/admin/audit/reportList?de=A" >前台内部修改申请</a></li>
 			<li role="presentation" id="de_B" name="de"><a href="/admin/audit/reportList?de=B">报告修改申请</a></li>
 			<li role="presentation" id="de_C" name="de"><a href="/admin/audit/reportList?de=C">外部修改申请</a></li>
+			<li role="presentation" id="de_D" name="de"><a href="/admin/audit/reportList?de=D">合同作废申请</a></li>
 			<input hidden id="de_choose" value="{$de}">
 		</ul>
 
@@ -158,6 +159,48 @@
 				</volist>
 				</tbody>
 			</table></if>
+		<if condition="$de eq 'D'"><!-- 合同作废申请显示表单-->
+			<!---<div class="search-form">
+				<form class="form-inline" method="GET" action="">
+					<div class="form-group">
+						<label>中心编号：</label>
+						<input type="text" class="form-control input-sm" name="keyword"/>
+					</div>
+					<button type="submit" class="btn btn-primary btn-sm" >查询</button>
+				</form>
+			</div>----><p></p>
+			<table class="table table-bordered table-striped table-hover">
+				<thead>
+				<th width="12%">中心编号</th>
+				<th>申请作废原因</th>
+				<th width="8%">申请时间</th>
+				<th width="12%">操作</th>
+				<th width="6%">状态</th>
+				</thead>
+				<tbody>
+				<volist name="lists" id="one" key="i">
+					<tr>
+						<td>{$one.centreno}</td>
+						<td>{$one.reason}</td>
+						<td>{$one.create_time}</td>
+						<td>
+							<if condition="$one['sub_status'] ==0 and $view==1" >
+								<button class="btn btn-success btn-xs" onclick="onUpdate('{$one.reid}','D')" {$view}><i class="glyphicon glyphicon-ok-circle"></i>允许</button>
+								<button class="btn btn-danger btn-xs" onclick="update('{$one.reid}','D')" {$view}><i class="glyphicon glyphicon-remove-circle"></i>拒绝</button>
+								<else />
+							</if>
+						</td>
+						<td><if condition="$one['sub_status'] ==0">
+							<span>未处理</span>
+							<elseif condition="$one['sub_status'] ==1 or $one['sub_status'] ==3" />
+							<span style="color: green">允许</span>
+							<elseif condition="$one['sub_status'] ==2 "/>
+							<span style="color: red">拒绝</span></if>
+						</td>
+					</tr>
+				</volist>
+				</tbody>
+			</table></if>
 
 		<div class=" pull-right"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
 	</div>
@@ -232,8 +275,6 @@
             }
         });
     }
-    function internal_list() {
-		
-    }
+
 </script>
 <include file="Common:footer" />

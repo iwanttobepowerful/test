@@ -1440,55 +1440,6 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
 
         $this->ajaxReturn($rs);
     }
-    //作废合同
-    public function contarctDelete(){
-        $id = I("id");
-        $admin_auth = session("admin_auth");
-        $contract_user_id = $admin_auth['id'];
-        $data1 = array(
-            'status'=>-1
-        );
-        $data2 = array(
-            'centreNo'=>$id,
-            'status'=>-1,
-            'contract_user_id'=>$contract_user_id,
-            'contract_time'=>Date("Y-m-d H:i:s"),
-        );
-        $data_cost = array(
-            'Arecord'=>0,
-            'Brecord'=>0,
-            'Crecord'=>0,
-            'Drecord'=>0,
-            'Erecord'=>0,
-            'Frecord'=>0,
-            'Dcopy'=>0,
-            'Donline'=>0,
-            'Drevise'=>0,
-            'Dother'=>0,
-            'remark'=>'',
-            'RArecord'=>0,
-            'RBrecord'=>0,
-            'RCrecord'=>0,
-            'RDrecord'=>0,
-            'RErecord'=>0,
-            'RFrecord'=>0,
-            'RGrecord'=>0,
-            'RHrecord'=>0,
-            'idList'=>'',
-        );
-        $data_contract = array(
-            'testCost'=>0
-        );
-        if(D("contract_flow")->where("centreNo='".$id."'")->count()==0){
-            D("contract_flow")->add($data2);
-        }else{
-            D("contract_flow")->where("centreNo='".$id."'")->save($data1);
-        }
-        D("test_cost")->where("centreNo='".$id."'")->save($data_cost);
-        D("contract")->where("centreNo='".$id."'")->save($data_contract);
-        $this->ajaxReturn();
-    }
-
     //报告管理下的合同列表
     public function showReportList(){
         $de = I("de",'A');
