@@ -56,7 +56,7 @@
                         </if></if>
                         <if condition="$con[centreno1] or $con[centreno2] or $con[centreno3]">
                             <a href="{:U('/admin/contract/reWriteTest')}?id={$con.centreno}" class="btn btn-info btn-xs">更改单</a></if>
-                        <if condition="$con['gz_back'] neq 0 or $con['sh_back'] neq 0 or $con['bz_back'] neq 0">
+                        <if condition="($con['gz_back'] neq 0 or $con['sh_back'] neq 0 or $con['bz_back'] neq 0) and ($con['status'] eq 8 or $con['status'] eq 1)">
                             <button onclick="module('{$con[centreno]}')" class="btn btn-warning btn-xs">退回原因</button>
                         </if>
                         <a href="/admin/manager/contractDetail?id={$con.centreno}"  class="btn btn-info btn-xs" >检验受理合同</a>
@@ -93,7 +93,8 @@
                             <if condition="$con['status']==8 and $con['doc_path'] and ($con['sub_status'] == 1 and $con['if_report'] ==1)">
                                 <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="editconfirmReport('{$con.centreno}')" >修改完毕</a><p></p>
                             </if>
-                            <if condition="$con['isaudit'] eq 0">
+
+                            <if condition="$con['isaudit'] eq 0 and (!(($con['sub_status'] == 1 or $con['sub_status'] == 0) and $con['if_report']==1))"><!--未审批并且没有在修改-->
                                 <button name="btn_change" onclick="onBack('{$con.centreno}')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove-circle"></i>退回</button>
                             </if>
 

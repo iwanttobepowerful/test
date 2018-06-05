@@ -184,11 +184,11 @@
         var id = $("#id").val();
         var reason = $("#back_reason").val();
         var sortby = $("#sortby").val();
-        var imgurl =  $("input[name='imgurl']").val();
+        if(reason){
         $.ajax({
             url: "{:U('/admin/Report/doneBack')}",
             dataType: 'json',
-            data:{'id':id,'reason':reason,'sortby':sortby,'imgurl':imgurl},
+            data:{'id':id,'reason':reason,'sortby':sortby},
             beforeSubmit: function(){
                 return true;
             },
@@ -197,6 +197,11 @@
                 window.location.reload();
             }
         });
+        }
+        else {
+            alert("退回原因不能为空");
+            window.location.reload();
+        }
     }
     function recordDetail(centreno) {
         var newurl='/admin/test/doPrint.html?id='+centreno+'&type=2';
