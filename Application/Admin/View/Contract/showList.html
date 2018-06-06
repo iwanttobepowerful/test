@@ -86,11 +86,11 @@
                         <if condition="$if_edit==1">
                             <if condition="($con['ifedit'] == 1) and ($con['sub_status'] == 1) and ($con['if_report']==0) and ($con['if_outer']==0)" >
                                 <a href="#" class="btn btn-primary btn-xs"  onclick="doUpdateApplyState('{$con.centreno}','{$con.status}')" >修改完毕1</a>
-                                <elseif condition="$con.status == 3 OR ($con.ifback == 2 and $con.status == 0) OR ($con['sub_status'] == 1 and $con['if_outer'] == 1) " />
+                                <elseif condition="$con.status == 3 OR ($con['sub_status'] == 1 and $con['if_outer'] == 1) " />
                                 <a href="#" class="btn btn-primary btn-xs"  onclick="displayEdit('{$con.centreno}','{$con.status}','{$con.ifback}')" >修改完毕2</a>
                             </if>
                         </if>
-                        <if condition="($con['ifback']==2 or $con['ifback']==1) and $con.status == 0">
+                        <if condition="$con.status == 3">
                             <a class="btn btn-warning btn-xs" onclick="alert('退回原因：'+'{$con.back_reason}')">退回原因</a>
                         </if>
                     </td>

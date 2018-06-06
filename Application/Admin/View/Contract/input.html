@@ -141,70 +141,23 @@
           <td   colspan="3" ><p>
             <input type="text" class="form-control"  name="centreNo" id="centreNo" readonly="readonly" size="9"/>
             <input type="hidden" value="0" id="ifchoseSp" name="ifchoseSp"/>
-            <!--<input type="button" name="button2" id="button2" value="生成中心编码" />-->
-            <input name="ifHighQuantity" type="checkbox" value="0" onClick="upVIPCode()"/>
-            前100号
-            <div id="remainCode" style="display:none;color:red">
-              当前剩余量：<span id="remain"></span>
-            </div>
-            <input type="checkbox" id="spec_checkbox" onclick="special_code()"/>申请咨询<br/>
-            <!--<button class="btn btn-success" type="button" onclick="special_code()">申请特殊编码</button>-->
-            <div>
-              <ul id="spe_code" style="display:none">
+            <div id="sp_div">
+                <input name="ifHighQuantity" type="checkbox" value="0" onClick="upVIPCode()"/>
+                前100号
+              <div id="remainCode" style="display:none;color:red">
+                当前剩余量：<span id="remain"></span>
+              </div>
+              <input type="checkbox" id="spec_checkbox" onclick="special_code()"/>申请咨询<br/>
+              <!--<button class="btn btn-success" type="button" onclick="special_code()">申请特殊编码</button>-->
+              <div>
+                <ul id="spe_code" style="display:none">
 
-                <ul>
+                  </ul>
+              </div>
             </div>
           </td>
           <td  ><p align="center" ><span style="color:red; font-size:15px">*</span>检验费用 </p></td>
           <td  colspan="4" >
-            <!--<div class="col-xs-6">-->
-            <!--<p align="center">参考价格</p>-->
-            <!--<input name="Arecord" type="text" class="form-control"  id="Arecord" size="5" placeholder="A部门" readonly   onClick="Cost('A')"/>-->
-            <!--<br/>-->
-            <!--<input name="Brecord" type="text" class="form-control"  id="Brecord" size="5" placeholder="B部门" readonly  onclick="Cost('B')"/>-->
-            <!--<br/>-->
-            <!--<input name="Crecord" type="text" class="form-control"  id="Crecord" size="5" placeholder="C部门" readonly  onClick="Cost('C')"/>-->
-            <!--<br/>-->
-            <!--<input name="Drecord" type="text" class="form-control"  id="Drecord" size="5" placeholder="D部门" readonly  onClick="Cost('D')"/>-->
-            <!--<br/>-->
-            <!--<input name="Erecord" type="text" class="form-control"  id="Erecord" size="5" placeholder="E部门" readonly  onClick="Cost('E')"/>-->
-            <!--<br/>-->
-            <!--<input name="Frecord" type="text" class="form-control"  id="Frecord" size="5" placeholder="F部门" readonly  onClick="Cost('F')"/>-->
-            <!--<br/>-->
-            <!--<p align="center">备注</p>-->
-            <!--<textarea class="form-control" rows="10" name="fee_remark"></textarea>-->
-            <!--</div>-->
-            <!--<div  class="col-xs-6">-->
-            <!--<p align="center">报告应收价格</p>-->
-            <!--<input name="RArecord" type="text" class="form-control two-col"  id="RArecord" size="5" placeholder="A部门" onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hint">A部门</p>-->
-            <!--<input name="A_id_list" id="A_id_list" type="hidden" value=""/>-->
-            <!--<div>+</div>-->
-            <!--<input name="RBrecord" type="text" class="form-control two-col"  id="RBrecord" size="5" placeholder="B部门" onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hint">B部门</p>-->
-            <!--<input name="B_id_list" id="B_id_list" type="hidden" value=""/>-->
-            <!--<div>+</div>-->
-            <!--<input name="RCrecord" type="text" class="form-control two-col"  id="RCrecord" size="5" placeholder="C部门" onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hint">C部门</p>-->
-            <!--<input name="C_id_list" id="C_id_list" type="hidden" value=""/>-->
-            <!--<div>+</div>-->
-            <!--<input name="RDrecord" type="text" class="form-control two-col"  id="RDrecord" size="5" placeholder="D部门" onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hint">D部门</p>-->
-            <!--<input name="D_id_list" id="D_id_list" type="hidden" value=""/>-->
-            <!--<div>+</div>-->
-            <!--<input name="RErecord" type="text" class="form-control two-col"  id="RErecord" size="5" placeholder="E部门" onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hint">E部门</p>-->
-            <!--<input name="E_id_list" id="E_id_list" type="hidden" value=""/>-->
-            <!--<div>+</div>-->
-            <!--<input name="RFrecord" type="text" class="form-control two-col"  id="RFrecord" size="5" placeholder="F部门" onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hint">F部门</p>-->
-            <!--<input name="F_id_list" id="F_id_list" type="hidden" value=""/>-->
-            <!--<div>+</div>-->
-            <!--<input name="Dcopy" type="text" class="form-control two-col"  id="Dcopy" placeholder="副本" onKeyUp="computeSum()" size="5" />&nbsp;&nbsp;&nbsp;<p class="hint">副本</p>-->
-            <!--<div>+</div>-->
-            <!--<input name="Donline" type="text" class="form-control two-col"  id="Donline" placeholder="上网费" onKeyUp="computeSum()" value="100" />&nbsp;&nbsp;&nbsp;<p class="hint">上网费</p>-->
-            <!--<div>+</div>-->
-            <!--<input name="Drevise" type="text" class="form-control two-col"  id="Drevise" placeholder="项目修改" onKeyUp="computeSum()" size="6" />&nbsp;&nbsp;&nbsp;<p class="hint">项目修改</p>-->
-            <!--<div>+</div>-->
-            <!--<input name="Dother" type="text" class="form-control two-col"  id="Dother" placeholder="其他"  onKeyUp="computeSum()"/>&nbsp;&nbsp;&nbsp;<p class="hint">其他</p>-->
-            <!--<div>=</div>-->
-            <!--<input name="testCost" type="text" class="form-control two-col"  id="sumCost" placeholder="总计"  value="100" readonly />-->
-            <!--</div>-->
-
             <p class="fee_title">参考价格</p>
             <p class="fee_title">报告应收价格</p>
             <div>
@@ -371,6 +324,9 @@
 
     //时间
     $(document).ready(function(){
+        if($("#department").val()=='G1' || $("#department").val()=='G2'){
+            $("#sp_div").css("display","none");
+        }
         var count_unfinish = $("#count_unfinish").val();
         //alert(count_unfinish);
         if(count_unfinish>=1){
@@ -403,6 +359,8 @@
         var type = $('input:radio[name="testCategory"]:checked').val();
         type = (type == '委托检验')?'W':'C';
         var code= '101';
+        if(department=='G1') code='001';
+        if(department=='G2') code='501';
         //获取最新编码
         $.ajax({
             url: "{:U('/admin/contract/getLastCode')}",
@@ -419,7 +377,7 @@
                 }
             }
         });
-
+        if(department=='G1' || department=='G2') department='G';
         var centreCode = year+""+month+department+type+code;
         $('input[name="centreNo"]').val(centreCode);
         if(type=='W'){
@@ -455,7 +413,6 @@
                     }
                 }
             });
-
             var centreCode = year+""+month+department+type+code;
             remain = 100-code+1;
             $('input[name="centreNo"]').val(centreCode);

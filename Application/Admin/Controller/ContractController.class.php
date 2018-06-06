@@ -101,7 +101,9 @@ class ContractController extends Controller
         $count = D("test_fee")->where('criteria like "%'.$criteria.'%"')->count();
         $count_unfinish=0;
         if($if_admin!=1){
-            $count_unfinish = D("contract c")->join('LEFT JOIN contract_flow f on c.centreNo=f.centreNo')->where('SUBSTR(c.centreNo,7,1) ="'.$department.'" and f.centreNo is null')->count();
+            if($department=='G1') $count_unfinish = D("contract c")->join('LEFT JOIN contract_flow f on c.centreNo=f.centreNo')->where('collector_partment="G1" and f.centreNo is null')->count();
+            else if($department=='G2')  $count_unfinish = D("contract c")->join('LEFT JOIN contract_flow f on c.centreNo=f.centreNo')->where('collector_partment="G2" and f.centreNo is null')->count();
+            else $count_unfinish = D("contract c")->join('LEFT JOIN contract_flow f on c.centreNo=f.centreNo')->where('SUBSTR(c.centreNo,7,1) ="'.$department.'" and f.centreNo is null')->count();
         }
         //pr(D("contract c")->getLastSql());
 
@@ -122,8 +124,8 @@ class ContractController extends Controller
 
     //合同录入
     public function doAddContract(){
-        $clientName = I("clientName");
-        $productUnit = I("productUnit");
+        $clientName = str_replace(' ','',I("clientName"));
+        $productUnit = preg_replace(' ','',I("productUnit"));
         $sampleName = I("sampleName");
         $sampleCode = I("sampleCode");
         $grade = I("grade");
@@ -212,7 +214,25 @@ class ContractController extends Controller
             $rs['msg'] = '费用输入不正确!';
             $this->ajaxReturn($rs);
         }
-
+        $admin_auth = session("admin_auth");
+        $department = $admin_auth['department'];
+        //ABCEF和G1，G2 三者之间生产单位和委托单位不能共享
+        if($department == 'A' || $department == 'B' || $department == 'C' || $department == 'E' || $department == 'F'){
+            $where_same='(clientName="'.$clientName.'" or productUnit="'.$productUnit.'") and collector_partment in("G1","G2")';
+            $same_count = D("contract")->where($where_same)->count();
+        }else if($department == 'G1'){
+            $where_same='(clientName="'.$clientName.'" or productUnit="'.$productUnit.'")';
+            $where_same.=' and collector_partment in("A","B","C","E","F","G2")';
+            $same_count = D("contract")->where($where_same)->count();
+        }else if($department == 'G2'){
+            $where_same='(clientName="'.$clientName.'" or productUnit="'.$productUnit.'")';
+            $where_same.=' and collector_partment in("A","B","C","E","F","G1")';
+            $same_count = D("contract")->where($where_same)->count();
+        }
+        if($same_count>0){
+            $rs['msg'] = '委托单位或生产单位不属于'.$department.'部门';
+            $this->ajaxReturn($rs);
+        }
         //验证手机号
         if(!empty($telephone)){
             $isMob="/^(1(([35][0-9])|(47)|[8][0126789]))\d{8}$/";  //手机
@@ -526,8 +546,8 @@ class ContractController extends Controller
                 M()->rollback();
             }
         }else{
-            $clientName = I("clientName");
-            $productUnit = I("productUnit");
+            $clientName = str_replace(' ','',I("clientName"));
+            $productUnit = preg_replace(' ','',I("productUnit"));
             $sampleName = I("sampleName");
             $sampleCode = I("sampleCode");
             $grade = I("grade");
@@ -606,6 +626,27 @@ class ContractController extends Controller
             $Drevise = I("Drevise",0,'intval');
             $Dother = I("Dother",0,'intval');
             $fee_remark = I("fee_remark");
+
+            //ABCEF和G1，G2 三者之间生产单位和委托单位不能共享
+            $admin_auth = session("admin_auth");
+            $department = $admin_auth['department'];
+            if($department == 'A' || $department == 'B' || $department == 'C' || $department == 'E' || $department == 'F'){
+                $where_same='(clientName="'.$clientName.'" or productUnit="'.$productUnit.'") and collector_partment in("G1","G2")';
+                $same_count = D("contract")->where($where_same)->count();
+            }else if($department == 'G1'){
+                $where_same='(clientName="'.$clientName.'" or productUnit="'.$productUnit.'")';
+                $where_same.=' and collector_partment in("A","B","C","E","F","G2")';
+                $same_count = D("contract")->where($where_same)->count();
+            }else if($department == 'G2'){
+                $where_same='(clientName="'.$clientName.'" or productUnit="'.$productUnit.'")';
+                $where_same.=' and collector_partment in("A","B","C","E","F","G1")';
+                $same_count = D("contract")->where($where_same)->count();
+            }
+            if($same_count>0){
+                $rs['msg'] = '委托单位或生产单位不属于'.$department.'部门';
+                $this->ajaxReturn($rs);
+            }
+
 
             if($testCost<=0){
                 $rs['msg'] = '费用输入不正确!';
@@ -1234,7 +1275,9 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
         if($roleid==8 || $roleid==13 || $roleid==15 || $if_admin==1){
             //
         }else{
-            $where .= " and SUBSTR(c.centreNo,7,1) = '{$department}'";
+            if($department=='G1') $where .= " and collector_partment='G1'";
+            else if($department=='G2') $where .= " and collector_partment='G2'";
+            else $where .= " and collector_partment = '{$department}'";
         }
         if(!empty($begin_time)){
             $where.=" and date_format(c.collectDate,'%Y-%m-%d') >='{$begin_time}'";
@@ -1345,7 +1388,9 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
         if($roleid==8 || $roleid==13 || $roleid==15 || $if_admin==1){
             //
         }else{
-            $where .= " and SUBSTR(c.centreNo,7,1) = '{$department}'";
+            if($department=='G1') $where .= " and SUBSTR(c.centreNo,7,1) = 'G' and SUBSTR(c.centreNo,9,3)<=500";
+            else if($department=='G2') $where .= " and SUBSTR(c.centreNo,7,1) = 'G' and SUBSTR(c.centreNo,9,3)>500";
+            else $where .= " and SUBSTR(c.centreNo,7,1) = '{$department}'";
         }
         if(!empty($begin_time)){
             $where.=" and date_format(c.collectDate,'%Y-%m-%d') >='{$begin_time}'";
@@ -1355,13 +1400,18 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
         }
         //-1 合同作废 0合同 1检测 2提交审核 3盖章退回 -4 批退回  7 已接单  8待上传报告
         //$where.=" and (f.status not in (2,4,5,6) or f.id is null) and c.centreNo1 is null and c.centreNo2 is null and c.centreNo3 is null";
-        $where.=" and (f.status not in (2,4,5,6)) and c.centreNo1 is null and c.centreNo2 is null and c.centreNo3 is null";
+        $where.=" and (f.status not in (2,4,5,6) or f.id is null) and c.centreNo1 is null and c.centreNo2 is null and c.centreNo3 is null";
         $page = I("p",'int');
         $pagesize = 10;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
 
-        $list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,c.*,f.status,f.ifback,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.verify_time,f.takelist_time,u.name as takename,u1.name as innername,u2.name as auditname')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN common_system_user u2 on f.verify_user_id=u2.id')->where($where)->order('c.input_time DESC')->limit("{$offset},{$pagesize}")->select();
+        $list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,c.*,f.status,f.ifback,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.verify_time,f.takelist_time,u.name as takename,u1.name as innername,u2.name as auditname')
+            ->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN common_system_user u2 on f.verify_user_id=u2.id')
+            ->where($where)
+            ->order('c.input_time DESC')
+            ->limit("{$offset},{$pagesize}")
+            ->select();
 
         if($list){
             $con_list = array();//反馈
@@ -1842,7 +1892,25 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
         $year=I("year");
         $month=I("month");
         $centreHead=$year.$month;
-        $list = D("contract")->field('centreNo',SUBSTR(centreNo,9,3))->where('substr(centreNo,7,1) = "'.$department.'" and centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)>100')->order('SUBSTR(centreNo,9,3) desc')->select();
+        if($department=='G1'){
+            $department='G';
+            $list = D("contract")
+                ->field('centreNo',SUBSTR(centreNo,9,3))
+                ->where('substr(centreNo,7,1) = "'.$department.'" and centreNo like "'.$centreHead.'%"')
+                ->order('SUBSTR(centreNo,9,3) desc')->select();
+        }else if($department=='G2'){
+            $department='G';
+            $list = D("contract")
+                ->field('centreNo',SUBSTR(centreNo,9,3))
+                ->where('substr(centreNo,7,1) = "'.$department.'" and centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)>500')
+                ->order('SUBSTR(centreNo,9,3) desc')->select();
+        }else{
+            $list = D("contract")
+                ->field('centreNo',SUBSTR(centreNo,9,3))
+                ->where('substr(centreNo,7,1) = "'.$department.'" and centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)>100')
+                ->order('SUBSTR(centreNo,9,3) desc')->select();
+        }
+
         //pr(D("contract")->getLastSql());
         if(count($list)>0){
             $centreNo['re']= $list[0]['centreno'];
@@ -1866,9 +1934,14 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
         $year=I("year");
         $month=I("month");
         $centreHead=$year.$month;
-        $list = D("contract")->field('centreNo',SUBSTR(centreNo,9,3))->where('substr(centreNo,7,1) = "'.$department.'" and centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)<100')->order('SUBSTR(centreNo,9,3) desc')->select();
-        //$count = D("contract")->field('count(*) as num')->where('centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)<100')->order('SUBSTR(centreNo,9,3) desc')->select();
-        //pr(D("contract")->getLastSql());
+
+        $list = D("contract")
+            ->field('centreNo',SUBSTR(centreNo,9,3))
+            ->where('substr(centreNo,7,1) = "'.$department.'" and centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)<=100')
+            ->order('SUBSTR(centreNo,9,3) desc')
+            ->select();
+
+
         if(count($list)>0){
             $centreNo['re']= $list[0]['centreno'];
         }
