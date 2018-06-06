@@ -55,11 +55,11 @@ class AuditController extends Controller {
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
         if($de =='A'){//内部修改申请
-        if(!empty($keyword)){
-            $where="r.centreno like '%{$keyword}% ' and r.if_outer=0 and r.if_report=0";
-        }else{
-            $where="r.if_outer=0 and r.if_report=0";
-        }
+            if(!empty($keyword)){
+                $where="r.centreno like '%{$keyword}% ' and r.if_outer=0 and r.if_report=0";
+            }else{
+                $where="r.if_outer=0 and r.if_report=0";
+            }
         }
         elseif($de =='B'){//报告修改申请
             if(!empty($keyword)){
@@ -70,8 +70,16 @@ class AuditController extends Controller {
         elseif($de =='C'){//外部修改申请
             if(!empty($keyword)){
                 $where="r.centreno like '%{$keyword}% ' and r.if_outer=1";
-            }else{
+            }
+            else{
                 $where="r.if_outer=1";
+            }}
+        elseif($de =='D'){//外部修改申请
+            if(!empty($keyword)){
+                $where="r.centreno like '%{$keyword}% ' and r.if_invalid = 1";
+            }
+            else{
+                $where="r.if_invalid=1";
             }}
         /*if(!empty($useraudit)){
             $data=explode(',',$useraudit);
@@ -107,31 +115,82 @@ class AuditController extends Controller {
         $de=I("de");
         $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $contract_user_id = $admin_auth['id'];
         $user=$admin_auth['gid'];//判断是哪个角色
         $a=D("report_feedback")->where("id=".$id)->find();
         $centreno=$a['centreno'];
         $if_admin = $admin_auth['super_admin'];
-            $data=array(
-                'status'=>1,
-            );
-        
-        if ($user==16||$if_admin==1) {//审核员和超级管理员的权限
-            if ($de != 'B') {
+        $data=array(
+            'status'=>1,
+        );
 
+        if ($user==16||$if_admin==1) {//审核员和超级管理员的权限
+            if ($de == 'A' or $de == "C") {
                 if (D("report_feedback")->where("id=" . $id)->save($data)) {
                     if($d = D("test_report")->where("centreno='{$centreno}'")->find()){
-						$pdf_path='.'.$d['pdf_path'];
-						$pdf_sign = '.'.$d['pdf_sign_path'];
-						if(file_exists($pdf_path)){
-							@unlink($pdf_path);
-						}
-						if(file_exists($pdf_sign)){
-							@unlink($pdf_sign);
-						}
-					}
+                        $pdf_path='.'.$d['pdf_path'];
+                        $pdf_sign = '.'.$d['pdf_sign_path'];
+                        if(file_exists($pdf_path)){
+                            @unlink($pdf_path);
+                        }
+                        if(file_exists($pdf_sign)){
+                            @unlink($pdf_sign);
+                        }
+                    }
                     $rs['msg'] = 'succ';
                 }
-            } else {
+            } elseif($de == "D"){
+                $data1 = array(
+                    'status'=>-1
+                );
+                $data2 = array(
+                    'centreNo'=>$centreno,
+                    'status'=>-1,
+                    'contract_user_id'=>$contract_user_id,
+                    'contract_time'=>Date("Y-m-d H:i:s"),
+                );
+                $data_cost = array(
+                    'Arecord'=>0,
+                    'Brecord'=>0,
+                    'Crecord'=>0,
+                    'Drecord'=>0,
+                    'Erecord'=>0,
+                    'Frecord'=>0,
+                    'Dcopy'=>0,
+                    'Donline'=>0,
+                    'Drevise'=>0,
+                    'Dother'=>0,
+                    'remark'=>'',
+                    'RArecord'=>0,
+                    'RBrecord'=>0,
+                    'RCrecord'=>0,
+                    'RDrecord'=>0,
+                    'RErecord'=>0,
+                    'RFrecord'=>0,
+                    'RGrecord'=>0,
+                    'RHrecord'=>0,
+                    'idList'=>'',
+                );
+
+                $data_contract = array(
+                    'testCost'=>0
+                );
+                M()->startTrans();
+                if(D("contract_flow")->where("centreNo='".$centreno."'")->count()==0){
+                    D("contract_flow")->add($data2);
+                }else{
+                    D("contract_flow")->where("centreNo='".$centreno."'")->save($data1);
+                }
+                if(D("report_feedback")->where("id=" . $id)->save($data)){
+                    D("test_cost")->where("centreNo='".$centreno."'")->save($data_cost);
+                    D("contract")->where("centreNo='".$centreno."'")->save($data_contract);
+                    M()->commit();
+                    $rs['msg'] = 'succ';
+                }else{
+                    M()->rollback();
+                }
+
+            }else {
                 $data1=array(
                     'status'=>8,
                     'isaudit'=>0,
@@ -172,10 +231,11 @@ class AuditController extends Controller {
                 $rs['msg'] = 'succ';
 
             }
-        else{
+            else{
                 M()->rollback();
-        }}
+            }}
         $this->ajaxReturn($rs);
     }
 
 }
+
