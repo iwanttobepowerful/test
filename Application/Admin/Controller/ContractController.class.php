@@ -6,6 +6,7 @@
  * Time: 16:49
  */
 namespace Admin\Controller;
+use PhpParser\Node\Expr\Array_;
 use Think\Controller;
 class ContractController extends Controller
 {
@@ -125,7 +126,7 @@ class ContractController extends Controller
     //合同录入
     public function doAddContract(){
         $clientName = str_replace(' ','',I("clientName"));
-        $productUnit = preg_replace(' ','',I("productUnit"));
+        $productUnit = str_replace(' ','',I("productUnit"));
         $sampleName = I("sampleName");
         $sampleCode = I("sampleCode");
         $grade = I("grade");
@@ -271,10 +272,55 @@ class ContractController extends Controller
             }
         }
 
-        if(empty($clientName)||empty($productUnit)||empty($sampleName)||empty($testCriteria)||empty($testItem)||empty($sampleQuantity)||empty($sampleStatus)||empty($sampleStaQuan)||empty($collector)||empty($testCost)||empty($collectDate)||empty($reportDate)){
-            $rs['msg'] = '信息填写不完整!';
+        if(empty($clientName)) {
+            $rs['msg'] = '委托单位不能为空!';
             $this->ajaxReturn($rs);
         }
+        if(empty($productUnit)) {
+            $rs['msg'] = '生产单位不能为空!';
+            $this->ajaxReturn($rs);
+        }
+        if(empty($sampleName)) {
+            $rs['msg'] = '样品名称不能为空!';
+            $this->ajaxReturn($rs);
+        }
+        if(empty($testCriteria)) {
+            $rs['msg'] = '检验依据不能为空!';
+            $this->ajaxReturn($rs);
+        }
+        if(empty($testItem)) {
+            $rs['msg'] = '检验项目不能为空!';
+            $this->ajaxReturn($rs);
+        }
+        if(empty($sampleQuantity)) {
+            $rs['msg'] = '样品数量不能为空!';
+            $this->ajaxReturn($rs);
+        }
+        if(empty($sampleStatus)) {
+            $rs['msg'] = '样品状态不能为空!';
+            $this->ajaxReturn($rs);
+        }
+        if(empty($sampleStaQuan)) {
+            $rs['msg'] = '样品状态及数量不能为空!';
+            $this->ajaxReturn($rs);
+        }
+        if(empty($collector)) {
+            $rs['msg'] = '收样人不能为空!';
+            $this->ajaxReturn($rs);
+        }
+        if(empty($testCost)) {
+            $rs['msg'] = '检验费用不能为空!';
+            $this->ajaxReturn($rs);
+        }
+        if(empty($collectDate)) {
+            $rs['msg'] = '收样日期不能为空!';
+            $this->ajaxReturn($rs);
+        }
+        if(empty($reportDate)) {
+            $rs['msg'] = '报告日期不能为空!';
+            $this->ajaxReturn($rs);
+        }
+
 
 
 
@@ -504,6 +550,484 @@ class ContractController extends Controller
         $this->display();
     }
 
+    //合同申请修改
+    function applyEditContract(){
+        $contreno = I('id');
+        $type_status = I('type_status');
+        $where['centreNo']=$contreno;
+        $contractItem = D('contract')->where($where)->find();
+        $feeItem = D('test_cost')->where($where)->find();
+        $id_list = unserialize($feeItem['idlist']);
+        $a_id_list = implode(",",$id_list['a']);
+        $b_id_list = implode(",",$id_list['b']);
+        $c_id_list = implode(",",$id_list['c']);
+        $d_id_list = implode(",",$id_list['d']);
+        $e_id_list = implode(",",$id_list['e']);
+        $f_id_list = implode(",",$id_list['f']);
+        $g_id_list = implode(",",$id_list['g']);
+        $h_id_list = implode(",",$id_list['h']);
+        $body = array(
+            'contract'=>$contractItem,
+            'feeItem'=>$feeItem,
+            'type_status'=>$type_status,
+            'a_id_list'=>$a_id_list,
+            'b_id_list'=>$b_id_list,
+            'c_id_list'=>$c_id_list,
+            'd_id_list'=>$d_id_list,
+            'e_id_list'=>$e_id_list,
+            'f_id_list'=>$f_id_list,
+            'g_id_list'=>$g_id_list,
+            'h_id_list'=>$h_id_list,
+        );
+        $this->assign($body);
+        $this->display();
+    }
+
+    //合同申请修改
+    public function doApplyContract(){
+        $clientName = str_replace(' ','',I("clientName"));
+        $productUnit = str_replace(' ','',I("productUnit"));
+        $sampleName = I("sampleName");
+        $sampleCode = I("sampleCode");
+        $grade = I("grade");
+        $specification = I("specification");
+        $trademark = I("trademark");
+        $productionDate = I("productionDate");
+        $sampleQuantity = I("sampleQuantity");
+        $sampleStatus = I("sampleStatus");
+        $ration = I("ration");
+        $testCriteria = I("testCriteria");
+        $testItem = I("testItem");
+        $postMethod = I("postMethod");
+        $ifSubpackage = I("ifSubpackage");
+        $package_remark = I("package_remark");
+        $clientSign = I("clientSign");
+        $telephone = I("telephone");
+        $tax = I("tax");
+        $postcode = I("postcode");
+        $email = I("email");
+        $address = I("address");
+        $remark = I("remark");
+        $sampleStaQuan = I("sampleStaQuan");
+        $centreNo = I("centreNo");
+        $testCost = I("testCost",0,'intval');
+        $reportDate = I("reportDate");
+
+        //查看是否在申请中
+        $sub_status=M('report_feedback')->field('status')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$centreNo.'")')->find();
+        if($sub_status && $sub_status['status']==0){
+            $rs['msg']='exist';
+            $this->ajaxReturn($rs);
+        }
+        //费用详情
+        $Arecord = I("Arecord",0,'intval');
+        $Brecord = I("Brecord",0,'intval');
+        $Crecord = I("Crecord",0,'intval');
+        $Drecord = I("Drecord",0,'intval');
+        $Erecord = I("Erecord",0,'intval');
+        $Frecord = I("Frecord",0,'intval');
+        $G1record = I("G1record",0,'intval');
+        $G2record = I("G2record",0,'intval');
+        $Hrecord = I("Hrecord",0,'intval');
+
+        $RArecord = I("RArecord",0,'intval');
+        $RBrecord = I("RBrecord",0,'intval');
+        $RCrecord = I("RCrecord",0,'intval');
+        $RDrecord = I("RDrecord",0,'intval');
+        $RErecord = I("RErecord",0,'intval');
+        $RFrecord = I("RFrecord",0,'intval');
+        $RG1record = I("RG1record",0,'intval');
+        $RG2record = I("RG2record",0,'intval');
+        $RHrecord = I("RHrecord",0,'intval');
+
+        $A_id_list = I("A_id_list");
+        $B_id_list = I("B_id_list");
+        $C_id_list = I("C_id_list");
+        $D_id_list = I("D_id_list");
+        $E_id_list = I("E_id_list");
+        $F_id_list = I("F_id_list");
+        $G1_id_list = I("G1_id_list");
+        $G2_id_list = I("G2_id_list");
+        $H_id_list = I("H_id_list");
+
+        $Dcopy = I("Dcopy",0,'intval');
+        $Drevise = I("Drevise",0,'intval');
+        $Dother = I("Dother",0,'intval');
+        $fee_remark = I("fee_remark");
+
+        //ABCEF和G1，G2 三者之间生产单位和委托单位不能共享
+        $admin_auth = session("admin_auth");
+        $department = $admin_auth['department'];
+        if($department == 'A' || $department == 'B' || $department == 'C' || $department == 'E' || $department == 'F'){
+            $where_same='(clientName="'.$clientName.'" or productUnit="'.$productUnit.'") and collector_partment in("G1","G2")';
+            $same_count = D("contract")->where($where_same)->count();
+        }else if($department == 'G1'){
+            $where_same='(clientName="'.$clientName.'" or productUnit="'.$productUnit.'")';
+            $where_same.=' and collector_partment in("A","B","C","E","F","G2")';
+            $same_count = D("contract")->where($where_same)->count();
+        }else if($department == 'G2'){
+            $where_same='(clientName="'.$clientName.'" or productUnit="'.$productUnit.'")';
+            $where_same.=' and collector_partment in("A","B","C","E","F","G1")';
+            $same_count = D("contract")->where($where_same)->count();
+        }
+        if($same_count>0){
+            $rs['msg'] = '委托单位或生产单位不属于'.$department.'部门';
+            $this->ajaxReturn($rs);
+        }
+        //验证费用
+        if($testCost<=0){
+            $rs['msg'] = '费用输入不正确!';
+            $this->ajaxReturn($rs);
+        }
+        //验证手机号
+        if(!empty($telephone)){
+            $isMob="/^(1(([35][0-9])|(47)|[8][0126789]))\d{8}$/";  //手机
+            $isTel="/^([0-9]|[-])+$/"; //电话
+            //if(!(funcmtel($telephone) || funcphone($telephone))){
+            if(!(preg_match($isTel,$telephone) || preg_match($isMob,$telephone))){
+                $rs['msg'] = '请输入正确的联系方式';
+                $this->ajaxReturn($rs);
+            }
+        }
+
+        //验证传真
+        if(!empty($tax)){
+            $isPostcode="/^([0-9]|[-])+$/";
+            if(!(preg_match($isPostcode,$tax))){
+                $rs['msg'] = '请输入正确的传真';
+                $this->ajaxReturn($rs);
+            }
+        }
+
+        //验证邮政编码
+        if(!empty($postcode)){
+            $isPostcode="/^\d{6}$/";
+            if(!(preg_match($isPostcode,$postcode))){
+                $rs['msg'] = '请输入正确的邮政编码';
+                $this->ajaxReturn($rs);
+            }
+        }
+
+        //验证邮箱
+        if(!empty($email)){
+            $isEmail="/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/";
+            if(!(preg_match($isEmail,$email))){
+                $rs['msg'] = '请输入正确的邮箱';
+                $this->ajaxReturn($rs);
+            }
+        }
+
+        if(empty($clientName)) {
+            $rs['msg'] = '委托单位不能为空!';
+            $this->ajaxReturn($rs);
+        }
+        if(empty($productUnit)) {
+            $rs['msg'] = '生产单位不能为空!';
+            $this->ajaxReturn($rs);
+        }
+        if(empty($sampleName)) {
+            $rs['msg'] = '样品名称不能为空!';
+            $this->ajaxReturn($rs);
+        }
+        if(empty($testCriteria)) {
+            $rs['msg'] = '检验依据不能为空!';
+            $this->ajaxReturn($rs);
+        }
+        if(empty($testItem)) {
+            $rs['msg'] = '检验项目不能为空!';
+            $this->ajaxReturn($rs);
+        }
+        if(empty($sampleQuantity)) {
+            $rs['msg'] = '样品数量不能为空!';
+            $this->ajaxReturn($rs);
+        }
+        if(empty($sampleStatus)) {
+            $rs['msg'] = '样品状态不能为空!';
+            $this->ajaxReturn($rs);
+        }
+        if(empty($sampleStaQuan)) {
+            $rs['msg'] = '样品状态及数量不能为空!';
+            $this->ajaxReturn($rs);
+        }
+        if(empty($testCost)) {
+            $rs['msg'] = '检验费用不能为空!';
+            $this->ajaxReturn($rs);
+        }
+        if(empty($reportDate)) {
+            $rs['msg'] = '报告日期不能为空!';
+            $this->ajaxReturn($rs);
+        }
+
+
+        $contract=D("contract")->where("centreNo='".$centreNo."'")->find();
+        $count=0;
+        //合同单修改过的数据
+        $data_temp = Array();
+        if($contract['clientname']!=$clientName){
+            $count=$count+1;
+            $data_temp['clientName']=$clientName;
+        }
+        if($contract['productunit']!=$productUnit){
+            $count=$count+1;
+            $data_temp['productUnit ']=$productUnit;
+        }
+        if($contract['samplename']!=$sampleName){
+            $count=$count+1;
+            $data_temp['sampleName']=$sampleName;
+        }
+        if($contract['samplecode']!=$sampleCode){
+            $count=$count+1;
+            $data_temp['sampleCode']=$sampleCode;
+        }
+        if($contract['grade']!=$grade){
+            $count=$count+1;
+            $data_temp['grade']=$grade;
+        }
+        if($contract['specification']!=$specification){
+            $count=$count+1;
+            $data_temp['specification']=$specification;
+        }
+        if($contract['trademark']!=$trademark){
+            $count=$count+1;
+            $data_temp['trademark']=$trademark;
+        }
+        if($contract['productiondate']!=$productionDate){
+            $count=$count+1;
+            $data_temp['productionDate']=$productionDate;
+        }
+        if($contract['samplequantity']!=$sampleQuantity){
+            $count=$count+1;
+            $data_temp['sampleQuantity']=$sampleQuantity;
+        }
+        if($contract['samplestatus']!=$sampleStatus){
+            $count=$count+1;
+            $data_temp['sampleStatus']=$sampleStatus;
+        }
+        if($contract['ration']!=$ration){
+            $count=$count+1;
+            $data_temp['ration']=$ration;
+        }
+        if($contract['testcriteria']!=$testCriteria){
+            $count=$count+1;
+            $data_temp['testCriteria']=$testCriteria;
+        }
+        if($contract['testitem']!=$testItem){
+            $count=$count+1;
+            $data_temp['testItem']=$testItem;
+        }
+        if($contract['postmethod']!=$postMethod){
+            $count=$count+1;
+            $data_temp['postMethod']=$postMethod;
+        }
+        if($contract['ifsubpackage']!=$ifSubpackage){
+            $count=$count+1;
+            $data_temp['ifSubpackage']=$ifSubpackage;
+        }
+        if($contract['package_remark']!=$package_remark){
+            $count=$count+1;
+            $data_temp['package_remark']=$package_remark;
+        }
+        if($contract['clientsign']!=$clientSign){
+            $count=$count+1;
+            $data_temp['clientSign']=$clientSign;
+        }
+        if($contract['telephone']!=$telephone){
+            $count=$count+1;
+            $data_temp['telephone']=$telephone;
+        }
+        if($contract['tax']!=$tax){
+            $count=$count+1;
+            $data_temp['tax']=$tax;
+        }
+        if($contract['postcode']!=$postcode){
+            $count=$count+1;
+            $data_temp['postcode']=$postcode;
+        }
+        if($contract['email']!=$email){
+            $count=$count+1;
+            $data_temp['email']=$email;
+        }
+        if($contract['address']!=$address){
+            $count=$count+1;
+            $data_temp['address']=$address;
+        }
+        if($contract['remark']!=$remark){
+            $count=$count+1;
+            $data_temp['remark']=$remark;
+        }
+        if($contract['samplestaquan']!=$sampleStaQuan){
+            $count=$count+1;
+            $data_temp['sampleStaQuan']=$sampleStaQuan;
+        }
+        if($contract['testcost']!=$testCost){
+            $count=$count+1;
+            $data_temp['testCost']=$testCost;
+        }
+        if($contract['reportdate']!=$reportDate){
+            $count=$count+1;
+            $data_temp['reportDate']=$reportDate;
+        }
+        $contract_cost = D("test_cost")->where("centreNo='".$centreNo."'")->find();
+        //费用临时表
+        $cost_temp = Array();
+        if($contract_cost['arecord']!=$Arecord){
+            $cost_temp['Arecord']=$Arecord;
+        }
+        if($contract_cost['brecord']!=$Brecord){
+            $cost_temp['Brecord']=$Brecord;
+        }
+        if($contract_cost['crecord']!=$Crecord){
+            $cost_temp['Crecord']=$Crecord;
+        }
+        if($contract_cost['drecord']!=$Drecord){
+            $cost_temp['Drecord']=$Drecord;
+        }
+        if($contract_cost['erecord']!=$Erecord){
+            $cost_temp['Erecord']=$Erecord;
+        }
+        if($contract_cost['frecord']!=$Frecord){
+            $cost_temp['Frecord']=$Frecord;
+        }
+        if($contract_cost['g1record']!=$G1record){
+            $cost_temp['G1record']=$G1record;
+        }
+        if($contract_cost['g2record']!=$G2record){
+            $cost_temp['G2record']=$G2record;
+        }
+        if($contract_cost['hrecord']!=$Hrecord){
+            $cost_temp['Hrecord']=$Hrecord;
+        }
+        if($contract_cost['rarecord']!=$RArecord){
+            $cost_temp['RArecord']=$RArecord;
+            $count=$count+1;
+        }
+        if($contract_cost['rbrecord']!=$RBrecord){
+            $cost_temp['RBrecord']=$RBrecord;
+            $count=$count+1;
+        }
+        if($contract_cost['rcrecord']!=$RCrecord){
+            $cost_temp['RCrecord']=$RCrecord;
+            $count=$count+1;
+        }
+        if($contract_cost['rdrecord']!=$RDrecord){
+            $cost_temp['RDrecord']=$RDrecord;
+            $count=$count+1;
+        }
+        if($contract_cost['rerecord']!=$RErecord){
+            $cost_temp['RErecord']=$RErecord;
+            $count=$count+1;
+        }
+        if($contract_cost['rfrecord']!=$RFrecord){
+            $cost_temp['RFrecord']=$RFrecord;
+            $count=$count+1;
+        }
+        if($contract_cost['rg1record']!=$RG1record){
+            $cost_temp['RG1record']=$RG1record;
+            $count=$count+1;
+        }
+        if($contract_cost['rg2record']!=$RG2record){
+            $cost_temp['RG2record']=$RG2record;
+            $count=$count+1;
+        }
+        if($contract_cost['rhrecord']!=$RHrecord){
+            $cost_temp['RHrecord']=$RHrecord;
+            $count=$count+1;
+        }
+        if($contract_cost['dcopy']!=$Dcopy){
+            $cost_temp['Dcopy']=$Dcopy;
+            $count=$count+1;
+        }
+        if($contract_cost['drevise']!=$Drevise){
+            $cost_temp['Drevise']=$Drevise;
+            $count=$count+1;
+        }
+        if($contract_cost['dother']!=$Dother){
+            $cost_temp['Dother']=$Dother;
+            $count=$count+1;
+        }
+        if($contract_cost['remark']!=$fee_remark){
+            $cost_temp['remark']=$remark;
+            $count=$count+1;
+        }
+        $idList = unserialize($contract_cost['idlist']);
+        //费用参考价格是否修改
+        $flag=0;
+        if(implode(",",$idList['a'])!=$A_id_list){
+            $idList['a']=explode(",",$A_id_list);
+            $count=$count+1;
+            $flag=1;
+        }
+        if(implode(",",$idList['b'])!=$B_id_list){
+            $idList['b']=explode(",",$B_id_list);
+            $count=$count+1;
+            $flag=1;
+        }
+        if(implode(",",$idList['c'])!=$C_id_list){
+            $idList['c']=explode(",",$C_id_list);
+            $count=$count+1;
+            $flag=1;
+        }
+        if(implode(",",$idList['d'])!=$D_id_list){
+            $idList['d']=explode(",",$D_id_list);
+            $count=$count+1;
+            $flag=1;
+        }
+        if(implode(",",$idList['e'])!=$E_id_list){
+            $idList['e']=explode(",",$E_id_list);
+            $count=$count+1;
+            $flag=1;
+        }
+        if(implode(",",$idList['f'])!=$F_id_list){
+            $idList['f']=explode(",",$F_id_list);
+            $count=$count+1;
+            $flag=1;
+        }
+        if(implode(",",$idList['g1'])!=$G1_id_list){
+            $idList['g1']=explode(",",$G1_id_list);
+            $count=$count+1;
+            $flag=1;
+        }
+        if(implode(",",$idList['g2'])!=$G2_id_list){
+            $idList['g2']=explode(",",$G2_id_list);
+            $count=$count+1;
+            $flag=1;
+        }
+        if(implode(",",$idList['h'])!=$H_id_list){
+            $idList['h']=explode(",",$H_id_list);
+            $count=$count+1;
+            $flag=1;
+        }
+        if($flag==1){
+            $cost_temp['idList']=serialize($idList);
+        }
+        $data_temp['centreNo']=$centreNo;
+        $cost_temp['centreNo']=$centreNo;
+        if($count==0){
+            $rs['msg'] = "none";
+            $this->ajaxReturn($rs);
+        }
+        if($count>0) {
+            $feedback = Array(
+                'centreNo' => $centreNo,
+                'create_time' => Date("Y-m-d H:i:s"),
+            );
+            if ($count == 1) {
+                $feedback['role_id'] = 8;//待修改，需要改成新角色id
+            }
+            M()->startTrans();
+            try {
+                //D("contract_temp")->add($data_temp);
+                //D("test_cost_temp")->add($cost_temp);
+                D("report_feedback")->add($feedback);
+                M()->commit();
+                $rs['msg'] = '申请成功'.$count;
+            } catch (Exception $e) {
+                $rs['msg'] = '申请失败，请重试！';
+                M()->rollback();
+            }
+        }
+        $this->ajaxReturn($rs);
+    }
     //合同修改入库
     public function doEditContract(){
         //是否为外部签发后的修改

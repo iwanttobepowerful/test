@@ -56,7 +56,8 @@
                                 <a href="{:U('/admin/contract/editContract')}?id={$con.centreno}&type_status={$con.status}" class="btn btn-info btn-xs" >修改</a>
 
                                 <elseif condition="($con['ifedit'] == 1) and (!(($con['sub_status'] == 1 or $con['sub_status'] == 0) and $con['if_report'] == 0)) and $con['status']!=6"/>
-                                <a href="#" class="btn btn-info btn-xs" onclick="return applyBack('{$con.centreno}',{$con.status})" >申请修改</a>
+                                <!--<a href="#" class="btn btn-info btn-xs" onclick="return applyBack('{$con.centreno}',{$con.status})" >申请修改</a>-->
+                                <a href="{:U('/admin/contract/applyEditContract')}?id={$con.centreno}" class="btn btn-info btn-xs">申请修改</a>
                             </if>
                         </if>
                         <if condition="$con['status']==6" >
