@@ -208,6 +208,104 @@ class TestReportController extends Controller
 
         $this->ajaxReturn($rs);
     }
+    //修改申请下的选择模板
+    public function selectTemp_1(){
+        $modid=I("id");
+        $centreNo=I("contractno");
+        $rs = array("msg"=>"","status"=>"fail");
+        if(!empty($modid) and !empty($centreNo)){
+            $tpl = D("tpl")->where("id=".$modid)->find();
+            $contract = D("contract")->where("centreno='{$centreNo}'")->find();
+            $data=array();
+            //$reportNum = D("contract")->where("centreno like '%{$centreNo}%' or centreno1 like '%{$centreNo}%' or centreno2 like '%{$centreNo}%' or centreno3 like '%{$centreNo}%'")->count();
+
+            if(!empty($contract['centreno3'])){
+                $newCentreNo = $centreNo.'G3';
+            }else if(!empty($contract['centreno2'])){
+                $newCentreNo = $centreNo.'G2';
+            }else if(!empty($contract['centreno1'])){
+                $newCentreNo = $centreNo.'G1';
+            }else{
+                $newCentreNo = $centreNo;
+            }
+            if($contract['collectdate']){
+                $cd=$contract['collectdate'];
+                $arr1 = explode("-",$cd);
+                $collectdate="$arr1[0]年$arr1[1]月$arr1[2]日";}
+            //if($contract['productiondate']){
+            //$pd=$contract['productiondate'];
+            //$arr2 = explode("-",$pd);
+            //$productiondate="$arr2[0]年$arr2[1]月$arr2[2]日";}
+
+            //dump($newCentreNo);die;
+            //dump($contract);
+
+            $data = array(
+                'centreNo'=>$newCentreNo,
+                'sampleName'=>$contract['samplename'],
+                'clientName'=>$contract['clientname'],
+                'testCategory'=>$contract['testcategory'],
+                'productionDate'=>$contract['productiondate'] ? $contract['productiondate'] :"——",
+                'productUnit'=>$contract['productunit'] ? $contract['productunit']:"——",
+                'trademark'=>$contract['trademark'] ? $contract['trademark']:"——",
+                'grade'=>$contract['grade'] ? $contract['grade']:"——",
+                'specification'=>$contract['specification'] ? $contract['specification']:"——",
+                'sampleStatus'=>$contract['samplestatus'] ? $contract['samplestatus']:"——",
+                'testCriteria'=>$contract['testcriteria'],
+                'testItem'=>$contract['testitem'],
+                'collectDate'=>$contract['collectdate'] ? $collectdate:"——",
+                'sampleCode'=>$contract['samplecode'] ? $contract['samplecode']:"——",
+                'sampleQuantity'=>$contract['samplequantity'] ? $contract['samplequantity']:"——",
+            );
+
+            $samplingForm = D("sampling_form")->where("centreno='{$centreNo}'")->find();
+            if($samplingForm){
+                if($samplingForm['sampledate']){
+                    $sd=$samplingForm['sampledate'];
+                    $arr3 = explode("-",$sd);
+                    $sampledate="$arr3[0]年$arr3[1]月$arr3[2]日";
+                }
+                $data['samplePlace'] = $samplingForm['sampleplace'] ? $samplingForm['sampleplace'] : "——";
+                $data['simplerSign'] = $samplingForm['simplersign'].' '.$samplingForm['sealersign'];
+                $data['sampleDate'] = $samplingForm['sampledate'] ?  $sampledate:"——";
+                $data['sampleQuantity'] = $samplingForm['samplequantity'] ? $samplingForm['samplequantity']:"——";
+                $data['sampleBase'] = $samplingForm['samplebase'] ? $samplingForm['samplebase']:"——";
+            }
+
+            $src = "./Public/{$tpl['filename']}";
+            $dst1 = "./Public/attached/report_temp/{$newCentreNo}.docx";
+            if(@file_exists($dst1)){
+                @unlink($dst1);
+            }
+            $qrcode = $this->qrcode_1($centreNo,getCurrentHost().'/admin/seeReport/pdf?no='.$centreNo);
+            convert2Word($data,$src,$dst1,$qrcode);
+
+
+            //setQrcode($dst,$qrcode,'./Public/qrcode/'.time().'.docx');die;
+            $testReport = D("test_report_temp")->where("centreno='{$centreNo}'")->find();
+
+            $update = array(
+                'tplno'=>$modid,
+                'doc_path'=>$dst1 ? substr($dst1,1):"",
+                'qrcode_path'=>$qrcode ? substr($qrcode,1):"",
+                'modify_time'=>date("Y-m-d H:i:s"),
+            );
+            if($testReport){
+                if(D("test_report_temp")->where("centreno='{$centreNo}'")->save($update)){
+                    $rs['msg']='succ';
+                }
+            }else{
+                $update['centreNo']=$centreNo;
+                if(D("test_report_temp")->data($update)->add()){
+                    $rs['msg'] = 'succ';
+
+                }
+            }
+
+        }
+
+        $this->ajaxReturn($rs);
+    }
     //修改status
 	public function doneCreate(){
         $conclusion= I("a_result");//填写的结论
@@ -259,6 +357,25 @@ class TestReportController extends Controller
         return $img;
         //return substr($img,1);
     }
+    //申请修改选择二维码
+    public function qrcode_1($centreno,$qr_data){
+        $save_path = './Public/attached/qrcode_temp/';  //图片存储的绝对路径
+        $logo_path = "./Public/static/images/logoA.png";
+        $qr_level = 'L';
+        $qr_size = '4';
+        $save_prefix = '';
+        /*
+        if(file_exists($save_path."qr_{$centreno}.png")){
+            @unlink($save_path."qr_{$centreno}.png");
+        }
+        */
+        $filename = createQRcode($centreno,$save_path,$qr_data,$logo_path,'H',5,$save_prefix);
+        if($filename){
+            $img = $save_path.$filename;
+        }
+        return $img;
+        //return substr($img,1);
+    }
 
     //选择编号
     public function seleteKey(){
@@ -285,7 +402,31 @@ class TestReportController extends Controller
        $this->assign($body);
        $this->display(select);
 	}
-    
+    //申请修改选择编号
+    public function seleteKey_1(){
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $department=$admin_auth['department'];//判断是哪个角色
+        $if_admin = $admin_auth['super_admin'];
+        $centreno = I("mod");
+        $tpl=D("tpl")->select();
+        $contract = D('contract')->where("centreno='{$centreno}'")->find();
+        if($contract['testcategory']=='抽样检验'){
+            $type = 2;
+        }elseif($contract['testcategory']=='委托检验'){
+            $type = 1;
+        }elseif($contract['testcategory']=='型式检验'){
+            $type = 2;
+        }
+        $body = array(
+            'contactNo'=>$centreno,
+            'tpl'=>$tpl,
+            'type'=>$type,
+            'department'=>$department,
+            'if_admin'=>$if_admin
+        );
+        $this->assign($body);
+        $this->display(select_1);
+    }
     
     public function reviseReport(){
         $this->display();

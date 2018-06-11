@@ -39,6 +39,32 @@ class UploaderController extends Controller {
         echo json_encode($array);
 
     }
+    //临时申请修改上传报告
+    public function word1($return=false){
+        $upload = new \Think\Upload();
+        $upload->maxSize   =    0;//不限制上传大小
+        $upload->exts      =     array('doc','docx','docm','dotm','txt','dot','pdf');
+        $upload->rootPath  =     './Public/attached/temp/'; // 设置附件上传根目录
+        $upload->savePath  =     '';
+        $upload->saveName = 'time';
+        $info   =   $upload->upload();
+        $array = array("info"=>"fail");
+        if(!$info) {// 上传错误提示错误信息
+            $array['info'] = $upload->getError();
+        }else{// 上传成功 获取上传文件信息
+            $saveUrl = './Public/attached/temp/'.$info['file']['savepath'].$info['file']['savename'];
+            $base = pathinfo($saveUrl);
+            $thumb = $base['dirname'] .'/'. $base['filename'].'.'.$base['extension'];
+            $array = array(
+                'info'=>'succ',
+                'url'=>substr($thumb, 1),
+            );
+            echo json_encode($array);
+            return true;
+        }
+        echo json_encode($array);
+
+    }
     /**
      * [upload_img 图片上传]
      * @return [type] [description]

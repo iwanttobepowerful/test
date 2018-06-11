@@ -1,0 +1,207 @@
+<include file="Common:header" title="后台首页"/>
+<div id="page-wrapper">
+    <include file="Common:breadcrumb" />
+    <div id="page-inner" class="container">
+        <table class="table table-bordered table-striped table-hover" id="tb">
+            <thead>
+            <th>中心编号</th>
+            <th>操作</th>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{$centreno}</td>
+                <td><a href="{$doc_path}"  class="btn btn-primary btn-xs" >报告模板下载</a>
+                    <a href="{$qrcode_path}" class="btn btn-primary btn-xs" download="{$centreno}">下载二维码</a></td>
+            </tr>
+            </tbody>
+        </table>
+        <form class="form-horizontal" id="myform" action="" method="post">
+            <input type="hidden" name="id" value="{$report['id']}" />
+            <input type="hidden" name="centreno" value="{$centreno}" /><!--!!!!!!!!-->
+            <div class="form-group">
+                <label class="col-sm-2 control-label talign-center fz13">上传报告</label>
+                <div class="col-sm-10">
+
+                    <input type="hidden" name="fileurl" />
+                    <input type="file" name="file" onchange="ajaxFileUpload()" id="addfile"/>
+                    <p class="help-block" id="attachment"></p>
+                    <p class="help-block">请务必将word转换成pdf,上传pdf版(.pdf格式)</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label talign-center">&nbsp;</label>
+                <div class="col-sm-10" id="loading">
+                    <button type="submit" class="btn btn-success" onclick="onSave()">保 存</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <!--上传完后显示页面-->
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+        <th>中心编号</th>
+        <th>操作</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{$centreno}</td>
+                <td>
+                    <if condition="$pdf_path">
+                    <a href="javascript:void(0);" class="btn btn-info btn-xs" name="{$pdf_path}" onclick="return Check(this);">报告预览</a>
+                    <a href="javascript:void(0);" class="btn btn-success btn-xs" onclick="return applyBack('{$centreno}')">提交修改申请</a>
+                    </if>
+                </td>
+            </tr>
+        </volist>
+        </tbody>
+    </table>
+    <!--<a href="javascript:void(0);" onclick="getContent()" class="btn btn-success btn-xs"><i class="glyphicon glyphicon-ok-circle"></i> 上传检测记录</a>-->
+
+</div>
+<div>
+    <!-- 模态框（Modal) -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form class="form-horizontal" id="myform1" action="" method="post">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="createModalLabel">申请修改</h4>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">中心编号</label>
+                        <div class="col-sm-7">
+                            <input type="text" readonly="readonly" id="back_centreno" name="back_centreno" class="form-control"/>
+                            <input type="hidden" id="type_status" name="type_status" value="2" />
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-3 control-label talign-right fz13">申请理由及修改内容</label>
+                        <div class="col-sm-7">
+                            <textarea id="back_reason" name="back_reason" class="form-control" rows="5" ></textarea>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
+                        <button type="submit" class="btn btn-primary" onclick="subFeedback()">确定</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</div>
+<script src="__PUBLIC__/static/js/jquery.form.js"></script>
+<script src="__PUBLIC__/static/js/ajaxfileupload.js"></script>
+<script type="text/javascript">
+    function Check(path) {
+        var url=path.name;
+        if(!url) return false;//获取url
+        if(url.indexOf("http")==-1){
+            thisHost = location.hostname;
+            var newurl='http://'+thisHost+url;
+        }else{
+            var newurl=url;
+        }
+        //alert(newurl);
+        window.open(newurl);
+    }
+    function ajaxFileUpload(){
+        var file = $("#addfile").val();
+        if(file){
+            $.ajaxFileUpload({
+                url: "{:U('Uploader/word1')}",
+                secureuri: false,
+                fileElementId: 'addfile',
+                dataType: 'JSON',
+                success: function (data, status) {
+                    var ret = JSON.parse(data);
+
+                    $("#addfile").val("");
+
+                    if(ret.info=='succ'){
+                        $("input[name='fileurl']").val(ret.url);
+
+                        $("#attachment").html(ret.url);
+
+                    }else{
+                        var _options = {"text":"上传失败","flag":"error"};
+                        if(ret.info) _options.text = ret.info;
+                        doAlertDialog(_options);
+                    }
+
+                },
+                error: function (data, status, e){
+                    var _options = {"text":"上传失败","flag":"error"};
+                    doAlertDialog(_options);
+                }
+            });
+        }
+        return false;
+    }
+
+    function onFileUpload() {
+        $('#addfile').click();
+        return false;
+    }
+    function onSave(){
+        var options = {
+            url: "{:U('/admin/test/doUp1')}",
+            dataType: 'json',
+            beforeSubmit: function(){
+                $("#loading").html("<img src='__PUBLIC__/static/images/loadingA.gif' />");
+            },
+            success: function (data) {
+                if(data.msg=='succ'){
+                    $("#loading").empty();
+                    var _options = {"text":"保存成功！","action":function(){window.location.reload();}};
+                    doAlertDialog(_options);
+                }else{
+                    $("#loading").empty();
+                    var _options = {"text":"保存失败！"};
+                    if(data.msg) {
+                        _options = {"text":data.msg , "action": function () {window.location.reload();}};
+                        doAlertDialog(_options);
+                    }
+                }
+            }
+        };
+        $("#myform").ajaxForm(options);
+        return false;
+    }
+    function applyBack(centreno){
+        $("#back_reason").val("");
+        var modal = $("#editModal");
+        $("#back_centreno").val(centreno);
+        modal.modal();
+    }
+    function subFeedback(){
+        /*var centreno = $("#back_centreno").val();
+         var reason = $("#back_reason").val();*/
+        var options = {
+            type:"post",
+            url: "{:U('/admin/contract/doEditReport')}",
+            dataType: 'json',
+            success: function (data) {
+                if(data.msg=='succ'){
+                    var _options = {"text":"申请成功！","action":function(){window.location.href = "/admin/contract/showReportList";}};
+                    doAlertDialog(_options);
+                    //window.location.href = "./list.html?id="+id;------示例
+                    //window.location.href="/admin/TestReport/seleteKey_1?mod="+data.centreno;
+
+                }else{
+                    var _options = {"text":"Error！"};
+                    if(data.msg) { _options={"text":data.msg,"action":function(){window.location.reload();}};
+                        doAlertDialog(_options);
+                    }
+                }}
+        };
+        $("#myform1").ajaxForm(options);
+        return false;
+    }
+</script>
+<include file="Common:footer" />
