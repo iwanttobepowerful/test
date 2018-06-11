@@ -24,7 +24,9 @@ class ReportController extends Controller
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
         $useraudit=$admin_auth['audit'];
-        if($user==16){
+        $if_G1 = 0;
+        $if_G2 = 0;//能审核的部门是否包含G1\G2，默认没有
+        if($user==17){
             $de=I("de",'A');
             if ($de=='A') {
                 $where = "contract_flow.status =2 ";
@@ -37,18 +39,34 @@ class ReportController extends Controller
             $where="contract_flow.status =2";
         }
         if(!empty($useraudit)){
+            //先检查是否有G1\G2
+            if(strstr($useraudit,'G1')){
+               $useraudit = str_replace(',G1','',$useraudit);
+               $if_G1 = 1;
+            }
+            if(strstr($useraudit,'G2')){
+                $useraudit = str_replace(',G2','',$useraudit);
+                $if_G2 = 1;
+            }
             $data=explode(',',$useraudit);
                 foreach($data as $v){
                     $s .="'".$v."',";
                 }
                 $s=substr($s,0,-1);//利用字符串截取函数消除最后一个逗号
                 $where .=" and SUBSTR(contract_flow.centreno,7,1) in({$s})";
+                //如果存在G1、G2在搜索条件里加上
+            if($if_G1 == 1){
+                $where .=" and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) <= '500'";
+            }
+            if($if_G2 == 1){
+                $where .=" and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) > '500'";
+            }
 
         }
-        elseif(($user==16 or $user==13) and empty($useraudit)){//要是角色是审核员，但是什么都不选，默认看不到
+        elseif(($user==17 or $user==13) and empty($useraudit)){//要是角色是审核员，但是什么都不选，默认看不到
             $where="contract_flow.status = -100";
         }
-        if($user==8 || $if_admin==1 || $user==13 || $user==16) {//只有领导，审核人员，超级管理员，审核批准员才能审核
+        if($user==8 || $if_admin==1 || $user==13 || $user==17) {//只有领导，审核人员，超级管理员，审核批准员才能审核
             $view="";
         }else{
             $view="disabled";
@@ -94,7 +112,7 @@ class ReportController extends Controller
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
         $pagination= $Page->show();// 分页显示输出
-        if($user==16){
+        if($user==17){
             $body = array(
                 'rs'=>$rs,
                 'de'=>$de,
@@ -127,7 +145,7 @@ class ReportController extends Controller
         $centreno =$check['centreno'];
         $where1 = "centreno = '$centreno' and type = 2";
         //$role = D('common_role')->where('id='.$user)->find();
-        if($user==8 || $if_admin==1 || $user==13 || $user==16) {
+        if($user==8 || $if_admin==1 || $user==13 || $user==17) {
         $data=array(
             'status'=>4,
             'isaudit'=>1,
@@ -211,7 +229,7 @@ class ReportController extends Controller
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
         //$role = D('common_role')->where('id='.$user)->find();
-        if($user==8 || $if_admin==1 || $user==13 || $user==16) {
+        if($user==8 || $if_admin==1 || $user==13 || $user==17) {
             if($sortby ==7){
                 $data=array(
                     'status'=>7,
@@ -610,7 +628,15 @@ class ReportController extends Controller
         if($user==8 || $user==15 || $user==13 || $if_admin==1){
             //
         }else{
-            $where .= " and SUBSTR(c.centreno,7,1) = '{$department}'";
+            //判断G1/G2的特殊化
+            if($department == 'G1'){
+                $where .= " and SUBSTR(c.centreno,7,1) = 'G' and SUBSTR(c.centreno,9,11) <='500'";
+            }elseif ($department == 'G2'){
+                $where .= " and SUBSTR(c.centreno,7,1) = 'G' and SUBSTR(c.centreno,9,11) >'500'";
+            }
+            else{
+                $where .= " and SUBSTR(c.centreno,7,1) = '{$department}'";
+            }
         }
         if(!empty($begin_time)){
             $where .=" and date_format(c.external_sign_time,'%Y-%m-%d') >='{$begin_time}'";
