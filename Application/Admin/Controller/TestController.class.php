@@ -184,10 +184,19 @@ class TestController extends Controller{
             }
         }
         else{
-        $where .=" and SUBSTR(contract_flow.centreNo,7,1) = '{$department}'";
+            //判断G1/G2的特殊化
+            if($department == 'G1'){
+                $where .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) <='500'";
+            }elseif ($department == 'G2'){
+                $where .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) >'500'";
+            }
+            else{
+                $where .=" and SUBSTR(contract_flow.centreNo,7,1) = '{$department}'";
+            }
         if(!empty($keyword)){
             $where .="and contract_flow.centreno like '%{$keyword}%'";
-        }}
+            }
+        }
         if ($user==9 || $if_admin ==1) {//只有报告编制员，超级管理员才能操作
             $view="visible";
         }
@@ -461,7 +470,16 @@ class TestController extends Controller{
         if($user==8 || $user==15 || $user==13 || $if_admin==1){
             //
         }else{
-        $where .= " and SUBSTR(contract_flow .centreno,7,1) = '{$department}'";}
+            //判断G1/G2的特殊化
+            if($department == 'G1'){
+                $where .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) <='500'";
+            }elseif ($department == 'G2'){
+                $where .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) >'500'";
+            }
+            else{
+                $where .= " and SUBSTR(contract_flow.centreno,7,1) = '{$department}'";
+            }
+        }
         $list=D("contract_flow ")->where($where)
             ->join('left join contract as a on contract_flow .centreno=a.centreno left join test_report as t on contract_flow .centreno=t.centreno')
             ->field('contract_flow .*,a.*,t.path,t.doc_path,t.pdf_path')
