@@ -2119,7 +2119,15 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
         if($user==8 || $user==15 || $user==13 || $if_admin==1){
             //
         }else{
-            $where .= " and SUBSTR(c.centreNo,7,1) = '{$department}'";
+            //判断G1/G2的特殊化
+            if($department == 'G1'){
+                $where .= " and SUBSTR(c.centreno,7,1) = 'G' and SUBSTR(c.centreno,9,11) <='500'";
+            }elseif ($department == 'G2'){
+                $where .= " and SUBSTR(c.centreno,7,1) = 'G' and SUBSTR(c.centreno,9,11) >'500'";
+            }
+            else{
+                $where .= " and SUBSTR(c.centreNo,7,1) = '{$department}'";
+            }
         }
         if(!empty($begin_time)){
             $where .=" and date_format(c.contract_time,'%Y-%m-%d') >='{$begin_time}'";

@@ -52,7 +52,7 @@
                     <td width="33%">
                         <if condition="$if_edit==1">
                         <if condition="$con['status'] neq 8 and $con['status'] neq 6 and $con['status'] neq 3 and (!(($con['sub_status'] == 1 or $con['sub_status'] == 0) and $con['if_report']==1))">
-                            <a href="#" class="btn btn-primary btn-xs" onclick="return applyBack('{$con.centreno}')" >申请修改</a>
+                            <a href="/admin/TestReport/seleteKey_1?mod={$con.centreno}" class="btn btn-primary btn-xs"  >申请修改</a>
                         </if></if>
                         <if condition="$con[centreno1] or $con[centreno2] or $con[centreno3]">
                             <a href="{:U('/admin/contract/reWriteTest')}?id={$con.centreno}" class="btn btn-info btn-xs">更改单</a></if>
@@ -129,40 +129,6 @@
     </div>
 </div>
 
-<div>
-    <!-- 模态框（Modal) -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form class="form-horizontal" id="myform" action="" method="post">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="createModalLabel">申请修改</h4>
-                    </div>
-                    <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">中心编号</label>
-                        <div class="col-sm-7">
-                            <input type="text" readonly="readonly" id="back_centreno" name="back_centreno" class="form-control"/>
-                            <input type="hidden" id="type_status" name="type_status" value="2" />
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label talign-right fz13">理由</label>
-                        <div class="col-sm-7">
-                            <textarea id="back_reason" name="back_reason" class="form-control" rows="5" ></textarea>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <!--<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>-->
-                        <button type="submit" class="btn btn-primary" onclick="subFeedback()">确定</button>
-                    </div>
-                </form>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-    </div>
-</div>
 
 <div>
     <!-- 模态框（Modal) -->
@@ -210,34 +176,6 @@
         $("li[name='de']").removeClass("active");
         $("#de_"+de).addClass("active");
     });
-    function applyBack(centreno){
-        $("#back_reason").val("");
-        var modal = $("#editModal");
-        $("#back_centreno").val(centreno);
-        modal.modal();
-    }
-
-    function subFeedback(){
-        /*var centreno = $("#back_centreno").val();
-        var reason = $("#back_reason").val();*/
-        var options = {
-            type:"post",
-            url: "{:U('/admin/contract/doEditReport')}",
-            dataType: 'json',
-            success: function (data) {
-                if(data.msg=='succ'){
-                    var _options = {"text":"申请成功！","action":function(){window.location.reload();}};
-                    doAlertDialog(_options);
-                }else{
-                    var _options = {"text":"Error！"};
-                    if(data.msg) { _options={"text":data.msg,"action":function(){window.location.reload();}};
-                    doAlertDialog(_options);
-                }
-            }}
-        };
-        $("#myform").ajaxForm(options);
-        return false;
-    }
 
     function recordDetail(centreno) {
         var newurl='/admin/test/doPrint.html?id='+centreno+'&type=2';

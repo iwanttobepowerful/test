@@ -191,9 +191,9 @@ class PDFLib{
                     $this->gs_version = doubleval($output[0]);
                 }
             }else{
-                $output = $this->execute('/usr/local/Cellar/ghostscript/9.22/bin/gs --version 2>&1');
+                $output = $this->execute('C:\Program Files (x86)\gs\gs9.23\bin\gswin32.exe --version 2>&1');
                 if(!((is_array($output) && (strpos($output[0], 'is not recognized as an internal or external command') !== false)) || !is_array($output) && trim($output) == "")){
-                    $this->gs_command = "/usr/local/Cellar/ghostscript/9.22/bin/gs";
+                    $this->gs_command = "C:\Program Files (x86)\gs\gs9.23\bin\gswin32.exe";
                     $this->gs_version = $output[0];
                     $this->gs_path = "/usr/local/share/ghostscript/".$this->gs_version;
                     $this->gs_is_64 = "NOT WIN";
