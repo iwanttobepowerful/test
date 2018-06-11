@@ -42,7 +42,6 @@ class AuditController extends Controller {
         $de = I('de','A');
         $keyword = I("keyword");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
-        $role_id = $admin_auth['gid'];
         $user=$admin_auth['gid'];//判断是哪个角色
         $useraudit=$admin_auth['audit'];
         $if_admin = $admin_auth['super_admin'];
@@ -61,7 +60,7 @@ class AuditController extends Controller {
             }else{
                 $where="r.if_outer=0 and r.if_report=0  and r.if_invalid=0";
             }
-            $where.=" and r.role_id=".$role_id;
+            $where.=" and r.role_id=".$user;
         }
         elseif($de =='B'){//报告修改申请
             if(!empty($keyword)){
