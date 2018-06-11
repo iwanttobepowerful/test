@@ -42,10 +42,11 @@ class AuditController extends Controller {
         $de = I('de','A');
         $keyword = I("keyword");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $role_id = $admin_auth['gid'];
         $user=$admin_auth['gid'];//判断是哪个角色
         $useraudit=$admin_auth['audit'];
         $if_admin = $admin_auth['super_admin'];
-        if($if_admin==1 || $user==16 ) {
+        if($if_admin==1 || $user==16 || $user==17) {
             $view="1";
         }else{
             $view="0";
@@ -56,10 +57,11 @@ class AuditController extends Controller {
         $offset = ( $page-1 ) * $pagesize;
         if($de =='A'){//内部修改申请
             if(!empty($keyword)){
-                $where="r.centreno like '%{$keyword}% ' and r.if_outer=0 and r.if_report=0";
+                $where="r.centreno like '%{$keyword}% ' and r.if_outer=0 and r.if_report=0 and r.if_invalid=0";
             }else{
-                $where="r.if_outer=0 and r.if_report=0";
+                $where="r.if_outer=0 and r.if_report=0  and r.if_invalid=0";
             }
+            $where.=" and r.role_id=".$role_id;
         }
         elseif($de =='B'){//报告修改申请
             if(!empty($keyword)){
@@ -205,6 +207,204 @@ class AuditController extends Controller {
 
         $this->ajaxReturn($rs);
     }
+
+    //前台修改申请  允许并入库
+    public function isAllowAndInput(){
+        $id =I("id",0,'intval');
+        $centreno=I("centreno");
+        $rs = array("msg"=>"fail");
+        $data=array(
+            'status'=>3,
+        );
+        //合同临时表
+        $contract = D("contract_temp")->where("id = (select max(id) from contract_temp where centreNo='".$centreno."')")->find();
+        //费用临时表
+        $contract_cost = D("test_cost_temp")->where("id=(select max(id) from test_cost_temp where centreNo='".$centreno."')")->find();
+
+        $data_temp=Array();//合同入库
+        $cost_temp=Array();//费用入库
+        $data_info=Array();//通知单入库
+        $data_sample=Array();//抽样单入库
+
+        if($contract['clientname']!=null){
+            $data_temp['clientName']=$contract['clientname'];
+            $data_sample['productUnit']=$contract['clientname'];
+        }
+        if($contract['productunit']!=null){
+            $data_temp['productUnit']=$contract['productunit'];
+        }
+        if($contract['samplename']!=null){
+            $data_temp['sampleName']=$contract['samplename'];
+            $data_info['sampleName']=$contract['samplename'];
+            $data_sample['sampleName']=$contract['samplename'];
+        }
+        if($contract['samplecode']!=null){
+            $data_temp['sampleCode']=$contract['samplecode'];
+        }
+        if($contract['grade']!=null){
+            $data_temp['grade']=$contract['grade'];
+        }
+        if($contract['specification']!=null){
+            $data_temp['specification']=$contract['specification'];
+            $data_sample['specification']=$contract['specification'];
+        }
+        if($contract['trademark']!=null){
+            $data_temp['trademark']=$contract['trademark'];
+            $data_sample['trademark']=$contract['trademark'];
+        }
+        if($contract['productiondate']!=null){
+            $data_temp['productionDate']=$contract['productiondate'];
+        }
+        if($contract['samplequantity']!=null){
+            $data_temp['sampleQuantity']=$contract['samplequantity'];
+            $data_info['sampleAuantity']=$contract['samplequantity'];
+            $data_sample['sampleQuantity']=$contract['samplequantity'];
+        }
+        if($contract['samplestatus']!=null){
+            $data_temp['sampleStatus']=$contract['samplestatus'];
+            $data_info['sampleStatus']=$contract['samplestatus'];
+        }
+        if($contract['ration']!=null){
+            $data_temp['ration']=$contract['ration'];
+            $data_info['ration']=$contract['ration'];
+        }
+        if($contract['testcriteria']!=null){
+            $data_temp['testCriteria']=$contract['testcriteria'];
+            $data_info['testCreiteria']=$contract['testcriteria'];
+            $data_sample['testCriteria']=$contract['testcriteria'];
+        }
+        if($contract['testitem']!=null){
+            $data_temp['testItem']=$contract['testitem'];
+            $data_info['testItem']=$contract['testitem'];
+            $data_sample['testItem']=$contract['testitem'];
+        }
+        if($contract['postmethod']!=null){
+            $data_temp['postMethod']=$contract['postmethod'];
+        }
+        if($contract['ifsubpackage']!=null){
+            $data_temp['ifSubpackage']=$contract['ifsubpackage'];
+            $data_sample['ifSubpackage']=$contract['ifsubpackage'];
+        }
+        if($contract['package_remark']!=null){
+            $data_temp['package_remark']=$contract['package_remark'];
+            $data_sample['package_remark']=$contract['package_remark'];
+        }
+        if($contract['clientsign']!=null){
+            $data_temp['clientSign']=$contract['clientsign'];
+        }
+        if($contract['telephone']!=null){
+            $data_temp['telephone']=$contract['telephone'];
+        }
+        if($contract['tax']!=null){
+            $data_temp['tax']=$contract['tax'];
+        }
+        if($contract['postcode']!=null){
+            $data_temp['postcode']=$contract['postcode'];
+        }
+        if($contract['email']!=null){
+            $data_temp['email']=$contract['email'];
+        }
+        if($contract['address']!=null){
+            $data_temp['address']=$contract['address'];
+        }
+        if($contract['remark']!=null){
+            $data_temp['remark']=$contract['remark'];
+            $data_info['otherComments']=$contract['remark'];
+        }
+        if($contract['samplestaquan']!=null){
+            $data_temp['sampleStaQuan']=$contract['samplestaquan'];
+        }
+        if($contract['reportdate']!=null){
+            $data_temp['reportDate']=$contract['reportdate'];
+            $data_info['finishDate']=$contract['reportdate'];
+        }
+        if($contract['testcost']!=null){
+            $data_temp['testCost']=$contract['testcost'];
+        }
+
+        //费用入库
+        if($contract_cost['arecord']!=null){
+            $cost_temp['Arecord']=$contract_cost['arecord'];
+        }
+        if($contract_cost['brecord']!=null){
+            $cost_temp['Brecord']=$contract_cost['brecord'];
+        }
+        if($contract_cost['crecord']!=null){
+            $cost_temp['Crecord']=$contract_cost['crecord'];
+        }
+        if($contract_cost['drecord']!=null){
+            $cost_temp['Drecord']=$contract_cost['drecord'];
+        }
+        if($contract_cost['erecord']!=null){
+            $cost_temp['Erecord']=$contract_cost['erecord'];
+        }
+        if($contract_cost['frecord']!=null){
+            $cost_temp['Frecord']=$contract_cost['frecord'];
+        }
+        if($contract_cost['g1record']!=null){
+            $cost_temp['G1record']=$contract_cost['g1record'];
+        }
+        if($contract_cost['g2record']!=null){
+            $cost_temp['G2record']=$contract_cost['g2record'];
+        }
+        if($contract_cost['hrecord']!=null){
+            $cost_temp['Hrecord']=$contract_cost['hrecord'];
+        }
+        if($contract_cost['rarecord']!=null){
+            $cost_temp['RArecord']=$contract_cost['rarecord'];
+        }
+        if($contract_cost['rbrecord']!=null){
+            $cost_temp['RBrecord']=$contract_cost['rbrecord'];
+        }
+        if($contract_cost['rcrecord']!=null){
+            $cost_temp['RCrecord']=$contract_cost['rcrecord'];
+        }
+        if($contract_cost['rdrecord']!=null){
+            $cost_temp['RDrecord']=$contract_cost['rdrecord'];
+        }
+        if($contract_cost['rerecord']!=null){
+            $cost_temp['RErecord']=$contract_cost['rerecord'];
+        }
+        if($contract_cost['rfrecord']!=null){
+            $cost_temp['RFrecord']=$contract_cost['rfrecord'];
+        }
+        if($contract_cost['rg1record']!=null){
+            $cost_temp['RG1record']=$contract_cost['rg1record'];
+        }
+        if($contract_cost['rg2record']!=null){
+            $cost_temp['RG2record']=$contract_cost['rg2record'];
+        }
+        if($contract_cost['rhrecord']!=null){
+            $cost_temp['RHrecord']=$contract_cost['rhrecord'];
+        }
+        if($contract_cost['dcopy']!=null){
+            $cost_temp['Dcopy']=$contract_cost['dcopy'];
+        }
+        if($contract_cost['drevise']!=null){
+            $cost_temp['Drevise']=$contract_cost['drevise'];
+        }
+        if($contract_cost['dother']!=null){
+            $cost_temp['Dother']=$contract_cost['dother'];
+        }
+        if($contract_cost['remark']!=null){
+            $cost_temp['remark']=$contract_cost['remark'];
+        }
+        if($contract_cost['idlist']!=null){
+            $cost_temp['idList']=$contract_cost['idlist'];
+        }
+        //是否为抽样检测
+        $ifsample = substr($centreno,7,1);
+        D("contract")->where("centreNo='".$centreno."'")->save($data_temp);
+        D("test_cost")->where("centreNo='".$centreno."'")->save($cost_temp);
+        D("work_inform_form")->where("centreNo='".$centreno."'")->save($data_info);
+        if($ifsample=='C'){
+            D("sampling_form")->where("centreNo='".$centreno."'")->save($data_sample);
+        }
+        D("report_feedback")->where("id=".$id)->save($data);
+        $rs['msg']="succ";
+        $this->ajaxReturn($rs);
+    }
+
     //拒绝
     public function notAllow(){
         $id =I("id");
@@ -222,7 +422,8 @@ class AuditController extends Controller {
         $data1=array(
             'if_edit'=>0,
         );
-        if ($user==16||$if_admin==1){//审核员和超级管理员的权限
+        if ($user==16||$if_admin==1||$user==17){//审核员和超级管理员的权限
+            $rs['msg'] = 'succ';
             M()->startTrans();
             $result=D("report_feedback")->where($where)->save($data);
             $result1=D("inspection_report")->where("centreno='{$arr}'")->save($data1);
@@ -237,5 +438,37 @@ class AuditController extends Controller {
         $this->ajaxReturn($rs);
     }
 
+    //修改审核的合同详情查询
+    public function contractDetail(){
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $user=$admin_auth['gid'];//判断是哪个角色
+        $if_admin = $admin_auth['super_admin'];//是否是超级管理员
+        $centreno=I("id");
+        $contract=D("contract");//实例化
+        $where= "centreno='{$centreno}'";
+        $data=$contract->where($where)->field('ifHighQuantity,remark1,remark2',ture)->find();
+        $cost=D("test_cost")->where('centreno="'.$centreno.'"')->find();
+        //判断是否可以打印
+        $ifedit=M('contract')->where($where)->find();
+        $sub_status=M('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$centreno.'")')->find();
+        if(empty($sub_status)){
+            $sub_status['status']=-1;
+        }
+        $contract_temp = D("contract_temp")->where('id = (select max(id) from contract_temp where centreNo="'.$centreno.'")')->find();
+        $cost_temp = D("test_cost_temp")->where('id = (select max(id) from test_cost_temp where centreNo="'.$centreno.'")')->find();
+
+        $body=array(
+            'one'=>$data,
+            'cost'=>$cost,
+            'one_temp'=>$contract_temp,
+            'cost_temp'=>$cost_temp,
+            'ifedit'=>$ifedit,
+            'sub_status'=>$sub_status,
+            'user'=>$user,
+            'if_admin'=>$if_admin
+        );
+        $this->assign($body);
+        $this->display();
+    }
 }
 

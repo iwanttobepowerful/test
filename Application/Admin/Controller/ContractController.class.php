@@ -166,7 +166,8 @@ class ContractController extends Controller
         $Drecord = I("Drecord",0,'intval');
         $Erecord = I("Erecord",0,'intval');
         $Frecord = I("Frecord",0,'intval');
-        $Grecord = I("Grecord",0,'intval');
+        $G1record = I("G1record",0,'intval');
+        $G2record = I("G2record",0,'intval');
         $Hrecord = I("Hrecord",0,'intval');
 
         $RArecord = I("RArecord",0,'intval');
@@ -175,7 +176,8 @@ class ContractController extends Controller
         $RDrecord = I("RDrecord",0,'intval');
         $RErecord = I("RErecord",0,'intval');
         $RFrecord = I("RFrecord",0,'intval');
-        $RGrecord = I("RGrecord",0,'intval');
+        $RG1record = I("RG1record",0,'intval');
+        $RG2record = I("RG2record",0,'intval');
         $RHrecord = I("RHrecord",0,'intval');
 
         $A_id_list = I("A_id_list");
@@ -184,7 +186,8 @@ class ContractController extends Controller
         $D_id_list = I("D_id_list");
         $E_id_list = I("E_id_list");
         $F_id_list = I("F_id_list");
-        $G_id_list = I("G_id_list");
+        $G1_id_list = I("G1_id_list");
+        $G2_id_list = I("G2_id_list");
         $H_id_list = I("H_id_list");
 
         $arr_id_list = array(
@@ -194,7 +197,8 @@ class ContractController extends Controller
             'd'=>explode(",",$D_id_list),
             'e'=>explode(",",$E_id_list),
             'f'=>explode(",",$F_id_list),
-            'g'=>explode(",",$G_id_list),
+            'g1'=>explode(",",$G1_id_list),
+            'g2'=>explode(",",$G2_id_list),
             'h'=>explode(",",$H_id_list),
         );
         //pr($arr_id_list);
@@ -400,7 +404,8 @@ class ContractController extends Controller
             "Drecord"=>$Drecord,
             "Erecord"=>$Erecord,
             "Frecord"=>$Frecord,
-            "Grecord"=>$Grecord,
+            "G1record"=>$G1record,
+            "G2record"=>$G2record,
             "Hrecord"=>$Hrecord,
             "RArecord"=>$RArecord,
             "RBrecord"=>$RBrecord,
@@ -408,7 +413,8 @@ class ContractController extends Controller
             "RDrecord"=>$RDrecord,
             "RErecord"=>$RErecord,
             "RFrecord"=>$RFrecord,
-            "RGrecord"=>$RGrecord,
+            "RG1record"=>$RG1record,
+            "RG2record"=>$RG2record,
             "RHrecord"=>$RHrecord,
             "Dcopy"=>$Dcopy,
             "Donline"=>$Donline,
@@ -564,7 +570,8 @@ class ContractController extends Controller
         $d_id_list = implode(",",$id_list['d']);
         $e_id_list = implode(",",$id_list['e']);
         $f_id_list = implode(",",$id_list['f']);
-        $g_id_list = implode(",",$id_list['g']);
+        $g1_id_list = implode(",",$id_list['g1']);
+        $g2_id_list = implode(",",$id_list['g2']);
         $h_id_list = implode(",",$id_list['h']);
         $body = array(
             'contract'=>$contractItem,
@@ -576,7 +583,8 @@ class ContractController extends Controller
             'd_id_list'=>$d_id_list,
             'e_id_list'=>$e_id_list,
             'f_id_list'=>$f_id_list,
-            'g_id_list'=>$g_id_list,
+            'g1_id_list'=>$g1_id_list,
+            'g2_id_list'=>$g2_id_list,
             'h_id_list'=>$h_id_list,
         );
         $this->assign($body);
@@ -769,7 +777,7 @@ class ContractController extends Controller
         }
         if($contract['productunit']!=$productUnit){
             $count=$count+1;
-            $data_temp['productUnit ']=$productUnit;
+            $data_temp['productUnit']=$productUnit;
         }
         if($contract['samplename']!=$sampleName){
             $count=$count+1;
@@ -859,10 +867,7 @@ class ContractController extends Controller
             $count=$count+1;
             $data_temp['sampleStaQuan']=$sampleStaQuan;
         }
-        if($contract['testcost']!=$testCost){
-            $count=$count+1;
-            $data_temp['testCost']=$testCost;
-        }
+
         if($contract['reportdate']!=$reportDate){
             $count=$count+1;
             $data_temp['reportDate']=$reportDate;
@@ -870,6 +875,7 @@ class ContractController extends Controller
         $contract_cost = D("test_cost")->where("centreNo='".$centreNo."'")->find();
         //费用临时表
         $cost_temp = Array();
+        $flag=0;
         if($contract_cost['arecord']!=$Arecord){
             $cost_temp['Arecord']=$Arecord;
         }
@@ -900,38 +906,51 @@ class ContractController extends Controller
         if($contract_cost['rarecord']!=$RArecord){
             $cost_temp['RArecord']=$RArecord;
             $count=$count+1;
+            $flag=1;
         }
         if($contract_cost['rbrecord']!=$RBrecord){
             $cost_temp['RBrecord']=$RBrecord;
             $count=$count+1;
+            $flag=1;
         }
         if($contract_cost['rcrecord']!=$RCrecord){
             $cost_temp['RCrecord']=$RCrecord;
             $count=$count+1;
+            $flag=1;
         }
         if($contract_cost['rdrecord']!=$RDrecord){
             $cost_temp['RDrecord']=$RDrecord;
             $count=$count+1;
+            $flag=1;
         }
         if($contract_cost['rerecord']!=$RErecord){
             $cost_temp['RErecord']=$RErecord;
             $count=$count+1;
+            $flag=1;
         }
         if($contract_cost['rfrecord']!=$RFrecord){
             $cost_temp['RFrecord']=$RFrecord;
             $count=$count+1;
+            $flag=1;
         }
         if($contract_cost['rg1record']!=$RG1record){
             $cost_temp['RG1record']=$RG1record;
             $count=$count+1;
+            $flag=1;
         }
         if($contract_cost['rg2record']!=$RG2record){
             $cost_temp['RG2record']=$RG2record;
             $count=$count+1;
+            $flag=1;
         }
         if($contract_cost['rhrecord']!=$RHrecord){
             $cost_temp['RHrecord']=$RHrecord;
             $count=$count+1;
+            $flag=1;
+        }
+        if($flag==1){
+            //$count=$count+1;
+            $data_temp['testCost']=$testCost;
         }
         if($contract_cost['dcopy']!=$Dcopy){
             $cost_temp['Dcopy']=$Dcopy;
@@ -1012,12 +1031,12 @@ class ContractController extends Controller
                 'create_time' => Date("Y-m-d H:i:s"),
             );
             if ($count == 1) {
-                $feedback['role_id'] = 8;//待修改，需要改成新角色id
+                $feedback['role_id'] = 17;//修改一项为修改审核-1项
             }
             M()->startTrans();
             try {
-                //D("contract_temp")->add($data_temp);
-                //D("test_cost_temp")->add($cost_temp);
+                D("contract_temp")->add($data_temp);
+                D("test_cost_temp")->add($cost_temp);
                 D("report_feedback")->add($feedback);
                 M()->commit();
                 $rs['msg'] = '申请成功'.$count;
@@ -1071,7 +1090,7 @@ class ContractController extends Controller
             }
         }else{
             $clientName = str_replace(' ','',I("clientName"));
-            $productUnit = preg_replace(' ','',I("productUnit"));
+            $productUnit = str_replace(' ','',I("productUnit"));
             $sampleName = I("sampleName");
             $sampleCode = I("sampleCode");
             $grade = I("grade");
@@ -1111,7 +1130,8 @@ class ContractController extends Controller
             $Drecord = I("Drecord",0,'intval');
             $Erecord = I("Erecord",0,'intval');
             $Frecord = I("Frecord",0,'intval');
-            $Grecord = I("Grecord",0,'intval');
+            $G1record = I("G1record",0,'intval');
+            $G2record = I("G2record",0,'intval');
             $Hrecord = I("Hrecord",0,'intval');
 
             $RArecord = I("RArecord",0,'intval');
@@ -1120,7 +1140,8 @@ class ContractController extends Controller
             $RDrecord = I("RDrecord",0,'intval');
             $RErecord = I("RErecord",0,'intval');
             $RFrecord = I("RFrecord",0,'intval');
-            $RGrecord = I("RGrecord",0,'intval');
+            $RG1record = I("RG1record",0,'intval');
+            $RG2record = I("RG2record",0,'intval');
             $RHrecord = I("RHrecord",0,'intval');
 
             $A_id_list = I("A_id_list");
@@ -1129,7 +1150,8 @@ class ContractController extends Controller
             $D_id_list = I("D_id_list");
             $E_id_list = I("E_id_list");
             $F_id_list = I("F_id_list");
-            $G_id_list = I("G_id_list");
+            $G1_id_list = I("G1_id_list");
+            $G2_id_list = I("G2_id_list");
             $H_id_list = I("H_id_list");
 
             $arr_id_list = array(
@@ -1139,7 +1161,8 @@ class ContractController extends Controller
                 'd'=>explode(",",$D_id_list),
                 'e'=>explode(",",$E_id_list),
                 'f'=>explode(",",$F_id_list),
-                'g'=>explode(",",$G_id_list),
+                'g1'=>explode(",",$G1_id_list),
+                'g2'=>explode(",",$G2_id_list),
                 'h'=>explode(",",$H_id_list),
             );
             //pr($arr_id_list);
@@ -1215,11 +1238,52 @@ class ContractController extends Controller
             }
 
 
-
-
-
-            if(empty($clientName)||empty($productUnit)||empty($sampleName)||empty($testCriteria)||empty($testItem)||empty($sampleQuantity)||empty($sampleStatus)||empty($sampleStaQuan)||empty($collector)||empty($testCost)||empty($collectDate)||empty($reportDate)){
-                $rs['msg'] = '信息填写不完整!';
+            if(empty($clientName)) {
+                $rs['msg'] = '委托单位不能为空!';
+                $this->ajaxReturn($rs);
+            }
+            if(empty($productUnit)) {
+                $rs['msg'] = '生产单位不能为空!';
+                $this->ajaxReturn($rs);
+            }
+            if(empty($sampleName)) {
+                $rs['msg'] = '样品名称不能为空!';
+                $this->ajaxReturn($rs);
+            }
+            if(empty($testCriteria)) {
+                $rs['msg'] = '检验依据不能为空!';
+                $this->ajaxReturn($rs);
+            }
+            if(empty($testItem)) {
+                $rs['msg'] = '检验项目不能为空!';
+                $this->ajaxReturn($rs);
+            }
+            if(empty($sampleQuantity)) {
+                $rs['msg'] = '样品数量不能为空!';
+                $this->ajaxReturn($rs);
+            }
+            if(empty($sampleStatus)) {
+                $rs['msg'] = '样品状态不能为空!';
+                $this->ajaxReturn($rs);
+            }
+            if(empty($sampleStaQuan)) {
+                $rs['msg'] = '样品状态及数量不能为空!';
+                $this->ajaxReturn($rs);
+            }
+            if(empty($collector)) {
+                $rs['msg'] = '收样人不能为空!';
+                $this->ajaxReturn($rs);
+            }
+            if(empty($testCost)) {
+                $rs['msg'] = '检验费用不能为空!';
+                $this->ajaxReturn($rs);
+            }
+            if(empty($collectDate)) {
+                $rs['msg'] = '收样日期不能为空!';
+                $this->ajaxReturn($rs);
+            }
+            if(empty($reportDate)) {
+                $rs['msg'] = '报告日期不能为空!';
                 $this->ajaxReturn($rs);
             }
 
@@ -1288,7 +1352,8 @@ class ContractController extends Controller
                 "Drecord"=>$Drecord,
                 "Erecord"=>$Erecord,
                 "Frecord"=>$Frecord,
-                "Grecord"=>$Grecord,
+                "G1record"=>$G1record,
+                "G2record"=>$G2record,
                 "Hrecord"=>$Hrecord,
                 "RArecord"=>$RArecord,
                 "RBrecord"=>$RBrecord,
@@ -1296,7 +1361,8 @@ class ContractController extends Controller
                 "RDrecord"=>$RDrecord,
                 "RErecord"=>$RErecord,
                 "RFrecord"=>$RFrecord,
-                "RGrecord"=>$RGrecord,
+                "RG1record"=>$RG1record,
+                "RG2record"=>$RG2record,
                 "RHrecord"=>$RHrecord,
                 "Dcopy"=>$Dcopy,
                 "Donline"=>$Donline,
