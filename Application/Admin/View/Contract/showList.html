@@ -103,9 +103,9 @@
                         <if condition="$if_edit==1 and $con['status'] != -1">
                             <if condition="($con['ifedit'] == 1) and ($con['sub_status'] == 0) and ($con['if_report']==0)">
                                 <span style="color:green">申请修改中<br/></span>
-                                <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == 1) and ($con['if_report']==0)" />
+                                <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == 3) and ($con['if_report']==0) and ($con['if_outer']==0) and ($con['if_invalid']==0)" />
                                 <span style="color:green">申请修改通过<br/></span>
-                                <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == 2) and ($con['if_report']==0)" />
+                                <elseif condition="($con['ifedit'] == 1) and ($con['sub_status'] == 2) and ($con['if_report']==0) and ($con['if_outer']==0) and ($con['if_invalid']==0)" />
                                 <span style="color:red">申请修改拒绝<br/></span>
                             </if>
                         </if>

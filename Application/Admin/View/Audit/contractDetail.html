@@ -1,0 +1,885 @@
+<html>
+<include file="Common:header" title="后台首页"/>
+<head>
+    <meta charset="UTF-8">
+    <title>受检合同</title>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/static/css/bootstrap.min.css" />
+    <script src="__PUBLIC__/static/js/jquery-2.1.3.min.js" type="text/javascript" charset="utf-8"></script>
+    <style type="text/css">
+        .test_content {
+            margin: 0 auto;
+            width: 85%;
+            height: 55%;
+            border: #000000 solid 2px;
+
+        }
+
+        .test_content_two {
+            margin: 0 auto;
+            width: 85%;
+            height: 22%;
+            border: #000000 solid 1px;
+            border-top-style: none;
+        }
+        table
+        {
+            border-collapse:collapse;
+        }
+
+        .principal{
+            font-size: 14pt;
+            font-family: SimHei;
+            border-top: none;
+            height:7%;
+        }
+
+        .office{
+            font-size: 14pt;
+            font-family: SimHei;
+            border-top: none;
+            height:17%;
+        }
+
+        .test_txt {
+            font-family: SimSun;
+            font-size: 10.5pt;
+        }
+
+        td {
+            text-align: center;
+            border:solid #000000 1px;
+        }
+
+        .l_title,
+        .s_title {
+            font-size: 18pt;
+            font-weight: 500;
+            font-family: SimHei;
+            margin-bottom: 6px;
+        }
+        .contract_item{
+            height:15.33%;
+        }
+
+        .hos,
+        .three_col {
+            width: 17.5%;
+        }
+
+        .two_col {
+            width: 28.2%;
+        }
+
+        .four_col {
+            width: 13.14%;
+        }
+
+        .five_col {
+            width: 11.4%;
+        }
+        .six_col{
+            width: 13.14%;
+        }
+
+        .tel_col {
+            width: 15%;
+        }
+        .two_one_col{
+            width: 14%;
+        }
+
+        .rate,
+        .filt {
+            width: 10%;
+        }
+
+        #in_year,
+        #in_month,
+        #in_day,
+        #out_year,
+        #out_month,
+        #out_day {
+            width: 20%;
+        }
+
+        #fin_read {
+            height: 43.07%;
+            text-align: left;
+        }
+        .remark_txt{
+            font-size: 9pt;
+            font-family:simsun;
+            margin-bottom: 1pt;
+            padding-left: 2em;
+            line-height:15pt
+        }
+        .remark_txt:first-letter {
+            margin-left: -2em;
+        }
+
+        .contract_other{
+            height:10.43%;
+        }
+
+        .head_title {
+            margin: 0 auto;
+            width: 85%;
+            height: 1.5cm;
+            margin-top:7%;
+        }
+
+        .logo {
+            width: 10%;
+            vertical-align:text-top;
+            border:none;
+        }
+        .input_head{
+            padding-right: 53pt;
+            padding-top:3pt;
+            vertical-align: bottom;
+            border:none;
+
+        }
+
+        .img_logo {
+            margin-left: 20%;
+            width: 80%;
+        }
+
+        .mose {
+            margin-left: 8%;
+            font-weight: 500;
+            font-family: "times new roman";
+            font-size: 10.5pt;
+        }
+        .en{
+            font-family: times new roman;
+            font-size: 10.5pt;
+        }
+
+        .next_one {
+            width: 17%;
+        }
+        .next_two{
+            width: 33%;
+        }
+
+        .foot {
+            text-align: center;
+            height: 0.3cm;
+            font-family: simsun;
+            font-size: 9pt;
+        }
+
+        .page {
+            width: 210mm;
+            height: 29.7cm;
+            padding: 0cm;
+            margin: 0 auto;
+            border: 1px #1B6D85 solid;
+            border-radius: 5px;
+            background: white;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .contract_txt {
+            font-family: simsun;
+            font-size: 10.5pt;
+        }
+        .final{
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+    <style type="text/css" media="print">
+        /*以下是打印格式*/
+
+        *{
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+
+        @page {
+            size: A4;
+            margin: 0.1cm;
+        }
+
+        .page {
+            margin: 0;
+            border: initial;
+            padding: 0.1cm;
+            border-radius: initial;
+            /*width: 20cm;*/
+            height: 29.7cm;
+            box-shadow: initial;
+            background: initial;
+            page-break-after: always;
+        }
+        .Noprint{
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+<div class="page">
+    <table class="head_title">
+        <tr>
+            <td class="logo"><img class="img_logo" src="__PUBLIC__/static/images/logo_company.png" /></td>
+            <td class="input_head">
+                <p class="l_title">建筑材料工业技术监督研究中心</p>
+                <p class="s_title">检 验 受 理 合 同</p>
+            </td>
+        </tr>
+    </table>
+    <div class="mose">SJ－4－17&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-success btn-xs" onclick="onUpdate('{$sub_status.id}','{$one.centreno}')" ><i class="glyphicon glyphicon-ok-circle"></i>允许</button>
+        <button class="btn btn-danger btn-xs" onclick="update('{$sub_status.id}','A')" }><i class="glyphicon glyphicon-remove-circle"></i>拒绝</button>
+    </div>
+
+    <table class="test_content">
+        <tr>
+            <td colspan="7" class="principal">委&nbsp;托&nbsp;人&nbsp;填&nbsp;写</td>
+        </tr>
+        <tr>
+            <td class="hos test_txt">委托单位</td>
+            <td colspan="6"><span class="contract_txt">{$one.clientname}
+                <if condition="$one_temp.clientname neq null"><span style="color:red">({$one_temp.clientname})</span></if>
+					</span></td>
+        </tr>
+        <tr>
+            <td class="test_txt">生产单位</td>
+            <td colspan="6"><span class="contract_txt">{$one.productunit}
+                <if condition="$one_temp.productunit neq null"><span style="color:red">({$one_temp.productunit})</span></if>
+					</span></td>
+        </tr>
+        <tr>
+            <td class="test_txt">样品名称</td>
+            <td colspan="2" class="two_col"><span class="contract_txt">{$one.samplename}
+                <if condition="$one_temp.samplename neq null"><span style="color:red">({$one_temp.samplename})</span></if>
+					</span></td>
+            <td class="three_col test_txt">样品编号</td>
+            <td class="four_col">
+            	<span class="contract_txt">
+                    <if condition="$one[samplecode]">
+                        {$one.samplecode}
+                    <else />
+                        <span>——</span>
+                    </if>
+                    <if condition="$one_temp.samplecode neq null"><span style="color:red">({$one_temp.samplecode})</span></if>
+				</span>
+
+            </td>
+            <td class="five_col test_txt">等级</td>
+            <td class="six_col"><span class="contract_txt">
+                <if condition="$one[grade]">
+                    {$one.grade}
+                <else />
+                    <span>——</span>
+                </if>
+                <if condition="$one_temp.grade neq null"><span style="color:red">({$one_temp.grade})</span></if>
+            </span></td>
+        </tr>
+        <tr>
+            <td class="test_txt">规格型号</td>
+            <td colspan="2"><span class="contract_txt">
+                <if condition="$one[specification]">
+                    {$one.specification}
+                <else />
+                    <span>——</span>
+                </if>
+                <if condition="$one_temp.specification neq null"><span style="color:red">({$one_temp.specification})</span></if>
+			</span></td>
+            <td class="test_txt">商标</td>
+            <td colspan="3"><span class="contract_txt">
+                <if condition="$one[trademark]">
+                    {$one.trademark}
+                <else />
+                    <span>——</span>
+                </if>
+                <if condition="$one_temp.trademark neq null"><span style="color:red">({$one_temp.trademark})</span></if>
+			</span></td>
+        </tr>
+        <tr>
+            <td class="test_txt">生产日期/批号</td>
+            <td colspan="2"><span class="contract_txt">
+                <if condition="$one[productiondate]">
+                    {$one.productiondate}
+                <else />
+                    <span>——</span>
+                </if>
+                <if condition="$one_temp.productiondate neq null"><span style="color:red">({$one_temp.productiondate})</span></if>
+			</span></td>
+            <td class="test_txt">样品数量</td>
+            <td colspan="3"><span class="contract_txt">{$one.samplequantity}
+                <if condition="$one_temp.samplequantity neq null"><span style="color:red">({$one_temp.samplequantity})</span></if>
+					</span></td>
+        </tr>
+        <tr>
+            <td class="test_txt">样品状态</td>
+            <td colspan="2"><span class="contract_txt">{$one.samplestatus}
+                <if condition="$one_temp.samplestatus neq null"><span style="color:red">({$one_temp.samplestatus})</span></if>
+					</span></td>
+            <td class="test_txt">粉（料）水比</td>
+            <td colspan="3"><span class="contract_txt">
+                <if condition="$one[ration]">
+                    {$one.ration}
+                <else />
+                    <span>——</span>
+                </if>
+                <if condition="$one_temp.ration neq null"><span style="color:red">({$one_temp.ration})</span></if>
+			</span></td>
+        </tr>
+        <tr>
+            <td class="test_txt">检验依据</td>
+            <td colspan="6"><span class="contract_txt">{$one.testcriteria}
+                <if condition="$one_temp.testcriteria neq null"><span style="color:red">({$one_temp.testcriteria})</span></if>
+					</span></td>
+        </tr>
+        <tr>
+            <td class="test_txt">检验项目</td>
+            <td colspan="6" class="contract_item"> <span name="checkout" class="contract_txt">{$one.testitem}</span>
+                <if condition="$one_temp.testitem neq null"><span style="color:red">({$one_temp.testitem})</span></if>
+            </td>
+        </tr>
+        <tr>
+            <td class="test_txt">检验类别</td>
+            <td colspan="6"><span class="contract_txt">{$one.testcategory}
+
+					</span></td>
+        </tr>
+        <tr>
+            <td colspan="5" class="test_txt">检验报告是否在本中心网站可查询真伪 （www.dmtc.org.cn）</td>
+            <td colspan="2"><span class="contract_txt"><php>if($one['ifonline']==1){echo '是';}else{echo '否';}</php></span></td>
+        </tr>
+        <tr>
+            <td class="test_txt"><span class="contract_txt">报告提交方式</span></td>
+            <td colspan="2"><span class="contract_txt">{$one.postmethod}</span>
+                <if condition="$one_temp.postmethod neq null"><span style="color:red">({$one_temp.postmethod})</span></if>
+            </td>
+            <td colspan="2" class="test_txt">是否同意分包</td>
+            <td colspan="2">
+            	<span class="contract_txt"><php>
+                	if($one['ifsubpackage']==1){
+                    	if($one["package_remark"]){
+                        	echo '是'."(".$one["package_remark"].")";
+                        }else{
+                        	echo '是';
+                        }
+                    }else{
+                    	echo '否';
+                    }
+                    if($one_temp['ifsubpackage']!=null){
+                        if($one_temp['ifsubpackage']==1){
+                            if($one_temp["package_remark"]){
+                                echo "<span style='color: red'>(是"."(".$one_temp['package_remark']."))</span>";
+                            }else{
+                                echo "<span style='color: red'>(是)</span>";
+                            }
+                        }else{
+                            echo "<span style='color: red'>(否)</span>";
+                        }
+                    }else if($one_temp['package_remark']!=null){
+                        echo "<span style='color: red'>(是(".$one_temp['package_remark']."))</span>";
+                    }
+                </php></span>
+            </td>
+        </tr>
+        <tr>
+            <td class="test_txt">委托人（签字）</td>
+            <td class="two_one_col"><span class="contract_txt">{$one.clientsign}
+					</span>
+                <if condition="$one_temp.clientsign neq null"><span style="color:red">({$one_temp.clientsign})</span></if>
+            </td>
+            <td class="tel_col test_txt">联系电话</td>
+            <td><span class="contract_txt">
+                <if condition="$one[telephone]">
+                    {$one.telephone}
+                <else />
+                    <span>——</span>
+                </if>
+                <if condition="$one_temp.telephone neq null"><span style="color:red">({$one_temp.telephone})</span></if>
+					</span></td>
+            <td class="test_txt">传真</td>
+            <td colspan="2"><span class="contract_txt">
+                <if condition="$one[tax]">
+                    {$one.tax}
+                <else />
+                    <span>——</span>
+                </if>
+					</span>
+                <if condition="$one_temp.tax neq null"><span style="color:red">({$one_temp.tax})</span></if>
+            </td>
+        </tr>
+        <tr>
+            <td class="test_txt">邮政编码</td>
+            <td><span class="contract_txt">
+                <if condition="$one[postcode]">
+                    {$one.postcode}
+                <else />
+                    <span>——</span>
+                </if>
+					</span>
+                <if condition="$one_temp.postcode neq null"><span style="color:red">({$one_temp.postcode})</span></if>
+            </td>
+            <td class="en">E-mail</td>
+            <td colspan="4"><span class="contract_txt">
+                <if condition="$one[email]">
+                    {$one.email}
+                <else />
+                    <span>——</span>
+                </if>
+					</span>
+                <if condition="$one_temp.email neq null"><span style="color:red">({$one_temp.email})</span></if>
+            </td>
+        </tr>
+        <tr>
+            <td class="test_txt">通讯地址</td>
+            <td colspan="6"> <span class="contract_txt">
+                <if condition="$one[address]">
+                    {$one.address}
+                <else />
+                    <span>——</span>
+                </if>
+					</span>
+                <if condition="$one_temp.address neq null"><span style="color:red">({$one_temp.address})</span></if>
+            </td>
+        </tr>
+        <tr>
+            <td class="test_txt">备注</td>
+            <td colspan="6" class="contract_other"> 
+            <span class="contract_txt">
+                <if condition="$one[remark]">
+                    {$one.remark}
+                <else />
+                    <span>——</span>
+                </if>
+            </span>
+            <if condition="$one_temp.remark neq null"><span style="color:red">({$one_temp.remark})</span></if>
+            </td>
+        </tr>
+        <table class="test_content_two">
+            <tr>
+                <td colspan="4" class="office">中&nbsp;心&nbsp;办&nbsp;公&nbsp;室&nbsp;填&nbsp;写</td>
+            </tr>
+            <tr>
+                <td class="next_one test_txt">样品状态及数量</td>
+                <td class="next_two"><span class="contract_txt">{$one.samplestaquan}
+
+					</span>
+                    <if condition="$one_temp.samplestaquan neq null"><span style="color:red">({$one_temp.samplestaquan})</span></if>
+                </td>
+                <td class="next_one test_txt">收 样 人</td>
+                <td class="next_two"> <span class="contract_txt">{$one.collector}
+
+					</span> </td>
+            </tr>
+            <tr>
+                <td class="test_txt">中心编号</td>
+                <td><span class="contract_txt">{$one.centreno}
+
+					</span></td>
+                <td class="test_txt">检验费用</td>
+                <td><span class="contract_txt">
+                	<php>
+                    	if($one["testcost"]==0){
+							echo 0;
+                        }else{
+                            $str = "";
+                            if($cost["rarecord"]!=0){
+                                if($cost["rarecord"]>0){
+                                    $str.=$cost["rarecord"]."(A)+";
+                                }else{
+                                    $str.="(".$cost["rarecord"].")(A)+";
+                                }
+                            }
+                            if($cost["rbrecord"]!=0){
+                                if($cost["rbrecord"]>0){
+                                    $str.=$cost["rbrecord"]."(B)+";
+                                }else{
+                                    $str.="(".$cost["rbrecord"].")(B)+";
+                                }
+                            }
+                            if($cost["rcrecord"]!=0){
+                                if($cost["rcrecord"]>0){
+                                    $str.=$cost["rcrecord"]."(C)+";
+                                }else{
+                                    $str.="(".$cost["rcrecord"].")(C)+";
+                                }
+                            }
+                            if($cost["rdrecord"]!=0){
+                                if($cost["rdrecord"]>0){
+                                    $str.=$cost["rdrecord"]."(D)+";
+                                }else{
+                                    $str.="(".$cost["rdrecord"].")(D)+";
+                                }
+                            }
+                            if($cost["rerecord"]!=0){
+                                if($cost["rerecord"]>0){
+                                    $str.=$cost["rerecord"]."(E)+";
+                                }else{
+                                    $str.="(".$cost["rerecord"].")(E)+";
+                                }
+                            }
+                            if($cost["rfrecord"]!=0){
+                                if($cost["rfrecord"]>0){
+                                    $str.=$cost["rfrecord"]."(F)+";
+                                }else{
+                                    $str.="(".$cost["rfrecord"].")(F)+";
+                                }
+                            }
+                            if($cost["rgrecord"]!=0){
+                                if($cost["rgrecord"]>0){
+                                    $str.=$cost["rgrecord"]."(G)+";
+                                }else{
+                                    $str.="(".$cost["rgrecord"].")(G)+";
+                                }
+                            }
+                            if($cost["rhrecord"]!=0){
+                                if($cost["rhrecord"]>0){
+                                    $str.=$cost["rhrecord"]."(H)+";
+                                }else{
+                                    $str.="(".$cost["rhrecord"].")(H)+";
+                                }
+                            }
+                            if($cost["dcopy"]!=0){
+                                if($cost["dcopy"]>0){
+                                    $str.=$cost["dcopy"]."(副本)+";
+                                }else{
+                                    $str.="(".$cost["dcopy"].")(副本)+";
+                                }
+                            }
+                            if($cost["donline"]!=0){
+                                if($cost["donline"]>0){
+                                    $str.=$cost["donline"]."(基础费)+";
+                                }else{
+                                    $str.="(".$cost["donline"].")(基础费)+";
+                                }
+                            }
+                            if($cost["drevise"]!=0){
+                                if($cost["drevise"]>0){
+                                    $str.=$cost["drevise"]."(修改)+";
+                                }else{
+                                    $str.="(".$cost["drevise"].")(修改)+";
+                                }
+                            }
+                            if($cost["dother"]!=0){
+                                if($cost["dother"]>0){
+                                    $str.=$cost["dother"]."(其他)+";
+                                }else{
+                                    $str.="(".$cost["dother"].")(其他)+";
+                                }
+                            }
+
+                            echo substr($str,0,strlen($str)-1)."=".	$one["testcost"];
+                        }
+
+                    </php>
+                    </span>
+                    <br/>
+
+                    <php>
+                        if($one_temp["testcost"]!=null){
+                        $str = "";
+                        if($cost_temp["rarecord"]==null){
+                            if($cost["rarecord"]>0){
+                                $str.=$cost["rarecord"]."(A)+";
+                            }else if($cost['rarecord']<0){
+                                $str.="(".$cost["rarecord"].")(A)+";
+                            }
+                        }else{
+                            $str.="<span style='color:red'>";
+                            if($cost_temp["rarecord"]>=0){
+                                $str.=$cost_temp["rarecord"]."(A)+";
+                            }else{
+                                $str.="(".$cost_temp["rarecord"].")(A)+";
+                            }
+                            $str.="</span>";
+                        }
+
+                        if($cost_temp["rbrecord"]==null){
+                            if($cost["rbrecord"]>0){
+                                $str.=$cost["rbrecord"]."(B)+";
+                            }else if($cost['rbrecord']<0){
+                                $str.="(".$cost["rbrecord"].")(B)+";
+                            }
+                        }else{
+                            $str.="<span style='color:red'>";
+                            if($cost_temp["rbrecord"]>=0){
+                                $str.=$cost_temp["rbrecord"]."(B)+";
+                            }else{
+                                $str.="(".$cost_temp["rbrecord"].")(B)+";
+                            }
+                            $str.="</span>";
+                        }
+
+                        if($cost_temp["rcrecord"]==null){
+                            if($cost["rcrecord"]>0){
+                                $str.=$cost["rcrecord"]."(C)+";
+                            }else if($cost['rcrecord']<0){
+                                $str.="(".$cost["rcrecord"].")(C)+";
+                            }
+                        }else{
+                            $str.="<span style='color:red'>";
+                            if($cost_temp["rcrecord"]>=0){
+                                $str.=$cost_temp["rcrecord"]."(C)+";
+                            }else{
+                                $str.="(".$cost_temp["rcrecord"].")(C)+";
+                            }
+                            $str.="</span>";
+                        }
+
+                        if($cost_temp["rdrecord"]==null){
+                            if($cost["rdrecord"]>0){
+                                $str.=$cost["rdrecord"]."(D)+";
+                            }else if($cost['rdrecord']<0){
+                                $str.="(".$cost["rdrecord"].")(D)+";
+                            }
+                        }else{
+                            $str.="<span style='color:red'>";
+                            if($cost_temp["rdrecord"]>=0){
+                                $str.=$cost_temp["rdrecord"]."(D)+";
+                            }else{
+                                $str.="(".$cost_temp["rdrecord"].")(D)+";
+                            }
+                            $str.="</span>";
+                        }
+
+                        if($cost_temp["rerecord"]==null){
+                            if($cost["rerecord"]>0){
+                                $str.=$cost["rerecord"]."(E)+";
+                            }else if($cost['rerecord']<0){
+                                $str.="(".$cost["rerecord"].")(E)+";
+                            }
+                        }else{
+                            $str.="<span style='color:red'>";
+                            if($cost_temp["rerecord"]>=0){
+                                $str.=$cost_temp["rerecord"]."(E)+";
+                            }else{
+                                $str.="(".$cost_temp["rerecord"].")(E)+";
+                            }
+                            $str.="</span>";
+                        }
+
+                        if($cost_temp["rfrecord"]==null){
+                            if($cost["rfrecord"]>0){
+                                $str.=$cost["rfrecord"]."(F)+";
+                            }else if($cost['rfrecord']<0){
+                                $str.="(".$cost["rfrecord"].")(F)+";
+                            }
+                        }else{
+                            $str.="<span style='color:red'>";
+                            if($cost_temp["rfrecord"]>=0){
+                                $str.=$cost_temp["rfrecord"]."(F)+";
+                            }else{
+                                $str.="(".$cost_temp["rfrecord"].")(F)+";
+                            }
+                            $str.="</span>";
+                        }
+
+                        if($cost_temp["rg1record"]==null){
+                            if($cost["rg1record"]>0){
+                            $str.=$cost["rg1record"]."(G1)+";
+                            }else if($cost['rg1record']<0){
+                            $str.="(".$cost["rg1record"].")(G1)+";
+                            }
+                        }else{
+                            $str.="<span style='color:red'>";
+                            if($cost_temp["rg1record"]>=0){
+                                $str.=$cost_temp["rg1record"]."(G1)+";
+                            }else{
+                                $str.="(".$cost_temp["rg1record"].")(G1)+";
+                            }
+                            $str.="</span>";
+                        }
+
+                        if($cost_temp["rg2record"]==null){
+                            if($cost["rg2record"]>0){
+                            $str.=$cost["rg2record"]."(G2)+";
+                            }else if($cost['rg2record']<0){
+                            $str.="(".$cost["rg2record"].")(G2)+";
+                            }
+                        }else{
+                            $str.="<span style='color:red'>";
+                            if($cost_temp["rg2record"]>=0){
+                                $str.=$cost_temp["rg2record"]."(G2)+";
+                            }else{
+                                $str.="(".$cost_temp["rg2record"].")(G2)+";
+                            }
+                            $str.="</span>";
+                        }
+
+                        if($cost_temp["rhrecord"]==null){
+                            if($cost["rhrecord"]>0){
+                            $str.=$cost["rhrecord"]."(H)+";
+                            }else if($cost['rhrecord']<0){
+                            $str.="(".$cost["rhrecord"].")(H)+";
+                            }
+                        }else{
+                            $str.="<span style='color:red'>";
+                            if($cost_temp["rhrecord"]>=0){
+                                $str.=$cost_temp["rhrecord"]."(H)+";
+                            }else{
+                                $str.="(".$cost_temp["rhrecord"].")(H)+";
+                            }
+                            $str.="</span>";
+                        }
+
+                        if($cost_temp["dcopy"]==null){
+                            if($cost["dcopy"]>0){
+                            $str.=$cost["dcopy"]."(副本)+";
+                            }else if($cost['dcopy']<0){
+                            $str.="(".$cost["dcopy"].")(副本)+";
+                            }
+                        }else{
+                            $str.="<span style='color:red'>";
+                            if($cost_temp["dcopy"]>=0){
+                                $str.=$cost_temp["dcopy"]."(副本)+";
+                            }else{
+                                $str.="(".$cost_temp["dcopy"].")(副本)+";
+                            }
+                            $str.="</span>";
+                        }
+
+                        if($cost_temp["donline"]==null){
+                            if($cost["donline"]>0){
+                            $str.=$cost["donline"]."(基础费)+";
+                            }else if($cost['donline']<0){
+                            $str.="(".$cost["donline"].")(基础费)+";
+                            }
+                        }else{
+                            $str.="<span style='color:red'>";
+                            if($cost_temp["donline"]>=0){
+                                $str.=$cost_temp["donline"]."(基础费)+";
+                            }else{
+                                $str.="(".$cost_temp["donline"].")(基础费)+";
+                            }
+                            $str.="</span>";
+                        }
+
+                        if($cost_temp["drevise"]==null){
+                            if($cost["drevise"]>0){
+                            $str.=$cost["drevise"]."(修改)+";
+                            }else if($cost['drevise']<0){
+                            $str.="(".$cost["drevise"].")(修改)+";
+                            }
+                        }else{
+                            $str.="<span style='color:red'>";
+                            if($cost_temp["drevise"]>=0){
+                                $str.=$cost_temp["drevise"]."(修改)+";
+                            }else{
+                                $str.="(".$cost_temp["drevise"].")(修改)+";
+                            }
+                            $str.="</span>";
+                        }
+
+                        if($cost_temp["dother"]==null){
+                            if($cost["dother"]>0){
+                                $str.=$cost["dother"]."(其他)+";
+                            }else if($cost['dother']<0){
+                                $str.="(".$cost["dother"].")(其他)+";
+                            }
+                        }else{
+                            $str.="<span style='color:red'>";
+                            if($cost_temp["dother"]>=0){
+                                $str.=$cost_temp["dother"]."(其他)+";
+                            }else{
+                                $str.="(".$cost_temp["dother"].")(其他)+";
+                            }
+                            $str.="</span>";
+                        }
+                        if($str[strlen($str)-1]=='+'){
+                        echo substr($str,0,strlen($str)-1)."=<span style='color: red'>".$one_temp["testcost"]."</span>";
+                        }else{
+                        echo substr($str,0,strlen($str)-8).substr($str,strlen($str)-7,strlen($str))."=<span style='color: red'>".$one_temp["testcost"]."</span>";
+                        }
+                        }
+                    </php>
+					</td>
+            </tr>
+            <tr>
+                <td class="test_txt">收样日期</td>
+                <td><span class="contract_txt"><if condition="$one['collectdate']">{$one.collectdate|strtotime|date=Y年m月d日,###}</if>
+
+					</span></td>
+                <td class="test_txt">报告日期</td>
+                <td><span class="contract_txt"><if condition="$one['reportdate']">{$one.reportdate|strtotime|date=Y年m月d日,###}</if>
+
+					</span>
+                    <if condition="$one_temp.reportdate neq null"><span style="color:red">({$one_temp.reportdate|strtotime|date=Y年m月d日,###})</span></if>
+                </td>
+            </tr>
+            <tr>
+                <td class="test_txt">说&nbsp;&nbsp;明</td>
+                <td colspan="3" id="fin_read">
+                    <div style="margin-left:8pt;">
+                        <p class="remark_txt">1.&nbsp;委托人应对所提供的资料、信息和样品的真实性负责。</p>
+                        <p class="remark_txt">2.&nbsp;若对本单内容有变动，请委托方电话、邮件、传真通知受理人。</p>
+                        <p class="remark_txt">3.&nbsp;本中心仅对来样负责。</p>
+                        <p class="remark_txt">4.&nbsp;委托方要求取走剩余样品时，若在收到检验报告后一个月内未取回，且没有说明情况的，剩余样品由中心统一处理；样品取走后不再受理异议申诉。</p>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </table>
+    <footer class="foot">单位地址：北京市朝阳区管庄东里中国建材院内北楼&nbsp;&nbsp;电话：010-51164723&nbsp;&nbsp;传真：010-51164724</footer>
+
+</div>
+<if condition="$user eq 7 or $if_admin eq 1">
+    <if condition="($ifedit['ifedit']==0) OR ($sub_status['status']==1 and $sub_status['if_report']==0)">
+        <button onclick="window.print()" class="Noprint btn btn-primary final" disabled>打印</button>
+        <else/>
+        <button onclick="window.print()" class="Noprint btn btn-primary final">打印</button>
+    </if></if>
+</body>
+<script src="__PUBLIC__/static/js/jquery.form.js"></script>
+<script type="text/javascript">
+    function onUpdate(id,centreno){
+        if(!id) return false;
+        if(confirm("确定批准该申请吗？")){
+            pass(id,centreno);
+        }
+    }
+    function pass(id,centreno){
+        $.ajax({
+            type:"post",
+            url:"{:U('/admin/audit/isAllowAndInput')}",
+            data:{"id":id,'centreno':centreno},
+            dataType:"json",
+            success:function(ret){
+                if(ret.msg=='succ') {
+                    alert("操作成功！");
+                    window.location.href = "{:U('/admin/audit/reportList')}";
+                }else{
+                    alert("操作失败！");
+                    window.location.reload();
+                }
+            }
+        });
+    }
+    function update(id,de){
+        if(!id) return false;
+        if(confirm("您确定拒绝该申请吗？")){
+            notPass(id,de);
+        }
+    }
+    function notPass(id,de){
+        $.ajax({
+            type:"post",
+            url:"{:U('/admin/audit/notAllow')}",
+            data:{"id":id,"de":de},
+            dataType:"json",
+            success:function(ret){
+                if(ret.msg=='succ'){
+                    alert("操作成功！");
+                    window.location.href="{:U('/admin/audit/reportList')}";
+                }else{
+                    alert("操作失败！");
+                    window.location.reload();
+                }
+            }
+        });
+    }
+</script>
+<include file="Common:footer" />
+</html>
