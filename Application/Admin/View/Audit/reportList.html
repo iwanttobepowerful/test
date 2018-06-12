@@ -78,6 +78,7 @@
 				<thead>
 				<th>中心编号</th>
 				<th>修改原因</th>
+				<th>报告</th>
 				<th width="8%">申请时间</th>
 				<th width="12%">操作</th>
 				<th width="6%">状态</th>
@@ -87,6 +88,10 @@
 					<tr>
 						<td width="10%">{$one.centreno}</td>
 						<td>{$one.reason}</td>
+						<td>
+							<a class="btn btn-info btn-xs" href="{$one.pdf_path}" target="_blank">原报告</a>
+							<a class="btn btn-info btn-xs" href="{$one.temp_pdf_path}" target="_blank">修改后的报告</a>
+						</td>
 						<td>{$one.create_time}</td>
 						<td>
 							<if condition="$one['sub_status'] ==0 and $view==1" >

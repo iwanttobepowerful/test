@@ -74,7 +74,7 @@ class AuditController extends Controller {
             else{
                 $where="r.if_outer=1";
             }}
-        elseif($de =='D'){//外部修改申请
+        elseif($de =='D'){//合同作废申请
             if(!empty($keyword)){
                 $where="r.centreno like '%{$keyword}% ' and r.if_invalid = 1";
             }
@@ -95,6 +95,16 @@ class AuditController extends Controller {
             ->where($where)
             ->limit("{$offset},{$pagesize}")
             ->order('r.create_time desc')->select();
+        if($de =='B'){
+            $rs=D("report_feedback")->alias("r")
+                ->field('if(r.status is null,-1,r.status) as sub_status,r.reason,r.create_time,r.centreno,r.id as reid,a.clientname,a.samplename,a.testcriteria,a.testitem,c.*,b.pdf_path,d.pdf_path as temp_pdf_path')
+                ->join(' left join contract as a on r.centreNo=a.centreNo left join contract_flow as c on r.centreNo=c.centreNo')
+                ->join('left join test_report as b on r.centreNo=b.centreNo left join test_report_temp as d on r.centreNo=d.centreNo')
+                ->where($where)
+                ->limit("{$offset},{$pagesize}")
+                ->order('r.create_time desc')->select();
+        }
+
         $count = D("report_feedback")->alias("r")->where($where)->count();
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
@@ -190,14 +200,31 @@ class AuditController extends Controller {
                     M()->rollback();
                 }
 
-            }else {
+            }else {//$de =='B'
                 $data1=array(
-                    'status'=>8,
+                    'status'=>1,//到提交审核那一步
                     'isaudit'=>0,
                     'internalpass'=>0,
                 );
+                M()->startTrans();
                 if (D("contract_flow")->where("centreno='{$centreno}'")->save($data1) and D("report_feedback")->where("id=" . $id)->save($data)) {
-                    $rs['msg'] = 'succ';
+                    $replace = D("test_report_temp")->where("centreno='{$centreno}'")->find();
+                    $rp = array(
+                        "tplno"=>$replace['tplno'],
+                        "path"=>$replace['path'],
+                        "doc_path"=>$replace['doc_path'],
+                        "pdf_path"=>$replace['pdf_path'],
+                        "modify_time"=>$replace['modify_time'],
+                        "qrcode_path"=>$replace['qrcode_path'],
+                        "pdf_sign_path"=>$replace['pdf_sign_path']
+                    );
+                    if(D('test_report')->where("centreno = '{$centreno}'")->save($rp)){
+                        M()->commit();
+                        $rs['msg'] = 'succ';
+                    }else{
+                        M()->rollback();
+                    }
+
                 }
 
             }

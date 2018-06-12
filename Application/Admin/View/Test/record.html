@@ -30,15 +30,18 @@
                         <a href="{:U('/admin/test/recordUpload')}?centreno={$one.centreno}" class="btn btn-primary btn-xs" >检测报告上传</a></if>
                         <if condition="$one[pdf_path]">
                             <a href="javascript:void(0);" class="btn btn-info btn-xs" name="{$one.pdf_path}" onclick="return Check(this);">报告预览</a>
-                            <if condition="$one[sub_status]==0 or $one[sub_status]==1">
+                            <if condition="($one[sub_status]==0 or $one[sub_status]==1) and ($one[if_report]==0) ">
                                 <button class="btn btn-success btn-xs" disabled>提交审核</button>
+                                <elseif condition="($one[sub_status]==0 or $one[sub_status]==1) and ($one[if_report]==1)"/>
+                                <a href="javascript:void(0);"  class="btn btn-success btn-xs" onclick="editconfirmReport('{$one.centreno}')" >提交审核</a>
                                 <else />
                                 <if condition="$one['ifback'] neq 0 and $one['back_time']">
                                     <a href="javascript:void(0);" class="btn btn-success btn-xs" onclick="onBack('{$one.centreno}','{$one.ifback}')">提交审核</a>
                                     <else />
                                 <a href="javascript:void(0);" class="btn btn-success btn-xs" onclick="doUpdate('{$one.centreno}')">提交审核</a>
                                 </if>
-                                </if></if>
+                                </if>
+                        </if>
                     </td>
                 </tr>
             </volist>
@@ -153,6 +156,29 @@
     function module(centreno){
         var newurl = "/admin/Report/backShowPage.html?centreno="+centreno//url
         window.open(newurl);
+    }
+    //申请修改允许后提交报告
+    function editconfirmReport(centreno) {
+        if(!centreno) return false;
+        var _options = {"flag":"error","text":"确定提交审核吗？","buttons":{"ok":{"action":function(){doEditConfirm(centreno);}},"cancel":{}}};
+        doConfirmDialog(_options);
+    }
+    function doEditConfirm(centreno) {
+        $.ajax({
+            type:"post",
+            url:"{:U('/admin/Contract/doneAllUpdate')}",
+            data:{"centreno":centreno},
+            dataType:"json",
+            success:function(ret){
+                if(ret.msg=='succ'){
+                    var _options = {"text":"操作成功！","action":function(){window.location.reload();}};
+                    doAlertDialog(_options);
+                }else{
+                    var _options = {"text":"Error！"};
+
+                }
+            }
+        });
     }
     </script>
 <include file="Common:footer" />

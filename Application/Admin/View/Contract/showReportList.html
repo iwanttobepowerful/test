@@ -90,9 +90,10 @@
                                 <button  class="btn btn-primary btn-xs" disabled>确认</button><p></p><else />
                                 <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="confirmReport('{$con.centreno}')" >确认</a><p></p>
                             </if></if>
-                            <if condition="$con['status']==8 and $con['doc_path'] and ($con['sub_status'] == 1 and $con['if_report'] ==1)">
+
+                            <!--<if condition="$con['status']==8 and $con['doc_path'] and ($con['sub_status'] == 1 and $con['if_report'] ==1)">
                                 <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="editconfirmReport('{$con.centreno}')" >修改完毕</a><p></p>
-                            </if>
+                            </if>-->
 
                             <if condition="$con['isaudit'] eq 0 and (!(($con['sub_status'] == 1 or $con['sub_status'] == 0) and $con['if_report']==1))"><!--未审批并且没有在修改-->
                                 <button name="btn_change" onclick="onBack('{$con.centreno}')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove-circle"></i>退回</button>
@@ -100,7 +101,7 @@
 
                             <if condition=" ($con['sub_status'] == 0) and ($con['if_report'] ==1)">
                                 <span style="color:green">申请修改中</span>
-                                <elseif condition=" ($con['sub_status'] == 1) and ($con['if_report'] ==1) and $con['status']==8" />
+                                <elseif condition=" ($con['sub_status'] == 1) and ($con['if_report'] ==1) and ($con['status']==8 or $con['status']==1)" />
                                 <span style="color:green">申请修改通过</span>
                                 <!--<a href="#" class="btn btn-info btn-xs"  onclick="doUpdateEditState('{$con.centreno}')" >修改完毕</a>-->
                                 <elseif condition=" ($con['sub_status'] == 2) and ($con['if_report'] ==1)" />
@@ -216,28 +217,7 @@
             }
         });
     }
-    function editconfirmReport(centreno) {
-        if(!centreno) return false;
-        var _options = {"flag":"error","text":"您确认已经修改完毕并提交生成的报告吗？","buttons":{"ok":{"action":function(){doEditConfirm(centreno);}},"cancel":{}}};
-        doConfirmDialog(_options);
-    }
-    function doEditConfirm(centreno) {
-        $.ajax({
-            type:"post",
-            url:"{:U('/admin/Contract/doneAllUpdate')}",
-            data:{"centreno":centreno},
-            dataType:"json",
-            success:function(ret){
-                if(ret.msg=='succ'){
-                    var _options = {"text":"操作成功！","action":function(){window.location.reload();}};
-                    doAlertDialog(_options);
-                }else{
-                    var _options = {"text":"Error！"};
 
-                }
-            }
-        });
-    }
     //跳转退回原因页面
     function module(centreno){
         var newurl = "/admin/Report/backShowPage.html?centreno="+centreno//url

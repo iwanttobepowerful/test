@@ -2184,7 +2184,7 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
 
         $this->ajaxReturn($rs);
     }
-    //报告管理下的修改完毕
+    //上传报告下的修改完毕
     public function doneAllUpdate(){
         $rs = array('msg'=>'fail');
         $centreno=I("centreno");
@@ -2194,9 +2194,9 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
         $if_admin = $admin_auth['super_admin'];
         $where= "centreno='{$centreno}'";
         $data=array(
-            'status'=>1,
-            'report_time'=>date("Y-m-d H:i:s"),
-            'report_user_id'=>$userid,
+            'status'=>2,
+            'uploadreport_user_id'=>$userid,
+            'uploadreport_time'=>date("Y-m-d H:i:s"),
         );
         $data1=array(
             'status'=>3

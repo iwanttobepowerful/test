@@ -501,8 +501,10 @@ class TestController extends Controller{
             foreach($list as $key=>$val){
                 if($con_list[$val['centreno']]){
                     $val['sub_status'] = $con_list[$val['centreno']]['status'];
+                    $val['if_report'] = $con_list[$val['centreno']]['if_report'];
                 }else{
                     $val['sub_status'] = -1;
+                    $val['if_report'] = -1;
                 }
                 $list[$key] = $val;
             }
