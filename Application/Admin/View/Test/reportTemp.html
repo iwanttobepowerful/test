@@ -37,30 +37,29 @@
                 </div>
             </div>
         </form>
-
-    </div>
-    <!--上传完后显示页面-->
-    <table class="table table-bordered table-striped table-hover">
-        <thead>
-        <th>中心编号</th>
-        <th>操作</th>
-        </thead>
-        <tbody>
+        <!--上传完后显示页面-->
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+            <th>中心编号</th>
+            <th>操作</th>
+            </thead>
+            <tbody>
             <tr>
                 <td>{$centreno}</td>
                 <td>
                     <if condition="$pdf_path">
-                    <a href="javascript:void(0);" class="btn btn-info btn-xs" name="{$pdf_path}" onclick="return Check(this);">报告预览</a>
-                    <a href="javascript:void(0);" class="btn btn-success btn-xs" onclick="return applyBack('{$centreno}')">提交修改申请</a>
+                        <a href="javascript:void(0);" class="btn btn-info btn-xs" name="{$pdf_path}" onclick="return Check(this);">报告预览</a>
+                        <a href="javascript:void(0);" class="btn btn-success btn-xs" onclick="return applyBack('{$centreno}')">提交修改申请</a>
                     </if>
                 </td>
             </tr>
-        </volist>
-        </tbody>
-    </table>
-    <!--<a href="javascript:void(0);" onclick="getContent()" class="btn btn-success btn-xs"><i class="glyphicon glyphicon-ok-circle"></i> 上传检测记录</a>-->
+            </volist>
+            </tbody>
+        </table>
+        <!--<a href="javascript:void(0);" onclick="getContent()" class="btn btn-success btn-xs"><i class="glyphicon glyphicon-ok-circle"></i> 上传检测记录</a>-->
 
-</div>
+    </div>
+
 <div>
     <!-- 模态框（Modal) -->
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
