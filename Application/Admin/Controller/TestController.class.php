@@ -186,9 +186,9 @@ class TestController extends Controller{
         else{
             //判断G1/G2的特殊化
             if($department == 'G1'){
-                $where .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) <='500'";
+                $where .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) <='500'";
             }elseif ($department == 'G2'){
-                $where .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) >'500'";
+                $where .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) >'500'";
             }
             else{
                 $where .=" and SUBSTR(contract_flow.centreNo,7,1) = '{$department}'";
@@ -472,9 +472,9 @@ class TestController extends Controller{
         }else{
             //判断G1/G2的特殊化
             if($department == 'G1'){
-                $where .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) <='500'";
+                $where .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) <='500'";
             }elseif ($department == 'G2'){
-                $where .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) >'500'";
+                $where .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) >'500'";
             }
             else{
                 $where .= " and SUBSTR(contract_flow.centreno,7,1) = '{$department}'";

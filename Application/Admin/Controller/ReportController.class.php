@@ -56,10 +56,10 @@ class ReportController extends Controller
                 $where .=" and SUBSTR(contract_flow.centreno,7,1) in({$s})";
                 //如果存在G1、G2在搜索条件里加上
             if($if_G1 == 1){
-                $where .=" and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) <= '500'";
+                $where .=" and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) <= '500'";
             }
             if($if_G2 == 1){
-                $where .=" and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) > '500'";
+                $where .=" and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) > '500'";
             }
 
         }
@@ -630,9 +630,9 @@ class ReportController extends Controller
         }else{
             //判断G1/G2的特殊化
             if($department == 'G1'){
-                $where .= " and SUBSTR(c.centreno,7,1) = 'G' and SUBSTR(c.centreno,9,11) <='500'";
+                $where .= " and SUBSTR(c.centreno,7,1) = 'G' and SUBSTR(c.centreno,9,3) <='500'";
             }elseif ($department == 'G2'){
-                $where .= " and SUBSTR(c.centreno,7,1) = 'G' and SUBSTR(c.centreno,9,11) >'500'";
+                $where .= " and SUBSTR(c.centreno,7,1) = 'G' and SUBSTR(c.centreno,9,3) >'500'";
             }
             else{
                 $where .= " and SUBSTR(c.centreno,7,1) = '{$department}'";
