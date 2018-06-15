@@ -596,6 +596,18 @@ class ReportController extends Controller
             $where6['id'] = array('in', $attr['f']);
             $f = D("test_fee")->where($where6)->select();
         }
+        if(!empty($attr['g1'])) {
+            $where7['id'] = array('in', $attr['g1']);
+            $g1 = D("test_fee")->where($where7)->select();
+        }
+        if(!empty($attr['g2'])) {
+            $where8['id'] = array('in', $attr['g2']);
+            $g2 = D("test_fee")->where($where8)->select();
+        }
+        if(!empty($attr['h'])) {
+            $where9['id'] = array('in', $attr['h']);
+            $h = D("test_fee")->where($where9)->select();
+        }
         //dump($a);
         $body=array(
             'one'=>$rs,
@@ -605,7 +617,10 @@ class ReportController extends Controller
             'c'=>$c,
             'd'=>$d,
             'e'=>$e,
-            'f'=>$f
+            'f'=>$f,
+            'g1'=>$g1,
+            'g2'=>$g2,
+            'h'=>$h
         );
         $this->assign($body);
         $this->display();
