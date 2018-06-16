@@ -965,7 +965,7 @@ class ContractController extends Controller
             $count=$count+1;
         }
         if($contract_cost['remark']!=$fee_remark){
-            $cost_temp['remark']=$remark;
+            $cost_temp['remark']=$fee_remark;
             $count=$count+1;
         }
         $idList = unserialize($contract_cost['idlist']);

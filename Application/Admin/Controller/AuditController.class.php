@@ -481,7 +481,84 @@ class AuditController extends Controller {
             $sub_status['status']=-1;
         }
         $contract_temp = D("contract_temp")->where('id = (select max(id) from contract_temp where centreNo="'.$centreno.'")')->find();
+        $cost = D("test_cost")->where('centreNo="'.$centreno.'"')->find();
         $cost_temp = D("test_cost_temp")->where('id = (select max(id) from test_cost_temp where centreNo="'.$centreno.'")')->find();
+        $attr = unserialize($cost['idlist']);
+        $sttr_temp = unserialize($cost_temp['idlist']);
+        if(!empty($attr['a'])) {
+            $where1['id'] = array('in', $attr['a']);
+            $a = D("test_fee")->where($where1)->select();
+        }
+        if(!empty($attr['b'])) {
+            $where2['id'] = array('in', $attr['b']);
+            $b = D("test_fee")->where($where2)->select();
+        }
+        if(!empty($attr['c'])) {
+            $where3['id'] = array('in', $attr['c']);
+            $c = D("test_fee")->where($where3)->select();
+        }
+        if(!empty($attr['d'])) {
+            $where4['id'] = array('in', $attr['d']);
+            $d = D("test_fee")->where($where4)->select();
+        }
+        if(!empty($attr['e'])) {
+            $where5['id'] = array('in', $attr['e']);
+            $e = D("test_fee")->where($where5)->select();
+        }
+        if(!empty($attr['f'])) {
+            $where6['id'] = array('in', $attr['f']);
+            $f = D("test_fee")->where($where6)->select();
+        }
+        if(!empty($attr['g1'])) {
+            $where4['id'] = array('in', $attr['g1']);
+            $g1 = D("test_fee")->where($where4)->select();
+        }
+        if(!empty($attr['g2'])) {
+            $where5['id'] = array('in', $attr['g2']);
+            $g2 = D("test_fee")->where($where5)->select();
+        }
+        if(!empty($attr['h'])) {
+            $where6['id'] = array('in', $attr['h']);
+            $h = D("test_fee")->where($where6)->select();
+        }
+
+        //合同临时表的数据
+        if(!empty($sttr_temp['a'])) {
+            $where1['id'] = array('in', $sttr_temp['a']);
+            $a1 = D("test_fee")->where($where1)->select();
+        }else $a1=-1;
+        if(!empty($sttr_temp['b'])) {
+            $where2['id'] = array('in', $sttr_temp['b']);
+            $b1 = D("test_fee")->where($where2)->select();
+        }else $b1=-1;
+        if(!empty($sttr_temp['c'])) {
+            $where3['id'] = array('in', $sttr_temp['c']);
+            $c1 = D("test_fee")->where($where3)->select();
+        }else $c1=-1;
+        if(!empty($sttr_temp['d'])) {
+            $where4['id'] = array('in', $sttr_temp['d']);
+            $d1 = D("test_fee")->where($where4)->select();
+        }else $d1=-1;
+        if(!empty($sttr_temp['e'])) {
+            $where5['id'] = array('in', $sttr_temp['e']);
+            $e1 = D("test_fee")->where($where5)->select();
+        }else $e1=-1;
+        if(!empty($sttr_temp['f'])) {
+            $where6['id'] = array('in', $sttr_temp['f']);
+            $f1 = D("test_fee")->where($where6)->select();
+        }else $f1=-1;
+        if(!empty($sttr_temp['g1'])) {
+            $where4['id'] = array('in', $sttr_temp['g1']);
+            $g11 = D("test_fee")->where($where4)->select();
+        }else $g11=-1;
+        if(!empty($sttr_temp['g2'])) {
+            $where5['id'] = array('in', $sttr_temp['g2']);
+            $g21 = D("test_fee")->where($where5)->select();
+        }else $g21=-1;
+        if(!empty($sttr_temp['h'])) {
+            $where6['id'] = array('in', $sttr_temp['h']);
+            $h1 = D("test_fee")->where($where6)->select();
+        }else $h1=-1;
 
         $body=array(
             'one'=>$data,
@@ -491,7 +568,25 @@ class AuditController extends Controller {
             'ifedit'=>$ifedit,
             'sub_status'=>$sub_status,
             'user'=>$user,
-            'if_admin'=>$if_admin
+            'if_admin'=>$if_admin,
+            'a'=>$a,
+            'b'=>$b,
+            'c'=>$c,
+            'd'=>$d,
+            'e'=>$e,
+            'f'=>$f,
+            'g1'=>$g1,
+            'g2'=>$g2,
+            'h'=>$h,
+            'a1'=>$a1,
+            'b1'=>$b1,
+            'c1'=>$c1,
+            'd1'=>$d1,
+            'e1'=>$e1,
+            'f1'=>$f1,
+            'g11'=>$g11,
+            'g21'=>$g21,
+            'h1'=>$h1
         );
         $this->assign($body);
         $this->display();
