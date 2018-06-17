@@ -1661,6 +1661,143 @@ class ContractController extends Controller
         $this->ajaxReturn($rs);
     }
 
+    //抽样单申请修改
+    public function doApplyEditSample(){
+        $centreno = I("centreno");
+        $samplebase=I("samplebase");
+        $sampledate=I("sampledate");
+        $sampleplace=I("sampleplace");
+        $samplemethod=I("samplemethod");
+        $productiondate=I("productiondate");
+        $batchno=I("batchno");
+        $simplerSign=I("simplerSign");
+        $simSignDate=I("simSignDate");
+        $sealerSign=I("sealerSign");
+        $seaSingDate=I("seaSingDate");
+        $enterpriseSign=I("enterpriseSign");
+        $entSignDate=I("entSignDate");
+        $telephone=I("telephone");
+        $tax=I("tax");
+        $address=I("address");
+
+        //验证手机号
+        if(!empty($telephone)){
+            $isMob="/^(1(([35][0-9])|(47)|[8][0126789]))\d{8}$/";  //手机
+            $isTel="/^([0-9]|[-])+$/"; //电话
+            //if(!(funcmtel($telephone) || funcphone($telephone))){
+            if(!(preg_match($isTel,$telephone) || preg_match($isMob,$telephone))){
+                $rs['msg'] = '请输入正确的联系方式';
+                $this->ajaxReturn($rs);
+            }
+        }
+
+        //验证传真
+        if(!empty($tax)){
+            $isPostcode="/^([0-9]|[-])+$/";
+            if(!(preg_match($isPostcode,$tax))){
+                $rs['msg'] = '请输入正确的传真';
+                $this->ajaxReturn($rs);
+            }
+        }
+
+        //查看是否在申请中
+        $sub_status=M('report_feedback')->field('status')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$centreno.'")')->find();
+        if($sub_status && $sub_status['status']==0){
+            $rs['msg']='exist';
+            $this->ajaxReturn($rs);
+        }
+
+        $sample=D("sampling_form")->where('centreNo="'.$centreno.'"')->find();
+        $count=0;
+        if($sample['samplebase']!=$samplebase){
+            $data['sampleBase']=$samplebase;
+            $count=$count+1;
+        }
+        if($sample['sampledate']!=$sampledate){
+            $data['sampleDate']=$sampledate;
+            $count=$count+1;
+        }
+        if($sample['sampleplace']!=$sampleplace){
+            $data['samplePlace']=$sampleplace;
+            $count=$count+1;
+        }
+        if($sample['samplemethod']!=$samplemethod){
+            $data['sampleMethod']=$samplemethod;
+            $count=$count+1;
+        }
+        if($sample['productiondate']!=$productiondate){
+            $data['productionDate']=$productiondate;
+            $count=$count+1;
+        }
+        if($sample['batchno']!=$batchno){
+            $data['batchNo']=$batchno;
+            $count=$count+1;
+        }
+        if($sample['simplersign']!=$simplerSign){
+            $data['simplerSign']=$simplerSign;
+            $count=$count+1;
+        }
+        if($sample['simsigndate']!=$simSignDate){
+            $data['simSignDate']=$simSignDate;
+            $count=$count+1;
+        }
+        if($sample['sealersign']!=$sealerSign){
+            $data['sealerSign']=$sealerSign;
+            $count=$count+1;
+        }
+        if($sample['seasingdate']!=$seaSingDate){
+            $data['seaSingDate']=$seaSingDate;
+            $count=$count+1;
+        }
+        if($sample['enterprisesign']!=$enterpriseSign){
+            $data['enterpriseSign']=$enterpriseSign;
+            $count=$count+1;
+        }
+        if($sample['entsigndate']!=$entSignDate){
+            $data['entSignDate']=$entSignDate;
+            $count=$count+1;
+        }
+        if($sample['telephone']!=$telephone){
+            $data['telephone']=$telephone;
+            $count=$count+1;
+        }
+        if($sample['tax']!=$tax){
+            $data['tax']=$tax;
+            $count=$count+1;
+        }
+        if($sample['address']!=$address){
+            $data['address']=$address;
+            $count=$count+1;
+        }
+        $data['centreNo']=$centreno;
+        $where['centreNo']=$centreno;
+        if($count==0){
+            $rs['msg'] = "none";
+            $this->ajaxReturn($rs);
+        }
+        if($count>0) {
+            $feedback = Array(
+                'centreNo' => $centreno,
+                'if_sample' => 1,
+                'create_time' => Date("Y-m-d H:i:s"),
+            );
+            if ($count == 1) {
+                $feedback['role_id'] = 17;//修改一项为修改审核-1项
+            }
+            M()->startTrans();
+            try {
+                D("sampling_form_temp")->add($data);
+                D("report_feedback")->add($feedback);
+                M()->commit();
+                $rs['msg'] = '申请成功'.$count;
+            } catch (Exception $e) {
+                $rs['msg'] = '申请失败，请重试！';
+                M()->rollback();
+            }
+        }
+        $this->ajaxReturn($rs);
+    }
+
     //抽样单上传
     public function doUploadSampleImage(){
         $centreno = I('centreno');
@@ -1918,10 +2055,14 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
                     $val['sub_status'] = $con_list[$val['centreno']]['status'];
                     $val['if_report'] = $con_list[$val['centreno']]['if_report'];
                     $val['if_outer'] = $con_list[$val['centreno']]['if_outer'];
+                    $val['if_sample'] = $con_list[$val['centreno']]['if_sample'];
+                    $val['if_invalid'] = $con_list[$val['centreno']]['if_invalid'];
                 }else{
                     $val['sub_status'] = -1;
                     $val['if_report'] = -1;
                     $val['if_outer'] = -1;
+                    $val['if_invalid'] = -1;
+                    $val['if_sample'] = -1;
                 }
                 $list[$key] = $val;
             }

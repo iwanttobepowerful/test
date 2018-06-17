@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>抽样单</title>
+        <link rel="stylesheet" type="text/css" href="__PUBLIC__/static/css/bootstrap.min.css" />
+        <script src="__PUBLIC__/static/js/jquery-2.1.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			* {
+				font-family: simsun;
+				font-size: 10.5pt;
+			}
+
+			.sam {
+				margin: 0 auto;
+				width: 85%;
+				height: 76.5%;
+                border: solid #000000 1px;
+			}
+
+			.middle {
+				margin: 0 auto;
+				width: 80%;
+			}
+
+			.en {
+				font-family: "times new roman";
+			}
+
+			.cn {
+				font-family: simsun;
+				font-size: 10.5pt;
+			}
+            .remark{
+                text-align: left;
+                vertical-align:top;
+            }
+
+			.txt_left {
+				text-align: left;
+			}
+
+			.gone_bottom {
+				border-bottom: none;
+			}
+
+			.sample_one_col{
+				width: 18.1%;
+			}
+            .sample_two_col {
+                width: 32.2%;
+            }
+			.sample_three_col{
+				width: 13.56%;
+			}
+			.sample_four_col{
+				width: 36.72%;
+			}
+
+			#sam_content,
+			#sam_person,
+			#sam_close,
+			#sam_company_person {
+				width: 100%;
+				height: 90%;
+				font-size: 1.5em;
+				resize: none;
+				border-style: none;
+			}
+
+			#sam_close_year,
+			#sam_close_month,
+			#sam_close_day,
+			#sam_person_year,
+			#sam_person_month,
+			#sam_person_day {
+				width: 13%;
+			}
+
+			#sam_company_year,
+			#sam_company_month,
+			#sam_company_day {
+				width: 7%;
+			}
+
+			.head_title {
+				margin: 0 auto;
+				width: 80%;
+				height: 20%;
+				margin-top: -3%;
+				margin-bottom: -8%;
+			}
+
+			td {
+				text-align: center;
+                border: solid #000000 1px;
+			}
+            .no_border{
+                border: none;
+            }
+
+			.logo {
+				width: 10%;
+			}
+
+			.img_logo {
+				margin-left: 20%;
+				width: 40pt;
+			}
+
+			.sample_title_txt {
+				font-family: simhei;
+				font-size: 18pt;
+				text-align: center;
+			}
+
+			.sam_sign {
+				height: 6%;
+			}
+
+			.gone_two {
+				border-top: none;
+				border-bottom: none;
+			}
+
+			.txt_right {
+				text-align: right;
+                vertical-align:text-top;
+                padding-right:3pt;
+			}
+
+			.page {
+				width: 210mm;
+				height: 29.7cm;
+				padding: 0.5cm;
+				margin: 1cm auto;
+				border: 1px #1B6D85 solid;
+				border-radius: 5px;
+				background: white;
+				box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+			}
+
+			.sample_txt {
+				font-family: simsun;
+				font-size: 10.5pt;
+			}
+            .picture{
+                max-width: 88%;
+                display: block;
+                margin: 0 auto;
+                margin-top:33px;
+                max-height: 88%;
+            }
+           .final{
+                display: block;
+                margin: 0 auto;
+            }
+		</style>
+		<style type="text/css" media="print">
+			/*以下是打印格式*/
+
+			* {
+				box-sizing: border-box;
+				-moz-box-sizing: border-box;
+			}
+
+			.img_logo {
+				width: 40pt;
+			}
+
+			@page {
+				size: A4;
+				margin: 0.3cm;
+			}
+
+			.Noprint {
+				display: none;
+			}
+
+			.page {
+				margin: 0;
+				border: initial;
+				padding: initial;
+				border-radius: initial;
+				/*width: initial;*/
+				min-height: 29.7cm;
+				box-shadow: initial;
+				background: initial;
+				/*page-break-after: always;*/
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="page">
+            <input type="hidden" name="centreno" value="{$one.centreno}">
+			<table class="head_title">
+				<tr>
+					<td class="logo no_border" align="center"><img class="img_logo" src="__PUBLIC__/static/images/logoA.png" /></td>
+					<td class="no_border" style="padding-top: 17pt; padding-right: 13pt;">
+						<p class="sample_title_txt">(国家)建筑材料工业技术监督研究中心</p>
+						<p class="sample_title_txt">抽 样 单</p>
+					</td>
+				</tr>
+			</table>
+			<table class="middle">
+				<tr>
+					<td class="no_border" style="width: 65%;text-align: left;">
+						<font class="en">SJ－4－25</font>
+						<button class="btn btn-success btn-xs" onclick="onUpdate('{$sub_status.id}','{$one.centreno}')" ><i class="glyphicon glyphicon-ok-circle"></i>允许</button>
+						<button class="btn btn-danger btn-xs" onclick="update('{$sub_status.id}','A')" }><i class="glyphicon glyphicon-remove-circle"></i>拒绝</button>
+					</td>
+					<td class="no_border" style="text-align: left;">
+						<font class="cn">中心编号: </font><span class="sample_txt">
+							{$one.centreno}
+						</span>
+
+					</td>
+				</tr>
+			</table>
+			<table class="sam">
+				<tr>
+					<td class="sample_one_col cn">企业名称</td>
+					<td colspan="3"><span class="sample_txt">
+						{$one.productunit}</span>
+					</td>
+				</tr>
+				<tr>
+					<td class="cn">产品名称</td>
+					<td colspan="3"><span class="sample_txt">
+						{$one.samplename}
+					</span></td>
+				</tr>
+				<tr>
+					<td class="cn">规格型号</td>
+					<td class="sample_two_col"><span class="sample_txt">
+						<if condition="$one[specification]">
+                        	{$one.specification}
+                        <else />
+							<span>——</span>
+                        </if>
+					</span></td>
+					<td class="sample_three_col cn">产品批号</td>
+					<td class="sample_four_col"><span class="sample_txt">
+                            <if condition="$one[batchno]">
+                                {$one.batchno}
+                            <else />
+                                <span>——</span>
+                            </if>
+							<if condition="$one_temp.batchno neq null">
+								<span style="color:red">({$one_temp.batchno})</span>
+							</if>
+					</span></td>
+				</tr>
+				<tr>
+					<td class="cn">执行标准</td>
+					<td><span class="sample_txt">
+						{$one.testcriteria}
+					</span></td>
+					<td class="cn">产品商标</td>
+					<td><span class="sample_txt">
+                        <if condition="$one[trademark]">
+                        	{$one.trademark}
+                        <else />
+							<span>——</span>
+                        </if>
+					</span></td>
+				</tr>
+				<tr>
+					<td class="cn">抽样数量</td>
+					<td><span class="sample_txt">
+						{$one.samplequantity}
+					</span></td>
+					<td class="cn">抽样基数</td>
+					<td><span class="sample_txt">
+						{$one.samplebase}
+					</span>
+					<if condition="$one_temp.samplebase neq null">
+						<span style="color:red">({$one_temp.samplebase})</span>
+					</if>
+					</td>
+				</tr>
+				<tr>
+					<td class="cn">抽样日期</td>
+					<td><span class="sample_txt">
+						<if condition="$one[sampledate]">{$one.sampledate|strtotime|date=Y年m月d日,###}<else/></if>
+						<if condition="$one_temp.sampledate neq null">
+						<span style="color:red">({$one_temp.sampledate|strtotime|date=Y年m月d日,###})</span>
+						</if>
+					</span></td>
+					<td class="cn">生产日期</td>
+					<td><span class="sample_txt">
+						<if condition="$one[productiondate]">{$one.productiondate|strtotime|date=Y年m月d日,###}<else/></if>
+					</span>
+						<if condition="$one_temp.productiondate neq null">
+							<span style="color:red">({$one_temp.productiondate|strtotime|date=Y年m月d日,###})</span>
+						</if>
+					</td>
+				</tr>
+				<tr>
+					<td class="cn">抽样地点</td>
+					<td><span class="sample_txt">
+						{$one.sampleplace}
+					</span>
+						<if condition="$one_temp.sampleplace neq null">
+							<span style="color:red">({$one_temp.sampleplace})</span>
+						</if>
+					</td>
+					<td class="cn">封样方式</td>
+					<td><span class="sample_txt">
+						{$one.samplemethod}
+					</span>
+						<if condition="$one_temp.samplemethod neq null">
+							<span style="color:red">({$one_temp.samplemethod})</span>
+						</if>
+					</td>
+				</tr>
+				<tr>
+					<td class="cn" style="height: 22%;">检验内容</td>
+					<td colspan="3"><span class="sample_txt">
+                    	{$one.testitem}
+					</span>
+
+					</td>
+				</tr>
+				<tr>
+					<td class="txt_left cn" colspan="2">是否同意在网上发表</td>
+					<td colspan="2" class="cn">
+                    	<if condition="$one.ifonline == 1">是<else />否</if>
+					</td>
+				</tr>
+				<tr>
+					<td class="txt_left cn" colspan="2">对于本中心不能检验的项目是否同意安排分包</td>
+					<td colspan="2" class="cn">
+                        <php>
+                            if($one['ifsubpackage']==1){
+                                if($one["package_remark"]){
+                                    echo '是'."(".$one["package_remark"].")";
+                                }else{
+                                    echo '是';
+                                }
+                            }else{
+                                echo '否';
+                            }
+                       </php>
+                    </td>
+				</tr>
+
+				<tr>
+					<td colspan="2" class="gone_bottom txt_left cn">抽样人（签名）</td>
+					<td colspan="2" class="gone_bottom txt_left cn">封样人（签名）</td>
+				</tr>
+				<tr>
+					<td colspan="2" class="gone_two sam_sign"><span class="sample_txt">
+						{$one.simplersign}
+					</span>
+						<if condition="$one_temp.simplersign neq null">
+							<span style="color:red">({$one_temp.simplersign})</span>
+						</if>
+					</td>
+					<td colspan="2" class="gone_two sam_sign"><span class="sample_txt">
+						{$one.sealersign}
+					</span>
+						<if condition="$one_temp.sealersign neq null">
+							<span style="color:red">({$one_temp.sealersign})</span>
+						</if>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" class="gone_two txt_right">
+						<span class="sample_txt">{$one.0}</span>年<span class="sample_txt">{$one.1}</span>月<span class="sample_txt">{$one.2}</span>日
+						<if condition="$one_temp.simsigndate neq null">
+							<span style="color:red">({$one_temp.simsigndate|strtotime|date=Y年m月d日,###})</span>
+						</if>
+					</td>
+					<td colspan="2" class="gone_two txt_right">
+						<span class="sample_txt">{$one.3}</span>年<span class="sample_txt">{$one.4}</span>月<span class="sample_txt">{$one.5}</span>日
+						<if condition="$one_temp.seasingdate neq null">
+							<span style="color:red">({$one_temp.seasingdate|strtotime|date=Y年m月d日,###})</span>
+						</if>
+					</td>
+				</tr>
+
+				<tr>
+					<td class="gone_bottom txt_left cn" colspan="4">被抽检企业有关人员（签名）</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="gone_two" style="height: 5%;"><span class="sample_txt">
+						{$one.enterprisesign}
+					</span>
+						<if condition="$one_temp.enterprisesign neq null">
+							<span style="color:red">({$one_temp.enterprisesign})</span>
+						</if>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="gone_two">
+						<font class="cn" style="padding-left: 45%;">（单 位 盖 章）</font>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="gone_two cn" style="padding-left: 44%;padding-bottom: 21px;">
+						<span class="sample_txt">{$one.6}</span>年<span class="sample_txt">{$one.7}</span>月<span class="sample_txt">{$one.8}</span>日
+						<if condition="$one_temp.entsigndate neq null">
+							<span style="color:red">({$one_temp.entsigndate|strtotime|date=Y年m月d日,###})</span>
+						</if>
+					</td>
+				</tr>
+
+				<tr>
+					<td class="cn">联系电话</td>
+					<td><span class="sample_txt">
+                        <if condition="$one[telephone]">
+                        	{$one.telephone}
+                        <else />
+							<span>——</span>
+                        </if>
+						<if condition="$one_temp.telephone neq null">
+							<span style="color:red">({$one_temp.telephone})</span>
+						</if>
+					</span></td>
+					<td class="cn">传 真</td>
+					<td><span class="sample_txt">
+                        <if condition="$one[tax]">
+                        	{$one.tax}
+                        <else />
+							<span>——</span>
+                        </if>
+						<if condition="$one_temp.tax neq null">
+							<span style="color:red">({$one_temp.tax})</span>
+						</if>
+					</span></td>
+				</tr>
+				<tr>
+					<td class="cn">通讯地址</td>
+					<td colspan="3"><span class="sample_txt">
+                        <if condition="$one[address]">
+                        	{$one.address}
+                        <else />
+							<span>——</span>
+                        </if>
+						<if condition="$one_temp.address neq null">
+							<span style="color:red">({$one_temp.address})</span>
+						</if>
+					</span></td>
+				</tr>
+				<tr>
+					<td class="remark" colspan="4" style="height: 8.8%;"><span class="cn">备注：第一联由抽样人带回中心存档，第二联由被检企业留任，第三联备用</span></td>
+				</tr>
+
+			</table>
+		</div>
+	</body>
+	<script src="__PUBLIC__/static/js/jquery.form.js"></script>
+	<script type="text/javascript">
+        function onUpdate(id,centreno){
+            if(!id) return false;
+            if(confirm("确定批准该申请吗？")){
+                pass(id,centreno);
+            }
+        }
+        function pass(id,centreno){
+            $.ajax({
+                type:"post",
+                url:"{:U('/admin/audit/isAllowAndInputSample')}",
+                data:{"id":id,'centreno':centreno},
+                dataType:"json",
+                success:function(ret){
+                    if(ret.msg=='succ') {
+                        alert("操作成功！");
+                        window.location.href = "{:U('/admin/audit/reportList')}";
+                    }else{
+                        alert("操作失败！");
+                        window.location.reload();
+                    }
+                }
+            });
+        }
+        function update(id,de){
+            if(!id) return false;
+            if(confirm("您确定拒绝该申请吗？")){
+                notPass(id,de);
+            }
+        }
+        function notPass(id,de){
+            $.ajax({
+                type:"post",
+                url:"{:U('/admin/audit/notAllow')}",
+                data:{"id":id,"de":de},
+                dataType:"json",
+                success:function(ret){
+                    if(ret.msg=='succ'){
+                        alert("操作成功！");
+                        window.location.href="{:U('/admin/audit/reportList')}";
+                    }else{
+                        alert("操作失败！");
+                        window.location.reload();
+                    }
+                }
+            });
+        }
+	</script>
+	<include file="Common:footer" />
+</html>

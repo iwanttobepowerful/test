@@ -91,7 +91,7 @@ class AuditController extends Controller {
             $where .=" and SUBSTR(r.centreno,7,1) in({$s})";
         }*/
         $rs=D("report_feedback")->alias("r")
-            ->field('if(r.status is null,-1,r.status) as sub_status,r.reason,r.create_time,r.centreno,r.id as reid,a.clientname,a.samplename,a.testcriteria,a.testitem,c.*')
+            ->field('if(r.status is null,-1,r.status) as sub_status,r.reason,r.create_time,r.centreno,r.id as reid,r.if_sample,a.clientname,a.samplename,a.testcriteria,a.testitem,c.*')
             ->join(' left join contract as a on r.centreNo=a.centreNo left join contract_flow as c on r.centreNo=c.centreNo')
             ->where($where)
             ->limit("{$offset},{$pagesize}")
@@ -431,6 +431,71 @@ class AuditController extends Controller {
         $this->ajaxReturn($rs);
     }
 
+    //前台修改申请  允许并入库-抽样单
+    public function isAllowAndInputSample(){
+        $id =I("id",0,'intval');
+        $centreno=I("centreno");
+        $rs = array("msg"=>"fail");
+        $data=array(
+            'status'=>3,
+        );
+        //合同临时表
+        $data_sample = D("sampling_form_temp")->where("id = (select max(id) from sampling_form_temp where centreNo='".$centreno."')")->find();
+
+        $data_temp=Array();//抽样单入库
+
+        if($data_sample['samplebase']!=null){
+            $data_temp['sampleBase']=$data_sample['samplebase'];
+        }
+        if($data_sample['sampledate']!=null){
+            $data_temp['sampleDate']=$data_sample['sampledate'];
+        }
+        if($data_sample['sampleplace']!=null){
+            $data_temp['samplePlace']=$data_sample['sampleplace'];
+        }
+        if($data_sample['samplemethod']!=null){
+            $data_temp['sampleMethod']=$data_sample['samplemethod'];
+        }
+        if($data_sample['productiondate']!=null){
+            $data_temp['productionDate']=$data_sample['productiondate'];
+        }
+        if($data_sample['batchno']!=null){
+            $data_temp['batchNo']=$data_sample['batchno'];
+        }
+        if($data_sample['simplersign']!=null){
+            $data_temp['simplerSign']=$data_sample['simplersign'];
+        }
+        if($data_sample['simsigndate']!=null){
+            $data_temp['simSignDate']=$data_sample['simsigndate'];
+        }
+        if($data_sample['sealersign']!=null){
+            $data_temp['sealerSign']=$data_sample['sealersign'];
+        }
+        if($data_sample['seasingdate']!=null){
+            $data_temp['seaSingDate']=$data_sample['seasingdate'];
+        }
+        if($data_sample['enterprisesign']!=null){
+            $data_temp['enterpriseSign']=$data_sample['enterprisesign'];
+        }
+        if($data_sample['entsigndate']!=null){
+            $data_temp['entSignDate']=$data_sample['entsigndate'];
+        }
+        if($data_sample['telephone']!=null){
+            $data_temp['telephone']=$data_sample['telephone'];
+        }
+        if($data_sample['tax']!=null){
+            $data_temp['tax']=$data_sample['tax'];
+        }
+        if($data_sample['address']!=null){
+            $data_temp['address']=$data_sample['address'];
+        }
+        D("sampling_form")->where("centreNo='".$centreno."'")->save($data_temp);
+        D("report_feedback")->where("id=".$id)->save($data);
+
+        $rs['msg']="succ";
+        $this->ajaxReturn($rs);
+    }
+
     //拒绝
     public function notAllow(){
         $id =I("id");
@@ -587,6 +652,49 @@ class AuditController extends Controller {
             'g11'=>$g11,
             'g21'=>$g21,
             'h1'=>$h1
+        );
+        $this->assign($body);
+        $this->display();
+    }
+
+    //抽样单显示
+    public function sampleShow(){
+        $keyword = I("id");//获取参数
+        $where= "centreno='{$keyword}'";
+        $result=M('sampling_form')->where($where)->find();
+        $result_temp=M('sampling_form_temp')->where('id = (select max(id) from sampling_form_temp where centreNo="'.$keyword.'")')->find();
+
+        $simsigndateyear = $result['simsigndate'] ? date("Y",strtotime($result['simsigndate'])):"";
+        $simsigndatemonth =  $result['simsigndate'] ? date("m",strtotime($result['simsigndate'])):"";
+        $simsigndateday =  $result['simsigndate'] ? date("d",strtotime($result['simsigndate'])):"";
+        array_push($result,$simsigndateyear);
+        array_push($result,$simsigndatemonth);
+        array_push($result,$simsigndateday);
+
+        $seasingdateyear =  $result['seasingdate'] ? date("Y",strtotime($result['seasingdate'])):"";
+        $seasingdatemonth =  $result['seasingdate'] ? date("m",strtotime($result['seasingdate'])):"";
+        $seasingdateday =  $result['seasingdate'] ? date("d",strtotime($result['seasingdate'])):"";
+        array_push($result,$seasingdateyear);
+        array_push($result,$seasingdatemonth);
+        array_push($result,$seasingdateday);
+
+        $entsigndateyear =  $result['entsigndate'] ? date("Y",strtotime($result['entsigndate'])):"";
+        $entsigndatemonth =  $result['entsigndate'] ? date("m",strtotime($result['entsigndate'])):"";
+        $entsigndateday =  $result['entsigndate'] ? date("d",strtotime($result['entsigndate'])):"";
+        array_push($result,$entsigndateyear);
+        array_push($result,$entsigndatemonth);
+        array_push($result,$entsigndateday);
+
+
+        $sub_status=M('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$keyword.'")')->find();
+        if(empty($sub_status)){
+            $sub_status['status']=-1;
+        }
+
+        $body=array(
+            'one'=>$result,
+            'one_temp'=>$result_temp,
+            'sub_status'=>$sub_status,
         );
         $this->assign($body);
         $this->display();

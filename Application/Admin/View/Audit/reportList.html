@@ -40,12 +40,16 @@
 					<td>{$one.samplename}</td>
 					<td>{$one.testcriteria}</td>
 					<td>
-						<if condition="$one['sub_status'] ==0 and $view==1" >
+						<if condition="$one['sub_status'] ==0 and $view==1 and $one['if_sample']==0" >
 							<a href="/admin/audit/contractDetail?id={$one.centreno}"  class="btn btn-info btn-xs" >检验受理合同</a>
 							<!--<if condition="mb_substr($one[centreno],7,1)=='C'">
 								<p></p><a href="/admin/test/sampleShow?id={$one.centreno}"  class="btn btn-info btn-xs" >抽样单</a></if>-->
-						<else/>
+						<elseif condition="$one['sub_status'] ==0 and $view==1 and $one['if_sample']==1"/>
+							<a href="/admin/audit/sampleShow?id={$one.centreno}"  class="btn btn-info btn-xs" >抽样单</a>
+						<elseif condition="$one['sub_status'] !=0 and $view==1 and $one['if_sample']==0"/>
 							<a class="btn btn-info btn-xs" disabled="disabled" >检验受理合同</a>
+						<elseif condition="$one['sub_status'] !=0 and $view==1 and $one['if_sample']==1"/>
+							<a class="btn btn-info btn-xs" disabled="disabled" >抽样单</a>
 						</if>
 					</td>
 					<!--<td>{$one.reason}</td>-->
@@ -60,7 +64,7 @@
 					<td><if condition="$one['sub_status'] ==0">
 						<span>未处理</span>
 						<elseif condition="$one['sub_status'] ==1 or $one['sub_status'] ==3" />
-						<span style="color: green">允许</span>
+						<span style="color: green">已处理</span>
 						<elseif condition="$one['sub_status'] ==2 "/>
 						<span style="color: red">拒绝</span></if>
 					</td>
