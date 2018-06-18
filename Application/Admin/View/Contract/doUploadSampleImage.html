@@ -30,8 +30,9 @@
 			  	<div class="form-group">
 				  	<label class="col-sm-2 control-label talign-center">&nbsp;</label>
 				    <div class="col-sm-10">
+						<button type="submit" class="btn btn-success" onclick="onSave()">保 存</button>
                         <if condition="($ifedit['ifedit'] == 0) OR (($ifedit['ifedit'] == 1) and ($sub_status['status'] == 1))">
-        					<button type="submit" class="btn btn-success" onclick="onSave()">保 存</button>
+
        					</if>		   		
                         <button type="button" class="btn btn-success" onclick="javascript:history.go(-1);">返 回</button>
                         <!--<a href="{:U('/admin/contract/sampleEdit')}?id={$centreno}" class="btn btn-success">返 回</a>-->

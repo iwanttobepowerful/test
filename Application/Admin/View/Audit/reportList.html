@@ -9,6 +9,7 @@
 			<li role="presentation" id="de_C" name="de"><a href="/admin/audit/reportList?de=C">外部修改申请</a></li>
 			<li role="presentation" id="de_D" name="de"><a href="/admin/audit/reportList?de=D">合同作废申请</a></li>
 			<input hidden id="de_choose" value="{$de}">
+			<input hidden id="user_id" value="{$user}">
 		</ul>
 
 		<if condition="$de eq 'A'"><!-- 内部修改申请显示表单-->
@@ -223,8 +224,15 @@
 <script type="text/javascript">
     $(function(){
         var de = $("#de_choose").val();
-        $("li[name='de']").removeClass("active");
-        $("#de_"+de).addClass("active");
+        var userid = $("#user_id").val();
+        if(userid==16 || userid ==0){
+            $("li[name='de']").removeClass("active");
+            $("#de_"+de).addClass("active");
+		}else{
+            $("li[name='de']").css('display','none');
+            $("#de_A").css('display','block');
+		}
+
     });
 //换成ajax提交
 	/*function search(centreno,de) {

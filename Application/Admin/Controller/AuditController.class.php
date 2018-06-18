@@ -60,6 +60,7 @@ class AuditController extends Controller {
             }else{
                 $where="r.if_outer=0 and r.if_report=0  and r.if_invalid=0";
             }
+            if($if_admin==0)
             $where.=" and r.role_id=".$user;
         }
         elseif($de =='B'){//报告修改申请
@@ -115,7 +116,8 @@ class AuditController extends Controller {
             'pagination'=>$pagination,
             'view'=>$view,
             'de'=>$de,
-            'centreno'=>$keyword
+            'centreno'=>$keyword,
+            'user'=>$user
         );
         $this->assign($body);
         $this->display();

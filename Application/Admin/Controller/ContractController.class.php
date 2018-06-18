@@ -1039,7 +1039,7 @@ class ContractController extends Controller
                 D("test_cost_temp")->add($cost_temp);
                 D("report_feedback")->add($feedback);
                 M()->commit();
-                $rs['msg'] = '申请成功'.$count;
+                $rs['msg'] = '申请成功';
             } catch (Exception $e) {
                 $rs['msg'] = '申请失败，请重试！';
                 M()->rollback();
@@ -1433,7 +1433,8 @@ class ContractController extends Controller
             'isaudit'=>0,
             'internalpass'=>0,
             'status'=>$type_status,
-            'ifback'=>0
+            'ifback'=>0,
+            'back_time'=>null
         );
         if($type_status==4){
             $data_apply['isaudit']=1;
@@ -2198,27 +2199,26 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
         $reason = I('reason');
         $a=D('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$centreno.'") and (status=0 or status=1)')->find();
         if(!empty($a)){
-            if($a['if_invalid']==1){
-                $rs['msg']='该审核员正在处理中，请勿重复提交！';
-            }
+//            if($a['if_invalid']==1){
+//                $rs['msg']='该审核员正在处理中，请勿重复提交！';
+//            }
+              $rs['msg']='exist';
+              $this->ajaxReturn($rs);
         }
-        else{
-            $data = array(
-                'centreNo'=>$centreno,
-                'reason'=>$reason,
-                'if_invalid'=>1
-            );
-            M()->startTrans();
-            if(D('report_feedback')->add($data)){
-                $rs['msg']='succ';
-                //申请中  审核单不可修改
-                M()->commit();
-            }else{
-                $rs['msg']='申请失败';
-                M()->rollback();
-            }
+        $data = array(
+            'centreNo'=>$centreno,
+            'reason'=>$reason,
+            'if_invalid'=>1
+        );
+        M()->startTrans();
+        if(D('report_feedback')->add($data)){
+            $rs['msg']='申请成功';
+            //申请中  审核单不可修改
+            M()->commit();
+        }else{
+            $rs['msg']='申请失败';
+            M()->rollback();
         }
-
         $this->ajaxReturn($rs);
     }
     //报告管理下的合同列表

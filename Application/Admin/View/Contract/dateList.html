@@ -130,7 +130,12 @@
                 dataType:"json",
                 async:false,
                 data:{'centreno':centreno,'reason':reason},
-                success:function(){
+                success:function(re){
+                    if(re.msg=='exist'){
+                        alert("该中心编号正在申请中，请稍后再试！");
+                    }else{
+                        alert(re.msg);
+                    }
                     window.location.reload();
                 }
             });

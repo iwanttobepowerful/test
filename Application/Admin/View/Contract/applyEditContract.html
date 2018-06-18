@@ -432,8 +432,10 @@
                     }else if(data.msg=="none"){
                         alert("您没有修改内容，无法申请");
                         return;
+                    }else{
+                        alert(data.msg);
+                        window.location.href="{:U('/admin/contract/showList')}";
                     }
-                    else alert(data.msg);
                 }
             };
             $("#form2").ajaxSubmit(options);
