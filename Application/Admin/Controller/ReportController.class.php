@@ -544,8 +544,9 @@ class ReportController extends Controller
                     'centreNo'=>$centreno
                 );
             }
-
+            $where = "centreno = '$centreno' and type = 1";
             M()->startTrans();
+            D("back_report")->where($where)->delete();
             if(D("contract_flow")->where("id=".$id)->save($data) and D("back_report")->add($data1)){
                 M()->commit();
                 $rs['msg'] = '操作成功！';
