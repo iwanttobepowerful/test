@@ -235,7 +235,7 @@ class ContractController extends Controller
             $same_count = D("contract")->where($where_same)->count();
         }
         if($same_count>0){
-            $rs['msg'] = '委托单位或生产单位不属于'.$department.'部门';
+            $rs['msg'] = '委托单位查新未通过';
             $this->ajaxReturn($rs);
         }
         //验证手机号
@@ -667,19 +667,19 @@ class ContractController extends Controller
         $admin_auth = session("admin_auth");
         $department = $admin_auth['department'];
         if($department == 'A' || $department == 'B' || $department == 'C' || $department == 'E' || $department == 'F'){
-            $where_same='(clientName="'.$clientName.'" or productUnit="'.$productUnit.'") and collector_partment in("G1","G2")';
+            $where_same='clientName="'.$clientName.'" and collector_partment in("G1","G2")';
             $same_count = D("contract")->where($where_same)->count();
         }else if($department == 'G1'){
-            $where_same='(clientName="'.$clientName.'" or productUnit="'.$productUnit.'")';
+            $where_same='clientName="'.$clientName.'"';
             $where_same.=' and collector_partment in("A","B","C","E","F","G2")';
             $same_count = D("contract")->where($where_same)->count();
         }else if($department == 'G2'){
-            $where_same='(clientName="'.$clientName.'" or productUnit="'.$productUnit.'")';
+            $where_same='clientName="'.$clientName.'"';
             $where_same.=' and collector_partment in("A","B","C","E","F","G1")';
             $same_count = D("contract")->where($where_same)->count();
         }
         if($same_count>0){
-            $rs['msg'] = '委托单位或生产单位不属于'.$department.'部门';
+            $rs['msg'] = '委托单位未通过查新';
             $this->ajaxReturn($rs);
         }
         //验证费用
@@ -1430,11 +1430,11 @@ class ContractController extends Controller
         $rs = array('msg'=>'fail');
         $where['centreNo']=$centreno;
         $data_apply = array(
-            'isaudit'=>0,
-            'internalpass'=>0,
+            //'isaudit'=>0,
+            //'internalpass'=>0,
             'status'=>$type_status,
             'ifback'=>0,
-            'back_time'=>null
+            //'back_time'=>null
         );
         if($type_status==4){
             $data_apply['isaudit']=1;

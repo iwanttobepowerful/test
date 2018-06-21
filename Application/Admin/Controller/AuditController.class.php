@@ -136,8 +136,7 @@ class AuditController extends Controller {
         $data=array(
             'status'=>1,
         );
-
-        if ($user==16||$if_admin==1) {//审核员和超级管理员的权限
+        if ($user==16||$if_admin==1||$user==17) {//审核员和超级管理员的权限
             if ($de == 'A' or $de == "C") {
                 if (D("report_feedback")->where("id=" . $id)->save($data)) {
                     if($d = D("test_report")->where("centreno='{$centreno}'")->find()){
@@ -222,12 +221,13 @@ class AuditController extends Controller {
                         "pdf_sign_path"=>$replace['pdf_sign_path']
                     );
                     if(D('test_report')->where("centreno = '{$centreno}'")->save($rp)){
+                        pr(22);
                         M()->commit();
                         $rs['msg'] = 'succ';
                     }else{
                         M()->rollback();
                     }
-
+                    pr(11);
                 }
 
             }
