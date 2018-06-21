@@ -843,7 +843,7 @@ class ReportController extends Controller
         $data = array(
             'status' => 7,
             'ifback'=>3,
-            'bz_back'=>0,
+            'bz_back'=>1,
             'back_time'=>date("Y-m-d H:i:s"),
 
         );
