@@ -2254,7 +2254,7 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
             $where .= " and c.status = 1";
         }
         else {
-            $where .= " and c.status != 8 and c.status != 1 ";
+            $where .= " and c.status in (2,3,4,5,6)";
         }
 
         if($user==8 || $user==15 || $user==13 || $if_admin==1){
@@ -2281,10 +2281,16 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
         $pagesize = 10;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
+        if($de !=='A'){//有报告才查报告
+            $list = D("contract_flow as c")->field('if(c.id is null,-1,c.id) as flow_id,f.*,c.isaudit,c.back_time,c.bz_back,c.sh_back,c.gz_back,c.ifback,c.status,c.inner_sign_user_id,c.inner_sign_time,c.external_sign_time,c.takelist_user_id,c.takelist_time,u.name as takename,u1.name as innername,u2.name as externalname,v.doc_path,v.pdf_path,v.qrcode_path')
+                ->join('left join contract as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on c.takelist_user_id=u.id LEFT JOIN common_system_user u2 on c.external_sign_user_id=u2.id LEFT JOIN common_system_user u1 on c.inner_sign_user_id=u1.id left join test_report as v on c.centreNo=v.centreNo ' )
+                ->where($where)->order('c.back_time desc,c.takelist_all_time desc,f.id desc')->limit("{$offset},{$pagesize}")->select();
+        }else{
+            $list = D("contract_flow as c")->field('if(c.id is null,-1,c.id) as flow_id,f.*,c.isaudit,c.back_time,c.bz_back,c.sh_back,c.gz_back,c.ifback,c.status,c.inner_sign_user_id,c.inner_sign_time,c.external_sign_time,c.takelist_user_id,c.takelist_time,u.name as takename,u1.name as innername,u2.name as externalname')
+                ->join('left join contract as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on c.takelist_user_id=u.id LEFT JOIN common_system_user u2 on c.external_sign_user_id=u2.id LEFT JOIN common_system_user u1 on c.inner_sign_user_id=u1.id ' )
+                ->where($where)->order('c.back_time desc,c.takelist_all_time desc,f.id desc')->limit("{$offset},{$pagesize}")->select();
+        }
 
-        $list = D("contract_flow as c")->field('if(c.id is null,-1,c.id) as flow_id,f.*,c.isaudit,c.back_time,c.bz_back,c.sh_back,c.gz_back,c.ifback,c.status,c.inner_sign_user_id,c.inner_sign_time,c.external_sign_time,c.takelist_user_id,c.takelist_time,u.name as takename,u1.name as innername,u2.name as externalname,v.doc_path,v.pdf_path,v.qrcode_path')
-            ->join('left join contract as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on c.takelist_user_id=u.id LEFT JOIN common_system_user u2 on c.external_sign_user_id=u2.id LEFT JOIN common_system_user u1 on c.inner_sign_user_id=u1.id left join test_report as v on c.centreNo=v.centreNo ' )
-            ->where($where)->order('c.back_time desc,c.takelist_all_time desc,f.id desc')->limit("{$offset},{$pagesize}")->select();
         if($list){
             $con_list = array();//反馈
             foreach($list as $contract){

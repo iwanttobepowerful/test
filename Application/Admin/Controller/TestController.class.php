@@ -170,12 +170,12 @@ class TestController extends Controller{
             $where .=" and contract_flow.status  not in('0','7') ";
         }
         if($sortby==1){
-            $begin_time && $where .=" and date_format(work_inform_form.workDate,'%Y-%m-%d') >='{$begin_time}'";
-            $end_time && $where .=" and date_format(work_inform_form.workDate,'%Y-%m-%d') <='{$end_time}'";
+            $begin_time && $where .=" and date_format(contract_flow.contract_time,'%Y-%m-%d') >='{$begin_time}'";
+            $end_time && $where .=" and date_format(contract_flow.contract_time,'%Y-%m-%d') <='{$end_time}'";
         }
         elseif($sortby==2){
-            $begin_time && $where .=" and date_format(contract_flow.takelist_all_time,'%Y-%m-%d') >='{$begin_time}'";
-            $end_time && $where .=" and date_format(contract_flow.takelist_all_time,'%Y-%m-%d') <='{$end_time}'";
+            $begin_time && $where .=" and date_format(contract_flow.takelist_time,'%Y-%m-%d') >='{$begin_time}'";
+            $end_time && $where .=" and date_format(contract_flow.takelist_time,'%Y-%m-%d') <='{$end_time}'";
         }
         if($user==8||$user==15||$if_admin ==1){
             if(!empty($keyword)){
@@ -211,7 +211,7 @@ class TestController extends Controller{
             ->join('work_inform_form ON contract_flow.centreNo = work_inform_form.centreNo')//从工作通知单取数据
             ->join('contract as a on contract_flow.centreno=a.centreno')
             ->field('contract_flow.back_time,contract_flow.gz_back,contract_flow.sh_back,contract_flow.bz_back,contract_flow.ifback,contract_flow.takelist_user_id,contract_flow.status,work_inform_form.workDate,work_inform_form.centreNo,work_inform_form.sampleName,work_inform_form.testCreiteria,a.centreno1,a.centreno2,a.centreno3')
-            ->order('contract_flow.back_time desc,work_inform_form.workDate desc,work_inform_form.id desc')
+            ->order('contract_flow.back_time desc,work_inform_form.workDate desc')
             ->limit("{$offset},{$pagesize}")->select();//从合同表!!!!里取出对应中心编号的信息
         if($list){
             $con_list = array();//反馈

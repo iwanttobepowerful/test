@@ -29,7 +29,7 @@ class ReportController extends Controller
         if($user==17){
             $de=I("de",'A');
             if ($de=='A') {
-                $where = "contract_flow.status =2 ";
+                $where = "contract_flow.status = 2 ";
             }
             elseif ($de=='B'){
                 $where =" contract_flow.status in('3','4','5','6')";
@@ -41,31 +41,28 @@ class ReportController extends Controller
         if(!empty($useraudit)){
             //先检查是否有G1\G2
             if(strstr($useraudit,'G1')){
-               $useraudit = str_replace(',G1','',$useraudit);
                $if_G1 = 1;
             }
             if(strstr($useraudit,'G2')){
-                $useraudit = str_replace(',G2','',$useraudit);
                 $if_G2 = 1;
             }
-            $data=explode(',',$useraudit);
-                foreach($data as $v){
-                    $s .="'".$v."',";
-                }
-                $s=substr($s,0,-1);//利用字符串截取函数消除最后一个逗号
-                $where .=" and SUBSTR(contract_flow.centreno,7,1) in({$s})";
-                //如果存在G1、G2在搜索条件里加上
-            if($if_G1 == 1){
-                $where .="or (SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) <= '500' and contract_flow.status =2)";
+            if($if_G1 == 1 and $if_G2 == 1){//两个都选了
+                $where .= "and SUBSTR(contract_flow.centreno,7,1) = 'G'";
             }
-            if($if_G2 == 1){
-                $where .=" or (SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) > '500'and contract_flow.status =2)";
+            elseif ($if_G1 == 0 and $if_G2 == 1){//只选了G2
+                $where .= "and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) > '500'";
+            }
+            elseif ($if_G1 == 1 and $if_G2 == 0){
+                $where .=" and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) <= '500'";
+            }
+            else{
+                $where .=" and SUBSTR(contract_flow.centreno,7,1) in({$s})";
             }
 
-        }
-        elseif(($user==17 or $user==13) and empty($useraudit)){//要是角色是审核员，但是什么都不选，默认看不到
-            $where="contract_flow.status = -100";
-        }
+        }//不选的话都能看到
+        //elseif(($user==17 or $user==13) and empty($useraudit)){//要是角色是审核员，但是什么都不选，默认看不到
+            //$where="contract_flow.status = -100";
+       // }
         if($user==8 || $if_admin==1 || $user==13 || $user==17) {//只有领导，审核人员，超级管理员，审核批准员才能审核
             $view="";
         }else{
