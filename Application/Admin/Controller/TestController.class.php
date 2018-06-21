@@ -49,7 +49,6 @@ class TestController extends Controller{
         if(empty($sub_status)){
             $sub_status['status']=-1;
         }
-		
         $body=array(
             'one'=>$result,
 			'ifedit'=>$ifedit,

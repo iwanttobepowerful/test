@@ -40,7 +40,7 @@
                         <!--<input type="text" class="form-control" name="productionDate"/>-->
                     <td colspan="1"><p align="center" ><span style="color:red; font-size:15px">*</span>样品数量 </p></td>
                     <td colspan="5" >
-                        <div class="col-xs-4">
+                        <div class="col-xs-4" style="padding-left: 0px">
                             <input type="text" class="form-control"  name="sampleQuantity" id="sampleQuantity" size="5" value="{$contract.samplequantity}"/>
                         </div>
                         <!--<label>
@@ -514,8 +514,11 @@
         if($("#RFrecord").val()!="" && $.trim($("#RFrecord").val()).length>0){
             sum+=parseInt($("#RFrecord").val());
         }
-        if($("#RGrecord").val()!="" && $.trim($("#RGrecord").val()).length>0){
-            sum+=parseInt($("#RGrecord").val());
+        if($("#RG1record").val()!="" && $.trim($("#RG1record").val()).length>0){
+            sum+=parseInt($("#RG1record").val());
+        }
+        if($("#RG2record").val()!="" && $.trim($("#RG2record").val()).length>0){
+            sum+=parseInt($("#RG2record").val());
         }
         if($("#RHrecord").val()!="" && $.trim($("#RHrecord").val()).length>0){
             sum+=parseInt($("#RHrecord").val());
