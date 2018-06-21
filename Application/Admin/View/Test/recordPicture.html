@@ -4,9 +4,9 @@
     <div id="page-inner" class="container">
         <!-- 主要模板 starting -->
         <ul class="nav nav-tabs">
-            <li role="presentation" class="active" id="de_A" name="de"><a href="/admin/test/recordPicture?de=A">未出报告</a>
+            <li role="presentation" class="active" id="de_A" name="de"><a href="/admin/test/recordPicture?de=A">待检/在检</a>
             </li>
-            <li role="presentation" id="de_B" name="de"><a href="/admin/test/recordPicture?de=B">已出报告</a></li>
+            <li role="presentation" id="de_B" name="de"><a href="/admin/test/recordPicture?de=B">检测完毕</a></li>
             <input type="hidden" id="de_choose" value="{$de}"/>
         </ul>
 
@@ -23,10 +23,10 @@
                     查找方式：<select class="form-control input-sm" name="sortby">
                     <option value="1"
                     <php>if($sortby==1){echo 'selected';}</php>
-                    >按收样日期查找</option>
+                    >按合同录入日期查找</option>
                     <option value="2"
                     <php>if($sortby==2){echo 'selected';}</php>
-                    >按出报告日期查找</option>
+                    >按接单日期查找</option>
                 </select>
                     <input type="hidden" name="de" value="{$de}"/>
                 </div>

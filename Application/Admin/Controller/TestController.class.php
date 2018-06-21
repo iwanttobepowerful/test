@@ -171,12 +171,12 @@ class TestController extends Controller{
             $where .=" and contract_flow.status  not in('0','7') ";
         }
         if($sortby==1){
-            $begin_time && $where .=" and date_format(work_inform_form.workDate,'%Y-%m-%d') >='{$begin_time}'";
-            $end_time && $where .=" and date_format(work_inform_form.workDate,'%Y-%m-%d') <='{$end_time}'";
+            $begin_time && $where .=" and date_format(contract_flow.contract_time,'%Y-%m-%d') >='{$begin_time}'";
+            $end_time && $where .=" and date_format(contract_flow.contract_time,'%Y-%m-%d') <='{$end_time}'";
         }
         elseif($sortby==2){
-            $begin_time && $where .=" and date_format(contract_flow.takelist_all_time,'%Y-%m-%d') >='{$begin_time}'";
-            $end_time && $where .=" and date_format(contract_flow.takelist_all_time,'%Y-%m-%d') <='{$end_time}'";
+            $begin_time && $where .=" and date_format(contract_flow.takelist_time,'%Y-%m-%d') >='{$begin_time}'";
+            $end_time && $where .=" and date_format(contract_flow.takelist_time,'%Y-%m-%d') <='{$end_time}'";
         }
         if($user==8||$user==15||$if_admin ==1){
             if(!empty($keyword)){

@@ -55,12 +55,32 @@ class ReportController extends Controller
                 $s=substr($s,0,-1);//利用字符串截取函数消除最后一个逗号
                 $where .=" and SUBSTR(contract_flow.centreno,7,1) in({$s})";
                 //如果存在G1、G2在搜索条件里加上
-            if($if_G1 == 1){
-                $where .="or (SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) <= '500' and  contract_flow.status =2 )";
+            if($user==17){
+                if ($de=='B') {
+                    if($if_G1 == 1){
+                        $where .="or (SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) <= '500' and  contract_flow.status in('3','4','5','6') )";
+                    }
+                    if($if_G2 == 1){
+                        $where .=" or (SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) > '500' and  contract_flow.status in('3','4','5','6') )";
+                    }
+                }
+                elseif ($de=='A'){
+                    if($if_G1 == 1){
+                        $where .="or (SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) <= '500' and  contract_flow.status =2 )";
+                    }
+                    if($if_G2 == 1){
+                        $where .=" or (SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) > '500' and  contract_flow.status =2 )";
+                    }
+                }
+            }else{
+                if($if_G1 == 1){
+                    $where .="or (SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) <= '500' and  contract_flow.status =2 )";
+                }
+                if($if_G2 == 1){
+                    $where .=" or (SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) > '500' and  contract_flow.status =2 )";
+                }
             }
-            if($if_G2 == 1){
-                $where .=" or (SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) > '500' and  contract_flow.status =2 )";
-            }
+
 
         }
         elseif(($user==17 or $user==13) and empty($useraudit)){//要是角色是审核员，但是什么都不选，默认看不到

@@ -1,11 +1,11 @@
 /*CSS初始化*/
 ul ,li{list-style: none;text-decoration:none;margin:0;padding:0;}
 img{ border:none;}
-body {color:#303030;background:#fff; font-size: 12px;font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif;overflow-x:hidden;}
+body {color:#303030;background:#fff; font-size: 12px;font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif;overflow-x:auto;}
 /*. *,html {box-sizing:inherit;}*/
 a{ text-decoration:none;color:#555;}
 a:hover{text-decoration:underline;color:#33A9DD;}
-.clearfix:after {clear:both; content:"."; display:block; height:0pt; visibility:hidden; overflow:hidden;}
+.clearfix:after {clear:both; content:"."; display:block; height:0pt; visibility:hidden; overflow:auto;}
 .clear{clear:both;height:1px; margin-top:-1px; width:100%;} 
 .blue {color:#33A9DD;}
 .green {color:#59c959;}
@@ -39,7 +39,7 @@ input:-webkit-autofill {-webkit-box-shadow: 0 0 0px 1000px white inset;outline:n
 .pnav .hnav .nav-sm:hover{background: #f1f1f1;}
 .pnav .settings {color:#299fff;float: right;position: relative;padding-right:0px;padding-top:16px;width:208px;height:50px;text-align: right;}
 .pnav .settings a{color:#299fff;}
-#leftmenu {padding:0;width:180px;height:100%;font-size:14px;position:fixed;z-index:100;top:50px;left:0px;color: #e0e0e0;overflow-y: hidden;overflow-x: hidden; background:#222d32;/*border-right: 1px solid #3e3e3e;*/}
+#leftmenu {padding:0;width:180px;height:100%;font-size:14px;position:fixed;z-index:100;top:50px;left:0px;color: #e0e0e0;overflow-y: hidden;overflow-x: auto; background:#222d32;/*border-right: 1px solid #3e3e3e;*/}
 #leftmenu .menubg{width: 100%;height: 100%;background: #222;position: absolute;z-index: 99;}
 #leftmenu .navs{overflow-y: scroll;height: 100%;width: 200px;}
 
@@ -113,11 +113,11 @@ input:-webkit-autofill {-webkit-box-shadow: 0 0 0px 1000px white inset;outline:n
 .form-group-5 {margin-bottom: 20px !important;}
 .form-group .file {display: inline-block;}
 .form-group .nailthumb{}
-.form-group .nailthumb .thumb-item{width: 123px;height: 70px;overflow: hidden;border:1px solid #ddd;float: left;margin-right: 4px;margin-bottom:4px;padding:0;position: relative;}
+.form-group .nailthumb .thumb-item{width: 123px;height: 70px;overflow: auto;border:1px solid #ddd;float: left;margin-right: 4px;margin-bottom:4px;padding:0;position: relative;}
 .form-group .nailthumb .thumb-item img{width: 100%;}
 .form-group .nailthumb #addthumb{color: #ccc;text-align: center;font-size: 24px;padding-top: 20px;cursor: pointer;}
 .form-group .nailthumb .thumb-item .icon-remove{color:red;position: absolute;right: 4px;top:50px;font-size:14px;cursor: pointer;}
-.form-group #userface{width: 100px;height: 100px;border-radius: 50px;border:1px solid #ddd;overflow: hidden;margin-bottom: 10px;}
+.form-group #userface{width: 100px;height: 100px;border-radius: 50px;border:1px solid #ddd;overflow: auto;margin-bottom: 10px;}
 .form-group #userface img{width: 100%;}
 
 .databox .datahead {font-size: 15px;line-height: 2em;margin: 10px 0;}
@@ -200,7 +200,7 @@ input:-webkit-autofill {-webkit-box-shadow: 0 0 0px 1000px white inset;outline:n
 .loginbox .bg {background:url(../images/index.png) no-repeat center center;height:500px;width:100%;}
 .loginbox .box {width:334px;height:334px;margin-top:95px;margin-right:75px;float:right;position:relative;}
 .loginbox .box .loginbg{background:#fff;width:334px;height:304px;border-radius:10px;opacity:0.2;filter:alpha(opacity=60);position:absolute;z-index:0;}
-.loginbox .box .loginform{background:#fff;width:317px;width:317px\0;width:317px\9;*width:317px;height:288px;height:317px\0;height:288px\9;*height:288px;margin:8px;border-radius:10px;position:absolute;z-index:1;padding:30px 28px 0 28px;}
+.loginbox .box .loginform{background:#fff;width:317px;width:317px\0;width:317px\9;*width:317px;height:288px;height:317px\0;height:288px\9;*height:288px;left:25%;border-radius:10px;position:absolute;z-index:1;padding:30px 28px 0 28px;}
 .loginbox .box .loginform label{font-size:14px;color:#303030;cursor:default;margin-bottom:0;}
 .loginbox .box .loginform .errcode{color:#ff4700;line-height:26px;height:26px;}
 .loginbox .box .loginform input{outline:none;width:100%;font-size:12px;color:#999;height:32px;border: 1px solid #ddd;border-radius: 3px;padding:2px 8px;}
