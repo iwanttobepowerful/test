@@ -835,6 +835,7 @@ class ReportController extends Controller
         $reason = I('reason');
         $centreno = I('centreno');
         $where = "centreno='{$centreno}'";
+        $where1 = "centreno='{$centreno}' and type =3";
         $rs = array("msg" => "fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid = $admin_auth['id'];
@@ -856,6 +857,7 @@ class ReportController extends Controller
         );
 
         M()->startTrans();
+        D("back_report")->where($where1)->delete();
         if (D("contract_flow")->where($where)->save($data) and D("back_report")->add($data1)) {
             M()->commit();
             $rs['msg'] = '退回成功！';
@@ -868,7 +870,7 @@ class ReportController extends Controller
     //退回原因显示框
     public function backShowPage(){
         $centreno = I('centreno');
-        $data = D('back_report')->where("centreNo ='$centreno'")->select();
+        $data = D('back_report')->where("centreNo ='$centreno'")->order("id desc")->select();
         $body = array(
         'list'=>$data
         );
