@@ -899,4 +899,176 @@ class TestController extends Controller{
         $this->assign($data);
         $this->display();
     }
+
+    public function checkNotify(){
+        //-1合同作废，0合同录入完毕，未接单状态,1生成报告完毕,待上传检测报告制表，
+        //2已生成检测报告,待提交审核，3盖章退回，-3审核未通过，4已批准，待内部签发，
+        //-4批准未通过,5内部签发,6外部签发7已接单8检测完毕,待生成报告
+
+        $admin_auth = session("admin_auth");//获取当前登录用户信息
+        $if_admin = $admin_auth['super_admin'];//是否是超级管理员
+        $user=$admin_auth['gid'];//判断是哪个角色
+        $department = $admin_auth['department'];
+
+
+        if ($if_admin) {
+            $where_jcjl = "status='0'";//检测记录
+        } else {
+            $where_jcjl = "status='0'";//检测记录
+            if ($department == 'G1') {
+                $where_jcjl .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) <='500'";
+            } elseif ($department == 'G2') {
+                $where_jcjl .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) >'500'";
+            } else {
+                $where_jcjl .= " and SUBSTR(contract_flow.centreNo,7,1) = '{$department}'";
+            }
+        }
+        $bool_jcjl=D("contract_flow")->where($where_jcjl)->select();
+        $num_jcjl=D("contract_flow")->where($where_jcjl)->count();
+
+
+        if ($if_admin) {
+            $where_scbg="status='1'";//上传报告
+        } else {
+            $where_scbg="status='1'";//上传报告
+            if ($department == 'G1') {
+                $where_scbg .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) <='500'";
+            } elseif ($department == 'G2') {
+                $where_scbg .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) >'500'";
+            } else {
+                $where_scbg .= " and SUBSTR(contract_flow.centreNo,7,1) = '{$department}'";
+            }
+        }
+        $bool_scbg=D("contract_flow")->where($where_scbg)->select();
+        $num_scbg=D("contract_flow")->where($where_scbg)->count();
+
+        if ($if_admin) {
+            $where_bgsh="status='2'";//报告审核
+        } else {
+            $where_bgsh="status='2'";//报告审核
+            if ($department == 'G1') {
+                $where_bgsh .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) <='500'";
+            } elseif ($department == 'G2') {
+                $where_bgsh .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) >'500'";
+            } else {
+                $where_bgsh .= " and SUBSTR(contract_flow.centreNo,7,1) = '{$department}'";
+            }
+        }
+        $bool_bgsh=D("contract_flow")->where($where_bgsh)->select();
+        $num_bgsh=D("contract_flow")->where($where_bgsh)->count();
+
+
+        if ($if_admin) {
+            $where_htlb="status='8'";//合同列表,8检测完毕,待生成报告
+        } else {
+            $where_htlb="status='8'";//合同列表,8检测完毕,待生成报告
+            if ($department == 'G1') {
+                $where_htlb .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) <='500'";
+            } elseif ($department == 'G2') {
+                $where_htlb .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) >'500'";
+            } else {
+                $where_htlb .= " and SUBSTR(contract_flow.centreNo,7,1) = '{$department}'";
+            }
+        }
+        $bool_htlb=D("contract_flow")->where($where_htlb)->select();
+        $num_htlb=D("contract_flow")->where($where_htlb)->count();
+
+
+        if ($if_admin) {
+            $where_nbsqxg="if_outer=0 and if_report=0  and if_invalid=0";//内部申请修改
+        } else {
+            $where_nbsqxg="if_outer=0 and if_report=0  and if_invalid=0";//内部申请修改
+            if ($department == 'G1') {
+                $where_nbsqxg .= " and SUBSTR(report_feedback.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) <='500'";
+            } elseif ($department == 'G2') {
+                $where_nbsqxg .= " and SUBSTR(report_feedback.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) >'500'";
+            } else {
+                $where_nbsqxg .= " and SUBSTR(report_feedback.centreNo,7,1) = '{$department}'";
+            }
+        }
+        $num_nbsqxg=D("report_feedback")->where($where_nbsqxg)->count();
+
+        if ($if_admin) {
+            $where_bgsqxg = "if_report=1";//报告修改申请
+        } else {
+            $where_bgsqxg = "if_report=1";//报告修改申请
+            if ($department == 'G1') {
+                $where_bgsqxg .= " and SUBSTR(report_feedback.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) <='500'";
+            } elseif ($department == 'G2') {
+                $where_bgsqxg .= " and SUBSTR(report_feedback.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) >'500'";
+            } else {
+                $where_bgsqxg .= " and SUBSTR(report_feedback.centreNo,7,1) = '{$department}'";
+            }
+        }
+        $num_bgsqxg=D("report_feedback")->where($where_bgsqxg)->count();
+
+
+        if ($if_admin) {
+            $where_wbsqxg = "if_outer=1";//外部修改申请
+        } else {
+            $where_wbsqxg = "if_outer=1";//外部修改申请
+            if ($department == 'G1') {
+                $where_wbsqxg .= " and SUBSTR(report_feedback.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) <='500'";
+            } elseif ($department == 'G2') {
+                $where_wbsqxg .= " and SUBSTR(report_feedback.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) >'500'";
+            } else {
+                $where_wbsqxg .= " and SUBSTR(report_feedback.centreNo,7,1) = '{$department}'";
+            }
+        }
+        //$bool_wbsqxg=D("report_feedback")->where($where_wbsqxg)->select();
+        $num_wbsqxg=D("report_feedback")->where($where_wbsqxg)->count();
+
+
+        if ($if_admin) {
+            $where_htzf="if_invalid=1";//合同作废
+        } else {
+            $where_htzf="if_invalid=1";//合同作废
+            if ($department == 'G1') {
+                $where_htzf .= " and SUBSTR(report_feedback.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) <='500'";
+            } elseif ($department == 'G2') {
+                $where_htzf .= " and SUBSTR(report_feedback.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) >'500'";
+            } else {
+                $where_htzf .= " and SUBSTR(report_feedback.centreNo,7,1) = '{$department}'";
+            }
+        }
+        $num_htzf=D("report_feedback")->where($where_htzf)->count();
+
+        $num_htxg = $num_htzf+$num_wbsqxg+$num_bgsqxg+$num_nbsqxg;
+
+        $test=array(
+            "content"=>"true",
+            "number_jcjl"=>$num_jcjl,
+            "name_jcjl"=>"检测记录",
+            "name_jygl"=>"检验管理",
+            "id_jygl"=>"menu_id_105",
+            "id_jcjl"=>"son_id_132",
+
+            "num_scbg"=>$num_scbg,
+            "name_scbg"=>"上传报告",
+            "name_bggl"=>"报告管理",
+            "id_bggl"=>"menu_id_133",
+            "id_scbg"=>"son_id_134",
+
+            "num_bgsh"=>$num_bgsh,
+            "name_bgsh"=>"报告审核",
+            "id_bgsh"=>"son_id_136",
+
+            "num_htlb"=>$num_htlb,
+            "name_htlb"=>"合同列表",
+            "id_htlb"=>"son_id_148",
+
+
+            "num_htxg"=>$num_htxg,
+            "name_xggl"=>"修改管理",
+            "id_xggl"=>"menu_id_111",
+            "name_bgsqxg"=>"报告修改申请",
+            "id_bgsqxg"=>"son_id_142",
+
+        );
+
+        if($bool_jcjl !=null || $bool_scbg !=null || $bool_bgsh!=null || $bool_htlb!=null){
+            $test['content']='true';
+        } ;
+        $this->ajaxReturn($test);
+    }
 }

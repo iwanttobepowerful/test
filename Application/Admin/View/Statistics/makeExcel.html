@@ -1,0 +1,46 @@
+<include file="Common:header" title="后台首页"/>
+<div id="page-wrapper">
+    <include file="Common:breadcrumb" />
+    <div id="page-inner" class="container">
+        <div class="search-form">
+            <form class="form-inline" id="myform" name="myform" method="GET" action="">
+                <div class="form-group">
+                    <input type="hidden" name="p" value="1" />
+                    开始时间：<input type="text" readonly class="form-control f-datetime input-sm" name="begin_time" value="{$begin_time}"> 结束时间：<input type="text" readonly class="form-control f-datetime input-sm" name="end_time" value="{$end_time}" />
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm" onclick="toExcel()">生成报表</button>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+<script src="__PUBLIC__/static/js/jquery.form.js"></script>
+<script type="text/javascript">
+    $("th").addClass("text-center");
+    $(function(){
+        $('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true });
+        var de = $("#de_choose").val();
+        $("li[name='de']").removeClass("active");
+        $("#de_"+de).addClass("active");
+    });
+    // function details(centreno,clientname,productunit,samplename,testcriteria,testitem) {
+    //     var modal = $("#detailModal");
+    //     modal.find("input[name='clientname']").val(clientname);
+    //     modal.find("input[name='productunit']").val(productunit);
+    //     modal.find("input[name='samplename']").val(samplename);
+    //     modal.find("input[name='testcriteria']").val(testcriteria);
+    //     modal.find("textarea[name='testitem']").val(testitem);
+    //     modal.modal();
+    // }
+    // function toBase(){
+    //     document.myform.action = "{:U('Statistics/base')}";
+    //     document.myform.submit();
+    // }
+
+    function toExcel(){
+        document.myform.action = "{:U('Statistics/makeExcel1')}";
+        document.myform.submit();
+    }
+</script>
+<include file="Common:footer" />

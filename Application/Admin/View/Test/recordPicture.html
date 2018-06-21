@@ -1,10 +1,11 @@
 <include file="Common:header" title="后台首页"/>
 <div id="page-wrapper">
-    <include file="Common:breadcrumb" />
+    <include file="Common:breadcrumb"/>
     <div id="page-inner" class="container">
         <!-- 主要模板 starting -->
         <ul class="nav nav-tabs">
-            <li role="presentation" class="active" id="de_A" name="de"><a href="/admin/test/recordPicture?de=A" >未出报告</a></li>
+            <li role="presentation" class="active" id="de_A" name="de"><a href="/admin/test/recordPicture?de=A">未出报告</a>
+            </li>
             <li role="presentation" id="de_B" name="de"><a href="/admin/test/recordPicture?de=B">已出报告</a></li>
             <input type="hidden" id="de_choose" value="{$de}"/>
         </ul>
@@ -13,16 +14,23 @@
             <form class="form-inline" method="GET" action="">
                 <div class="form-group">
                     <label>中心编号：</label>
-                    <input type="text" class="form-control input-sm" name="keyword" />
-                    <input type="hidden" name="p" value="1" />
-                    开始时间：<input type="text" readonly class="form-control f-datetime input-sm" name="begin_time" value="{$begin_time}"> 结束时间：<input type="text" readonly class="form-control f-datetime input-sm" name="end_time" value="{$end_time}" />
+                    <input type="text" class="form-control input-sm" name="keyword"/>
+                    <input type="hidden" name="p" value="1"/>
+                    开始时间：<input type="text" readonly class="form-control f-datetime input-sm" name="begin_time"
+                                value="{$begin_time}"> 结束时间：<input type="text" readonly
+                                                                   class="form-control f-datetime input-sm"
+                                                                   name="end_time" value="{$end_time}"/>
                     查找方式：<select class="form-control input-sm" name="sortby">
-                    <option value="1" <php>if($sortby==1){echo 'selected';}</php>>按收样日期查找</option>
-                    <option value="2" <php>if($sortby==2){echo 'selected';}</php>>按出报告日期查找</option>
+                    <option value="1"
+                    <php>if($sortby==1){echo 'selected';}</php>
+                    >按收样日期查找</option>
+                    <option value="2"
+                    <php>if($sortby==2){echo 'selected';}</php>
+                    >按出报告日期查找</option>
                 </select>
                     <input type="hidden" name="de" value="{$de}"/>
                 </div>
-                <button type="submit" class="btn btn-primary btn-sm" >查询</button>
+                <button type="submit" class="btn btn-primary btn-sm">查询</button>
             </form>
         </div>
 
@@ -38,45 +46,66 @@
             <tbody>
             <volist name="lists" id="one" key="i">
                 <tr>
-                    <td><if condition="$_GET['p'] eq 0">{$i}
-                        <else />{$_GET['p']*10-10+$i}</if></td>
+                    <td>
+                        <if condition="$_GET['p'] eq 0">{$i}
+                            <else/>
+                            {$_GET['p']*10-10+$i}
+                        </if>
+                    </td>
                     <td>{$one.workdate}</td>
-                    <td><if condition="$one[centreno1] or $one[centreno2] or $one[centreno3]">
-                        <span style="color: red"><i class="glyphicon glyphicon-star">{$one.centreno}</i></span>
-                        <else />
-                        <span>{$one.centreno}</span></if>
+                    <td>
+                        <if condition="$one[centreno1] or $one[centreno2] or $one[centreno3]">
+                            <span style="color: red"><i class="glyphicon glyphicon-star">{$one.centreno}</i></span>
+                            <else/>
+                            <span>{$one.centreno}</span></if>
                     </td>
                     <td>{$one.samplename}</td>
                     <td>{$one.testcreiteria}</td>
                     <td>
 
 
-                            <if condition="$one[takelist_user_id] eq $userid">
-                                <if condition="$one[centreno1] or $one[centreno2] or $one[centreno3]">
-                                    <a href="{:U('/admin/contract/reWriteTest')}?id={$one.centreno}" class="btn btn-primary btn-xs">更改单</a></if>
-                                <if condition="($one['gz_back'] neq 0 or $one['sh_back'] neq 0 or $one['bz_back'] neq 0) and $one[status] eq 7">
-                                    <button onclick="module('{$one[centreno]}')" class="btn btn-warning btn-xs">退回原因</button>
-                                </if>
-                                <a href="{:U('/admin/test/infoShow')}?id={$one.centreno}" class="btn btn-primary btn-xs">检测工作通知单</a>
-                                <a href="{:U('/admin/test/recordPictureUp')}?id={$one.centreno}" class="btn btn-primary btn-xs">检测图片上传</a>
-
-                                <if condition="$one[status] eq 7 or $one[status] eq 0">
-                                    <if condition="($one[sub_status]==0 or $one[sub_status]==1) and ($one[if_outer]==0)"><button class="btn btn-success btn-xs" onclick="allSave('{$one.centreno}')" disabled>上传完毕</button>
-                                        <else />
-                                        <if condition="$one['ifback'] neq 0 and $one['back_time']">
-                                            <a href="javascript:void(0);" class="btn btn-success btn-xs" onclick="onBack('{$one.centreno}','{$one.ifback}')">上传完毕</a>
-                                            <else />
-                                            <button class="btn btn-success btn-xs" onclick="allSave('{$one.centreno}')">上传完毕</button></if>
-                                    </if>
-                                    <span style="color: orangered">正在检测中...</span>
-                                <else />
-                                    <span style="color: green">检测完毕</span></if>
-                                <elseif condition="($one[status] eq 0) AND ($one[takelist_user_id] eq 0)"/>
-                                    <a href="{:U('/admin/test/infoShow')}?id={$one.centreno}" class="btn btn-primary btn-xs">检测工作通知单</a>
-                                <if condition="($one[sub_status]==0 or $one[sub_status]==1) and ($one[if_outer]==0)"><button onclick="takeList('{$one.centreno}')" class="btn btn-primary btn-xs" disabled>接单</button><else /><button onclick="takeList('{$one.centreno}')" class="btn btn-primary btn-xs">接单</button></if>
-                                    <else />
-                                    <a class="btn btn-primary btn-xs disabled">已被接单</a>
+                        <if condition="$one[takelist_user_id] eq $userid">
+                            <if condition="$one[centreno1] or $one[centreno2] or $one[centreno3]">
+                                <a href="{:U('/admin/contract/reWriteTest')}?id={$one.centreno}"
+                                   class="btn btn-primary btn-xs">更改单</a></if>
+                            <if condition="($one['gz_back'] neq 0 or $one['sh_back'] neq 0 or $one['bz_back'] neq 0) and $one[status] eq 7">
+                                <button onclick="module('{$one[centreno]}')" class="btn btn-warning btn-xs">退回原因
+                                </button>
                             </if>
+                            <a href="{:U('/admin/test/infoShow')}?id={$one.centreno}" class="btn btn-primary btn-xs">检测工作通知单</a>
+                            <a href="{:U('/admin/test/recordPictureUp')}?id={$one.centreno}"
+                               class="btn btn-primary btn-xs">检测图片上传</a>
+
+                            <if condition="$one[status] eq 7 or $one[status] eq 0">
+                                <if condition="($one[sub_status]==0 or $one[sub_status]==1) and ($one[if_outer]==0)">
+                                    <button class="btn btn-success btn-xs" onclick="allSave('{$one.centreno}')"
+                                            disabled>上传完毕
+                                    </button>
+                                    <else/>
+                                    <if condition="$one['ifback'] neq 0 and $one['back_time']">
+                                        <a href="javascript:void(0);" class="btn btn-success btn-xs"
+                                           onclick="onBack('{$one.centreno}','{$one.ifback}')">上传完毕</a>
+                                        <else/>
+                                        <button class="btn btn-success btn-xs" onclick="allSave('{$one.centreno}')">
+                                            上传完毕
+                                        </button>
+                                    </if>
+                                </if>
+                                <span style="color: orangered">正在检测中...</span>
+                                <else/>
+                                <span style="color: green">检测完毕</span></if>
+                            <elseif condition="($one[status] eq 0) AND ($one[takelist_user_id] eq 0)"/>
+                            <a href="{:U('/admin/test/infoShow')}?id={$one.centreno}" class="btn btn-primary btn-xs">检测工作通知单</a>
+                            <if condition="($one[sub_status]==0 or $one[sub_status]==1) and ($one[if_outer]==0)">
+                                <button onclick="takeList('{$one.centreno}')" class="btn btn-primary btn-xs" disabled>
+                                    接单
+                                </button>
+                                <else/>
+                                <button onclick="takeList('{$one.centreno}')" class="btn btn-primary btn-xs">接单</button>
+                            </if>
+                            <else/>
+                            <a class="btn btn-primary btn-xs disabled">已被接单</a>
+                        </if>
 
                     </td>
                 </tr>
@@ -84,7 +113,9 @@
             </tbody>
         </table>
         <div class=" pull-left"><i class="glyphicon glyphicon-star" style="color: red">代表合同有变更</i></div>
-        <div class=" pull-right"><nav aria-label="Page navigation" id="pagination">{$pagination}</nav></div>
+        <div class=" pull-right">
+            <nav aria-label="Page navigation" id="pagination">{$pagination}</nav>
+        </div>
         <!-- main end-->
 
     </div>
@@ -95,15 +126,15 @@
     <div class="modal fade" id="editModal3" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="form-horizontal"  action="" method="post">
+                <div class="form-horizontal" action="" method="post">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" >返回报告</h4>
+                        <h4 class="modal-title">返回报告</h4>
                     </div>
                     <div class="form-group form-group-sm">
                         <label class="col-sm-3 control-label talign-right fz13"></label>
                         <div class="col-sm-7">
-                            <input type="hidden" name="subid" id="subid" value="" />
+                            <input type="hidden" name="subid" id="subid" value=""/>
 
                         </div>
                         <div class="clearfix"></div>
@@ -129,98 +160,131 @@
     </div>
 </div>
 <script type="text/javascript">
-    $('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true });
-    $(function(){
-        $('.f-datetime').datetimepicker({language:  'zh-CN',format:'yyyy-mm-dd',startView: 2,minView:2,  autoclose:true });
+    $('.f-datetime').datetimepicker({
+        language: 'zh-CN',
+        format: 'yyyy-mm-dd',
+        startView: 2,
+        minView: 2,
+        autoclose: true
+    });
+    $(function () {
+        $('.f-datetime').datetimepicker({
+            language: 'zh-CN',
+            format: 'yyyy-mm-dd',
+            startView: 2,
+            minView: 2,
+            autoclose: true
+        });
         var de = $("#de_choose").val();
         $("li[name='de']").removeClass("active");
-        $("#de_"+de).addClass("active");
+        $("#de_" + de).addClass("active");
     });
-    function takeList(centreno){
-        if(!centreno)return false;
-        var _options = {"flag":"error","text":"您确定要接单吗？","buttons":{"ok":{"action":function(){doTakeList(centreno);}},"cancel":{}}};
+
+    function takeList(centreno) {
+        if (!centreno) return false;
+        var _options = {
+            "flag": "error", "text": "您确定要接单吗？", "buttons": {
+                "ok": {
+                    "action": function () {
+                        doTakeList(centreno);
+                    }
+                }, "cancel": {}
+            }
+        };
         doConfirmDialog(_options);
     }
+
     function doTakeList(centreno) {
-        centreno.onclick = function() {};
+        centreno.onclick = function () {
+        };
         $.ajax({
-            type:"post",
-            url:"{:U('/admin/test/doneTakeList')}",
-            data:{"centreno":centreno},
-            dataType:"json",
-            success:function(ret){
-                if(ret.msg=='succ') {
+            type: "post",
+            url: "{:U('/admin/test/doneTakeList')}",
+            data: {"centreno": centreno},
+            dataType: "json",
+            success: function (ret) {
+                if (ret.msg == 'succ') {
                     window.location.reload();
                 }
             }
         });
     }
+
     //上传完毕按钮
     function allSave(centreno) {
-        if(!centreno) return false;
-        var _options = {"flag":"error","text":"您确定已经上传完所有的记录吗？","buttons":{"ok":{"action":function(){doneAllSave(centreno);}},"cancel":{}}};
+        if (!centreno) return false;
+        var _options = {
+            "flag": "error", "text": "您确定已经上传完所有的记录吗？", "buttons": {
+                "ok": {
+                    "action": function () {
+                        doneAllSave(centreno);
+                    }
+                }, "cancel": {}
+            }
+        };
         doConfirmDialog(_options);
     }
-    function doneAllSave(centreno){
-        if(!centreno) return false;
+
+    function doneAllSave(centreno) {
+        if (!centreno) return false;
         $.ajax({
-            type:"post",
-            url:"{:U('/admin/test/doAllSave')}",
-            data:{"centreno":centreno},
-            dataType:"json",
-            success:function(ret){
-                if(ret.msg=='succ'){
-                    window.location.href="{:U('/admin/test/recordPicture')}";
+            type: "post",
+            url: "{:U('/admin/test/doAllSave')}",
+            data: {"centreno": centreno},
+            dataType: "json",
+            success: function (ret) {
+                if (ret.msg == 'succ') {
+                    window.location.href = "{:U('/admin/test/recordPicture')}";
                 }
-                else if(ret.msg=='error')
-                {
-                    var _options = {"text":'您没有提交任何记录!'};
+                else if (ret.msg == 'error') {
+                    var _options = {"text": '您没有提交任何记录!'};
                     doAlertDialog(_options);
                 }
-                else{
-                    var _options = {"text":"Error！"};
+                else {
+                    var _options = {"text": "Error！"};
                     doAlertDialog(_options);
                 }
             }
         });
     }
+
     //修改完毕后上传
-    function onBack(centreno,ifback){
+    function onBack(centreno, ifback) {
         var modal = $("#editModal3");
         modal.find("input[name='subid']").val(centreno);
         modal.find("input[name='modid']").val(0);
-        if(ifback == 2){
-            $("#gaizhang").attr("disabled","disabled");
+        if (ifback == 2) {
+            $("#gaizhang").attr("disabled", "disabled");
         }
-        else{
-            if(ifback == 3){
-                $("#shenhe").attr("disabled","disabled");
-                $("#gaizhang").attr("disabled","disabled");
+        else {
+            if (ifback == 3) {
+                $("#shenhe").attr("disabled", "disabled");
+                $("#gaizhang").attr("disabled", "disabled");
             }
         }
         modal.modal();
     }
-    function Feedback(){
+
+    function Feedback() {
         var centreno = $("#subid").val();
         var sortby = $("#sortby").val();
         $.ajax({
             url: "{:U('/admin/test/doAllSave1')}",
             dataType: 'json',
-            data:{'centreno':centreno,'sortby':sortby},
-            beforeSubmit: function(){
+            data: {'centreno': centreno, 'sortby': sortby},
+            beforeSubmit: function () {
                 return true;
             },
-            success:function(ret){
-                if(ret.msg=='succ'){
-                    window.location.href="{:U('/admin/test/recordPicture')}";
+            success: function (ret) {
+                if (ret.msg == 'succ') {
+                    window.location.href = "{:U('/admin/test/recordPicture')}";
                 }
-                else if(ret.msg=='error')
-                {
-                    var _options = {"text":'您没有提交任何记录!'};
+                else if (ret.msg == 'error') {
+                    var _options = {"text": '您没有提交任何记录!'};
                     doAlertDialog(_options);
                 }
-                else{
-                    var _options = {"text":"Error！"};
+                else {
+                    var _options = {"text": "Error！"};
                     doAlertDialog(_options);
                 }
             }
@@ -228,9 +292,31 @@
     }
 
     //跳转退回原因页面
-    function module(centreno){
-        var newurl = "/admin/Report/backShowPage.html?centreno="+centreno//url
+    function module(centreno) {
+        var newurl = "/admin/Report/backShowPage.html?centreno=" + centreno;//url
         window.open(newurl);
     }
+
+
+
+    function checknotify() {
+        $.ajax({
+            type: "post",
+            url: "{:U('/admin/test/checkNotify')}",
+            dataType: "json",
+            success: function (ret) {
+                if (ret.content === 'true') {
+                    //console.log(ret.name_bggl);
+                    //alert("有新消息");//想实现title闪烁
+                }
+                else {
+                    console.log("后台没有新数据");
+                }
+            }
+        })
+    }
+
+    var interval = setInterval(checknotify, 3000);
+
 </script>
-<include file="Common:footer" />
+<include file="Common:footer"/>

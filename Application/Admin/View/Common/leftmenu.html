@@ -1,30 +1,33 @@
-<div class="lf" id="leftmenu"><div class="navs" id="navslide"></div></div>
+<div class="lf" id="leftmenu">
+    <div class="navs" id="navslide"></div>
+</div>
 <script type="text/javascript">
-    $(function(){
-       
+    var math = null;
+    $(function () {
+
         var winHeight = getWindowHeight();
         var navHeight = $(".pnav").height();
-        $("#leftmenu,#wrapper").css({"height":parseInt(winHeight-navHeight)+'px'});
+        $("#leftmenu,#wrapper").css({"height": parseInt(winHeight - navHeight) + 'px'});
         $.ajax({
-            type:"post",
-            data:{},
-            dataType:"json",
-            url:"{:U('/admin/auth/menu')}",
-            success:function(ret){
+            type: "post",
+            data: {},
+            dataType: "json",
+            url: "{:U('/admin/auth/menu')}",
+            success: function (ret) {
                 var menuHtml = "";
-                if(ret.msg=='succ'){
+                if (ret.msg === 'succ') {
                     var menu = ret.list;
-                    if(menu.length>0){
-                        for(var i in menu){
+                    if (menu.length > 0) {
+                        for (var i in menu) {
                             //左侧导航
-                            if(menu[i].id==1){
+                            if (menu[i].id == 1) {
                                 var leftmenu = menu[i].childs;
                                 break;
                             }
                         }
                     }
-                    if(leftmenu.length>0){
-                        for(var j in leftmenu){
+                    if (leftmenu.length > 0) {
+                        for (var j in leftmenu) {
                             menuHtml += createMenu(leftmenu[j]);
                         }
                     }
@@ -33,30 +36,74 @@
                 $("#navslide dl").eq(0).find("dd").addClass("in").find("li").eq(0).addClass("active-menu");
             }
         });
-        $(document).on("click","#navslide dl li > a",function(){
+        $(document).on("click", "#navslide dl li > a", function () {
             $("#navslide li").removeClass("active-menu");
             $(this).parent().addClass("active-menu");
         });
     });
-    function createMenu(menu){
-        var html ='<dl class="panel">';
-        html +='<dt data-toggle="collapse" data-parent="#navslide" data-target="#collapse'+menu.id+'">';
-        html +=' <i class="'+menu.icon+'"></i> '+menu.name;
-        html +='</dt>';
-        html +='<dd id="collapse'+menu.id+'" class="panel-collapse collapse">';
-        
-        if(typeof menu.childs !='undefiend'){
-            html +='    <ul>';
+
+    function createMenu(menu) {
+        var html = '<dl class="panel">';
+        html += '<dt data-toggle="collapse" data-parent="#navslide" data-target="#collapse' + menu.id + '">';
+        html += ' <i class="' + menu.icon + '"></i> ' + '<p id="menu_id_' + menu.id + '">' + menu.name + '</p>';
+        html += '</dt>';
+        html += '<dd id="collapse' + menu.id + '" class="panel-collapse collapse">';
+
+        if (typeof menu.childs != 'undefiend') {
+            html += '    <ul>';
             var childs = menu.childs;
-            for(var k in childs){
+            for (var k in childs) {
                 var item = childs[k];
-                html +='<li data-parent="'+item.menu_active+'" data-active="'+item.menu_secoud_active+'"><a target="main-frame" href="/admin/'+item.url+'"><span class="glyphicon glyphicon-menu-right"></span> '+item['name']+' </a></li>';
+                html += '<li data-parent="' + item.menu_active + '" data-active="' + item.menu_secoud_active + '"><a target="main-frame" href="/admin/' + item.url + '"><span class="glyphicon glyphicon-menu-right"></span><span id=son_id_'+item['id']+'>' + item['name'] + '</span></a></li>';
             }
-            html +='  </ul>';
+            html += '  </ul>';
         }
-        
-        html +='</dd>';
-        html +='</dl>';
+
+        html += '</dd>';
+        html += '</dl>';
         return html;
     }
+
+    function checknotify() {
+        $.ajax({
+            type: "post",
+            url: "{:U('/admin/test/checkNotify')}",
+            dataType: "json",
+            success: function (ret) {
+                if (ret.content == 'true') {
+                    addInformation(ret.id_jygl, ret.name_jygl, ret.number_jcjl);
+                    addSonInfo(ret.id_jcjl,ret.name_jcjl,ret.number_jcjl);
+
+                    addInformation(ret.id_bggl, ret.name_bggl, ret.num_scbg);
+                    addSonInfo(ret.id_scbg,ret.name_scbg,ret.num_scbg);
+                    addSonInfo(ret.id_bgsh,ret.name_bgsh,ret.num_bgsh);
+                    addSonInfo(ret.id_htlb,ret.name_htlb,ret.num_htlb);
+
+                    addInformation(ret.id_xggl, ret.name_xggl, ret.num_htxg);
+                    addSonInfo(ret.id_bgsqxg,ret.name_bgsqxg,ret.num_htxg);
+
+                }
+                else {
+                    removeInformation(ret.id, ret.name);
+                }
+            }
+        })
+    }
+
+    var interval = setInterval(checknotify, 3000);
+
+    function addSonInfo(id,name,num) {
+        var son=$("#"+id);
+        son.html(name + "(" + num + ")");
+    }
+    function addInformation(id, name, num) {
+        var middle=$("#" + id);
+        middle.html(name + "(" + num + ")");
+    }
+
+    function removeInformation(id, name) {
+        $("#" + id).html(name);
+    }
+
+
 </script>
