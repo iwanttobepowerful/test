@@ -976,6 +976,7 @@ class ContractController extends Controller
             $count=$count+1;
             $flag=1;
         }
+
         if(implode(",",$idList['b'])!=$B_id_list){
             $idList['b']=explode(",",$B_id_list);
             $count=$count+1;

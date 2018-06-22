@@ -429,6 +429,15 @@ class AuditController extends Controller {
             D("sampling_form")->where("centreNo='".$centreno."'")->save($data_sample);
         }
         D("report_feedback")->where("id=".$id)->save($data);
+
+        //状态置为0
+        $data_apply = array(
+            'isaudit'=>0,
+            'internalpass'=>0,
+            'status'=>0,
+            'ifback'=>0,
+        );
+        D("contract_flow")->where("centreNo='".$centreno."'")->save($data_apply);
         $rs['msg']="succ";
         $this->ajaxReturn($rs);
     }
@@ -493,7 +502,14 @@ class AuditController extends Controller {
         }
         D("sampling_form")->where("centreNo='".$centreno."'")->save($data_temp);
         D("report_feedback")->where("id=".$id)->save($data);
-
+        //状态置为0
+        $data_apply = array(
+            'isaudit'=>0,
+            'internalpass'=>0,
+            'status'=>0,
+            'ifback'=>0,
+        );
+        D("contract_flow")->where("centreNo='".$centreno."'")->save($data_apply);
         $rs['msg']="succ";
         $this->ajaxReturn($rs);
     }
@@ -588,43 +604,52 @@ class AuditController extends Controller {
             $where6['id'] = array('in', $attr['h']);
             $h = D("test_fee")->where($where6)->select();
         }
-
+        pr($sttr_temp);
         //合同临时表的数据
         if(!empty($sttr_temp['a'])) {
             $where1['id'] = array('in', $sttr_temp['a']);
             $a1 = D("test_fee")->where($where1)->select();
+            if(count($a1)<=0) $a1=-1;
         }else $a1=-1;
         if(!empty($sttr_temp['b'])) {
             $where2['id'] = array('in', $sttr_temp['b']);
             $b1 = D("test_fee")->where($where2)->select();
+            if(count($b1)<=0) $b1=-1;
         }else $b1=-1;
         if(!empty($sttr_temp['c'])) {
             $where3['id'] = array('in', $sttr_temp['c']);
             $c1 = D("test_fee")->where($where3)->select();
+            if(count($c1)<=0) $c1=-1;
         }else $c1=-1;
         if(!empty($sttr_temp['d'])) {
             $where4['id'] = array('in', $sttr_temp['d']);
             $d1 = D("test_fee")->where($where4)->select();
+            if(count($d1)<=0) $d1=-1;
         }else $d1=-1;
         if(!empty($sttr_temp['e'])) {
             $where5['id'] = array('in', $sttr_temp['e']);
             $e1 = D("test_fee")->where($where5)->select();
+            if(count($e1)<=0) $e1=-1;
         }else $e1=-1;
         if(!empty($sttr_temp['f'])) {
             $where6['id'] = array('in', $sttr_temp['f']);
             $f1 = D("test_fee")->where($where6)->select();
+            if(count($f1)<=0) $f1=-1;
         }else $f1=-1;
         if(!empty($sttr_temp['g1'])) {
             $where4['id'] = array('in', $sttr_temp['g1']);
             $g11 = D("test_fee")->where($where4)->select();
+            if(count($g11)<=0) $g11=-1;
         }else $g11=-1;
         if(!empty($sttr_temp['g2'])) {
             $where5['id'] = array('in', $sttr_temp['g2']);
             $g21 = D("test_fee")->where($where5)->select();
+            if(count($g21)<=0) $g21=-1;
         }else $g21=-1;
         if(!empty($sttr_temp['h'])) {
             $where6['id'] = array('in', $sttr_temp['h']);
             $h1 = D("test_fee")->where($where6)->select();
+            if(count($h1)<=0) $h1=-1;
         }else $h1=-1;
 
         $body=array(
