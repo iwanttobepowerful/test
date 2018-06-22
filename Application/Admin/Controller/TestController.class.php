@@ -847,11 +847,13 @@ class TestController extends Controller{
         $data1=array(
             'status'=>2,
             'bz_back'=>0,
+            'back_time'=>null,
             'uploadreport_user_id'=>$userid,
             'uploadreport_time'=>date("Y-m-d H:i:s"),
         );
         M()->startTrans();
         if(D("contract_flow")->where("centreno='{$centreno}'")->save($data1)){
+            //检查退回原因框是否有编制退回的记录，有的话就删除
             D('back_report')->where($where1)->delete();
             $rs['msg'] = "succ";
             M()->commit();
@@ -929,9 +931,9 @@ class TestController extends Controller{
 
 
         if ($if_admin) {
-            $where_jcjl = "status='0'";//检测记录
+            $where_jcjl = "status='0' or (status='7' and bz_back=1)";//一：0合同录入完毕，未接单状态,要通知实验员接单  二：(status='7' and bz_back=1)状态7已接单并且是编制退回的情况下也要通知实验员来处理
         } else {
-            $where_jcjl = "status='0'";//检测记录
+            $where_jcjl = "status='0' or (status='7' and bz_back=1)";//
             if ($department == 'G1') {
                 $where_jcjl .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) <='500'";
             } elseif ($department == 'G2') {
@@ -943,21 +945,6 @@ class TestController extends Controller{
         $bool_jcjl=D("contract_flow")->where($where_jcjl)->select();
         $num_jcjl=D("contract_flow")->where($where_jcjl)->count();
 
-
-        if ($if_admin) {
-            $where_scbg="status='1'";//上传报告
-        } else {
-            $where_scbg="status='1'";//上传报告
-            if ($department == 'G1') {
-                $where_scbg .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) <='500'";
-            } elseif ($department == 'G2') {
-                $where_scbg .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) >'500'";
-            } else {
-                $where_scbg .= " and SUBSTR(contract_flow.centreNo,7,1) = '{$department}'";
-            }
-        }
-        $bool_scbg=D("contract_flow")->where($where_scbg)->select();
-        $num_scbg=D("contract_flow")->where($where_scbg)->count();
 
         if ($if_admin) {
             $where_bgsh="status='2'";//报告审核
@@ -974,21 +961,6 @@ class TestController extends Controller{
         $bool_bgsh=D("contract_flow")->where($where_bgsh)->select();
         $num_bgsh=D("contract_flow")->where($where_bgsh)->count();
 
-
-        if ($if_admin) {
-            $where_htlb="status='8'";//合同列表,8检测完毕,待生成报告
-        } else {
-            $where_htlb="status='8'";//合同列表,8检测完毕,待生成报告
-            if ($department == 'G1') {
-                $where_htlb .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) <='500'";
-            } elseif ($department == 'G2') {
-                $where_htlb .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) >'500'";
-            } else {
-                $where_htlb .= " and SUBSTR(contract_flow.centreNo,7,1) = '{$department}'";
-            }
-        }
-        $bool_htlb=D("contract_flow")->where($where_htlb)->select();
-        $num_htlb=D("contract_flow")->where($where_htlb)->count();
 
         if ($if_admin || $ifxg) {
             $where_xggl="status='0'";//修改管理
@@ -1013,21 +985,9 @@ class TestController extends Controller{
             "id_bgxgsq"=>"son_id_142",
 
 
-            "num_scbg"=>$num_scbg,
-            "name_scbg"=>"上传报告",
-            "name_bggl"=>"报告管理",
-            "id_bggl"=>"menu_id_133",
-            "id_scbg"=>"son_id_134",
-
-
             "num_bgsh"=>$num_bgsh,
             "name_bgsh"=>"报告审核",
             "id_bgsh"=>"son_id_136",
-
-
-            "num_htlb"=>$num_htlb,
-            "name_htlb"=>"合同列表",
-            "id_htlb"=>"son_id_148",
 
 
             "name_qtgl"=>"前台管理",
@@ -1035,11 +995,9 @@ class TestController extends Controller{
             "num_bgwbqf"=>$num_bgwbqf,
             "name_bgwbqf"=>"报告外部签发",
             "id_bgwbqf"=>"son_id_139",
-
-
         );
 
-        if($bool_jcjl !=null || $bool_scbg !=null || $bool_bgsh!=null || $bool_htlb!=null){
+        if($bool_jcjl !=null || $bool_bgsh!=null ){
             $test['content']='true';
         } ;
         $this->ajaxReturn($test);

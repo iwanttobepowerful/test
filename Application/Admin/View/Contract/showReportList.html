@@ -87,17 +87,19 @@
                         <if condition="$con['status']==8 and $con['doc_path'] and !($con['sub_status'] == 1 and $con['if_report'] ==1)">
                             <if condition="($con[to_status]==0 or $con[to_status]==1) and ($con[if_outer]==0)">
                                 <!--如果正在修改则不允许进行操作-->
-                                <button  class="btn btn-primary btn-xs" disabled>确认</button><p></p><else />
+                                <button  class="btn btn-primary btn-xs" disabled>确认</button><p></p>
+                                <button name="btn_change"  class="btn btn-danger btn-xs" disabled><i class="glyphicon glyphicon-remove-circle"></i>退回</button>
+                                <else />
                                 <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="confirmReport('{$con.centreno}')" >确认</a><p></p>
+                                <if condition="$con['isaudit'] eq 0 "><!--未审批并且没有在修改-->
+                                    <button name="btn_change" onclick="onBack('{$con.centreno}')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove-circle"></i>退回</button>
+                                </if>
                             </if></if>
 
                             <!--<if condition="$con['status']==8 and $con['doc_path'] and ($con['sub_status'] == 1 and $con['if_report'] ==1)">
                                 <a href="javascript:void(0);"  class="btn btn-primary btn-xs" onclick="editconfirmReport('{$con.centreno}')" >修改完毕</a><p></p>
                             </if>-->
 
-                            <if condition="$con['isaudit'] eq 0 and (!(($con['sub_status'] == 1 or $con['sub_status'] == 0) and $con['if_report']==1))"><!--未审批并且没有在修改-->
-                                <button name="btn_change" onclick="onBack('{$con.centreno}')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove-circle"></i>退回</button>
-                            </if>
 
                             <if condition=" ($con['sub_status'] == 0) and ($con['if_report'] ==1)">
                                 <span style="color:green">申请修改中</span>

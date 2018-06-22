@@ -209,7 +209,7 @@ class AuditController extends Controller {
                     'internalpass'=>0,
                 );
                 M()->startTrans();
-                if (D("contract_flow")->where("centreno='{$centreno}'")->save($data1) and D("report_feedback")->where("id=" . $id)->save($data)) {
+                if ((D("contract_flow")->where("centreno='{$centreno}'")->save($data1)!==false) and D("report_feedback")->where("id=" . $id)->save($data)) {
                     $replace = D("test_report_temp")->where("centreno='{$centreno}'")->find();
                     $rp = array(
                         "tplno"=>$replace['tplno'],
@@ -221,13 +221,13 @@ class AuditController extends Controller {
                         "pdf_sign_path"=>$replace['pdf_sign_path']
                     );
                     if(D('test_report')->where("centreno = '{$centreno}'")->save($rp)){
-                        pr(22);
+                        //pr(22);
                         M()->commit();
                         $rs['msg'] = 'succ';
                     }else{
                         M()->rollback();
                     }
-                    pr(11);
+                    //pr(11);
                 }
 
             }
