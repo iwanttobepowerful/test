@@ -39,6 +39,11 @@ class ReportController extends Controller
             $where="contract_flow.status =2";
         }
         if(!empty($useraudit)){
+            $data=explode(',',$useraudit);
+            foreach($data as $v){
+                $s .="'".$v."',";
+            }
+            $s=substr($s,0,-1);//利用字符串截取函数消除最后一个逗号
             //先检查是否有G1\G2
             if(strstr($useraudit,'G1')){
                $if_G1 = 1;
