@@ -1430,8 +1430,8 @@ class ContractController extends Controller
         $rs = array('msg'=>'fail');
         $where['centreNo']=$centreno;
         $data_apply = array(
-            //'isaudit'=>0,
-            //'internalpass'=>0,
+            'isaudit'=>0,
+            'internalpass'=>0,
             'status'=>$type_status,
             'ifback'=>0,
             //'back_time'=>null
