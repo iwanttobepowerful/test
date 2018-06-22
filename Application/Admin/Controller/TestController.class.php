@@ -847,11 +847,13 @@ class TestController extends Controller{
         $data1=array(
             'status'=>2,
             'bz_back'=>0,
+            'back_time'=>null,
             'uploadreport_user_id'=>$userid,
             'uploadreport_time'=>date("Y-m-d H:i:s"),
         );
         M()->startTrans();
         if(D("contract_flow")->where("centreno='{$centreno}'")->save($data1)){
+            //检查退回原因框是否有编制退回的记录，有的话就删除
             D('back_report')->where($where1)->delete();
             $rs['msg'] = "succ";
             M()->commit();

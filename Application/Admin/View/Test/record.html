@@ -33,12 +33,12 @@
                             <if condition="($one[sub_status]==0 or $one[sub_status]==1) and ($one[if_report]==0) ">
                                 <button class="btn btn-success btn-xs" disabled>提交审核</button>
                                 <elseif condition="($one[sub_status]==0 or $one[sub_status]==1) and ($one[if_report]==1)"/>
-                                <a href="javascript:void(0);"  class="btn btn-success btn-xs" onclick="editconfirmReport('{$one.centreno}')" >提交审核</a>
+                                <a href="javascript:void(0);"  class="btn btn-success btn-xs" onclick="editconfirmReport('{$one.centreno}')" >提交审核</a><!--申请修改允许后的提交审核-->
                                 <else />
                                 <if condition="$one['ifback'] neq 0 and $one['back_time']">
-                                    <a href="javascript:void(0);" class="btn btn-success btn-xs" onclick="onBack('{$one.centreno}','{$one.ifback}')">提交审核</a>
+                                    <a href="javascript:void(0);" class="btn btn-success btn-xs" onclick="onBack('{$one.centreno}','{$one.ifback}')">提交审核</a><!--退回的提交审核-->
                                     <else />
-                                <a href="javascript:void(0);" class="btn btn-success btn-xs" onclick="doUpdate('{$one.centreno}')">提交审核</a>
+                                <a href="javascript:void(0);" class="btn btn-success btn-xs" onclick="doUpdate('{$one.centreno}')">提交审核</a><!--最普通流程的提交审核-->
                                 </if>
                                 </if>
                         </if>

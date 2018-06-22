@@ -147,6 +147,7 @@ class ReportController extends Controller
             'status'=>4,
             'isaudit'=>1,
             'ifback'=>0,
+            'back_time'=>null,
             'sh_back'=>0,
             'verify_user_id'=>$userid,
             'verify_time'=>date("Y-m-d H:i:s"),
@@ -443,11 +444,12 @@ class ReportController extends Controller
                 'inner_sign_time'=>date("Y-m-d H:i:s"),
                 'inner_sign_user_id'=>$userid,
                 'gz_back'=>0,
-                'ifback'=>0
+                'ifback'=>0,
+                'back_time'=>null,
             );
             M()->startTrans();
             if(D("contract_flow")->where("id=".$id)->save($data)){
-                D('back_report')->where($where1)->delete();
+                D('back_report')->where($where1)->delete();//通过记录全清
                 M()->commit();
                 $rs['msg'] = 'succ';
             }
@@ -541,9 +543,9 @@ class ReportController extends Controller
                     'centreNo'=>$centreno
                 );
             }
-            $where = "centreno = '$centreno' and type = 1";
+            $where = "centreno = '{$centreno}' and type = 1";
             M()->startTrans();
-            D("back_report")->where($where)->delete();
+            D("back_report")->where($where)->delete();//先把之前的记录清掉
             if(D("contract_flow")->where("id=".$id)->save($data) and D("back_report")->add($data1)){
                 M()->commit();
                 $rs['msg'] = '操作成功！';
@@ -855,7 +857,7 @@ class ReportController extends Controller
         );
 
         M()->startTrans();
-        D("back_report")->where($where1)->delete();
+        D("back_report")->where($where1)->delete();//之前的记录先清掉
         if (D("contract_flow")->where($where)->save($data) and D("back_report")->add($data1)) {
             M()->commit();
             $rs['msg'] = '退回成功！';
