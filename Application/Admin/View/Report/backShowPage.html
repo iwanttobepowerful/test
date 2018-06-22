@@ -53,8 +53,10 @@
 <div class="page">
 <volist name="list" id="one" key="i">
     <if condition ="$one['back_reason']">
-
-    <p><span>退回原因{$i}：{$one['back_reason']}</span></p>
+    <p><php>if($one['type'] == 1){echo $one['innername'];}
+        elseif($one['type'] == 2){echo $one['verrifyname'];}
+        else{ echo $one['reportname'];
+        }</php><span>退回原因：{$one['back_reason']}</span></p>
         <hr/>
         <center>
             <img src="{$one['pic_path']}" style="max-width: 90%"/>

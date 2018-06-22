@@ -868,10 +868,17 @@ class ReportController extends Controller
     //退回原因显示框
     public function backShowPage(){
         $centreno = I('centreno');
-        $data = D('back_report')->where("centreNo ='$centreno'")->order("id desc")->select();
+        $data = D('contract_flow as c')->where("c.centreNo ='$centreno'")
+            ->join('common_system_user as a ON c.inner_sign_user_id = a.id')//内部签发人
+            ->join('common_system_user as d ON c.verify_user_id = d.id')//审核人
+            ->join('common_system_user as e ON c.report_user_id = e.id')//生成报告人
+            ->join('back_report as b ON c.centreno = b.centreno')
+            ->field("b.*,c.inner_sign_user_id,c.verify_user_id,c.report_user_id,a.name as innername,d.name as verifyname,e.name as reportname")
+            ->order("b.id desc")->select();
         $body = array(
         'list'=>$data
         );
+        dump($body);
         $this->assign($body);
         $this->display();
     }
