@@ -885,7 +885,6 @@ class ReportController extends Controller
         $body = array(
         'list'=>$data
         );
-        dump($body);
         $this->assign($body);
         $this->display();
     }
