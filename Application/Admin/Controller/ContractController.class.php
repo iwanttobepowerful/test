@@ -536,7 +536,8 @@ class ContractController extends Controller
         $d_id_list = implode(",",$id_list['d']);
         $e_id_list = implode(",",$id_list['e']);
         $f_id_list = implode(",",$id_list['f']);
-        $g_id_list = implode(",",$id_list['g']);
+        $g1_id_list = implode(",",$id_list['g1']);
+        $g2_id_list = implode(",",$id_list['g2']);
         $h_id_list = implode(",",$id_list['h']);
         $body = array(
             'contract'=>$contractItem,
@@ -548,7 +549,8 @@ class ContractController extends Controller
             'd_id_list'=>$d_id_list,
             'e_id_list'=>$e_id_list,
             'f_id_list'=>$f_id_list,
-            'g_id_list'=>$g_id_list,
+            'g1_id_list'=>$g1_id_list,
+            'g2_id_list'=>$g2_id_list,
             'h_id_list'=>$h_id_list,
             //'$testCategory'=>$testCategory
         );
@@ -657,7 +659,6 @@ class ContractController extends Controller
         $G1_id_list = I("G1_id_list");
         $G2_id_list = I("G2_id_list");
         $H_id_list = I("H_id_list");
-
         $Dcopy = I("Dcopy",0,'intval');
         $Drevise = I("Drevise",0,'intval');
         $Dother = I("Dother",0,'intval');
