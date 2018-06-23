@@ -23,7 +23,7 @@ class ReportController extends Controller
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
-        $useraudit=$admin_auth['audit'];
+        $useraudit= $admin_auth['audit'];
         $if_G1 = 0;
         $if_G2 = 0;//能审核的部门是否包含G1\G2，默认没有
         if($user==17){
@@ -36,29 +36,29 @@ class ReportController extends Controller
             }
         }
         else{
-            $where="contract_flow.status =2";
+            $where="contract_flow.status = 2";
         }
         if(!empty($useraudit)){
+
+            //先检查是否有G1\G2
+            if(strstr($useraudit,'G1')){
+               $if_G1 = 1;
+                $useraudit = str_replace('1','',$useraudit);
+            }
+            if(strstr($useraudit,'G2')){
+                $useraudit = str_replace('2','',$useraudit);
+                $if_G2 = 1;
+            }
             $data=explode(',',$useraudit);
             foreach($data as $v){
                 $s .="'".$v."',";
             }
             $s=substr($s,0,-1);//利用字符串截取函数消除最后一个逗号
-            //先检查是否有G1\G2
-            if(strstr($useraudit,'G1')){
-               $if_G1 = 1;
-            }
-            if(strstr($useraudit,'G2')){
-                $if_G2 = 1;
-            }
-            if($if_G1 == 1 and $if_G2 == 1){//两个都选了
-                $where .= "and SUBSTR(contract_flow.centreno,7,1) = 'G'";
-            }
-            elseif ($if_G1 == 0 and $if_G2 == 1){//只选了G2
-                $where .= "and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) > '500'";
+            if ($if_G1 == 0 and $if_G2 == 1){//只选了G2
+                $where .= " and ((SUBSTR(contract_flow.centreno,7,1) in({$s}) and SUBSTR(contract_flow.centreno,7,1) !='G') or (SUBSTR(contract_flow.centreno,7,1) ='G' and SUBSTR(contract_flow.centreno,9,3) > 500))";
             }
             elseif ($if_G1 == 1 and $if_G2 == 0){
-                $where .=" and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) <= '500'";
+                $where .=" and ((SUBSTR(contract_flow.centreno,7,1) in({$s}) and SUBSTR(contract_flow.centreno,7,1) !='G') or (SUBSTR(contract_flow.centreno,7,1) ='G' and SUBSTR(contract_flow.centreno,9,3) <= 500))";
             }
             else{
                 $where .=" and SUBSTR(contract_flow.centreno,7,1) in({$s})";
@@ -83,7 +83,6 @@ class ReportController extends Controller
             ->field('contract_flow.ifback,contract_flow.gz_back,contract_flow.sh_back,contract_flow.bz_back,contract_flow.id,contract_flow.centreNo,contract_flow.status,contract_flow.uploadreport_time,common_system_user.name,test_report.pdf_path,a.centreno1,a.centreno2,a.centreno3')
             ->limit("{$offset},{$pagesize}")
             ->order('contract_flow.back_time desc,contract_flow.report_time desc,contract_flow.id desc')->select();
-        //dump($where);die;
         if($rs){
             $con_list = array();//反馈
             foreach($rs as $contract){
