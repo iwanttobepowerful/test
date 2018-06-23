@@ -900,7 +900,6 @@ class TestController extends Controller{
         $this->assign($data);
         $this->display();
     }
-
     public function checkNotify(){
         //-1合同作废，0合同录入完毕，未接单状态,1生成报告完毕,待上传检测报告制表，
         //2已生成检测报告,待提交审核，3盖章退回，-3审核未通过，4已批准，待内部签发，
@@ -908,66 +907,83 @@ class TestController extends Controller{
 
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $if_admin = $admin_auth['super_admin'];//是否是超级管理员
-        if($admin_auth['gid']==17 || $admin_auth['gid']==16){
-            $ifxg=true;
-        }
-        $user=$admin_auth['gid'];//判断是哪个角色
+        $user = $admin_auth['gid'];//判断是哪个角色
         $department = $admin_auth['department'];
+        if($user == 17 || $user == 16){
+            $ifxg = true;
+        }
+
 
         if ($if_admin) {
             $where_bgwbqf = "status='5'";//报告外部签发
         } else {
             $where_bgwbqf = "status='5'";//报告外部签发
             if ($department == 'G1') {
-                $where_bgwbqf .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) <='500'";
+                $where_bgwbqf .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) <='500'";
             } elseif ($department == 'G2') {
-                $where_bgwbqf .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) >'500'";
+                $where_bgwbqf .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) >'500'";
             } else {
                 $where_bgwbqf .= " and SUBSTR(contract_flow.centreNo,7,1) = '{$department}'";
             }
         }
-        $bool_bgwbqf=D("contract_flow")->where($where_bgwbqf)->select();
-        $num_bgwbqf=D("contract_flow")->where($where_bgwbqf)->count();
+        if ($user==7 || $if_admin ){
+            $bool_bgwbqf=D("contract_flow")->where($where_bgwbqf)->select();
+            $num_bgwbqf=D("contract_flow")->where($where_bgwbqf)->count();
+        }
+        else{
+            $bool_bgwbqf=null;
+            $num_bgwbqf=0;
+        }
 
 
+        //盖章审核
+        if ($if_admin || $user==15) {
+            $where_zwqf = "status='4'";//暂未签发
+            $num_zwqf=D("contract_flow")->where($where_zwqf)->count();
+            $where_nbqf = "status='5'";//内部签发
+            $num_nbqf=D("contract_flow")->where($where_nbqf)->count();
+
+        }else{
+            $num_zwqf=0;
+            $num_nbqf=0;
+        }
+
+
+
+
+        //检测记录
         if ($if_admin) {
-            $where_jcjl = "status='0' or (status='7' and bz_back=1)";//一：0合同录入完毕，未接单状态,要通知实验员接单  二：(status='7' and bz_back=1)状态7已接单并且是编制退回的情况下也要通知实验员来处理
+            $where_jcjl = "(status=0 or (status=7 and bz_back=1) or (status=7 and sh_back=1) or (status=7 and gz_back=1))";//一：0合同录入完毕，未接单状态,要通知实验员接单  二：(status='7' and bz_back=1)状态7已接单并且是编制退回的情况下也要通知实验员来处理,还有报告审核退回，盖章审核退回
         } else {
-            $where_jcjl = "status='0' or (status='7' and bz_back=1)";//
+            $where_jcjl = "(status=0 or (status=7 and bz_back=1) or (status=7 and sh_back=1) or (status=7 and gz_back=1))";
             if ($department == 'G1') {
-                $where_jcjl .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) <='500'";
+                $where_jcjl .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) <='500'";
             } elseif ($department == 'G2') {
-                $where_jcjl .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) >'500'";
+                $where_jcjl .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) >'500'";
             } else {
                 $where_jcjl .= " and SUBSTR(contract_flow.centreNo,7,1) = '{$department}'";
             }
         }
-        $bool_jcjl=D("contract_flow")->where($where_jcjl)->select();
-        $num_jcjl=D("contract_flow")->where($where_jcjl)->count();
-
-
-        if ($if_admin) {
-            $where_bgsh="status='2'";//报告审核
-        } else {
-            $where_bgsh="status='2'";//报告审核
-            if ($department == 'G1') {
-                $where_bgsh .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) <='500'";
-            } elseif ($department == 'G2') {
-                $where_bgsh .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,11) >'500'";
-            } else {
-                $where_bgsh .= " and SUBSTR(contract_flow.centreNo,7,1) = '{$department}'";
-            }
+        if ($user==9 || $if_admin ){
+            $num_jcjl=D("contract_flow")->where($where_jcjl)->count();
         }
-        $bool_bgsh=D("contract_flow")->where($where_bgsh)->select();
-        $num_bgsh=D("contract_flow")->where($where_bgsh)->count();
+        else{
+            $num_jcjl=0;
+        }
+
+
+        if ($if_admin || $user==13) {
+            $where_bgsh="status='2'";//报告审核
+            $num_bgsh=D("contract_flow")->where($where_bgsh)->count();
+        }else{
+            $num_bgsh = 0;
+        }
 
 
         if ($if_admin || $ifxg) {
             $where_xggl="status='0'";//修改管理
         }
-        $bool_xggl=D("report_feedback")->where($where_xggl)->select();
         $num_xggl=D("report_feedback")->where($where_xggl)->count();
-
 
         $test=array(
             "content"=>"true",
@@ -994,12 +1010,15 @@ class TestController extends Controller{
             "id_qtgl"=>"menu_id_101",
             "num_bgwbqf"=>$num_bgwbqf,
             "name_bgwbqf"=>"报告外部签发",
+            'bool_bgwbqf'=>$bool_bgwbqf,
             "id_bgwbqf"=>"son_id_139",
+
+            'num_zwqf'=>$num_zwqf,
+            'num_nbqf'=>$num_nbqf,
+
         );
 
-        if($bool_jcjl !=null || $bool_bgsh!=null ){
-            $test['content']='true';
-        } ;
         $this->ajaxReturn($test);
     }
+
 }
