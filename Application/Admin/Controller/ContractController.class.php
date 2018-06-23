@@ -223,19 +223,20 @@ class ContractController extends Controller
         $department = $admin_auth['department'];
         //ABCEF和G1，G2 三者之间生产单位和委托单位不能共享
         if($department == 'A' || $department == 'B' || $department == 'C' || $department == 'E' || $department == 'F'){
-            $where_same='(clientName="'.$clientName.'" or productUnit="'.$productUnit.'") and collector_partment in("G1","G2")';
+            $where_same='clientName="'.$clientName.'" and collector_partment in("G1","G2")';
             $same_count = D("contract")->where($where_same)->count();
         }else if($department == 'G1'){
-            $where_same='(clientName="'.$clientName.'" or productUnit="'.$productUnit.'")';
+            $where_same='
+            clientName="'.$clientName.'"';
             $where_same.=' and collector_partment in("A","B","C","E","F","G2")';
             $same_count = D("contract")->where($where_same)->count();
         }else if($department == 'G2'){
-            $where_same='(clientName="'.$clientName.'" or productUnit="'.$productUnit.'")';
+            $where_same='clientName="'.$clientName.'"';
             $where_same.=' and collector_partment in("A","B","C","E","F","G1")';
             $same_count = D("contract")->where($where_same)->count();
         }
         if($same_count>0){
-            $rs['msg'] = '委托单位查新未通过';
+            $rs['msg'] = '委托单位未通过查新';
             $this->ajaxReturn($rs);
         }
         //验证手机号
@@ -1041,9 +1042,9 @@ class ContractController extends Controller
                 D("test_cost_temp")->add($cost_temp);
                 D("report_feedback")->add($feedback);
                 M()->commit();
-                $rs['msg'] = '申请成功';
+                $rs['msg'] = 'succ';
             } catch (Exception $e) {
-                $rs['msg'] = '申请失败，请重试！';
+                $rs['msg'] = 'fail';
                 M()->rollback();
             }
         }
@@ -1180,19 +1181,19 @@ class ContractController extends Controller
             $admin_auth = session("admin_auth");
             $department = $admin_auth['department'];
             if($department == 'A' || $department == 'B' || $department == 'C' || $department == 'E' || $department == 'F'){
-                $where_same='(clientName="'.$clientName.'" or productUnit="'.$productUnit.'") and collector_partment in("G1","G2")';
+                $where_same='clientName="'.$clientName.'" and collector_partment in("G1","G2")';
                 $same_count = D("contract")->where($where_same)->count();
             }else if($department == 'G1'){
-                $where_same='(clientName="'.$clientName.'" or productUnit="'.$productUnit.'")';
+                $where_same='clientName="'.$clientName.'"';
                 $where_same.=' and collector_partment in("A","B","C","E","F","G2")';
                 $same_count = D("contract")->where($where_same)->count();
             }else if($department == 'G2'){
-                $where_same='(clientName="'.$clientName.'" or productUnit="'.$productUnit.'")';
+                $where_same='clientName="'.$clientName.'"';
                 $where_same.=' and collector_partment in("A","B","C","E","F","G1")';
                 $same_count = D("contract")->where($where_same)->count();
             }
             if($same_count>0){
-                $rs['msg'] = '委托单位或生产单位不属于'.$department.'部门';
+                $rs['msg'] = '委托单位未通过查新';
                 $this->ajaxReturn($rs);
             }
 
@@ -1792,7 +1793,7 @@ class ContractController extends Controller
                 D("sampling_form_temp")->add($data);
                 D("report_feedback")->add($feedback);
                 M()->commit();
-                $rs['msg'] = '申请成功'.$count;
+                $rs['msg'] = '申请成功';
             } catch (Exception $e) {
                 $rs['msg'] = '申请失败，请重试！';
                 M()->rollback();
