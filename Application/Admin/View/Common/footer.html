@@ -22,6 +22,7 @@
                 }
 
                 if (ret.num_zwqf !=0){
+                    //alert(ret.num_zwqf);
                     tixing("暂未签发中有新通知，请及时处理!");
                 }
 
@@ -29,13 +30,13 @@
         })
     }
 
-    var interval = setInterval(checknotify, 30000);
+    var interval = setInterval(checknotify, 10000);
 
     var popNotice = function (str) {
         if (Notification.permission == "granted") {
             var notification = new Notification("您好：", {
                 body: str,
-                icon: '//image.zhangxinxu.com/image/study/s/s128/mm1.jpg'
+                icon:  '/Public/static/images/logo_company.png'
             });
 
             notification.onclick = function () {
