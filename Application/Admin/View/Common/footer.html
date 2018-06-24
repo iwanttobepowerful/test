@@ -50,6 +50,11 @@
     };
 
     function tixing(str) {
+        if (window.Notification) {
+            alert("yes");
+        }else {
+            alert("no");
+        }
         if (Notification.permission == "granted") {
             popNotice(str);
         } else if (Notification.permission != "denied") {
