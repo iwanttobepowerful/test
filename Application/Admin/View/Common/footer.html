@@ -10,19 +10,23 @@
             success: function (ret) {
                 if (ret.num_bgwbqf != 0) {
                     //alert(ret.num_bgwbqf);
+                    console.log(ret.num_bgwbqf);
                     tixing("报告外部签发中有新通知，请及时处理!");
                 }
                 if (ret.number_jcjl != 0) {
                     //alert(ret.number_jcjl);
+                    console.log(ret.number_jcjl);
                     tixing("待检-在检中有新通知，请及时处理!");
                 }
                 if (ret.num_bgsh !=0){
                     //alert(ret.num_bgsh);
+                    console.log(ret.num_bgsh);
                     tixing("报告审核中有新通知，请及时处理!");
                 }
 
                 if (ret.num_zwqf !=0){
                     //alert(ret.num_zwqf);
+                    console.log(ret.num_zwqf);
                     tixing("暂未签发中有新通知，请及时处理!");
                 }
 
@@ -30,7 +34,7 @@
         })
     }
 
-    var interval = setInterval(checknotify, 10000);
+    var interval = setInterval(checknotify, 30000);
 
     var popNotice = function (str) {
         if (Notification.permission == "granted") {
