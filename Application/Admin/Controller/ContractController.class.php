@@ -2780,7 +2780,7 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
             $department = $special['department'];
             $centreHead=$year.$month;
             //SELECT centreNo,SUBSTR(centreNo,9,3) from contract where ifHighQuantity=0 order by SUBSTR(centreNo,9,3) desc
-            $special = D("contract")->field('centreNo,SUBSTR(centreNo,9,3) as codes')->where('centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)>100')->order('SUBSTR(centreNo,9,3) desc')->find();
+            $special = D("contract")->field('centreNo,SUBSTR(centreNo,9,3) as codes')->where('centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)>100 and collector_partment="'.$department.'"')->order('SUBSTR(centreNo,9,3) desc')->find();
             //pr($special);
             //pr(D("contract")->getLastSql());
             //pr(count($special));
@@ -2802,7 +2802,6 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
             array_push($codeList,$special_no);
             array_push($numList,$num);
         }
-
         //pr(D("contract")->getLastSql());
         //if(count($list)>0){
         //	$centreNo['re']= $list[0]['centreno'];
