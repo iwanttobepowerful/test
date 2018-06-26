@@ -69,7 +69,6 @@
             url: "{:U('/admin/test/checkNotify')}",
             dataType: "json",
             success: function (ret) {
-                // if (ret.content == 'true') {
                 addInformation(ret.id_qtgl,ret.name_qtgl,ret.num_bgwbqf);
                 addSonInfo(ret.id_bgwbqf,ret.name_bgwbqf,ret.num_bgwbqf);
 
@@ -79,14 +78,10 @@
                 addInformation(ret.id_bggl, ret.name_bggl, ret.num_scbg);
                 addSonInfo(ret.id_bgsh,ret.name_bgsh,ret.num_bgsh);
 
+                addInformation(ret.id_xggl, ret.name_xggl, ret.num_xggl);
+                addSonInfo(ret.id_bgxgsq,ret.name_bgxgsq,ret.num_xggl);
 
-                //addInformation(ret.id_xggl, ret.name_xggl, ret.num_xggl);
-                //addSonInfo(ret.id_bgxgsq,ret.name_bgxgsq,ret.num_xggl);
 
-                // }
-                // else {
-                //     removeInformation(ret.id, ret.name);
-                // }
             }
         })
     }

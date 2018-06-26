@@ -24,7 +24,10 @@
                     <option value="4" <php>if($searchby==4){echo 'selected';}</php>>D部门</option>
                     <option value="5" <php>if($searchby==5){echo 'selected';}</php>>E部门</option>
                     <option value="6" <php>if($searchby==6){echo 'selected';}</php>>F部门</option>
-                </select>
+                    <option value="7" <php>if($searchby==6){echo 'selected';}</php>>G1部门</option>
+                    <option value="8" <php>if($searchby==6){echo 'selected';}</php>>G2部门</option>
+                    <option value="9" <php>if($searchby==6){echo 'selected';}</php>>H部门</option>
+            </select>
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-sm">查询</button>
@@ -37,15 +40,18 @@
                 <th width="10%">中心编号</th>
                 <th width="5%">详情</th>
                 <th width="7%"><php>if($de=='A'){echo "应收金额(元)";}elseif($de=='B'){echo "实收金额(元)";}</php></th>
-                <th width="6%">A记录(元)</th>
-                <th width="6%">B记录(元)</th>
-                <th width="6%">C记录(元)</th>
-                <th width="6%">D记录(元)</th>
-                <th width="6%">E记录(元)</th>
-                <th width="6%">F记录(元)</th>
-                <th width="5%">副本(元)</th>
-                <th width="6%">基础费(元)</th>
-                <th width="7%">项目修改(元)</th>
+                <th width="5%">A记录(元)</th>
+                <th width="5%">B记录(元)</th>
+                <th width="5%">C记录(元)</th>
+                <th width="5%">D记录(元)</th>
+                <th width="5%">E记录(元)</th>
+                <th width="5%">F记录(元)</th>
+                <th width="5%">G1记录(元)</th>
+                <th width="5%">G2记录(元)</th>
+                <th width="5%">H记录(元)</th>
+                <th width="4%">副本(元)</th>
+                <th width="4%">基础费(元)</th>
+                <th width="4%">项目修改(元)</th>
                 <th width="5%">其它(元)</th>
                 <th>来样日期</th>
                 <th width="6%">收样人</th>
@@ -61,8 +67,11 @@
                 <td>{$sum.drecord|floatval}</td>
                 <td>{$sum.erecord|floatval}</td>
                 <td>{$sum.frecord|floatval}</td>
+                <td>{$sum.g1record|floatval}</td>
+                <td>{$sum.g2record|floatval}</td>
+                <td>{$sum.hrecord|floatval}</td>
                 <td>{$sum.dcopy|floatval}</td>
-                    <td>{$sum.donline|floatval}</td>
+                <td>{$sum.donline|floatval}</td>
                 <td>{$sum.drevise|floatval}</td>
                 <td>{$sum.dother|floatval}</td>
                 <td colspan="2"></td>
@@ -81,6 +90,9 @@
                     <td>{$one.rdrecord|floatval}</td>
                     <td>{$one.rerecord|floatval}</td>
                     <td>{$one.rfrecord|floatval}</td>
+                    <td>{$one.rg1record|floatval}</td>
+                    <td>{$one.rg2record|floatval}</td>
+                    <td>{$one.rhrecord|floatval}</td>
                     <td>{$one.dcopy|floatval}</td>
                     <td>{$one.donline}</td>
                     <td>{$one.drevise|floatval}</td>
