@@ -3,8 +3,8 @@
     <include file="Common:breadcrumb" />
     <div id="page-inner" class="container">
         <ul class="nav nav-tabs">
-            <li role="presentation" class="active" id="de_A" name="de"><a href="/admin/report/internalIssue?de=A" >暂未签发</a></li>
-            <li role="presentation" id="de_B" name="de"><a href="/admin/report/internalIssue?de=B">内部签发</a></li>
+            <li role="presentation" class="active" id="de_A" name="de"><a href="/admin/report/internalIssue?de=A" ><span id='zwqf'>暂未签发</span></a></li>
+            <li role="presentation" id="de_B" name="de"><a href="/admin/report/internalIssue?de=B"><span id='nbqf'>内部签发</span></a></li>
             <li role="presentation" id="de_C" name="de"><a href="/admin/report/internalIssue?de=C">外部签发</a></li>
             <input type="hidden" id="de_choose" value="{$de}"/>
         </ul>
@@ -224,6 +224,38 @@
     function module(centreno){
         var newurl = "/admin/Report/backShowPage.html?centreno="+centreno//url
         window.open(newurl);
+    }
+    function checknotify() {
+        $.ajax({
+            type: "post",
+            url: "{:U('/admin/test/checkNotify')}",
+            dataType: "json",
+            success: function (ret) {
+                if (ret.content == 'true') {
+                    addInformation('zwqf','暂未签发',ret.num_zwqf);
+
+                    addInformation('nbqf', '内部签发', ret.num_nbqf);
+                }
+                else {
+                    //   removeInformation(ret.id, ret.name);
+                }
+            }
+        })
+    }
+
+    var interval = setInterval(checknotify, 3000);
+
+    function addSonInfo(id,name,num) {
+        var son=$("#"+id);
+        son.html(name + "(" + num + ")");
+    }
+    function addInformation(id, name, num) {
+        var middle=$("#" + id);
+        middle.html(name + "(" + num + ")");
+    }
+
+    function removeInformation(id, name) {
+        $("#" + id).html(name);
     }
 </script>
 <include file="Common:footer" />

@@ -1,5 +1,78 @@
-	<footer>
-		
-	</footer>
+</footer>
 </body>
 </html>
+<script type="text/javascript">
+    function checknotify() {
+        $.ajax({
+            type: "post",
+            url: "{:U('/admin/test/checkNotify')}",
+            dataType: "json",
+            success: function (ret) {
+                if (ret.num_bgwbqf > 0) {
+                    tixing("报告外部签发有新通知，请及时处理!");
+                }
+                if (ret.number_jcjl > 0) {
+                    tixing("待检-在检有新通知，请及时处理!");
+                }
+                if (ret.num_bgsh >0){
+                    tixing("报告审核有新通知，请及时处理!");
+                }
+
+                if (ret.num_zwqf >0){
+                    tixing("暂未签发有新通知，请及时处理!");
+                }
+
+                if (ret.num_nbqf >0){
+                    tixing("内部签发有新通知，请及时处理!");
+                }
+
+                if (ret.num_qtnbxgsq_one > 0) {
+                    tixing("前台内部修改申请（单项修改）有新通知，请及时处理!");
+                }
+
+                if (ret.num_qtnbxgsq_more > 0) {
+                    tixing("前台内部修改申请（多项修改）有新通知，请及时处理!");
+                }
+
+                if (ret.num_bgxgsq > 0) {
+                    tixing("报告申请修改有新通知，请及时处理!");
+                }
+
+                if (ret.num_wbxgsq > 0) {
+                    tixing("外部修改申请有新通知，请及时处理!");
+                }
+                if (ret.num_bhzfsq > 0) {
+                    //alert(ret.num_bhzfsq);
+                    tixing("编号作废申请有新通知，请及时处理!");
+                }
+
+            }
+        })
+    }
+
+    var interval = setInterval(checknotify, 80000);//80000比较合适
+
+    var popNotice = function (str) {
+        if (Notification.permission == "granted") {
+            var notification = new Notification("您好：", {
+                body: str,
+                icon:  '/Public/static/images/logo_company.png'
+            });
+
+            notification.onclick = function () {
+                notification.close();
+            };
+        }
+    };
+
+    function tixing(str) {
+        if (Notification.permission == "granted") {
+            popNotice(str);
+        } else if (Notification.permission != "denied") {
+            Notification.requestPermission(function (permission) {
+                popNotice(str);
+            });
+        }
+    }
+
+</script>

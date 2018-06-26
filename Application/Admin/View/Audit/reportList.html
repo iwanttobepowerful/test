@@ -4,10 +4,10 @@
 	<div id="page-inner" class="container">
 
 		<ul class="nav nav-tabs">
-			<li role="presentation" class="active" id="de_A" name="de"><a href="/admin/audit/reportList?de=A" >前台内部修改申请</a></li>
-			<li role="presentation" id="de_B" name="de"><a href="/admin/audit/reportList?de=B">报告修改申请</a></li>
-			<li role="presentation" id="de_C" name="de"><a href="/admin/audit/reportList?de=C">外部修改申请</a></li>
-			<li role="presentation" id="de_D" name="de"><a href="/admin/audit/reportList?de=D">编号作废申请</a></li>
+			<li role="presentation" class="active" id="de_A" name="de"><a href="/admin/audit/reportList?de=A" ><span id='qtnbxgsq'>前台内部修改申请</span></a></li>
+			<li role="presentation" id="de_B" name="de"><a href="/admin/audit/reportList?de=B"><span id='bgxgsq'>报告修改申请</span></a></li>
+			<li role="presentation" id="de_C" name="de"><a href="/admin/audit/reportList?de=C"><span id='wbxgsq'>外部修改申请</span></a></li>
+			<li role="presentation" id="de_D" name="de"><a href="/admin/audit/reportList?de=D"><span id='bhzfsq'>编号作废申请</span></a></li>
 			<input hidden id="de_choose" value="{$de}">
 			<input hidden id="user_id" value="{$user}">
 		</ul>
@@ -306,6 +306,31 @@
                 }
             }
         });
+    }
+
+    function checknotify() {
+        $.ajax({
+            type: "post",
+            url: "{:U('/admin/test/checkNotify')}",
+            dataType: "json",
+            success: function (ret) {
+                    addInformation('qtnbxgsq','前台内部修改申请',ret.num_qtnbxgsq);
+                    addInformation('bgxgsq','报告修改申请',ret.num_bgxgsq);
+                    addInformation('wbxgsq','外部修改申请',ret.num_wbxgsq);
+                    addInformation('bhzfsq','编号作废申请',ret.num_bhzfsq);
+            }
+        })
+    }
+
+    var interval = setInterval(checknotify, 3000);
+
+    function addInformation(id, name, num) {
+        var middle=$("#" + id);
+        middle.html(name + "(" + num + ")");
+    }
+
+    function removeInformation(id, name) {
+        $("#" + id).html(name);
     }
 
 </script>

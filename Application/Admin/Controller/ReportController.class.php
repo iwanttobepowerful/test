@@ -26,7 +26,7 @@ class ReportController extends Controller
         $useraudit= $admin_auth['audit'];
         $if_G1 = 0;
         $if_G2 = 0;//能审核的部门是否包含G1\G2，默认没有
-        if($user==17){
+        if($user==18){
             $de=I("de",'A');
             if ($de=='A') {
                 $where = "contract_flow.status = 2 ";
@@ -68,7 +68,7 @@ class ReportController extends Controller
         //elseif(($user==17 or $user==13) and empty($useraudit)){//要是角色是审核员，但是什么都不选，默认看不到
             //$where="contract_flow.status = -100";
        // }
-        if($user==8 || $if_admin==1 || $user==13 || $user==17) {//只有领导，审核人员，超级管理员，审核批准员才能审核
+        if($user==8 || $if_admin==1 || $user==13 || $user==18) {//只有领导，审核人员，超级管理员，审核批准员才能审核
             $view="";
         }else{
             $view="disabled";
