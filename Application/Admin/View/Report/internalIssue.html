@@ -224,7 +224,8 @@
     function module(centreno){
         var newurl = "/admin/Report/backShowPage.html?centreno="+centreno//url
         window.open(newurl);
-    }function checknotify() {
+    }
+    function checknotify() {
         $.ajax({
             type: "post",
             url: "{:U('/admin/test/checkNotify')}",

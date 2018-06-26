@@ -1,17 +1,14 @@
 <?php
-
 namespace Admin\Controller;
 use Think\Controller;
 class TestController extends Controller{
     public $user = null;
-
     public function _initialize(){//系统Action类提供了一个初始化方法_initialize接口，可以用于扩展需要，_initialize方法会在所有操作方法调用之前首先执行
         load('@.functions');
         D("account")->checkLogin();
         $this->assign('menu_active',strtolower(CONTROLLER_NAME));
         $this->assign('menu_secoud_active',strtolower(ACTION_NAME));
     }
-
     //工作通知单查询
     public function infoList(){
         $keyword = I("keyword");//获取参数
@@ -19,12 +16,10 @@ class TestController extends Controller{
         $result=M('work_inform_form')->where($where)->field("id,centreno,samplename")->select();
         $body=array(
             'lists'=>$result,
-
         );
         $this->assign($body);
         $this->display();
     }
-
     //工作通知单显示
     public function infoShow(){
         $admin_auth = session("admin_auth");//获取当前登录用户信息
@@ -38,21 +33,20 @@ class TestController extends Controller{
         }
         $keyword = I("id");//获取参数
         $where= "centreNo='{$keyword}'";
-
         $work_inform_form=M('work_inform_form');
         $result=$work_inform_form->where($where)->find();
         $contract_flow=D("contract_flow")->where($where)->field('status')->find();
-		$status=$contract_flow['status'];
-		//判断是否可以打印
-		$ifedit=M('contract')->where($where)->find();
+        $status=$contract_flow['status'];
+        //判断是否可以打印
+        $ifedit=M('contract')->where($where)->find();
         $sub_status=M('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$keyword.'")')->find();
         if(empty($sub_status)){
             $sub_status['status']=-1;
         }
         $body=array(
             'one'=>$result,
-			'ifedit'=>$ifedit,
-			'sub_status'=>$sub_status,
+            'ifedit'=>$ifedit,
+            'sub_status'=>$sub_status,
             'status'=>$status,
             'gid'=>$gid,
             'user'=>$user,
@@ -61,61 +55,51 @@ class TestController extends Controller{
         $this->assign($body);
         $this->display();
     }
-
-
-
     //抽样单查询
     public function sampleList(){
         $keyword = I("keyword");//获取参数
         $where= "centreno='{$keyword}'";
         $result=M('sampling_form')->where($where)->field("id,centreno,clientname,productunit")->select();
-
         $body=array(
             'lists'=>$result,
-
         );
         $this->assign($body);
         $this->display();
     }
-
     //抽样单显示
     public function sampleShow(){
         $keyword = I("id");//获取参数
         $where= "centreno='{$keyword}'";
         $result=M('sampling_form')->where($where)->find();
-		
-		$admin_auth = session("admin_auth");
-		$if_admin = $admin_auth['super_admin'];
-		$roleid = $admin_auth['gid'];
-		
-		$role = D('common_role')->where('id='.$roleid)->find();
-		if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
-			$if_edit = 1;	
-		}else{
-			$if_edit = 0;	
-		}
 
+        $admin_auth = session("admin_auth");
+        $if_admin = $admin_auth['super_admin'];
+        $roleid = $admin_auth['gid'];
+
+        $role = D('common_role')->where('id='.$roleid)->find();
+        if($role['rolename']=="领导" || $if_admin==1 || $role['rolename']=="前台人员"){
+            $if_edit = 1;
+        }else{
+            $if_edit = 0;
+        }
         $simsigndateyear = $result['simsigndate'] ? date("Y",strtotime($result['simsigndate'])):"";
         $simsigndatemonth =  $result['simsigndate'] ? date("m",strtotime($result['simsigndate'])):"";
         $simsigndateday =  $result['simsigndate'] ? date("d",strtotime($result['simsigndate'])):"";
         array_push($result,$simsigndateyear);
         array_push($result,$simsigndatemonth);
         array_push($result,$simsigndateday);
-
         $seasingdateyear =  $result['seasingdate'] ? date("Y",strtotime($result['seasingdate'])):"";
         $seasingdatemonth =  $result['seasingdate'] ? date("m",strtotime($result['seasingdate'])):"";
         $seasingdateday =  $result['seasingdate'] ? date("d",strtotime($result['seasingdate'])):"";
         array_push($result,$seasingdateyear);
         array_push($result,$seasingdatemonth);
         array_push($result,$seasingdateday);
-
         $entsigndateyear =  $result['entsigndate'] ? date("Y",strtotime($result['entsigndate'])):"";
         $entsigndatemonth =  $result['entsigndate'] ? date("m",strtotime($result['entsigndate'])):"";
         $entsigndateday =  $result['entsigndate'] ? date("d",strtotime($result['entsigndate'])):"";
         array_push($result,$entsigndateyear);
         array_push($result,$entsigndatemonth);
         array_push($result,$entsigndateday);
-
         //后面跟着现场上传图片
         $rs=D("sample_picture")->where($where)->field("picture_name")->select();//取出地址
         //换成字符串后再替换
@@ -129,20 +113,20 @@ class TestController extends Controller{
         $s=substr($s,0,-1);//利用字符串截取函数消除最后一个逗号
         $list=str_replace("_thumb","",$s);
         $path=explode(',',$list);
-		
-		//判断是否可以打印
-		$ifedit=M('contract')->where($where)->find();
+
+        //判断是否可以打印
+        $ifedit=M('contract')->where($where)->find();
         $sub_status=M('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$keyword.'")')->find();
         if(empty($sub_status)){
             $sub_status['status']=-1;
         }
-		
+
         $body=array(
             'one'=>$result,
-			'if_edit'=>$if_edit,
+            'if_edit'=>$if_edit,
             'list'=>$path,
-			'sub_status'=>$sub_status,
-			'ifedit'=>$ifedit,
+            'sub_status'=>$sub_status,
+            'ifedit'=>$ifedit,
             'if_admin'=>$if_admin,
             'user'=>$roleid
         );
@@ -192,8 +176,8 @@ class TestController extends Controller{
             else{
                 $where .=" and SUBSTR(contract_flow.centreNo,7,1) = '{$department}'";
             }
-        if(!empty($keyword)){
-            $where .="and contract_flow.centreno like '%{$keyword}%'";
+            if(!empty($keyword)){
+                $where .="and contract_flow.centreno like '%{$keyword}%'";
             }
         }
         if ($user==9 || $if_admin ==1) {//只有报告编制员，超级管理员才能操作
@@ -266,14 +250,14 @@ class TestController extends Controller{
         $if_admin = $admin_auth['super_admin'];//是否是超级管理员
         //$role = D('common_role')->where('id='.$user)->find();
         if ($user==9 || $if_admin ==1) {
-        $data=array(
-            'status'=>7,
-            'takelist_time'=>date("Y-m-d H:i:s"),
-            'takelist_user_id'=>$userid,
-        );
-        if(D("contract_flow")->where($where)->save($data)){
-            $rs['msg'] = 'succ';
-        }}
+            $data=array(
+                'status'=>7,
+                'takelist_time'=>date("Y-m-d H:i:s"),
+                'takelist_user_id'=>$userid,
+            );
+            if(D("contract_flow")->where($where)->save($data)){
+                $rs['msg'] = 'succ';
+            }}
         $this->ajaxReturn($rs);
     }
 //检测记录上传完毕按钮
@@ -285,11 +269,9 @@ class TestController extends Controller{
             $rs['msg'] = 'error';
             $this->ajaxReturn($rs);
         }
-            $rs = array("msg"=>"fail");
-
+        $rs = array("msg"=>"fail");
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
-
         $data=array(
             'status'=>8,
             'takelist_all_time'=>date("Y-m-d H:i:s"),
@@ -310,7 +292,6 @@ class TestController extends Controller{
             $this->ajaxReturn($rs);
         }
         $rs = array("msg"=>"fail");
-
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
         $data=array(
@@ -347,7 +328,6 @@ class TestController extends Controller{
         $Page       = new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
         $pagination       = $Page->show();// 分页显示输出
-
         $body=array(
             'pic' => $pic,
             'lists'=>$result,
@@ -359,7 +339,6 @@ class TestController extends Controller{
         $this->assign($body);
         $this->display();
     }
-
     /*public function picUp(){
         $id =I("id",0,'intval');
         $centreno=I("centreno");//!!!!!!!!!!!!!!!!!!!!!!!
@@ -373,7 +352,6 @@ class TestController extends Controller{
         $this->assign($body);
         $this->display();
     }*/
-
     public function doUploadPic(){
         $id = I("id",0,'intval');
         $centreno=I("centreno");//!!!!!!!!!!!!!!!!
@@ -382,7 +360,6 @@ class TestController extends Controller{
         //截掉后缀名
         $name = strpos($filename,".");
         $filename = substr($filename,0,$name);
-
         $result = array("msg"=>"fail");
         if(empty($imgurl)){
             $result['msg'] = "无效的提交！";
@@ -405,7 +382,6 @@ class TestController extends Controller{
         }
         $this->ajaxReturn($result);
     }
-
     public function doDeletePic(){
         $id =I("id",0,'intval');
         $rs = array("msg"=>"fail");
@@ -426,14 +402,12 @@ class TestController extends Controller{
         $where1= "centreno='{$id}'";
         if($type == 1){
             $rs=D("sample_picture")->where($where)->field('picture_name')->select();
-
         }
         elseif ($type == 2){
             $rs=D("test_record")->where($where1)->field('path')->select();
         }
         else{
             $rs=D("test_record")->where($where)->field('path')->select();
-
         }
         //换成字符串后再替换
         foreach ($rs as $v){
@@ -483,7 +457,7 @@ class TestController extends Controller{
             ->join('left join contract as a on contract_flow .centreno=a.centreno left join test_report as t on contract_flow .centreno=t.centreno')
             ->field('contract_flow .*,a.*,t.path,t.doc_path,t.pdf_path')
             ->order('contract_flow.back_time desc,contract_flow .report_time desc,a.id desc')->limit("{$offset},{$pagesize}")->select();
-            //当已经生成报告，状态为1的时候，才能上传检测报告
+        //当已经生成报告，状态为1的时候，才能上传检测报告
         if($list){
             $con_list = array();//反馈
             foreach($list as $contract){
@@ -512,11 +486,11 @@ class TestController extends Controller{
         $Page       = new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
         $pagination       = $Page->show();// 分页显示输出
-            $body=array(
-                'pagination'=>$pagination,
-                'lists'=>$list,
-            );
-            $this->assign($body);
+        $body=array(
+            'pagination'=>$pagination,
+            'lists'=>$list,
+        );
+        $this->assign($body);
         $this->display();
     }
 //上传检测报告显示列表
@@ -532,7 +506,6 @@ class TestController extends Controller{
         $Page       = new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
         $pagination       = $Page->show();// 分页显示输出
-
         $body=array(
             'lists'=>$result,
             'pagination'=>$pagination,
@@ -541,7 +514,6 @@ class TestController extends Controller{
         $this->assign($body);
         $this->display();
     }
-
 //上传检测报告页面
     public function recordUpload(){
         //$id =I("id",0,'intval');
@@ -557,7 +529,6 @@ class TestController extends Controller{
         $this->assign($body);
         $this->display();
     }
-
 //上传检测报告提交word
     public function doUp(){
         $id =I("id",0,'intval');//test_report的id
@@ -565,7 +536,6 @@ class TestController extends Controller{
         $where= "centreno='{$centreno}'";
         $fileurl = I("fileurl");
         $result = array("msg"=>"fail");
-
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
         if(empty($fileurl)){
@@ -574,7 +544,6 @@ class TestController extends Controller{
         }
         $report = D("test_report")->where("centreno='{$centreno}'")->find();
         $report['tplno'] && $tpl = D("tpl")->where("id=".$report['tplno'])->find();
-
         //pdf转换
         $data = array(
             //"centreNo"=>$centreno,
@@ -582,7 +551,6 @@ class TestController extends Controller{
             'modify_time'=>date("Y-m-d H:i:s"),
         );
         //$pdf = convert2Pdf(ROOT_PATH,$data['path'],$centreno);
-
         $imgFiles = array();//delete image
         //$distfile = "/Public/attached/2017-11-21/SJ-4-77_2017_01.pdf";
         //转image,在测试服务器上测试，本地需要配置环境
@@ -609,12 +577,10 @@ class TestController extends Controller{
             //再转换成pdf
             //$pdf = './Public/attached/report/'.$centreno.'.pdf';
             //convertImageToPdf(ROOT_PATH,substr($pdf,1),$imageFiles);
-
             $imgFiles = $imageFiles;
             //对外签加公章
             if(file_exists($imageFiles[0]) && file_exists($imageFiles[1])){
                 $baseinfo = pathinfo($imageFiles[0]);
-
                 if($tpl['subtype'] == 2){
                     //小中心
                     $tmpSavefile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-mark.'.$baseinfo['extension'];
@@ -625,13 +591,10 @@ class TestController extends Controller{
                     //带mark的pdf
                     @rename($tmpSavefile2,$imageFiles[0]);
                     $imgFiles[] = $tmpSavefile;
-
                     //图二带章
                     $baseinfo = pathinfo($imageFiles[1]);
                     $tmpSavefile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-mark2.'.$baseinfo['extension'];
                     waterMark($imageFiles[1],'./Public/static/images/sealB.png',$tmpSavefile,array(1600,2380));
-
-
                 }else{
                     //大中心
                     $tmpSavefile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-mark.'.$baseinfo['extension'];
@@ -645,33 +608,25 @@ class TestController extends Controller{
                     //带mark的pdf
                     @rename($tmpSavefile3,$imageFiles[0]);
                     $imgFiles[] = $tmpSavefile2;
-
                     //图二带章
                     $baseinfo = pathinfo($imageFiles[1]);
                     $tmpSavefile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-mark2.'.$baseinfo['extension'];
                     waterMark($imageFiles[1],'./Public/static/images/sealA.png',$tmpSavefile,array(1600,2400));
-
-
                 }
-                
+
                 //左上角章
                 $tmpSavefile2 = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-sign2.'.$baseinfo['extension'];
                 waterMark($tmpSavefile,'./Public/static/images/sign.png',$tmpSavefile2,array(350,0));
-                @rename($tmpSavefile2,$imageFiles[1]);               
+                @rename($tmpSavefile2,$imageFiles[1]);
 //加水印
-
                 //再转换成pdf
                 $signPdf = './Public/attached/report/'.$centreno.'-sign.pdf';
                 convertImageToPdf(ROOT_PATH,substr($signPdf,1),$imageFiles,1024,'./Public/static/images/wmfull.png');
-
                 $imgFiles[] = $tmpSavefile;
                 $imgFiles[] = $tmpSavefile2;
             }
             $data['pdf_path'] = $data['path'];
             $data['pdf_sign_path'] = substr($signPdf,1);
-
-
-
             if(D("test_report")->where("centreno='{$centreno}'")->save($data)){
                 if($imgFiles){
                     foreach ($imgFiles as $value) {
@@ -703,7 +658,6 @@ class TestController extends Controller{
         $centreno=I("centreno");
         $fileurl = I("fileurl");
         $result = array("msg"=>"fail");
-
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $userid=$admin_auth['id'];
         if(empty($fileurl)){
@@ -712,7 +666,6 @@ class TestController extends Controller{
         }
         $report = D("test_report_temp")->where("centreno='{$centreno}'")->find();
         $report['tplno'] && $tpl = D("tpl")->where("id=".$report['tplno'])->find();
-
         //pdf转换
         $data = array(
             //"centreNo"=>$centreno,
@@ -720,13 +673,11 @@ class TestController extends Controller{
             'modify_time'=>date("Y-m-d H:i:s"),
         );
         //$pdf = convert2Pdf(ROOT_PATH,$data['path'],$centreno);
-
         $imgFiles = array();//delete image
         //$distfile = "/Public/attached/2017-11-21/SJ-4-77_2017_01.pdf";
         //转image,在测试服务器上测试，本地需要配置环境
         //demo
         $imageFiles = convertPdf2Image(ROOT_PATH,$data['path'],$centreno);
-
         if($imageFiles){
             //转换成功,合并二维码
             /*
@@ -748,12 +699,10 @@ class TestController extends Controller{
             //再转换成pdf
             //$pdf = './Public/attached/report/'.$centreno.'.pdf';
             //convertImageToPdf(ROOT_PATH,substr($pdf,1),$imageFiles);
-
             $imgFiles = $imageFiles;
             //对外签加公章
             if(file_exists($imageFiles[0]) && file_exists($imageFiles[1])){
                 $baseinfo = pathinfo($imageFiles[0]);
-
                 if($tpl['subtype'] == 2){
                     //小中心
                     $tmpSavefile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-mark.'.$baseinfo['extension'];
@@ -764,13 +713,10 @@ class TestController extends Controller{
                     //带mark的pdf
                     @rename($tmpSavefile2,$imageFiles[0]);
                     $imgFiles[] = $tmpSavefile;
-
                     //图二带章
                     $baseinfo = pathinfo($imageFiles[1]);
                     $tmpSavefile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-mark2.'.$baseinfo['extension'];
                     waterMark($imageFiles[1],'./Public/static/images/sealB.png',$tmpSavefile,array(1600,2380));
-
-
                 }else{
                     //大中心
                     $tmpSavefile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-mark.'.$baseinfo['extension'];
@@ -784,33 +730,24 @@ class TestController extends Controller{
                     //带mark的pdf
                     @rename($tmpSavefile3,$imageFiles[0]);
                     $imgFiles[] = $tmpSavefile2;
-
                     //图二带章
                     $baseinfo = pathinfo($imageFiles[1]);
                     $tmpSavefile = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-mark2.'.$baseinfo['extension'];
                     waterMark($imageFiles[1],'./Public/static/images/sealA.png',$tmpSavefile,array(1600,2400));
-
-
                 }
-
                 //左上角章
                 $tmpSavefile2 = $baseinfo['dirname'] . '/'.$baseinfo['filename'].'-sign2.'.$baseinfo['extension'];
                 waterMark($tmpSavefile,'./Public/static/images/sign.png',$tmpSavefile2,array(350,0));
                 @rename($tmpSavefile2,$imageFiles[1]);
 //加水印
-
                 //再转换成pdf
                 $signPdf = './Public/attached/report_temp/'.$centreno.'-sign.pdf';
                 convertImageToPdf(ROOT_PATH,substr($signPdf,1),$imageFiles,1024,'./Public/static/images/wmfull.png');
-
                 $imgFiles[] = $tmpSavefile;
                 $imgFiles[] = $tmpSavefile2;
             }
             $data['pdf_path'] = $data['path'];
             $data['pdf_sign_path'] = substr($signPdf,1);
-
-
-
             if(D("test_report_temp")->where("centreno='{$centreno}'")->save($data)){
                 if($imgFiles){
                     foreach ($imgFiles as $value) {
@@ -884,7 +821,7 @@ class TestController extends Controller{
         }
         $this->ajaxReturn($rs);
     }
-        //删除（不用改）
+    //删除（不用改）
     public function doDeleteReport(){
         $id =I("id",0,'intval');
         $rs = array("msg"=>"fail");
@@ -904,15 +841,10 @@ class TestController extends Controller{
         //-1合同作废，0合同录入完毕，未接单状态,1生成报告完毕,待上传检测报告制表，
         //2已生成检测报告,待提交审核，3盖章退回，-3审核未通过，4已批准，待内部签发，
         //-4批准未通过,5内部已经签发，待外部签发,6外部签发7已接单8检测完毕,待生成报告
-
         $admin_auth = session("admin_auth");//获取当前登录用户信息
         $if_admin = $admin_auth['super_admin'];//是否是超级管理员
         $user = $admin_auth['gid'];//判断是哪个角色
         $department = $admin_auth['department'];
-        if($user == 17 || $user == 16){
-            $ifxg = true;
-        }
-
 
         if ($if_admin) {
             $where_bgwbqf = "status='5'";//报告外部签发
@@ -927,11 +859,9 @@ class TestController extends Controller{
             }
         }
         if ($user==7 || $if_admin ){
-            $bool_bgwbqf=D("contract_flow")->where($where_bgwbqf)->select();
             $num_bgwbqf=D("contract_flow")->where($where_bgwbqf)->count();
         }
         else{
-            $bool_bgwbqf=null;
             $num_bgwbqf=0;
         }
 
@@ -940,6 +870,7 @@ class TestController extends Controller{
         if ($if_admin || $user==15) {
             $where_zwqf = "status='4'";//暂未签发
             $num_zwqf=D("contract_flow")->where($where_zwqf)->count();
+
             $where_nbqf = "status='5'";//内部签发
             $num_nbqf=D("contract_flow")->where($where_nbqf)->count();
 
@@ -947,9 +878,6 @@ class TestController extends Controller{
             $num_zwqf=0;
             $num_nbqf=0;
         }
-
-
-
 
         //检测记录
         if ($if_admin) {
@@ -971,19 +899,60 @@ class TestController extends Controller{
             $num_jcjl=0;
         }
 
-
+        //报告审核
         if ($if_admin || $user==13) {
-            $where_bgsh="status='2'";//报告审核
+            $where_bgsh="status='2'";
             $num_bgsh=D("contract_flow")->where($where_bgsh)->count();
         }else{
             $num_bgsh = 0;
         }
 
 
-        if ($if_admin || $ifxg) {
-            $where_xggl="status='0'";//修改管理
+        //前台内部修改申请
+        if ($if_admin || $user==17){//单项修改的
+            $where_qtnbxgsq_one="status=0 and if_outer=0 and if_report=0  and if_invalid=0 and role_id=17";
+            $num_qtnbxgsq_one=D("report_feedback")->where($where_qtnbxgsq_one)->count();
+        }else{
+            $num_qtnbxgsq_one=0;
         }
-        $num_xggl=D("report_feedback")->where($where_xggl)->count();
+
+        if ($if_admin || $user==16){//多项修改的
+            $where_qtnbxgsq_more="status=0 and if_outer=0 and if_report=0  and if_invalid=0 and role_id=16";
+            $num_qtnbxgsq_more=D("report_feedback")->where($where_qtnbxgsq_more)->count();
+        }else{
+            $num_qtnbxgsq_more=0;
+        }
+
+        if($user==16){
+            $num_qtnbxgsq = $num_qtnbxgsq_more;
+        }elseif ($user==17){
+            $num_qtnbxgsq = $num_qtnbxgsq_one;
+        }
+
+        //报告修改申请
+        if ($user==16 || $if_admin || $user==17){
+            $where_bgxgsq = "status=0 and if_report=1";
+            $num_bgxgsq=D("report_feedback")->where($where_bgxgsq)->count();
+        }else{
+            $num_bgxgsq=0;
+        }
+
+        //外部修改申请
+        if ($user==16 || $if_admin){
+            $where_wbxgsq = "status=0 and if_outer=1";
+            $num_wbxgsq = D("report_feedback")->where($where_wbxgsq)->count();
+        }else{
+            $num_wbxgsq=0;
+        }
+
+        //编号作废申请
+        if ($user==16 || $if_admin){
+            $where_bhzfsq = "status=0 and if_invalid=1";
+            $num_bhzfsq = D("report_feedback")->where($where_bhzfsq)->count();
+        }else{
+            $num_bhzfsq=0;
+        }
+
 
         $test=array(
             "content"=>"true",
@@ -992,33 +961,32 @@ class TestController extends Controller{
             "name_jygl"=>"检验管理",
             "id_jygl"=>"menu_id_105",
             "id_jcjl"=>"son_id_132",
-
-
             "num_xggl"=>$num_xggl,
             "name_xggl"=>"修改管理",
             "name_bgxgsq"=>"报告修改申请",
             "id_xggl"=>"menu_id_111",
             "id_bgxgsq"=>"son_id_142",
-
-
             "num_bgsh"=>$num_bgsh,
             "name_bgsh"=>"报告审核",
+
             "id_bgsh"=>"son_id_136",
-
-
             "name_qtgl"=>"前台管理",
             "id_qtgl"=>"menu_id_101",
             "num_bgwbqf"=>$num_bgwbqf,
             "name_bgwbqf"=>"报告外部签发",
-            'bool_bgwbqf'=>$bool_bgwbqf,
+
             "id_bgwbqf"=>"son_id_139",
 
             'num_zwqf'=>$num_zwqf,
             'num_nbqf'=>$num_nbqf,
+            'num_qtnbxgsq_one'=>$num_qtnbxgsq_one,
+            'num_qtnbxgsq_more'=>$num_qtnbxgsq_more,
+            'num_qtnbxgsq'=>$num_qtnbxgsq,
+            'num_bgxgsq'=>$num_bgxgsq,
+            'num_wbxgsq'=>$num_wbxgsq,
+            'num_bhzfsq'=>$num_bhzfsq,
 
         );
-
         $this->ajaxReturn($test);
     }
-
 }
