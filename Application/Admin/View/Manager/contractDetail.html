@@ -485,11 +485,18 @@
                                     $str.="(".$cost["rfrecord"].")(F)+";
                                 }
                             }
-                            if($cost["rgrecord"]!=0){
-                                if($cost["rgrecord"]>0){
-                                    $str.=$cost["rgrecord"]."(G)+";
+                            if($cost["rg1record"]!=0){
+                                if($cost["rg1record"]>0){
+                                    $str.=$cost["rg1record"]."(G1)+";
                                 }else{
-                                    $str.="(".$cost["rgrecord"].")(G)+";
+                                    $str.="(".$cost["rg1record"].")(G1)+";
+                                }
+                            }
+                            if($cost["rg2record"]!=0){
+                                if($cost["rg2record"]>0){
+                                    $str.=$cost["rg2record"]."(G2)+";
+                                }else{
+                                    $str.="(".$cost["rg2record"].")(G2)+";
                                 }
                             }
                             if($cost["rhrecord"]!=0){

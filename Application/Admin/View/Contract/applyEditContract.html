@@ -435,9 +435,15 @@
                     }else if(data.msg=="none"){
                         alert("您没有修改内容，无法申请");
                         return;
+                    }else if(data.msg=="succ"){
+                        alert("申请成功");
+                        window.location.href="{:U('/admin/contract/showList')}";
+                    }else if(data.msg=='fail'){
+                        alert('申请失败，请重试！');
+                        window.location.href="{:U('/admin/contract/showList')}";
                     }else{
                         alert(data.msg);
-                        window.location.href="{:U('/admin/contract/showList')}";
+                        return;
                     }
                 }
             };
