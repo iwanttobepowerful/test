@@ -179,7 +179,7 @@ class TestReportController extends Controller
             if(@file_exists($dst)){
                 @unlink($dst);
             }
-            $qrcode = $this->qrcode($centreNo,getCurrentHost().'/admin/seeReport/pdf?no='.$centreNo);
+            $qrcode = $this->qrcode($centreNo,getCurrentHost().'/admin/seeReport/pdf?no='.$newCentreNo);
             convert2Word($data,$src,$dst,$qrcode);
 
 
@@ -277,7 +277,7 @@ class TestReportController extends Controller
             if(@file_exists($dst1)){
                 @unlink($dst1);
             }
-            $qrcode = $this->qrcode_1($centreNo,getCurrentHost().'/admin/seeReport/pdf?no='.$centreNo);
+            $qrcode = $this->qrcode_1($centreNo,getCurrentHost().'/admin/seeReport/pdf?no='.$newCentreNo);
             convert2Word($data,$src,$dst1,$qrcode);
 
 
