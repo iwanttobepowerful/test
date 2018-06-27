@@ -849,6 +849,8 @@ class ReportController extends Controller
             'status' => 7,
             'ifback'=>3,
             'bz_back'=>1,
+            'report_user_id'=>$userid,
+            'report_time'=>date("Y-m-d H:i:s"),
             'back_time'=>date("Y-m-d H:i:s"),
 
         );

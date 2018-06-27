@@ -54,7 +54,7 @@
 <volist name="list" id="one" key="i">
     <if condition ="$one['back_reason']">
     <p><php>if($one['type'] == 1){echo $one['innername'];}
-        elseif($one['type'] == 2){echo $one['verrifyname'];}
+        elseif($one['type'] == 2){echo $one['verifyname'];}
         else{ echo $one['reportname'];
         }</php><span>退回原因：{$one['back_reason']}</span></p>
         <hr/>
