@@ -113,7 +113,7 @@ class ReportController extends Controller
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
         $pagination= $Page->show();// 分页显示输出
-        if($user==17){
+        if($user==18){
             $body = array(
                 'rs'=>$rs,
                 'de'=>$de,
@@ -146,7 +146,7 @@ class ReportController extends Controller
         $centreno =$check['centreno'];
         $where1 = "centreno = '$centreno' and type = 2";
         //$role = D('common_role')->where('id='.$user)->find();
-        if($user==8 || $if_admin==1 || $user==13 || $user==17) {
+        if($user==8 || $if_admin==1 || $user==13 || $user==18) {
         $data=array(
             'status'=>4,
             'isaudit'=>1,
@@ -231,7 +231,7 @@ class ReportController extends Controller
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
         //$role = D('common_role')->where('id='.$user)->find();
-        if($user==8 || $if_admin==1 || $user==13 || $user==17) {
+        if($user==8 || $if_admin==1 || $user==13 || $user==18) {
             if($sortby ==7){
                 $data=array(
                     'status'=>7,
