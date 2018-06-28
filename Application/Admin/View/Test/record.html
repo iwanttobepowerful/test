@@ -30,9 +30,9 @@
                         <a href="{:U('/admin/test/recordUpload')}?centreno={$one.centreno}" class="btn btn-primary btn-xs" >检测报告上传</a></if>
                         <if condition="$one[pdf_path]">
                             <a href="javascript:void(0);" class="btn btn-info btn-xs" name="{$one.pdf_path}" onclick="return Check(this);">报告预览</a>
-                            <if condition="($one[sub_status]==0 or $one[sub_status]==1) and ($one[if_report]==0) ">
+                            <if condition="($one[sub_status]==0 or $one[sub_status]==1)">
                                 <button class="btn btn-success btn-xs" disabled>提交审核</button>
-                                <elseif condition="($one[sub_status]==0 or $one[sub_status]==1) and ($one[if_report]==1)"/>
+                                <elseif condition="($one[sub_status]==1) and ($one[if_report]==1)"/>
                                 <a href="javascript:void(0);"  class="btn btn-success btn-xs" onclick="editconfirmReport('{$one.centreno}')" >提交审核</a><!--申请修改允许后的提交审核-->
                                 <else />
                                 <if condition="$one['ifback'] neq 0 and $one['back_time']">
