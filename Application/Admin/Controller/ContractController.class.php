@@ -2377,20 +2377,30 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
         $rs = array('msg'=>'fail');
         $centreno = I('back_centreno');
         $reason = I('back_reason');
-
-        $data = array(
-            'centreNo'=>$centreno,
-            'reason'=>$reason,
-            'if_report'=>1
-        );
-        M()->startTrans();
-        if(D('report_feedback')->add($data)){
-            $rs['msg']='succ';
-            //申请中  审核单不可修改
-            M()->commit();
-        }else{
-            $rs['msg']='申请失败';
-            M()->rollback();
+        $a=D('report_feedback')->where('id = (SELECT max(id) from report_feedback WHERE centreNo="'.$centreno.'") and (status=0 or status=1)')->find();
+        if(!empty($a)){
+            if($a['if_report']==1){
+                $rs['msg']='该申请审核员正在处理中，请勿重复提交！';
+            }
+            elseif($a['if_report']==0){
+                $rs['msg']='该报告前台正在申请修改，请稍后再试';
+            }
+        }
+        else{
+            $data = array(
+                'centreNo'=>$centreno,
+                'reason'=>$reason,
+                'if_report'=>1
+            );
+            M()->startTrans();
+            if(D('report_feedback')->add($data)){
+                $rs['msg']='succ';
+                //申请中  审核单不可修改
+                M()->commit();
+            }else{
+                $rs['msg']='申请失败';
+                M()->rollback();
+            }
         }
 
         $this->ajaxReturn($rs);
