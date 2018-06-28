@@ -65,7 +65,7 @@
                         <if condition="$con.flow_id != -1">
                             <a href="/admin/test/infoShow?id={$con.centreno}"  class="btn btn-info btn-xs" >检验工作通知单</a>
                         </if>
-                        <if condition="$leader==1 or $if_admin==1"><!--如果是领导-->
+                        <if condition="$leader==1 or $if_edit==1"><!--如果是领导-->
                             <a href="javascript:void(0);" class="btn btn-info btn-xs" onclick="recordDetail('{$con.centreno}')">检测记录</a>
                             <if condition="$con['pdf_path'] ">
                             <a href="javascript:void(0);" class="btn btn-info btn-xs" name="{$con.pdf_path}" onclick="return Check(this);">检测报告</a></if>
