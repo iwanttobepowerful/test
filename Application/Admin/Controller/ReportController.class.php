@@ -877,8 +877,7 @@ class ReportController extends Controller
     public function backShowPage(){
         $centreno = I('centreno');
         $data = D('contract_flow as c')->where("c.centreNo ='{$centreno}'")
-            ->join('LEFT JOIN common_system_user as a ON c.inner_sign_user_id = a.id LEFT JOIN common_system_user as d ON c.verify_user_id = d.id left join common_system_user as e ON c.report_user_id = e.id')
-            ->join('back_report as b ON c.centreNo = b.centreNo')
+            ->join('LEFT JOIN common_system_user as a ON c.inner_sign_user_id = a.id LEFT JOIN common_system_user as d ON c.verify_user_id = d.id left join common_system_user as e ON c.report_user_id = e.id LEFT JOIN back_report as b ON c.centreNo = b.centreNo')
             ->field("b.*,c.inner_sign_user_id,c.verify_user_id,c.report_user_id,a.name as innername,d.name as verifyname,e.name as reportname")
             ->order("b.id desc")->select();
         $body = array(
