@@ -52,7 +52,7 @@
 <h2 style="text-align: center">退回原因</h2>
 <div class="page">
 <volist name="list" id="one" key="i">
-    <if condition ="$one['back_reason']">
+    <if condition ="$one['centreNo']">
     <p><php>if($one['type'] == 1){echo $one['innername'];}
         elseif($one['type'] == 2){echo $one['verifyname'];}
         else{ echo $one['reportname'];
