@@ -99,8 +99,10 @@
 						<td>{$one.reason}</td>
 						<td>
 							<if condition="$one['sub_status'] ==0 or $one['sub_status'] ==2">
-								<a class="btn btn-info btn-xs" href="{$one.pdf_path}" target="_blank">原报告</a></if>
-							<a class="btn btn-info btn-xs" href="{$one.temp_pdf_path}" target="_blank">修改后的报告</a>
+								<a class="btn btn-info btn-xs" href="{$one.pdf_path}" target="_blank">原报告</a>
+							</if>
+							<if condition="$one['sub_status'] ==0 or $one['sub_status'] ==1 or $one['sub_status'] ==3">
+								<a class="btn btn-info btn-xs" href="{$one.temp_pdf_path}" t3rget="_blank">修改后的报告</a></if>
 						</td>
 						<td>{$one.create_time}</td>
 						<td>

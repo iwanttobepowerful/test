@@ -56,7 +56,19 @@ class SeeReportController extends Controller
     public function pdf(){
         $centreno = I('no');
         if($centreno){
+            /*$length =substr($centreno,-2);
+            if($length !== 'G1' and $length !== 'G2' and $length !== 'G3'){//代表没修改
+                $contract = D("contract")->where("centreno='{$centreno}' and centreno1='' and centreno2='' and centreno3=''")->find();
+            }elseif($length == 'G1'){
+                $contract = D("contract")->where("centreno1='{$centreno}' and centreno2='' and centreno3=''")->find();
+            }elseif($length == 'G2'){
+                $contract = D("contract")->where("centreno2='{$centreno}' and centreno3='' ")->find();
+            }
+            elseif($length == 'G3'){
+                $contract = D("contract")->where("centreno3='{$centreno}'")->find();
+            }*/
             $contract = D("contract")->where("centreno='{$centreno}' or centreno1='{$centreno}' or centreno2='{$centreno}' or centreno3='{$centreno}'")->find();
+
 
             $report = D('test_report')->where("centreno='{$contract['centreno']}'")->find();
 

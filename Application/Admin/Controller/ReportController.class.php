@@ -113,7 +113,7 @@ class ReportController extends Controller
         $Page= new \Think\Page($count,$pagesize);
         $Page->setConfig('theme',"<ul class='pagination'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
         $pagination= $Page->show();// 分页显示输出
-        if($user==17){
+        if($user==18){
             $body = array(
                 'rs'=>$rs,
                 'de'=>$de,
@@ -146,7 +146,7 @@ class ReportController extends Controller
         $centreno =$check['centreno'];
         $where1 = "centreno = '$centreno' and type = 2";
         //$role = D('common_role')->where('id='.$user)->find();
-        if($user==8 || $if_admin==1 || $user==13 || $user==17) {
+        if($user==8 || $if_admin==1 || $user==13 || $user==18) {
         $data=array(
             'status'=>4,
             'isaudit'=>1,
@@ -231,7 +231,7 @@ class ReportController extends Controller
         $user=$admin_auth['gid'];//判断是哪个角色
         $if_admin = $admin_auth['super_admin'];
         //$role = D('common_role')->where('id='.$user)->find();
-        if($user==8 || $if_admin==1 || $user==13 || $user==17) {
+        if($user==8 || $if_admin==1 || $user==13 || $user==18) {
             if($sortby ==7){
                 $data=array(
                     'status'=>7,
@@ -849,6 +849,8 @@ class ReportController extends Controller
             'status' => 7,
             'ifback'=>3,
             'bz_back'=>1,
+            'report_user_id'=>$userid,
+            'report_time'=>date("Y-m-d H:i:s"),
             'back_time'=>date("Y-m-d H:i:s"),
 
         );
@@ -874,11 +876,8 @@ class ReportController extends Controller
     //退回原因显示框
     public function backShowPage(){
         $centreno = I('centreno');
-        $data = D('contract_flow as c')->where("c.centreNo ='$centreno'")
-            ->join('common_system_user as a ON c.inner_sign_user_id = a.id')//内部签发人
-            ->join('common_system_user as d ON c.verify_user_id = d.id')//审核人
-            ->join('common_system_user as e ON c.report_user_id = e.id')//生成报告人
-            ->join('back_report as b ON c.centreno = b.centreno')
+        $data = D('contract_flow as c')->where("c.centreNo ='{$centreno}'")
+            ->join('LEFT JOIN common_system_user as a ON c.inner_sign_user_id = a.id LEFT JOIN common_system_user as d ON c.verify_user_id = d.id left join common_system_user as e ON c.report_user_id = e.id LEFT JOIN back_report as b ON c.centreNo = b.centreNo')
             ->field("b.*,c.inner_sign_user_id,c.verify_user_id,c.report_user_id,a.name as innername,d.name as verifyname,e.name as reportname")
             ->order("b.id desc")->select();
         $body = array(
