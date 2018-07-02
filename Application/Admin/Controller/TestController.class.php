@@ -165,7 +165,7 @@ class TestController extends Controller
         if ($de == 'A') {
             $where .= " and contract_flow.status in('0','7') ";
         } elseif ($de == 'B') {
-            $where .= " and contract_flow.status  not in('0','7') ";
+            $where .= " and contract_flow.status  not in('0','7','-1') ";
         }
         if ($sortby == 1) {
             $begin_time && $where .= " and date_format(contract_flow.contract_time,'%Y-%m-%d') >='{$begin_time}'";
