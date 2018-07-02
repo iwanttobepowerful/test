@@ -380,6 +380,8 @@
                 if(res.re!='none'){
                     code = res.re;
                     code = parseInt(code.substring(8,11))+1;
+                    //保持后面编码为三位数，不够补零
+                    code = (Array(3).join('0') + code).slice(-3);
                 }
             }
         });
