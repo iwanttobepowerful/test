@@ -195,13 +195,13 @@ class StatisticsController extends Controller {
                 $where .=" and SUBSTR(b.centreNo,7,1) = 'F'";
             }
             elseif ($searchby==7){
-                $where .= " and SUBSTR(a.centreno,7,1) = 'G' and SUBSTR(a.centreno,9,11) <='500'";
+                $where .= " and SUBSTR(b.centreno,7,1) = 'G' and SUBSTR(b.centreno,9,11) <='500'";
             }
             elseif ($searchby==8){
-                $where .= " and SUBSTR(a.centreno,7,1) = 'G' and SUBSTR(a.centreno,9,11) >'500'";
+                $where .= " and SUBSTR(b.centreno,7,1) = 'G' and SUBSTR(b.centreno,9,11) >'500'";
             }
             elseif ($searchby==9){
-                $where .=" and SUBSTR(a.centreNo,7,1) = 'H'";
+                $where .=" and SUBSTR(b.centreNo,7,1) = 'H'";
             }
             $sumlist = D("contract")->alias("b")->join(C("DB_PREFIX")."test_cost c on b.centreno=c.centreno","LEFT")->where($where)->field("sum(b.testcost) as testcost,sum(c.rarecord) as arecord,sum(c.rbrecord) as brecord,sum(c.rcrecord) as crecord,sum(c.rdrecord) as drecord,sum(c.rerecord) as erecord,sum(c.rfrecord) as frecord,sum(c.rg1record) as g1record,sum(c.rg2record) as g2record,sum(c.rhrecord) as hrecord,sum(c.dcopy) as dcopy,sum(c.drevise) as drevise,sum(c.dother) as dother,sum(c.donline) as donline")->find();
             $list = D("contract")->alias("b")->join(C("DB_PREFIX")."contract_flow a on b.centreno=a.centreno","LEFT")->join(C("DB_PREFIX")."test_cost c on b.centreno=c.centreno","LEFT")->where($where)->order($orderby)
