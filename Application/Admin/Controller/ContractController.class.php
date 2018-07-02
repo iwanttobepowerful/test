@@ -2600,7 +2600,7 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
             $department='G';
             $list = D("contract")
                 ->field('centreNo',SUBSTR(centreNo,9,3))
-                ->where('substr(centreNo,7,1) = "'.$department.'" and centreNo like "'.$centreHead.'%"')
+                ->where('substr(centreNo,7,1) = "'.$department.'" and centreNo like "'.$centreHead.'%" and SUBSTR(centreNo,9,3)<=500')
                 ->order('SUBSTR(centreNo,9,3) desc')->select();
         }else if($department=='G2'){
             $department='G';
