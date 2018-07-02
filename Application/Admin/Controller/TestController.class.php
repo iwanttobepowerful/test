@@ -944,37 +944,37 @@ class TestController extends Controller
 
         //报告审核
         if ($if_admin || $user == 13) {
-            $useraudit= $admin_auth['audit'];
-            $if_G1 = 0;
-            $if_G2 = 0;//能审核的部门是否包含G1\G2，默认没有
+//            $useraudit= $admin_auth['audit'];
+//            $if_G1 = 0;
+//            $if_G2 = 0;//能审核的部门是否包含G1\G2，默认没有
 
             $where = "status='2'";
-            if(!empty($useraudit)){
-                //先检查是否有G1\G2
-                if(strstr($useraudit,'G1')){
-                    $if_G1 = 1;
-                    $useraudit = str_replace('1','',$useraudit);
-                }
-                if(strstr($useraudit,'G2')){
-                    $useraudit = str_replace('2','',$useraudit);
-                    $if_G2 = 1;
-                }
-                $data=explode(',',$useraudit);
-                foreach($data as $v){
-                    $s .="'".$v."',";
-                }
-                $s=substr($s,0,-1);//利用字符串截取函数消除最后一个逗号
-                if ($if_G1 == 0 and $if_G2 == 1){//只选了G2
-                    $where .= " and ((SUBSTR(contract_flow.centreno,7,1) in({$s}) and SUBSTR(contract_flow.centreno,7,1) !='G') or (SUBSTR(contract_flow.centreno,7,1) ='G' and SUBSTR(contract_flow.centreno,9,3) > 500))";
-                }
-                elseif ($if_G1 == 1 and $if_G2 == 0){
-                    $where .=" and ((SUBSTR(contract_flow.centreno,7,1) in({$s}) and SUBSTR(contract_flow.centreno,7,1) !='G') or (SUBSTR(contract_flow.centreno,7,1) ='G' and SUBSTR(contract_flow.centreno,9,3) <= 500))";
-                }
-                else{
-                    $where .=" and SUBSTR(contract_flow.centreno,7,1) in({$s})";
-                }
-
-            }
+//            if(!empty($useraudit)){
+//                //先检查是否有G1\G2
+//                if(strstr($useraudit,'G1')){
+//                    $if_G1 = 1;
+//                    $useraudit = str_replace('1','',$useraudit);
+//                }
+//                if(strstr($useraudit,'G2')){
+//                    $useraudit = str_replace('2','',$useraudit);
+//                    $if_G2 = 1;
+//                }
+//                $data=explode(',',$useraudit);
+//                foreach($data as $v){
+//                    $s .="'".$v."',";
+//                }
+//                $s=substr($s,0,-1);//利用字符串截取函数消除最后一个逗号
+//                if ($if_G1 == 0 and $if_G2 == 1){//只选了G2
+//                    $where .= " and ((SUBSTR(contract_flow.centreno,7,1) in({$s}) and SUBSTR(contract_flow.centreno,7,1) !='G') or (SUBSTR(contract_flow.centreno,7,1) ='G' and SUBSTR(contract_flow.centreno,9,3) > 500))";
+//                }
+//                elseif ($if_G1 == 1 and $if_G2 == 0){
+//                    $where .=" and ((SUBSTR(contract_flow.centreno,7,1) in({$s}) and SUBSTR(contract_flow.centreno,7,1) !='G') or (SUBSTR(contract_flow.centreno,7,1) ='G' and SUBSTR(contract_flow.centreno,9,3) <= 500))";
+//                }
+//                else{
+//                    $where .=" and SUBSTR(contract_flow.centreno,7,1) in({$s})";
+//                }
+//
+//            }
 
             $num_bgsh = D("contract_flow")->where($where)->count();
         } else {
