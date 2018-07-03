@@ -905,7 +905,9 @@ class TestController extends Controller
         }
         if ($user == 7 || $if_admin) {
             $num_bgwbqf = D("contract_flow")->where($where_bgwbqf)->count();
-        } else {
+            $flag = 1;
+        }
+        else {
             $num_bgwbqf = 0;
         }
 
@@ -1050,6 +1052,7 @@ class TestController extends Controller
             "id_qtgl" => "menu_id_101",
             "num_bgwbqf" => $num_bgwbqf,
             "name_bgwbqf" => "报告外部签发",
+            "flag"=>$flag,
 
             "id_bgwbqf" => "son_id_139",
 
