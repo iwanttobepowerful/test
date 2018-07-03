@@ -837,6 +837,11 @@ class ReportController extends Controller
     public function bianzhiBack()
     {
         $reason = I('reason');
+        if(empty($reason)){
+            $rs = array("msg" => "fail");
+            $this->ajaxReturn($rs);
+
+        }
         $centreno = I('centreno');
         $where = "centreno='{$centreno}'";
         $where1 = "centreno='{$centreno}' and type =3";
