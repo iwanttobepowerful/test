@@ -167,7 +167,7 @@ class StatisticsController extends Controller {
         }
         elseif ($de=='A'){
             //来样日期
-            $where="1=1";
+            $where="b.testCost != 0";
             $orderby = "b.collectdate desc";
             $begin_time && $where .=" and date_format(b.collectdate,'%Y-%m-%d') >='{$begin_time}'";
             $end_time && $where .=" and date_format(b.collectdate,'%Y-%m-%d') <='{$end_time}'";
