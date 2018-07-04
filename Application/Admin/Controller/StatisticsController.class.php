@@ -136,6 +136,15 @@ class StatisticsController extends Controller {
             elseif ($searchby==6){
                 $where .=" and SUBSTR(a.centreNo,7,1) = 'F'";
             }
+            elseif ($searchby==7){
+                $where .= " and SUBSTR(a.centreno,7,1) = 'G' and SUBSTR(a.centreno,9,11) <='500'";
+            }
+            elseif ($searchby==8){
+                $where .= " and SUBSTR(a.centreno,7,1) = 'G' and SUBSTR(a.centreno,9,11) >'500'";
+            }
+            elseif ($searchby==9){
+                $where .=" and SUBSTR(a.centreNo,7,1) = 'H'";
+            }
         $sumlist = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->join(C("DB_PREFIX")."test_cost c on a.centreno=c.centreno","LEFT")->where($where)->field("sum(b.testcost) as testcost,sum(c.rarecord) as arecord,sum(c.rbrecord) as brecord,sum(c.rcrecord) as crecord,sum(c.rdrecord) as drecord,sum(c.rerecord) as erecord,sum(c.rfrecord) as frecord,sum(c.rg1record) as g1record,sum(c.rg2record) as g2record,sum(c.rhrecord) as hrecord,sum(c.dcopy) as dcopy,sum(c.drevise) as drevise,sum(c.dother) as dother,sum(c.donline) as donline")->find();
         $list = D("contract_flow")->alias("a")->join(C("DB_PREFIX")."contract b on a.centreno=b.centreno","LEFT")->join(C("DB_PREFIX")."test_cost c on a.centreno=c.centreno","LEFT")->where($where)->order($orderby)
             ->field("a.id,a.status,a.external_sign_time,a.inner_sign_time,a.centreno,a.takelist_user_id,b.clientname,b.productunit,b.samplename,b.testcriteria,b.testitem,b.testcost,b.remark,b.testcriteria,b.collectdate,b.samplequantity,b.collector,b.centreno1,b.centreno2,b.centreno3,c.rarecord,c.rbrecord,c.rcrecord,c.rdrecord,c.rerecord,c.rfrecord,c.rg1record,c.rg2record,c.rhrecord,c.dcopy,c.donline,c.drevise,c.dother")->limit("{$offset},{$pagesize}")->select();
@@ -158,7 +167,7 @@ class StatisticsController extends Controller {
         }
         elseif ($de=='A'){
             //来样日期
-            $where="1=1";
+            $where="b.testCost != 0";
             $orderby = "b.collectdate desc";
             $begin_time && $where .=" and date_format(b.collectdate,'%Y-%m-%d') >='{$begin_time}'";
             $end_time && $where .=" and date_format(b.collectdate,'%Y-%m-%d') <='{$end_time}'";
@@ -184,6 +193,15 @@ class StatisticsController extends Controller {
             }
             elseif ($searchby==6){
                 $where .=" and SUBSTR(b.centreNo,7,1) = 'F'";
+            }
+            elseif ($searchby==7){
+                $where .= " and SUBSTR(b.centreno,7,1) = 'G' and SUBSTR(b.centreno,9,11) <='500'";
+            }
+            elseif ($searchby==8){
+                $where .= " and SUBSTR(b.centreno,7,1) = 'G' and SUBSTR(b.centreno,9,11) >'500'";
+            }
+            elseif ($searchby==9){
+                $where .=" and SUBSTR(b.centreNo,7,1) = 'H'";
             }
             $sumlist = D("contract")->alias("b")->join(C("DB_PREFIX")."test_cost c on b.centreno=c.centreno","LEFT")->where($where)->field("sum(b.testcost) as testcost,sum(c.rarecord) as arecord,sum(c.rbrecord) as brecord,sum(c.rcrecord) as crecord,sum(c.rdrecord) as drecord,sum(c.rerecord) as erecord,sum(c.rfrecord) as frecord,sum(c.rg1record) as g1record,sum(c.rg2record) as g2record,sum(c.rhrecord) as hrecord,sum(c.dcopy) as dcopy,sum(c.drevise) as drevise,sum(c.dother) as dother,sum(c.donline) as donline")->find();
             $list = D("contract")->alias("b")->join(C("DB_PREFIX")."contract_flow a on b.centreno=a.centreno","LEFT")->join(C("DB_PREFIX")."test_cost c on b.centreno=c.centreno","LEFT")->where($where)->order($orderby)
@@ -315,10 +333,15 @@ class StatisticsController extends Controller {
 
     private function fillDepartmentG1($begin_time, $end_time, $objPHPExcel)
     {
-        $where = "1=1";
-        $orderby = "b.collectdate desc";
-        $begin_time && $where .= " and date_format(b.collectdate,'%Y-%m-%d') >='{$begin_time}'";
-        $end_time && $where .= " and date_format(b.collectdate,'%Y-%m-%d') <='{$end_time}'";
+        $where = " a.status in(5,6)";
+        $orderby = "a.inner_sign_time desc";
+        $begin_time && $where .=" and date_format(a.inner_sign_time,'%Y-%m-%d') >='{$begin_time}'";
+        $end_time && $where .=" and date_format(a.inner_sign_time,'%Y-%m-%d') <='{$end_time}'";
+
+//        $where = "1=1";
+//        $orderby = "b.collectdate desc";
+//        $begin_time && $where .= " and date_format(b.collectdate,'%Y-%m-%d') >='{$begin_time}'";
+//        $end_time && $where .= " and date_format(b.collectdate,'%Y-%m-%d') <='{$end_time}'";
         $objPHPExcel->setActiveSheetIndex(6);
         $objActSheet = $objPHPExcel->getActiveSheet();
         $mytitle = '';
@@ -337,10 +360,14 @@ class StatisticsController extends Controller {
 
     private function fillDepartmentG2($begin_time, $end_time, $objPHPExcel)
     {
-        $where = "1=1";
-        $orderby = "b.collectdate desc";
-        $begin_time && $where .= " and date_format(b.collectdate,'%Y-%m-%d') >='{$begin_time}'";
-        $end_time && $where .= " and date_format(b.collectdate,'%Y-%m-%d') <='{$end_time}'";
+        $where = " a.status in(5,6)";
+        $orderby = "a.inner_sign_time desc";
+        $begin_time && $where .=" and date_format(a.inner_sign_time,'%Y-%m-%d') >='{$begin_time}'";
+        $end_time && $where .=" and date_format(a.inner_sign_time,'%Y-%m-%d') <='{$end_time}'";
+//        $where = "1=1";
+//        $orderby = "b.collectdate desc";
+//        $begin_time && $where .= " and date_format(b.collectdate,'%Y-%m-%d') >='{$begin_time}'";
+//        $end_time && $where .= " and date_format(b.collectdate,'%Y-%m-%d') <='{$end_time}'";
         $objPHPExcel->setActiveSheetIndex(7);
         $objActSheet = $objPHPExcel->getActiveSheet();
         $mytitle = '';
@@ -359,10 +386,14 @@ class StatisticsController extends Controller {
 
     private function fillDepartmentH($begin_time, $end_time, $objPHPExcel)
     {
-        $where = "1=1";
-        $orderby = "b.collectdate desc";
-        $begin_time && $where .= " and date_format(b.collectdate,'%Y-%m-%d') >='{$begin_time}'";
-        $end_time && $where .= " and date_format(b.collectdate,'%Y-%m-%d') <='{$end_time}'";
+        $where = " a.status in(5,6)";
+        $orderby = "a.inner_sign_time desc";
+        $begin_time && $where .=" and date_format(a.inner_sign_time,'%Y-%m-%d') >='{$begin_time}'";
+        $end_time && $where .=" and date_format(a.inner_sign_time,'%Y-%m-%d') <='{$end_time}'";
+//        $where = "1=1";
+//        $orderby = "b.collectdate desc";
+//        $begin_time && $where .= " and date_format(b.collectdate,'%Y-%m-%d') >='{$begin_time}'";
+//        $end_time && $where .= " and date_format(b.collectdate,'%Y-%m-%d') <='{$end_time}'";
         $objPHPExcel->setActiveSheetIndex(8);
         $objActSheet = $objPHPExcel->getActiveSheet();
         $mytitle = '';
