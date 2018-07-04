@@ -504,7 +504,7 @@ class ReportController extends Controller
                     'ifback'=>1
                 );
                 $data1=array(
-                    'type'=>1,//退回前台费用
+                    'type'=>1,//退回实验员
                     'back_reason'=>$reason,
                     'back_time'=>date("Y-m-d H:i:s"),
                     'back_to'=>7,
@@ -868,7 +868,9 @@ class ReportController extends Controller
         );
 
         M()->startTrans();
-        D("back_report")->where($where1)->delete();//之前的记录先清掉
+        if(D("back_report")->where($where1)->find()){
+            D("back_report")->where($where1)->delete();//之前的记录先清掉
+        }
         if (D("contract_flow")->where($where)->save($data) and D("back_report")->add($data1)) {
             M()->commit();
             $rs['msg'] = '退回成功！';
@@ -881,7 +883,7 @@ class ReportController extends Controller
     //退回原因显示框
     public function backShowPage(){
         $centreno = I('centreno');
-        $data = D('contract_flow as c')->where("c.centreNo ='{$centreno}'")
+        $data = D('contract_flow as c')->where("c.centreno ='{$centreno}'")
             ->join('LEFT JOIN common_system_user as a ON c.inner_sign_user_id = a.id LEFT JOIN common_system_user as d ON c.verify_user_id = d.id left join common_system_user as e ON c.report_user_id = e.id LEFT JOIN back_report as b ON c.centreNo = b.centreNo')
             ->field("b.*,c.inner_sign_user_id,c.verify_user_id,c.report_user_id,a.name as innername,d.name as verifyname,e.name as reportname")
             ->order("b.id desc")->select();

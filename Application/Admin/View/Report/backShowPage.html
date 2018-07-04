@@ -56,7 +56,13 @@
     <p><php>if($one['type'] == 1){echo $one['innername'];}
         elseif($one['type'] == 2){echo $one['verifyname'];}
         else{ echo $one['reportname'];
-        }</php><span>退回原因：{$one['back_reason']}</span></p>
+        }</php><span>退回<php>
+        if($one['back_to'] == 7){echo "实验员";}
+        elseif($one['back_to'] == 0){echo "前台";}
+        elseif($one['back_to'] == 8){echo "编制";}
+        else{ echo "审核";}
+    </php>
+        原因：{$one['back_reason']}</span></p>
         <hr/>
         <center>
             <img src="{$one['pic_path']}" style="max-width: 90%"/>
