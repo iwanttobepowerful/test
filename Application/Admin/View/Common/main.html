@@ -20,10 +20,10 @@
             _title: document.title,
             _timer: null,
             //显示新消息提示
-            show: function () {
+            show: function (num) {
                 var temps = newMessageRemind._title.replace("【　　　】", "").replace("【新消息】", "");
                 newMessageRemind._timer = setTimeout(function () {
-                    newMessageRemind.show();
+                    newMessageRemind.show(num);
                     //这里写Cookie操作
                     newMessageRemind._step++;
                     if (newMessageRemind._step == 3) {
@@ -31,11 +31,11 @@
                     }
 
                     if (newMessageRemind._step == 1) {
-                        document.title = "【　　　】" + temps
+                        document.title = "【　    　　】" + temps
                     }
 
                     if (newMessageRemind._step == 2) {
-                        document.title = "【新消息】" + temps
+                        document.title = "【"+num+"条消息】" + temps
                     }
 
                 }, 800);
@@ -44,7 +44,7 @@
             //取消新消息提示
             clear: function () {
                 clearTimeout(newMessageRemind._timer);
-                document.title = newMessageRemind._title;
+                document.title = "管理后台";
                 //这里写Cookie操作
             }
 
@@ -56,18 +56,28 @@
                 url: "{:U('/admin/test/checkNotify')}",
                 dataType: "json",
                 success: function (ret) {
-                    if (ret.num_bgwbqf > 0 || ret.number_jcjl > 0 || ret.num_bgsh > 0 || ret.num_zwqf > 0 || ret.num_qtnbxgsq_one > 0 || ret.num_qtnbxgsq_more > 0
-                    || ret.num_bgxgsq > 0 || ret.num_wbxgsq > 0 || ret.num_bhzfsq > 0) {
+                    if (ret.num_bgwbqf > 0 || ret.number_jcjl > 0 || ret.num_bgsh > 0 || ret.num_zwqf > 0 || ret.num_xggl>0){
+                        if(ret.num_bgwbqf > 0)
+                            num=ret.num_bgwbqf;
+                        if (ret.number_jcjl > 0)
+                            num=ret.number_jcjl;
+                        if(ret.num_bgsh > 0)
+                            num=ret.num_bgsh;
+                        if(ret.num_zwqf > 0)
+                            num=ret.num_zwqf;
+                        if(ret.num_xggl>0)
+                            num=ret.num_xggl;
 
-                        newMessageRemind.show();
+                        newMessageRemind.show(num);
                     }else {
                         newMessageRemind.clear();
+
                     }
                 }
             })
         }
 
-        var interval = setInterval(checknotify, 10000);
+        var interval = setInterval(checknotify, 8000);
 
     </script>
 
