@@ -49,11 +49,6 @@
             }
 
         };
-        //newMessageRemind.show();
-        function clearNewMessageRemind() {
-            newMessageRemind.clear();
-        }
-
 
         function checknotify() {
             $.ajax({
@@ -61,63 +56,18 @@
                 url: "{:U('/admin/test/checkNotify')}",
                 dataType: "json",
                 success: function (ret) {
-                    if (ret.num_bgwbqf > 0) {
-                        alert(ret.num_bgwbqf);
-                        newMessageRemind.show();
-                    } else {
-                        newMessageRemind.clear();
-                    }
-                    if (ret.number_jcjl > 0) {
-                        //alert(ret.number_jcjl);
+                    if (ret.num_bgwbqf > 0 || ret.number_jcjl > 0 || ret.num_bgsh > 0 || ret.num_zwqf > 0 || ret.num_qtnbxgsq_one > 0 || ret.num_qtnbxgsq_more > 0
+                    || ret.num_bgxgsq > 0 || ret.num_wbxgsq > 0 || ret.num_bhzfsq > 0) {
 
                         newMessageRemind.show();
-                    }
-                    if (ret.num_bgsh > 0) {
-                        newMessageRemind.show();
-                    } else {
+                    }else {
                         newMessageRemind.clear();
                     }
-
-                    if (ret.num_zwqf > 0) {
-                        newMessageRemind.show();
-                    } else {
-                        newMessageRemind.clear();
-                    }
-
-                    if (ret.num_qtnbxgsq_one > 0) {
-                        newMessageRemind.show();
-                    } else {
-                        newMessageRemind.clear();
-                    }
-
-                    if (ret.num_qtnbxgsq_more > 0) {
-                        newMessageRemind.show();
-                    } else {
-                        newMessageRemind.clear();
-                    }
-
-                    if (ret.num_bgxgsq > 0) {
-                        newMessageRemind.show();
-                    } else {
-                        newMessageRemind.clear();
-                    }
-
-                    if (ret.num_wbxgsq > 0) {
-                        newMessageRemind.show();
-                    } else {
-                        newMessageRemind.clear();
-                    }
-                    if (ret.num_bhzfsq > 0) {
-                        newMessageRemind.show();
-                    } else {
-                        newMessageRemind.clear();
-                    }
-
                 }
             })
         }
 
-        var interval = setInterval(checknotify, 8000);
+        var interval = setInterval(checknotify, 10000);
 
     </script>
 
