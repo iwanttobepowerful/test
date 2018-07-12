@@ -29,15 +29,12 @@
                     if (newMessageRemind._step == 3) {
                         newMessageRemind._step = 1
                     }
-
                     if (newMessageRemind._step == 1) {
                         document.title = "【　    　　】" + temps
                     }
-
                     if (newMessageRemind._step == 2) {
                         document.title = "【"+num+"条消息】" + temps
                     }
-
                 }, 800);
                 return [newMessageRemind._timer, newMessageRemind._title];
             },
@@ -77,7 +74,7 @@
             })
         }
 
-        var interval = setInterval(checknotify, 8000);
+        var interval = setInterval(checknotify, 3000);
 
     </script>
 
