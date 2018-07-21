@@ -655,6 +655,18 @@ class TestController extends Controller
                 //再转换成pdf
                 $signPdf = './Public/attached/report/' . $centreno . '-sign.pdf';
                 convertImageToPdf(ROOT_PATH, substr($signPdf, 1), $imageFiles, 1024, './Public/static/images/wmfull.png');
+                //获取临时转换图片地址
+                $temp= implode("^",$imgFiles);
+                $temp1 = str_replace(".jpg","-thumb.jpg",$temp);
+                $temp2 = str_replace(".jpg","-wmthumb.jpg",$temp);
+                $arr1 =explode("^",$temp1);
+                $arr2 =explode("^",$temp2);
+                foreach ($arr1 as $v1){
+                    $imgFiles[] = $v1;
+                }
+                foreach ($arr2 as $v2){
+                    $imgFiles[] = $v2;
+                }
                 $imgFiles[] = $tmpSavefile;
                 $imgFiles[] = $tmpSavefile2;
             }
@@ -663,14 +675,14 @@ class TestController extends Controller
             if (D("test_report")->where("centreno='{$centreno}'")->save($data)) {
                 if ($imgFiles) {
                     foreach ($imgFiles as $value) {
-                        if (file_exists($value)) {
+                        if($value){
                             @unlink($value);
                         }
                     }
                 }
                 $result['msg'] = "succ";
             }
-        } else {
+         else {
             $result['msg'] = "转换pdf失败";
         }
         /*
@@ -685,6 +697,7 @@ class TestController extends Controller
         }
         */
         $this->ajaxReturn($result);
+    }
     }
 
     //申请修改临时生成的报告
@@ -778,6 +791,18 @@ class TestController extends Controller
                 //再转换成pdf
                 $signPdf = './Public/attached/report_temp/' . $centreno . '-sign.pdf';
                 convertImageToPdf(ROOT_PATH, substr($signPdf, 1), $imageFiles, 1024, './Public/static/images/wmfull.png');
+                //获取临时转换图片地址
+                $temp= implode("^",$imgFiles);
+                $temp1 = str_replace(".jpg","-thumb.jpg",$temp);
+                $temp2 = str_replace(".jpg","-wmthumb.jpg",$temp);
+                $arr1 =explode("^",$temp1);
+                $arr2 =explode("^",$temp2);
+                foreach ($arr1 as $v1){
+                    $imgFiles[] = $v1;
+                }
+                foreach ($arr2 as $v2){
+                    $imgFiles[] = $v2;
+                }
                 $imgFiles[] = $tmpSavefile;
                 $imgFiles[] = $tmpSavefile2;
             }
@@ -792,6 +817,7 @@ class TestController extends Controller
                     }
                 }
                 $result['msg'] = "succ";
+
             }
         } else {
             $result['msg'] = "转换pdf失败";
