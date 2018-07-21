@@ -411,6 +411,17 @@ class TestController extends Controller
     {
         $id = I("id", 0, 'intval');
         $rs = array("msg" => "fail");
+        $delete = D("test_record")->where("id=" . $id)->find();
+        if($delete){
+            $thumb_path = '.'.$delete['path'];
+            $path = str_replace("_thumb","",$thumb_path);
+            if(file_exists($thumb_path)){
+                @unlink($thumb_path);
+            }
+            if(file_exists($path)){
+                @unlink($path);
+            }
+        }
         if (D("test_record")->where("id=" . $id)->delete()) {
             $rs['msg'] = 'succ';
         }
