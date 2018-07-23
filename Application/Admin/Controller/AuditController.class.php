@@ -506,13 +506,23 @@ class AuditController extends Controller {
         }
         D("sampling_form")->where("centreNo='".$centreno."'")->save($data_temp);
         D("report_feedback")->where("id=".$id)->save($data);
-        //状态置为0
-        $data_apply = array(
-            'isaudit'=>0,
-            'internalpass'=>0,
-            'status'=>0,
-            'ifback'=>0,
-        );
+        $check = D("contract_flow")->where("centreNo='".$centreno."'")->find();
+        if($check['takelist_user_id']){
+            $data_apply = array(
+                'isaudit'=>0,
+                'internalpass'=>0,
+                'status'=>7,
+                'ifback'=>0,
+            );
+        }//状态置为0
+        else{
+            $data_apply = array(
+                'isaudit'=>0,
+                'internalpass'=>0,
+                'status'=>0,
+                'ifback'=>0,
+            );
+        }
         D("contract_flow")->where("centreNo='".$centreno."'")->save($data_apply);
         $rs['msg']="succ";
         $this->ajaxReturn($rs);
