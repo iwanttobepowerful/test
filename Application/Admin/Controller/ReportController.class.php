@@ -158,7 +158,21 @@ class ReportController extends Controller
         );
         M()->startTrans();
         if(D("contract_flow")->where("id=".$id)->save($data)){
-            D('back_report')->where($where1)->delete();
+            if( D('back_report')->where($where1)->find()){
+                $tmp = D('back_report')->where($where1)->field('img_path,pic_path')->select();
+                foreach ($tmp as $value){
+                    $temp = '.'.$value['img_path'];
+                    if (file_exists($temp)) {
+                        @unlink($temp);
+                    }
+                    $temp1 = '.'.$value['pic_path'];
+                    if (file_exists($temp1)) {
+                        @unlink($temp1);
+                    }
+                }
+                D('back_report')->where($where1)->delete();
+            }
+
             M()->commit();
             $rs['msg'] = 'succ';
         }
@@ -175,6 +189,19 @@ class ReportController extends Controller
         $centreno = I('centreno');
         $type = 2;
         $where ="centreno = '$centreno' and type = $type";
+        if(D('back_report')->where($where)->find()){
+            $tmp = D('back_report')->where($where)->field('img_path,pic_path')->select();
+            foreach ($tmp as $value){
+                $temp = '.'.$value['img_path'];
+                if (file_exists($temp)) {
+                    @unlink($temp);
+                }
+                $temp1 = '.'.$value['pic_path'];
+                if (file_exists($temp1)) {
+                    @unlink($temp1);
+                }
+            }
+        }
         $result = D('back_report')->where($where)->delete();
         if($result !== false){
             $rs['msg'] = 'succ';
@@ -428,7 +455,7 @@ class ReportController extends Controller
         $this->assign($body);
         $this->display();
     }
-    //签发按钮功能实现
+    //盖章签发通过
 
     public function doUpd(){
 // 要修改的数据对象属性赋值
@@ -453,7 +480,9 @@ class ReportController extends Controller
             );
             M()->startTrans();
             if(D("contract_flow")->where("id=".$id)->save($data)){
-                D('back_report')->where($where1)->delete();//通过记录全清
+                if(D('back_report')->where($where1)->find()){
+                    D('back_report')->where($where1)->delete();//通过记录全清
+                }
                 M()->commit();
                 $rs['msg'] = 'succ';
             }
@@ -462,7 +491,7 @@ class ReportController extends Controller
         }}
         $this->ajaxReturn($rs);
     }
-    //签发不通过，退回修改
+    //盖章签发不通过，退回修改
     public function doneBack(){
         $id =I("id",0,'intval');
         $sortby= I('sortby');
@@ -549,7 +578,9 @@ class ReportController extends Controller
             }
             $where = "centreno = '{$centreno}' and type = 1";
             M()->startTrans();
-            D("back_report")->where($where)->delete();//先把之前的记录清掉
+            if(D("back_report")->where($where)->find()){
+                D("back_report")->where($where)->delete();//先把之前的记录清掉
+            }
             if(D("contract_flow")->where("id=".$id)->save($data) and D("back_report")->add($data1)){
                 M()->commit();
                 $rs['msg'] = '操作成功！';
