@@ -652,6 +652,7 @@ class TestController extends Controller
                     //带mark的pdf
                     @rename($tmpSavefile3, $imageFiles[0]);
                     $imgFiles[] = $tmpSavefile2;
+                    $imgFiles[] = $tmpSavefile;
                     //图二带章
                     $baseinfo = pathinfo($imageFiles[1]);
                     $tmpSavefile = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-mark2.' . $baseinfo['extension'];
@@ -678,6 +679,7 @@ class TestController extends Controller
                 foreach ($arr2 as $v2){
                     $imgFiles[] = $v2;
                 }
+                $imgFiles[] = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-mark.' . $baseinfo['extension'];
                 $imgFiles[] = $tmpSavefile;
                 $imgFiles[] = $tmpSavefile2;
             }
@@ -763,7 +765,7 @@ class TestController extends Controller
             if (file_exists($imageFiles[0]) && file_exists($imageFiles[1])) {
                 $baseinfo = pathinfo($imageFiles[0]);
                 if ($tpl['subtype'] == 2) {
-                    //小中心
+                    //大中心
                     $tmpSavefile = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-mark.' . $baseinfo['extension'];
                     waterMark($imageFiles[0], './Public/static/images/sealB.png', $tmpSavefile, array(1050, 2650));
                     //左上角章
@@ -777,7 +779,7 @@ class TestController extends Controller
                     $tmpSavefile = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-mark2.' . $baseinfo['extension'];
                     waterMark($imageFiles[1], './Public/static/images/sealB.png', $tmpSavefile, array(1600, 2380));
                 } else {
-                    //大中心
+                    //小中心
                     $tmpSavefile = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-mark.' . $baseinfo['extension'];
                     waterMark($imageFiles[0], './Public/static/images/sealB.png', $tmpSavefile, array(700, 2700));
                     //第二个公章
@@ -789,6 +791,7 @@ class TestController extends Controller
                     //带mark的pdf
                     @rename($tmpSavefile3, $imageFiles[0]);
                     $imgFiles[] = $tmpSavefile2;
+                    $imgFiles[] = $tmpSavefile;
                     //图二带章
                     $baseinfo = pathinfo($imageFiles[1]);
                     $tmpSavefile = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-mark2.' . $baseinfo['extension'];
