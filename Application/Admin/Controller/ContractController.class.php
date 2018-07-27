@@ -2028,7 +2028,6 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
         $pagesize = 10;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
-
         /*
                 $list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,c.*,f.status,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.takelist_time,u.name as takename,u1.name as innername')->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id')->where($where)->order('c.input_time DESC')->limit("{$offset},{$pagesize}")->select();
         */
@@ -2036,7 +2035,7 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
         $list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,c.*,f.status,f.ifback,back.back_reason,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.verify_time,f.takelist_time,u.name as takename,u1.name as innername,u2.name as auditname')
             ->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN common_system_user u2 on f.verify_user_id=u2.id
              left join back_report as back on c.centreNo=back.centreNo')
-            ->where($where)->order('f.back_time DESC,c.input_time DESC')
+            ->where($where)->order('if(f.status=3,0,1),f.back_time DESC,c.input_time DESC')
             ->limit("{$offset},{$pagesize}")
             ->select();
         //pr(D("contract as c")->getLastSql());
@@ -2287,7 +2286,7 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
 
         $list = D("contract_flow as c")->field('if(c.id is null,-1,c.id) as flow_id,f.*,c.isaudit,c.back_time,c.bz_back,c.sh_back,c.gz_back,c.ifback,c.status,c.inner_sign_user_id,c.inner_sign_time,c.external_sign_time,c.takelist_user_id,c.takelist_time,u.name as takename,u1.name as innername,u2.name as externalname,v.doc_path,v.pdf_path,v.qrcode_path')
                 ->join('left join contract as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on c.takelist_user_id=u.id LEFT JOIN common_system_user u2 on c.external_sign_user_id=u2.id LEFT JOIN common_system_user u1 on c.inner_sign_user_id=u1.id left join test_report as v on c.centreNo=v.centreNo' )
-                ->where($where)->order('c.back_time desc,c.takelist_all_time desc,f.id desc')->limit("{$offset},{$pagesize}")->select();
+                ->where($where)->order('if(c.status=8,0,1),c.back_time desc,c.takelist_all_time desc,f.id desc')->limit("{$offset},{$pagesize}")->select();
 
         if($list){
             $con_list = array();//反馈
