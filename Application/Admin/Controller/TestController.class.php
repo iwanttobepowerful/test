@@ -204,8 +204,9 @@ class TestController extends Controller
             ->join('work_inform_form ON contract_flow.centreNo = work_inform_form.centreNo')//从工作通知单取数据
             ->join('contract as a on contract_flow.centreno=a.centreno')
             ->field('contract_flow.back_time,contract_flow.gz_back,contract_flow.sh_back,contract_flow.bz_back,contract_flow.ifback,contract_flow.takelist_user_id,contract_flow.status,work_inform_form.workDate,work_inform_form.centreNo,work_inform_form.sampleName,work_inform_form.testCreiteria,a.centreno1,a.centreno2,a.centreno3')
-            ->order('contract_flow.back_time desc,work_inform_form.workDate desc')
-            ->limit("{$offset},{$pagesize}")->select();//从合同表!!!!里取出对应中心编号的信息
+            ->limit("{$offset},{$pagesize}")
+            ->order('case when (contract_flow.status in(0,7) and contract_flow.back_time) then contract_flow.back_time  else work_inform_form.workDate end DESC')
+            ->select();//从合同表!!!!里取出对应中心编号的信息
         if ($list) {
             $con_list = array();//反馈
             foreach ($list as $contract) {
@@ -494,7 +495,7 @@ class TestController extends Controller
         $list = D("contract_flow ")->where($where)
             ->join('left join contract as a on contract_flow .centreno=a.centreno left join test_report as t on contract_flow .centreno=t.centreno')
             ->field('contract_flow .*,a.*,t.path,t.doc_path,t.pdf_path')
-            ->order('contract_flow.back_time desc,contract_flow .report_time desc,a.id desc')->limit("{$offset},{$pagesize}")->select();
+            ->order('case when (contract_flow.status=1 and contract_flow.back_time) then contract_flow.back_time else contract_flow.report_time end desc')->limit("{$offset},{$pagesize}")->select();
         //当已经生成报告，状态为1的时候，才能上传检测报告
         if ($list) {
             $con_list = array();//反馈
