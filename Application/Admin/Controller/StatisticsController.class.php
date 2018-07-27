@@ -66,7 +66,7 @@ class StatisticsController extends Controller {
         $begin_time && $where .= " and date_format(b.collectdate,'%Y-%m-%d') >='{$begin_time}'";
         $end_time && $where .= " and date_format(b.collectdate,'%Y-%m-%d') <='{$end_time}'";
         $objPHPExcel->setActiveSheetIndex(9);
-        $objActSheet = $objPHPExcel->getActiveSheet();
+        $objActSheet = $objPHPExcel->getActiveSheet()->freezePane("A2");
         $mytitle = '';
         $mytitle .= '作废编号';
         $objActSheet->setTitle($mytitle);
@@ -315,7 +315,9 @@ class StatisticsController extends Controller {
         $end_time && $where .= " and date_format(a.inner_sign_time,'%Y-%m-%d') <='{$end_time}'";
 
         $objPHPExcel->setActiveSheetIndex($ch);
-        $objActSheet = $objPHPExcel->getActiveSheet();
+        $objActSheet = $objPHPExcel->getActiveSheet()->freezePane('A2');
+        $objActSheet->getStyle( 'A1')->getFont()->setName('SimHei' )->setBold(true);
+        $objActSheet->getStyle( 'B1')->getFont()->setName('SimHei' )->setBold(true);
         $mytitle = '';
 
         $ch = chr($ch + 65);//转换到字母
@@ -343,7 +345,7 @@ class StatisticsController extends Controller {
 //        $begin_time && $where .= " and date_format(b.collectdate,'%Y-%m-%d') >='{$begin_time}'";
 //        $end_time && $where .= " and date_format(b.collectdate,'%Y-%m-%d') <='{$end_time}'";
         $objPHPExcel->setActiveSheetIndex(6);
-        $objActSheet = $objPHPExcel->getActiveSheet();
+        $objActSheet = $objPHPExcel->getActiveSheet()->freezePane('A2');
         $mytitle = '';
 
         $mytitle .= 'G1科室';
@@ -369,7 +371,7 @@ class StatisticsController extends Controller {
 //        $begin_time && $where .= " and date_format(b.collectdate,'%Y-%m-%d') >='{$begin_time}'";
 //        $end_time && $where .= " and date_format(b.collectdate,'%Y-%m-%d') <='{$end_time}'";
         $objPHPExcel->setActiveSheetIndex(7);
-        $objActSheet = $objPHPExcel->getActiveSheet();
+        $objActSheet = $objPHPExcel->getActiveSheet()->freezePane('A2');
         $mytitle = '';
 
         $mytitle .= 'G2科室';
@@ -395,7 +397,7 @@ class StatisticsController extends Controller {
 //        $begin_time && $where .= " and date_format(b.collectdate,'%Y-%m-%d') >='{$begin_time}'";
 //        $end_time && $where .= " and date_format(b.collectdate,'%Y-%m-%d') <='{$end_time}'";
         $objPHPExcel->setActiveSheetIndex(8);
-        $objActSheet = $objPHPExcel->getActiveSheet();
+        $objActSheet = $objPHPExcel->getActiveSheet()->freezePane('A2');
         $mytitle = '';
 
         $mytitle .= 'H科室';
