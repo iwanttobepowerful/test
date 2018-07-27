@@ -33,9 +33,9 @@
                         document.title = "【　    　　】" + temps
                     }
                     if (newMessageRemind._step == 2) {
-                        document.title = "【"+num+"条消息】" + temps
+                        document.title = "【新消息】" + temps
                     }
-                }, 1000);
+                }, 2000);
                 return [newMessageRemind._timer, newMessageRemind._title];
             },
             //取消新消息提示
@@ -74,7 +74,7 @@
             })
         }
 
-        var interval = setInterval(checknotify, 3000);
+        var interval = setInterval(checknotify, 5000);
 
     </script>
 
@@ -104,5 +104,6 @@
 <div id="wrapper" style="overflow: hidden;">
     <iframe name="main-frame" src="/admin/main/index.html" width="100%" height="100%" frameborder="0"></iframe>
 </div>
+</body>
 </include>
 <include file="Common:footer"/>
