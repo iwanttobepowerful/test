@@ -66,7 +66,7 @@ class StatisticsController extends Controller {
         $begin_time && $where .= " and date_format(b.collectdate,'%Y-%m-%d') >='{$begin_time}'";
         $end_time && $where .= " and date_format(b.collectdate,'%Y-%m-%d') <='{$end_time}'";
         $objPHPExcel->setActiveSheetIndex(9);
-        $objActSheet = $objPHPExcel->getActiveSheet();
+        $objActSheet = $objPHPExcel->getActiveSheet()->freezePane("A2");
         $mytitle = '';
         $mytitle .= '作废编号';
         $objActSheet->setTitle($mytitle);
