@@ -985,7 +985,7 @@ class TestController extends Controller
         }
 
         //报告审核
-        if ($if_admin || $user == 13) {
+        if ($if_admin || $user == 13 || $user == 18) {
             $useraudit= $admin_auth['audit'];
             $if_G1 = 0;
             $if_G2 = 0;//能审核的部门是否包含G1\G2，默认没有
