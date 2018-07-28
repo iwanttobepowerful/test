@@ -81,7 +81,22 @@ class UploaderController extends Controller {
             $array['info'] = $upload->getError();
         }else{// 上传成功 获取上传文件信息
             $saveUrl = './Public/attached/'.$info['file']['savepath'].$info['file']['savename'];
-            $imgUrl = $this->cropImage($saveUrl,100,100);
+            $picAddr = $saveUrl;
+            $exif = exif_read_data($picAddr);
+            $image = imagecreatefromjpeg($picAddr);
+            if($exif['Orientation'] == 3) {
+                $result = imagerotate($image, 180, 0);
+                imagejpeg($result, $picAddr, 100);
+            } elseif($exif['Orientation'] == 6) {
+                $result = imagerotate($image, -90, 0);
+                imagejpeg($result, $picAddr, 100);
+            } elseif($exif['Orientation'] == 8) {
+                $result = imagerotate($image, 90, 0);
+                imagejpeg($result, $picAddr, 100);
+            }
+            isset($result) && imagedestroy($result);
+            imagedestroy($image);
+            $imgUrl = $this->cropImage($picAddr,100,100);
             $array = array(
                 'info'=>'succ',
                 'url'=>substr($imgUrl, 1),
@@ -131,7 +146,23 @@ class UploaderController extends Controller {
 
             foreach ($info as $va) {
                 $saveUrl = './Public/attached/'.$va['savepath'].$va['savename'];
-                $imgUrl = $this->cropImage($saveUrl,100,100);
+                //防止图片旋转
+                $picAddr = $saveUrl;
+                $exif = exif_read_data($picAddr);
+                $image = imagecreatefromjpeg($picAddr);
+                if($exif['Orientation'] == 3) {
+                    $result = imagerotate($image, 180, 0);
+                    imagejpeg($result, $picAddr, 100);
+                } elseif($exif['Orientation'] == 6) {
+                    $result = imagerotate($image, -90, 0);
+                    imagejpeg($result, $picAddr, 100);
+                } elseif($exif['Orientation'] == 8) {
+                    $result = imagerotate($image, 90, 0);
+                    imagejpeg($result, $picAddr, 100);
+                }
+                isset($result) && imagedestroy($result);
+                imagedestroy($image);
+                $imgUrl = $this->cropImage($picAddr,100,100);
                 $this->ajaxReturn($imgUrl);
             }
 
