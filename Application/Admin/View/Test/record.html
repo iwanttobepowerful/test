@@ -20,7 +20,7 @@
                     <td>{$one.samplename}</td>
                     <td>
                         <if condition="$one[centreno1] or $one[centreno2] or $one[centreno3]">
-                            <a href="{:U('/admin/contract/reWriteTest')}?id={$one.centreno}" class="btn btn-primary btn-xs">更改单</a></if>
+                            <a href="{:U('/admin/contract/reWriteTest')}?id={$one.centreno}" class="btn btn-primary btn-xs" target="_blank">更改单</a></if>
                         <if condition="$one['gz_back'] neq 0 or $one['sh_back'] neq 0 or $one['bz_back'] neq 0">
                             <button onclick="module('{$one[centreno]}')" class="btn btn-warning btn-xs">退回原因</button>
                         </if>
