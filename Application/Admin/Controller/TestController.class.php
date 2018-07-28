@@ -442,10 +442,10 @@ class TestController extends Controller
         $where1 = "centreno='{$id}'";
         if ($type == 1) {
             $rs = D("sample_picture")->where($where)->field('picture_name')->select();
-        } elseif ($type == 2) {
-            $rs = D("test_record")->where($where1)->field('path')->select();
+        } elseif ($type == 2) {//检测记录
+            $rs = D("test_record")->where($where1)->field('path')->order('name,id')->select();
         } else {
-            $rs = D("test_record")->where($where)->field('path')->select();
+            $rs = D("test_record")->where($where)->field('path')->order('name,id')->select();
         }
         //换成字符串后再替换
         foreach ($rs as $v) {
