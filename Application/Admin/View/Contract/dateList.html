@@ -42,14 +42,14 @@
                            
                     <td width="28%">
 
-                    	<a href="/admin/manager/contractDetail?id={$con.centreno}"  class="btn btn-info btn-xs" >检验受理合同</a>
+                    	<a href="/admin/manager/contractDetail?id={$con.centreno}"  class="btn btn-info btn-xs" target="_blank" >检验受理合同</a>
        
                         <!--<a href="{:U('/admin/test/sampleShow')}?id={$con.centreno}" style="display:none" class="btn btn-info btn-xs" >抽样单</a>-->
                     	<if condition="mb_substr($con['centreno'],7,1) == 'C'">
-                        	<a href="{:U('/admin/test/sampleShow')}?id={$con.centreno}"  class="btn btn-info btn-xs" >抽样单</a>
+                        	<a href="{:U('/admin/test/sampleShow')}?id={$con.centreno}"  class="btn btn-info btn-xs" target="_blank">抽样单</a>
                         </if>
                         <if condition="$con.flow_id != -1">
-                       		<a href="/admin/test/infoShow?id={$con.centreno}"  class="btn btn-info btn-xs" >检验工作通知单</a>
+                       		<a href="/admin/test/infoShow?id={$con.centreno}"  class="btn btn-info btn-xs" target="_blank">检验工作通知单</a>
                         </if>
                     </td>
                     <td>
