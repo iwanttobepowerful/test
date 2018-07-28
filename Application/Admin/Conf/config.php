@@ -4,9 +4,9 @@ return array(
     'DB_TYPE'=>'mysql',
     'DB_HOST'=>'47.95.215.161',
     'DB_NAME'=>'jc',
-    'DB_USER'=>'root',
+    'DB_USER'=>'jcuser',
     //'DB_PWD'=>'svipcn@cx.com',
-    'DB_PWD'=>'ildqypWpVhHMOiqC',
+    'DB_PWD'=>'CRBpRj1PkVOxeXeT',
     'DB_PORT'=>'3306',
     'DB_PREFIX' => '',
     //分页参数配置
