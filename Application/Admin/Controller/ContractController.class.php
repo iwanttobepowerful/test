@@ -950,21 +950,24 @@ class ContractController extends Controller
             $count=$count+1;
             $flag=1;
         }
-        if($flag==1){
-            //$count=$count+1;
-            $data_temp['testCost']=$testCost;
-        }
         if($contract_cost['dcopy']!=$Dcopy){
             $cost_temp['Dcopy']=$Dcopy;
             $count=$count+1;
+            $flag=1;
         }
         if($contract_cost['drevise']!=$Drevise){
             $cost_temp['Drevise']=$Drevise;
             $count=$count+1;
+            $flag=1;
         }
         if($contract_cost['dother']!=$Dother){
             $cost_temp['Dother']=$Dother;
             $count=$count+1;
+            $flag=1;
+        }
+        if($flag==1){
+            //$count=$count+1;
+            $data_temp['testCost']=$testCost;
         }
         if($contract_cost['remark']!=$fee_remark){
             $cost_temp['remark']=$fee_remark;
