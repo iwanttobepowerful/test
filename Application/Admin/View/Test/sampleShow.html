@@ -190,6 +190,15 @@
 				/*page-break-after: always;*/
 			}
 		</style>
+		<script>
+            var num = 0;
+            function rotate(e) {
+                num++;
+                pic_class = "." + e
+
+                $(pic_class).css('rotate', 90*num);
+            }
+		</script>
 	</head>
 
 	<body>
@@ -395,7 +404,7 @@
         <volist name="list" id="one" key="sec">
 			<if condition="$one">
             <div class="page">
-                <img src="{$one}" class="picture {$sec}" />
+				<img src="{$one}" class="picture {$sec}" />
 				<button id="{$sec}" class="Noprint" onclick="rotate(this.id)">旋转</button>
             </div></if>
         </volist>
@@ -406,15 +415,7 @@
             <button onclick="window.print()" class="Noprint btn btn-primary final">打印</button>
 		</if></if>
 
-		<script>
-            var num = 0;
-            function rotate(e) {
-                num++;
-                pic_class = "." + e
 
-                $(pic_class).css('rotate', 90*num);
-            }
-		</script>
 	</body>
 
 </html>
