@@ -205,8 +205,8 @@
                         <label class="col-sm-3 control-label talign-right fz13">发送到</label>
                         <div class="col-sm-7">
                             <select id="select_status" class="form-control">
-                                <option value=7>实验员</option>
-                                <option value=8>报告编制员</option>
+                                <option value=7 id="shiyan">实验员</option>
+                                <option value=8 id="bianzhi">报告编制员</option>
                                 <option value=2 id="shenhe">审核人员</option>
                                 <option value=4 id="gaizhang">盖章人员</option>
                             </select>
@@ -303,6 +303,11 @@
         if(type_status==6){
             $("#shenhe").attr("disabled","disabled");
             $("#gaizhang").attr("disabled","disabled");
+        }else if(type_status==3){
+            $("#shenhe").attr("disabled","disabled");
+            $("#shiyan").attr("disabled","disabled");
+            $("#bianzhi").attr("disabled","disabled");
+            $("#gaizhang").attr("selected","selected");
         }
         $("#editModal1").modal();
     }
