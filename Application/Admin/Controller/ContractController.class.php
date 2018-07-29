@@ -2134,19 +2134,19 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
         }
         //-1 合同作废 0合同 1检测 2提交审核 3盖章退回 -4 批退回  7 已接单  8待上传报告
         //$where.=" and (f.status not in (2,4,5,6) or f.id is null) and c.centreNo1 is null and c.centreNo2 is null and c.centreNo3 is null";
-        $where.=" and (f.status not in (2,4,5,6) or f.id is null) and c.centreNo1 is null and c.centreNo2 is null and c.centreNo3 is null";
+        $where.=" and (f.status not in (2,4,5,6)) and (c.centreNo1 is null or c.centreNo1='') and (c.centreNo2 is null or c.centreNo2='') and (c.centreNo3 is null or c.centreNo3='')";
         $page = I("p",'int');
         $pagesize = 10;
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
 
-        $list = D("contract as c")->field('if(f.id is null,-1,f.id) as flow_id,c.*,f.status,f.ifback,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.verify_time,f.takelist_time,u.name as takename,u1.name as innername,u2.name as auditname')
+        $list = D("contract as c")
+            ->field('if(f.id is null,-1,f.id) as flow_id,c.*,f.status,f.ifback,f.inner_sign_user_id,f.inner_sign_time,f.takelist_user_id,f.verify_time,f.takelist_time,u.name as takename,u1.name as innername,u2.name as auditname')
             ->join('left join contract_flow as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on f.takelist_user_id=u.id LEFT JOIN common_system_user u1 on f.inner_sign_user_id=u1.id LEFT JOIN common_system_user u2 on f.verify_user_id=u2.id')
             ->where($where)
             ->order('c.input_time DESC')
             ->limit("{$offset},{$pagesize}")
             ->select();
-
         if($list){
             $con_list = array();//反馈
             foreach($list as $contract){
