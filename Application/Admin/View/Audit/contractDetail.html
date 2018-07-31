@@ -955,7 +955,7 @@
             <tr>
                 <td colspan="3" style="text-align: left"><span class="contract_txt">
                     备注:{$cost.remark}&nbsp;
-                    <if condition="$cost_temp.remark neq null">
+                    <if condition="$cost_temp.remark neq null or $cost_temp.remark ==''">
                         <span style="color: red">
                             ({$cost_temp.remark})
                         </span>
