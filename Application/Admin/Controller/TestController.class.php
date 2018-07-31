@@ -968,9 +968,9 @@ class TestController extends Controller
 
         //检测记录
         if ($if_admin) {
-            $where_jcjl = "(status=0 or (status=7 and bz_back=1) or (status=7 and sh_back=1) or (status=7 and gz_back=1))";//一：0合同录入完毕，未接单状态,要通知实验员接单  二：(status='7' and bz_back=1)状态7已接单并且是编制退回的情况下也要通知实验员来处理,还有报告审核退回，盖章审核退回
+            $where_jcjl = "((status=0 and takelist_user_id =0) or (status=7 and bz_back=1) or (status=7 and sh_back=1) or (status=7 and gz_back=1))";//一：0合同录入完毕，未接单状态,要通知实验员接单  二：(status='7' and bz_back=1)状态7已接单并且是编制退回的情况下也要通知实验员来处理,还有报告审核退回，盖章审核退回
         } else {
-            $where_jcjl = "(status=0 or (status=7 and bz_back=1) or (status=7 and sh_back=1) or (status=7 and gz_back=1))";
+            $where_jcjl = "((status=0 and takelist_user_id =0) or (status=7 and bz_back=1) or (status=7 and sh_back=1) or (status=7 and gz_back=1))";
             if ($department == 'G1') {
                 $where_jcjl .= " and SUBSTR(contract_flow.centreno,7,1) = 'G' and SUBSTR(contract_flow.centreno,9,3) <='500'";
             } elseif ($department == 'G2') {

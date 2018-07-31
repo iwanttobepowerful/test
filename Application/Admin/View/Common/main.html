@@ -33,9 +33,9 @@
                         document.title = "【　    　　】" + temps
                     }
                     if (newMessageRemind._step == 2) {
-                        document.title = "【新消息】" + temps
+                        document.title = "【新消息 】" + temps
                     }
-                }, 3000);
+                }, 1500);
                 return [newMessageRemind._timer, newMessageRemind._title];
             },
             //取消新消息提示
@@ -74,7 +74,7 @@
             })
         }
 
-        var interval = setInterval(checknotify, 8000);
+        var interval = setInterval(checknotify, 3000);
 
     </script>
 

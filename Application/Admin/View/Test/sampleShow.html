@@ -6,6 +6,7 @@
 		<title>抽样单</title>
         <link rel="stylesheet" type="text/css" href="__PUBLIC__/static/css/bootstrap.min.css" />
         <script src="__PUBLIC__/static/js/jquery-2.1.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__PUBLIC__/static/js/jquery.rotate.js" type="text/javascript" charset="utf-8"></script>
 		<style type="text/css">
 			* {
 				font-family: simsun;
@@ -190,6 +191,7 @@
 				/*page-break-after: always;*/
 			}
 		</style>
+
 	</head>
 
 	<body>
@@ -392,10 +394,11 @@
 			</table>
 		</div>
 
-        <volist name="list" id="one">
+        <volist name="list" id="one" key="sec">
 			<if condition="$one">
             <div class="page">
-                <img src="{$one}" class="picture" />
+				<img src="{$one}" class="picture {$sec}" />
+				<button id="{$sec}" class="Noprint" onclick="rotate(this.id)">旋转</button>
             </div></if>
         </volist>
 		<if condition="$user eq 7 || $if_admin eq 1">
@@ -404,6 +407,16 @@
         <else/>
             <button onclick="window.print()" class="Noprint btn btn-primary final">打印</button>
 		</if></if>
+
+		<script type="text/javascript" charset="utf-8">
+            var num = 0;
+            function rotate(e) {
+                num++;
+                pic_class = "." + e;
+
+                $(pic_class).css('rotate', 90*num);
+            }
+		</script>
 	</body>
 
 </html>
