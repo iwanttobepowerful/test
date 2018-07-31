@@ -418,7 +418,7 @@ class AuditController extends Controller {
         if($contract_cost['dother']!=null){
             $cost_temp['Dother']=$contract_cost['dother'];
         }
-        if($contract_cost['remark']!=null){
+        if($contract_cost['remark']!=null or $contract_cost['remark']==''){
             $cost_temp['remark']=$contract_cost['remark'];
         }
         if($contract_cost['idlist']!=null){
