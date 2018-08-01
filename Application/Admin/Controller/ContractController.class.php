@@ -787,23 +787,28 @@ class ContractController extends Controller
         }
         if($contract['samplecode']!=$sampleCode){
             $count=$count+1;
-            $data_temp['sampleCode']=$sampleCode;
+            if($sampleCode=='') $data_temp['sampleCode']='changeNULL';
+            else $data_temp['sampleCode']=$sampleCode;
         }
         if($contract['grade']!=$grade){
             $count=$count+1;
-            $data_temp['grade']=$grade;
+            if($grade=='') $data_temp['grade']='changeNULL';
+            else $data_temp['grade']=$grade;
         }
         if($contract['specification']!=$specification){
             $count=$count+1;
-            $data_temp['specification']=$specification;
+            if($specification=='') $data_temp['specification']='changeNULL';
+            else $data_temp['specification']=$specification;
         }
         if($contract['trademark']!=$trademark){
             $count=$count+1;
-            $data_temp['trademark']=$trademark;
+            if($trademark=='') $data_temp['trademark']='changeNULL';
+            else $data_temp['trademark']=$trademark;
         }
         if($contract['productiondate']!=$productionDate){
             $count=$count+1;
-            $data_temp['productionDate']=$productionDate;
+            if($productionDate=='') $data_temp['productionDate']='changeNULL';
+            else $data_temp['productionDate']=$productionDate;
         }
         if($contract['samplequantity']!=$sampleQuantity){
             $count=$count+1;
@@ -815,7 +820,8 @@ class ContractController extends Controller
         }
         if($contract['ration']!=$ration){
             $count=$count+1;
-            $data_temp['ration']=$ration;
+            if($ration=='') $data_temp['ration']='changeNULL';
+            else $data_temp['ration']=$ration;
         }
         if($contract['testcriteria']!=$testCriteria){
             $count=$count+1;
@@ -843,27 +849,33 @@ class ContractController extends Controller
         }
         if($contract['telephone']!=$telephone){
             $count=$count+1;
-            $data_temp['telephone']=$telephone;
+            if($telephone=='') $data_temp['telephone']='changeNULL';
+            else $data_temp['telephone']=$telephone;
         }
         if($contract['tax']!=$tax){
             $count=$count+1;
-            $data_temp['tax']=$tax;
+            if($tax=='') $data_temp['tax']='changeNULL';
+            else $data_temp['tax']=$tax;
         }
         if($contract['postcode']!=$postcode){
             $count=$count+1;
-            $data_temp['postcode']=$postcode;
+            if($postcode=='') $data_temp['postcode']='changeNULL';
+            else $data_temp['postcode']=$postcode;
         }
         if($contract['email']!=$email){
             $count=$count+1;
-            $data_temp['email']=$email;
+            if($email=='') $data_temp['email']='changeNULL';
+            else $data_temp['email']=$email;
         }
         if($contract['address']!=$address){
             $count=$count+1;
-            $data_temp['address']=$address;
+            if($address=='') $data_temp['address']='changeNULL';
+            else $data_temp['address']=$address;
         }
         if($contract['remark']!=$remark){
             $count=$count+1;
-            $data_temp['remark']=$remark;
+            if($remark=='') $data_temp['remark']='changeNULL';
+            else $data_temp['remark']=$remark;
         }
         if($contract['samplestaquan']!=$sampleStaQuan){
             $count=$count+1;
@@ -970,7 +982,8 @@ class ContractController extends Controller
             $data_temp['testCost']=$testCost;
         }
         if($contract_cost['remark']!=$fee_remark){
-            $cost_temp['remark']=$fee_remark;
+            if($fee_remark=='') $cost_temp['remark']='changeNULL';
+            else $cost_temp['remark']=$fee_remark;
             $count=$count+1;
         }
         $idList = unserialize($contract_cost['idlist']);

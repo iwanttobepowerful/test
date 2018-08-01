@@ -271,21 +271,36 @@ class AuditController extends Controller {
             $data_sample['sampleName']=$contract['samplename'];
         }
         if($contract['samplecode']!=null){
-            $data_temp['sampleCode']=$contract['samplecode'];
+            if($contract['samplecode']=='changeNULL') $data_temp['sampleCode']=null;
+            else $data_temp['sampleCode']=$contract['samplecode'];
         }
         if($contract['grade']!=null){
-            $data_temp['grade']=$contract['grade'];
+            if($contract['grade']=='changeNULL') $data_temp['grade']=null;
+            else $data_temp['grade']=$contract['grade'];
         }
         if($contract['specification']!=null){
-            $data_temp['specification']=$contract['specification'];
-            $data_sample['specification']=$contract['specification'];
+            if($contract['specification']=='changeNULL'){
+                $data_temp['specification']=null;
+                $data_sample['specification']=null;
+            }else {
+                $data_temp['specification']=$contract['specification'];
+                $data_sample['specification']=$contract['specification'];
+            }
         }
         if($contract['trademark']!=null){
-            $data_temp['trademark']=$contract['trademark'];
-            $data_sample['trademark']=$contract['trademark'];
+            if($contract['trademark']=='changeNULL'){
+                $data_temp['trademark']=null;
+                $data_sample['trademark']=null;
+            }
+            else{
+                $data_temp['trademark']=$contract['trademark'];
+                $data_sample['trademark']=$contract['trademark'];
+            }
         }
         if($contract['productiondate']!=null){
-            $data_temp['productionDate']=$contract['productiondate'];
+            if($contract['productiondate']=='changeNULL') $data_temp['productionDate']=null;
+            else  $data_temp['productionDate']=$contract['productiondate'];
+
         }
         if($contract['samplequantity']!=null){
             $data_temp['sampleQuantity']=$contract['samplequantity'];
@@ -297,8 +312,14 @@ class AuditController extends Controller {
             $data_info['sampleStatus']=$contract['samplestatus'];
         }
         if($contract['ration']!=null){
-            $data_temp['ration']=$contract['ration'];
-            $data_info['ration']=$contract['ration'];
+            if($contract['ration']=='changeNULL'){
+                $data_temp['ration']=null;
+                $data_info['ration']=null;
+            }
+            else{
+                $data_temp['ration']=$contract['ration'];
+                $data_info['ration']=$contract['ration'];
+            }
         }
         if($contract['testcriteria']!=null){
             $data_temp['testCriteria']=$contract['testcriteria'];
@@ -325,23 +346,34 @@ class AuditController extends Controller {
             $data_temp['clientSign']=$contract['clientsign'];
         }
         if($contract['telephone']!=null){
-            $data_temp['telephone']=$contract['telephone'];
+            if($contract['telephone']=='changeNULL') $data_temp['telephone']=null;
+            else $data_temp['telephone']=$contract['telephone'];
         }
         if($contract['tax']!=null){
-            $data_temp['tax']=$contract['tax'];
+            if($contract['tax']=='changeNULL') $data_temp['tax']=null;
+            else $data_temp['tax']=$contract['tax'];
         }
         if($contract['postcode']!=null){
-            $data_temp['postcode']=$contract['postcode'];
+            if($contract['postcode']=='changeNULL') $data_temp['postcode']=null;
+            else $data_temp['postcode']=$contract['postcode'];
         }
         if($contract['email']!=null){
-            $data_temp['email']=$contract['email'];
+            if($contract['email']=='changeNULL') $data_temp['email']=null;
+            else $data_temp['email']=$contract['email'];
         }
         if($contract['address']!=null){
-            $data_temp['address']=$contract['address'];
+            if($contract['address']=='changeNULL') $data_temp['address']=null;
+            else $data_temp['address']=$contract['address'];
         }
         if($contract['remark']!=null){
-            $data_temp['remark']=$contract['remark'];
-            $data_info['otherComments']=$contract['remark'];
+            if($contract['remark']=='changeNULL'){
+                $data_temp['remark']=null;
+                $data_info['otherComments']=null;
+            }
+            else{
+                $data_temp['remark']=$contract['remark'];
+                $data_info['otherComments']=$contract['remark'];
+            }
         }
         if($contract['samplestaquan']!=null){
             $data_temp['sampleStaQuan']=$contract['samplestaquan'];
@@ -418,8 +450,9 @@ class AuditController extends Controller {
         if($contract_cost['dother']!=null){
             $cost_temp['Dother']=$contract_cost['dother'];
         }
-        if($contract_cost['remark']!=null or $contract_cost['remark']==''){
-            $cost_temp['remark']=$contract_cost['remark'];
+        if($contract_cost['remark']!=null){
+            if($contract_cost['remark']=='changeNULL')$cost_temp['remark']=null;
+            else $cost_temp['remark']=$contract_cost['remark'];
         }
         if($contract_cost['idlist']!=null){
             $cost_temp['idList']=$contract_cost['idlist'];

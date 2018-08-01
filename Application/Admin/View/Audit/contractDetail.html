@@ -266,7 +266,9 @@
                     <else />
                         <span>——</span>
                     </if>
-                    <if condition="$one_temp.samplecode neq null"><span style="color:red">({$one_temp.samplecode})</span></if>
+                    <if condition="$one_temp.samplecode == 'changeNULL'"><span style="color:red">()</span>
+                    <elseif condition="$one_temp.samplecode neq null"/><span style="color:red">({$one_temp.samplecode})</span>
+                    </if>
 				</span>
 
             </td>
@@ -277,7 +279,9 @@
                 <else />
                     <span>——</span>
                 </if>
-                <if condition="$one_temp.grade neq null"><span style="color:red">({$one_temp.grade})</span></if>
+                <if condition="$one_temp.grade == 'changeNULL'"><span style="color:red">()</span>
+                    <elseif condition="$one_temp.grade neq null"/><span style="color:red">({$one_temp.grade})</span>
+                    </if>
             </span></td>
         </tr>
         <tr>
@@ -288,7 +292,9 @@
                 <else />
                     <span>——</span>
                 </if>
-                <if condition="$one_temp.specification neq null"><span style="color:red">({$one_temp.specification})</span></if>
+                <if condition="$one_temp.specification == 'changeNULL'"><span style="color:red">()</span>
+                    <elseif condition="$one_temp.specification neq null"/><span style="color:red">({$one_temp.specification})</span>
+                    </if>
 			</span></td>
             <td class="test_txt">商标</td>
             <td colspan="3"><span class="contract_txt">
@@ -297,7 +303,9 @@
                 <else />
                     <span>——</span>
                 </if>
-                <if condition="$one_temp.trademark neq null"><span style="color:red">({$one_temp.trademark})</span></if>
+                <if condition="$one_temp.trademark == 'changeNULL'"><span style="color:red">()</span>
+                    <elseif condition="$one_temp.trademark neq null"/><span style="color:red">({$one_temp.trademark})</span>
+                    </if>
 			</span></td>
         </tr>
         <tr>
@@ -308,7 +316,9 @@
                 <else />
                     <span>——</span>
                 </if>
-                <if condition="$one_temp.productiondate neq null"><span style="color:red">({$one_temp.productiondate})</span></if>
+                <if condition="$one_temp.productiondate == 'changeNULL'"><span style="color:red">()</span>
+                    <elseif condition="$one_temp.productiondate neq null"/><span style="color:red">({$one_temp.productiondate})</span>
+                    </if>
 			</span></td>
             <td class="test_txt">样品数量</td>
             <td colspan="3"><span class="contract_txt">{$one.samplequantity}
@@ -327,7 +337,9 @@
                 <else />
                     <span>——</span>
                 </if>
-                <if condition="$one_temp.ration neq null"><span style="color:red">({$one_temp.ration})</span></if>
+                <if condition="$one_temp.ration == 'changeNULL'"><span style="color:red">()</span>
+                    <elseif condition="$one_temp.ration neq null"/><span style="color:red">({$one_temp.ration})</span>
+                    </if>
 			</span></td>
         </tr>
         <tr>
@@ -398,7 +410,9 @@
                 <else />
                     <span>——</span>
                 </if>
-                <if condition="$one_temp.telephone neq null"><span style="color:red">({$one_temp.telephone})</span></if>
+                <if condition="$one_temp.telephone == 'changeNULL'"><span style="color:red">()</span>
+                    <elseif condition="$one_temp.telephone neq null"/><span style="color:red">({$one_temp.telephone})</span>
+                    </if>
 					</span></td>
             <td class="test_txt">传真</td>
             <td colspan="2"><span class="contract_txt">
@@ -408,7 +422,9 @@
                     <span>——</span>
                 </if>
 					</span>
-                <if condition="$one_temp.tax neq null"><span style="color:red">({$one_temp.tax})</span></if>
+                <if condition="$one_temp.tax == 'changeNULL'"><span style="color:red">()</span>
+                    <elseif condition="$one_temp.tax neq null"/><span style="color:red">({$one_temp.tax})</span>
+                </if>
             </td>
         </tr>
         <tr>
@@ -420,7 +436,9 @@
                     <span>——</span>
                 </if>
 					</span>
-                <if condition="$one_temp.postcode neq null"><span style="color:red">({$one_temp.postcode})</span></if>
+                <if condition="$one_temp.postcode == 'changeNULL'"><span style="color:red">()</span>
+                    <elseif condition="$one_temp.postcode neq null"/><span style="color:red">({$one_temp.postcode})</span>
+                </if>
             </td>
             <td class="en">E-mail</td>
             <td colspan="4"><span class="contract_txt">
@@ -430,7 +448,9 @@
                     <span>——</span>
                 </if>
 					</span>
-                <if condition="$one_temp.email neq null"><span style="color:red">({$one_temp.email})</span></if>
+                <if condition="$one_temp.email == 'changeNULL'"><span style="color:red">()</span>
+                    <elseif condition="$one_temp.email neq null"/><span style="color:red">({$one_temp.email})</span>
+                </if>
             </td>
         </tr>
         <tr>
@@ -442,7 +462,9 @@
                     <span>——</span>
                 </if>
 					</span>
-                <if condition="$one_temp.address neq null"><span style="color:red">({$one_temp.address})</span></if>
+                <if condition="$one_temp.address == 'changeNULL'"><span style="color:red">()</span>
+                    <elseif condition="$one_temp.address neq null"/><span style="color:red">({$one_temp.address})</span>
+                </if>
             </td>
         </tr>
         <tr>
@@ -455,7 +477,9 @@
                     <span>——</span>
                 </if>
             </span>
-            <if condition="$one_temp.remark neq null"><span style="color:red">({$one_temp.remark})</span></if>
+                <if condition="$one_temp.remark == 'changeNULL'"><span style="color:red">()</span>
+                    <elseif condition="$one_temp.remark neq null"/><span style="color:red">({$one_temp.remark})</span>
+                </if>
             </td>
         </tr>
         <table class="test_content_two">
@@ -955,10 +979,8 @@
             <tr>
                 <td colspan="3" style="text-align: left"><span class="contract_txt">
                     备注:{$cost.remark}&nbsp;
-                    <if condition="$cost_temp.remark neq null or $cost_temp.remark ==''">
-                        <span style="color: red">
-                            ({$cost_temp.remark})
-                        </span>
+                    <if condition="$cost_temp.remark == 'changeNULL'"><span style="color:red">()</span>
+                    <elseif condition="$cost_temp.remark neq null"/><span style="color:red">({$cost_temp.remark})</span>
                     </if>
                 </span>
                 </td>
