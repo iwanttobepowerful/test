@@ -1,5 +1,6 @@
 <?php
 namespace Admin\Controller;
+use PhpParser\Node\Expr\Array_;
 use Think\Controller;
 class AuditController extends Controller {
     public $user = array();
@@ -508,7 +509,11 @@ class AuditController extends Controller {
             $data_temp['productionDate']=$data_sample['productiondate'];
         }
         if($data_sample['batchno']!=null){
-            $data_temp['batchNo']=$data_sample['batchno'];
+            if($data_sample['batchno']=='changeNULL'){
+                $data_temp['batchNo']=null;
+            }else{
+                $data_temp['batchNo']=$data_sample['batchno'];
+            }
         }
         if($data_sample['simplersign']!=null){
             $data_temp['simplerSign']=$data_sample['simplersign'];
@@ -529,13 +534,25 @@ class AuditController extends Controller {
             $data_temp['entSignDate']=$data_sample['entsigndate'];
         }
         if($data_sample['telephone']!=null){
-            $data_temp['telephone']=$data_sample['telephone'];
+            if($data_sample['telephone']=='changeNULL'){
+                $data_temp['telephone']=null;
+            }else{
+                $data_temp['telephone']=$data_sample['telephone'];
+            }
         }
         if($data_sample['tax']!=null){
-            $data_temp['tax']=$data_sample['tax'];
+            if($data_sample['tax']=='changeNULL'){
+                $data_temp['tax']=null;
+            }else{
+                $data_temp['tax']=$data_sample['tax'];
+            }
         }
         if($data_sample['address']!=null){
-            $data_temp['address']=$data_sample['address'];
+            if($data_sample['batchno']=='changeNULL'){
+                $data_temp['address']=null;
+            }else{
+                $data_temp['address']=$data_sample['address'];
+            }
         }
         D("sampling_form")->where("centreNo='".$centreno."'")->save($data_temp);
         D("report_feedback")->where("id=".$id)->save($data);
@@ -655,56 +672,156 @@ class AuditController extends Controller {
         if(!empty($sttr_temp['a'])) {
             $where1['id'] = array('in', $sttr_temp['a']);
             $a1 = D("test_fee")->where($where1)->select();
-            if(count($a1)<=0) $a1=-1;
-            if(!empty($a) && implode(",",$a)==implode(",",$a1)) $a1=-1;
+            if(count($a1)<=0){
+                if($cost_temp['arecord']==0 && $cost_temp['arecord']!=null) $a1=-2;
+                else $a1=-1;
+            }
+            $re=Array();
+            $re1=Array();
+            foreach ($a as $id){
+                array_push($re,$id['id']);
+            }
+            foreach ($a1 as $id){
+                array_push($re1,$id['id']);
+            };
+            if(!empty($a) && implode(",",$re1)==implode(",",$re)) $a1=-1;
+
         }else $a1=-1;
         if(!empty($sttr_temp['b'])) {
             $where2['id'] = array('in', $sttr_temp['b']);
             $b1 = D("test_fee")->where($where2)->select();
-            if(count($b1)<=0) $b1=-1;
-            if(!empty($b) && implode(",",$b)==implode(",",$b1)) $b1=-1;
+            if(count($b1)<=0){
+                if($cost_temp['brecord']==0 && $cost_temp['brecord']!=null) $b1=-2;
+                else $b1=-1;
+            }
+            $re=Array();
+            $re1=Array();
+            foreach ($b as $id){
+                array_push($re,$id['id']);
+            }
+            foreach ($b1 as $id){
+                array_push($re1,$id['id']);
+            };
+            if(!empty($b) && implode(",",$re)==implode(",",$re1)) $b1=-1;
         }else $b1=-1;
         if(!empty($sttr_temp['c'])) {
             $where3['id'] = array('in', $sttr_temp['c']);
             $c1 = D("test_fee")->where($where3)->select();
-            if(count($c1)<=0) $c1=-1;
-            if(!empty($c) && implode(",",$c)==implode(",",$c1)) $c1=-1;
+            if(count($c1)<=0){
+                if($cost_temp['crecord']==0 && $cost_temp['crecord']!=null) $c1=-2;
+                else $c1=-1;
+            }
+            $re=Array();
+            $re1=Array();
+            foreach ($c as $id){
+                array_push($re,$id['id']);
+            }
+            foreach ($c1 as $id){
+                array_push($re1,$id['id']);
+            };
+            if(!empty($c) && implode(",",$re)==implode(",",$re1)) $c1=-1;
         }else $c1=-1;
         if(!empty($sttr_temp['d'])) {
             $where4['id'] = array('in', $sttr_temp['d']);
             $d1 = D("test_fee")->where($where4)->select();
-            if(count($d1)<=0) $d1=-1;
-            if(!empty($d) && implode(",",$d)==implode(",",$d1)) $d1=-1;
+            if(count($d1)<=0){
+                if($cost_temp['drecord']==0 && $cost_temp['drecord']!=null) $d1=-2;
+                else $d1=-1;
+            }
+            $re=Array();
+            $re1=Array();
+            foreach ($d as $id){
+                array_push($re,$id['id']);
+            }
+            foreach ($d1 as $id){
+                array_push($re1,$id['id']);
+            };
+            if(!empty($d) && implode(",",$re)==implode(",",$re1)) $d1=-1;
         }else $d1=-1;
         if(!empty($sttr_temp['e'])) {
             $where5['id'] = array('in', $sttr_temp['e']);
             $e1 = D("test_fee")->where($where5)->select();
-            if(count($e1)<=0) $e1=-1;
-            if(!empty($e) && implode(",",$e)==implode(",",$e1)) $e1=-1;
+            if(count($e1)<=0){
+                if($cost_temp['erecord']==0 && $cost_temp['erecord']!=null) $e1=-2;
+                else $e1=-1;
+            }
+            $re=Array();
+            $re1=Array();
+            foreach ($e as $id){
+                array_push($re,$id['id']);
+            }
+            foreach ($e1 as $id){
+                array_push($re1,$id['id']);
+            };
+            if(!empty($e) && implode(",",$re)==implode(",",$re1)) $e1=-1;
         }else $e1=-1;
         if(!empty($sttr_temp['f'])) {
             $where6['id'] = array('in', $sttr_temp['f']);
             $f1 = D("test_fee")->where($where6)->select();
-            if(count($f1)<=0) $f1=-1;
-            if(!empty($f) && implode(",",$f)==implode(",",$f1)) $f1=-1;
+            if(count($f1)<=0){
+                if($cost_temp['frecord']==0 && $cost_temp['frecord']!=null) $f1=-2;
+                else $f1=-1;
+            }
+            $re=Array();
+            $re1=Array();
+            foreach ($f as $id){
+                array_push($re,$id['id']);
+            }
+            foreach ($f1 as $id){
+                array_push($re1,$id['id']);
+            };
+            if(!empty($f) && implode(",",$re)==implode(",",$re1)) $f1=-1;
         }else $f1=-1;
         if(!empty($sttr_temp['g1'])) {
             $where4['id'] = array('in', $sttr_temp['g1']);
             $g11 = D("test_fee")->where($where4)->select();
-            if(count($g11)<=0) $g11=-1;
-            if(!empty($g1) && implode(",",$g1)==implode(",",$g11)) $g11=-1;
+            if(count($g11)<=0){
+                if($cost_temp['g1record']==0 && $cost_temp['g1record']!=null) $g11=-2;
+                else $g11=-1;
+            }
+            $re=Array();
+            $re1=Array();
+            foreach ($g1 as $id){
+                array_push($re,$id['id']);
+            }
+            foreach ($g11 as $id){
+                array_push($re1,$id['id']);
+            };
+            if(!empty($g1) && implode(",",$re)==implode(",",$re1)) $g11=-1;
         }else $g11=-1;
         if(!empty($sttr_temp['g2'])) {
             $where5['id'] = array('in', $sttr_temp['g2']);
             $g21 = D("test_fee")->where($where5)->select();
-            if(count($g21)<=0) $g21=-1;
-            if(!empty($g2) && implode(",",$g2)==implode(",",$g21)) $g21=-1;
+            if(count($g21)<=0){
+                if($cost_temp['g2record']==0 && $cost_temp['g2record']!=null) $g21=-2;
+                else $g21=-1;
+            }
+            $re=Array();
+            $re1=Array();
+            foreach ($g2 as $id){
+                array_push($re,$id['id']);
+            }
+            foreach ($g21 as $id){
+                array_push($re1,$id['id']);
+            };
+            if(!empty($g2) && implode(",",$re)==implode(",",$re1)) $g21=-1;
         }else $g21=-1;
         if(!empty($sttr_temp['h'])) {
             $where6['id'] = array('in', $sttr_temp['h']);
             $h1 = D("test_fee")->where($where6)->select();
-            if(count($h1)<=0) $h1=-1;
-            if(!empty($h) && implode(",",$h)==implode(",",$h1)) $h1=-1;
+            if(count($h1)<=0){
+                if($cost_temp['hrecord']==0 && $cost_temp['hrecord']!=null) $h1=-2;
+                else $h1=-1;
+            }
+            $re=Array();
+            $re1=Array();
+            foreach ($h as $id){
+                array_push($re,$id['id']);
+            }
+            foreach ($h1 as $id){
+                array_push($re1,$id['id']);
+            };
+            if(!empty($h) && implode(",",$re)==implode(",",$re1)) $h1=-1;
         }else $h1=-1;
 
         $body=array(

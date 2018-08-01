@@ -1750,7 +1750,12 @@ class ContractController extends Controller
             $count=$count+1;
         }
         if($sample['batchno']!=$batchno){
-            $data['batchNo']=$batchno;
+            if($batchno=='') {
+                $data['batchNo']='changeNULL';
+            }else{
+                $data['batchNo']=$batchno;
+            }
+
             $count=$count+1;
         }
         if($sample['simplersign']!=$simplerSign){
@@ -1778,15 +1783,27 @@ class ContractController extends Controller
             $count=$count+1;
         }
         if($sample['telephone']!=$telephone){
-            $data['telephone']=$telephone;
+            if($batchno=='') {
+                $data['telephone']='changeNULL';
+            }else{
+                $data['telephone']=$telephone;
+            }
             $count=$count+1;
         }
         if($sample['tax']!=$tax){
-            $data['tax']=$tax;
+            if($batchno=='') {
+                $data['tax']='changeNULL';
+            }else{
+                $data['tax']=$tax;
+            }
             $count=$count+1;
         }
         if($sample['address']!=$address){
-            $data['address']=$address;
+            if($batchno=='') {
+                $data['address']='changeNULL';
+            }else{
+                $data['address']=$address;
+            }
             $count=$count+1;
         }
         $data['centreNo']=$centreno;

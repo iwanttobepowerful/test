@@ -248,9 +248,9 @@
                             <else />
                                 <span>——</span>
                             </if>
-							<if condition="$one_temp.batchno neq null">
-								<span style="color:red">({$one_temp.batchno})</span>
-							</if>
+						<if condition="$one_temp.batchno == 'changeNULL'"><span style="color:red">()</span>
+						<elseif condition="$one_temp.batchno neq null"/><span style="color:red">({$one_temp.batchno})</span>
+						</if>
 					</span></td>
 				</tr>
 				<tr>
@@ -416,8 +416,8 @@
                         <else />
 							<span>——</span>
                         </if>
-						<if condition="$one_temp.telephone neq null">
-							<span style="color:red">({$one_temp.telephone})</span>
+						<if condition="$one_temp.telephone == 'changeNULL'"><span style="color:red">()</span>
+						<elseif condition="$one_temp.telephone neq null"/><span style="color:red">({$one_temp.telephone})</span>
 						</if>
 					</span></td>
 					<td class="cn">传 真</td>
@@ -427,8 +427,8 @@
                         <else />
 							<span>——</span>
                         </if>
-						<if condition="$one_temp.tax neq null">
-							<span style="color:red">({$one_temp.tax})</span>
+						<if condition="$one_temp.tax == 'changeNULL'"><span style="color:red">()</span>
+						<elseif condition="$one_temp.tax neq null"/><span style="color:red">({$one_temp.tax})</span>
 						</if>
 					</span></td>
 				</tr>
@@ -440,8 +440,8 @@
                         <else />
 							<span>——</span>
                         </if>
-						<if condition="$one_temp.address neq null">
-							<span style="color:red">({$one_temp.address})</span>
+						<if condition="$one_temp.address == 'changeNULL'"><span style="color:red">()</span>
+						<elseif condition="$one_temp.address neq null"/><span style="color:red">({$one_temp.address})</span>
 						</if>
 					</span></td>
 				</tr>
