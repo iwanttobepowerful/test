@@ -710,7 +710,7 @@ class ReportController extends Controller
             ->join('test_report as t on c.centreno=t.centreno')
             ->field('c.id,c.status,c.centreno,c.inner_sign_time,b.name,a.productUnit,a.clientSign,a.telephone,a.postmethod,a.address,a.centreno1,a.centreno2,a.centreno3,t.pdf_sign_path')
             ->limit("{$offset},{$pagesize}")
-            ->order('c.status=7,c.inner_sign_time desc,c.id desc')->select();
+            ->order('c.status=5,c.inner_sign_time desc,c.id desc')->select();
             //->order('c.inner_sign_time desc,c.id desc')->select();
         //查找条件为已经批准并且外部尚未签发的报告
         if($rs){
