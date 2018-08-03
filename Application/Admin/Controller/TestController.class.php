@@ -643,10 +643,10 @@ class TestController extends Controller
                 } else {
                     //小中心
                     $tmpSavefile = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-mark.' . $baseinfo['extension'];
-                    waterMark($imageFiles[0], './Public/static/images/sealB.png', $tmpSavefile, array(750, 2620));
+                    waterMark($imageFiles[0], './Public/static/images/sealB.png', $tmpSavefile, array(750, 2600));
                     //第二个公章
                     $tmpSavefile2 = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-mark2.' . $baseinfo['extension'];
-                    waterMark($tmpSavefile, './Public/static/images/sealA.png', $tmpSavefile2, array(1350, 2620));
+                    waterMark($tmpSavefile, './Public/static/images/sealA.png', $tmpSavefile2, array(1350, 2600));
                     //左上角章
                     $tmpSavefile3 = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-sign.' . $baseinfo['extension'];
                     waterMark($tmpSavefile2, './Public/static/images/sign.png', $tmpSavefile3, array(350, 60));
@@ -782,10 +782,10 @@ class TestController extends Controller
                 } else {
                     //小中心
                     $tmpSavefile = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-mark.' . $baseinfo['extension'];
-                    waterMark($imageFiles[0], './Public/static/images/sealB.png', $tmpSavefile, array(750, 2620));
+                    waterMark($imageFiles[0], './Public/static/images/sealB.png', $tmpSavefile, array(750, 2600));
                     //第二个公章
                     $tmpSavefile2 = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-mark2.' . $baseinfo['extension'];
-                    waterMark($tmpSavefile, './Public/static/images/sealA.png', $tmpSavefile2, array(1350, 2620));
+                    waterMark($tmpSavefile, './Public/static/images/sealA.png', $tmpSavefile2, array(1350, 2600));
                     //左上角章
                     $tmpSavefile3 = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-sign.' . $baseinfo['extension'];
                     waterMark($tmpSavefile2, './Public/static/images/sign.png', $tmpSavefile3, array(350, 60));
