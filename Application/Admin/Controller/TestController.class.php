@@ -627,9 +627,9 @@ class TestController extends Controller
             if (file_exists($imageFiles[0]) && file_exists($imageFiles[1])) {
                 $baseinfo = pathinfo($imageFiles[0]);
                 if ($tpl['subtype'] == 2) {
-                    //小中心
+                    //大中心
                     $tmpSavefile = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-mark.' . $baseinfo['extension'];
-                    waterMark($imageFiles[0], './Public/static/images/sealB.png', $tmpSavefile, array(1050, 2650));
+                    waterMark($imageFiles[0], './Public/static/images/sealB.png', $tmpSavefile, array(1050, 2620));
                     //左上角章
                     $tmpSavefile2 = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-sign.' . $baseinfo['extension'];
                     waterMark($tmpSavefile, './Public/static/images/sign.png', $tmpSavefile2, array(350, 60));
@@ -639,9 +639,9 @@ class TestController extends Controller
                     //图二带章
                     $baseinfo = pathinfo($imageFiles[1]);
                     $tmpSavefile = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-mark2.' . $baseinfo['extension'];
-                    waterMark($imageFiles[1], './Public/static/images/sealB.png', $tmpSavefile, array(1600, 2380));
+                    waterMark($imageFiles[1], './Public/static/images/sealB.png', $tmpSavefile, array(1750, 2500));
                 } else {
-                    //大中心
+                    //小中心
                     $tmpSavefile = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-mark.' . $baseinfo['extension'];
                     waterMark($imageFiles[0], './Public/static/images/sealB.png', $tmpSavefile, array(750, 2620));
                     //第二个公章
@@ -768,7 +768,7 @@ class TestController extends Controller
                 if ($tpl['subtype'] == 2) {
                     //大中心
                     $tmpSavefile = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-mark.' . $baseinfo['extension'];
-                    waterMark($imageFiles[0], './Public/static/images/sealB.png', $tmpSavefile, array(1050, 2650));
+                    waterMark($imageFiles[0], './Public/static/images/sealB.png', $tmpSavefile, array(1050, 2620));
                     //左上角章
                     $tmpSavefile2 = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-sign.' . $baseinfo['extension'];
                     waterMark($tmpSavefile, './Public/static/images/sign.png', $tmpSavefile2, array(350, 60));
@@ -778,7 +778,7 @@ class TestController extends Controller
                     //图二带章
                     $baseinfo = pathinfo($imageFiles[1]);
                     $tmpSavefile = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-mark2.' . $baseinfo['extension'];
-                    waterMark($imageFiles[1], './Public/static/images/sealB.png', $tmpSavefile, array(1600, 2380));
+                    waterMark($imageFiles[1], './Public/static/images/sealB.png', $tmpSavefile, array(1750, 2500));
                 } else {
                     //小中心
                     $tmpSavefile = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-mark.' . $baseinfo['extension'];
