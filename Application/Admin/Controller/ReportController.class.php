@@ -865,6 +865,7 @@ class ReportController extends Controller
         }
         $this->ajaxReturn($rs);
     }
+
     //报告编制退回实验员
     public function bianzhiBack()
     {
@@ -900,6 +901,15 @@ class ReportController extends Controller
         );
 
         M()->startTrans();
+        //检查是否是还在修改已通过的状态
+        $no_feed_list = D('report_feedback')->where("id in (select max(id) from report_feedback where if_report=1 and centreno = '{$centreno}') ")->find();
+        $feed_id = $no_feed_list['id'];
+        if( $no_feed_list['status'] == 1){
+            $update_data =array(
+                'status'=>3
+            );
+            D('report_feedback')->where('id = '.$feed_id)->save($update_data);
+        }
         if(D("back_report")->where($where1)->find()){
             D("back_report")->where($where1)->delete();//之前的记录先清掉
         }
