@@ -82,7 +82,7 @@ class ReportController extends Controller
             ->join('left join common_system_user ON contract_flow.uploadreport_user_id = common_system_user.id left join test_report on contract_flow.centreno=test_report.centreno left join contract as a on contract_flow.centreno=a.centreno')
             ->field('contract_flow.ifback,contract_flow.gz_back,contract_flow.sh_back,contract_flow.bz_back,contract_flow.id,contract_flow.centreNo,contract_flow.status,contract_flow.uploadreport_time,common_system_user.name,test_report.pdf_path,a.centreno1,a.centreno2,a.centreno3')
             ->limit("{$offset},{$pagesize}")
-            ->order('case when (contract_flow.status = 2 and contract_flow.back_time) then contract_flow.back_time else contract_flow.report_time end desc')->select();
+            ->order('case when (contract_flow.status = 2 and contract_flow.back_time) then contract_flow.back_time else contract_flow.uploadreport_time end desc')->select();
         if($rs){
             $con_list = array();//反馈
             foreach($rs as $contract){
