@@ -2055,7 +2055,7 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
         }else{
             $type='no';
             //0合同 1检测 3盖章退回 -4 批退回  7 已接单  8待上传报告
-            $where.=" and (f.status !=6 or f.id is null)";
+            $where.=" and (f.status !=6 or f.id=-1)";
         }
         $page = I("p",'int');
         $pagesize = 10;
