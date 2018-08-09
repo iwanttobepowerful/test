@@ -337,6 +337,11 @@ class ContractController extends Controller
 
         $admin_auth = session("admin_auth");
         $collector_partment=substr($centreNo,6,1);
+        if($collector_partment=='G'){
+            $code = substr($centreNo,8,3);
+            if($code>500) $collector_partment='G2';
+            else $collector_partment='G1';
+        }
         $data = array(
             "clientName"=>$clientName,
             "productUnit"=>$productUnit,
