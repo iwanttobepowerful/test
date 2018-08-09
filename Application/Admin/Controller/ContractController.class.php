@@ -336,7 +336,7 @@ class ContractController extends Controller
 
 
         $admin_auth = session("admin_auth");
-        $collector_partment=$admin_auth['department'];
+        $collector_partment=substr($centreNo,6,1);
         $data = array(
             "clientName"=>$clientName,
             "productUnit"=>$productUnit,
