@@ -2038,7 +2038,7 @@ class ContractController extends Controller
 c.trademark like '%{$keyword}%' or c.sampleStatus like '%{$keyword}%' or c.package_remark like '%{$keyword}%' or c.clientSign like '%{$keyword}%' or
 c.telephone like '%{$keyword}%' or c.tax like '%{$keyword}%' or c.postcode like '%{$keyword}%' or c.email like '%{$keyword}%' or
 c.address like '%{$keyword}%' or c.remark like '%{$keyword}%' or c.sampleStaQuan like '%{$keyword}%' or c.collector like '%{$keyword}%' or
-c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo3 like '%{$keyword}%' or c.conclusion like '%{$keyword}%')";
+c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo3 like '%{$keyword}%' or c.conclusion like '%{$keyword}%' or c.testCriteria like '%{$keyword}%' )";
 
         //if($role['rolename']=="领导" || $role['rolename']=="审核员" || $role['rolename']=="盖章人员" || $if_admin==1){
         if($roleid==8 || $roleid==13 || $roleid==15 || $if_admin==1){
