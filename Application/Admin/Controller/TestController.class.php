@@ -163,8 +163,12 @@ class TestController extends Controller
         $sortby = I("sortby");
         $where = "1=1";
         if ($de == 'A') {
-            $where .= " and contract_flow.status in('0','7') ";
-        } elseif ($de == 'B') {
+            $where .= " and (contract_flow.status= 0 and contract_flow.takelist_time is null) ";
+        }
+        elseif ($de == 'B') {
+            $where .= " and (contract_flow.status= 7 or (contract_flow.status= 0 and contract_flow.takelist_time))";
+        }
+        elseif ($de == 'C') {
             $where .= " and contract_flow.status  not in('0','7','-1') ";
         }
         if ($sortby == 1) {
@@ -205,7 +209,7 @@ class TestController extends Controller
             ->join('contract as a on contract_flow.centreno=a.centreno')
             ->field('contract_flow.back_time,contract_flow.gz_back,contract_flow.sh_back,contract_flow.bz_back,contract_flow.ifback,contract_flow.takelist_user_id,contract_flow.status,work_inform_form.workDate,work_inform_form.centreNo,work_inform_form.sampleName,work_inform_form.testCreiteria,a.centreno1,a.centreno2,a.centreno3')
             ->limit("{$offset},{$pagesize}")
-            ->order('case when (contract_flow.status in(0,7) and contract_flow.back_time) then contract_flow.back_time  else work_inform_form.workDate end DESC')
+            ->order('case when (contract_flow.status in(0,7) and contract_flow.back_time) then contract_flow.back_time else work_inform_form.workDate end DESC')
             ->select();//从合同表!!!!里取出对应中心编号的信息
         if ($list) {
             $con_list = array();//反馈
