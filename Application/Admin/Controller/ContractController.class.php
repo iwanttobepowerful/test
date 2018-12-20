@@ -2323,8 +2323,8 @@ c.centreNo1 like '%{$keyword}%' or c.centreNo2 like '%{$keyword}%' or c.centreNo
         if($page<=0) $page = 1;
         $offset = ( $page-1 ) * $pagesize;
 
-        $list = D("contract_flow as c")->field('if(c.id is null,-1,c.id) as flow_id,f.*,c.isaudit,c.back_time,c.bz_back,c.sh_back,c.gz_back,c.ifback,c.status,c.inner_sign_user_id,c.inner_sign_time,c.external_sign_time,c.takelist_user_id,c.takelist_time,u.name as takename,u1.name as innername,u2.name as externalname,v.doc_path,v.pdf_path,v.qrcode_path')
-                ->join('left join contract as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on c.takelist_user_id=u.id LEFT JOIN common_system_user u2 on c.external_sign_user_id=u2.id LEFT JOIN common_system_user u1 on c.inner_sign_user_id=u1.id left join test_report as v on c.centreNo=v.centreNo' )
+        $list = D("contract_flow as c")->field('if(c.id is null,-1,c.id) as flow_id,f.*,c.isaudit,c.back_time,c.bz_back,c.sh_back,c.gz_back,c.ifback,c.status,c.inner_sign_user_id,c.inner_sign_time,c.external_sign_time,c.takelist_user_id,c.takelist_time,c.verify_time,u.name as takename,u1.name as innername,u2.name as externalname,u3.name as auditname,v.doc_path,v.pdf_path,v.qrcode_path')
+                ->join('left join contract as f on c.centreNo=f.centreNo LEFT JOIN common_system_user u on c.takelist_user_id=u.id LEFT JOIN common_system_user u2 on c.external_sign_user_id=u2.id LEFT JOIN common_system_user u1 on c.inner_sign_user_id=u1.id LEFT JOIN common_system_user u3 on c.verify_user_id=u3.id left join test_report as v on c.centreNo=v.centreNo' )
                 ->where($where)->order('case when (c.status=8 and c.back_time) then c.back_time else c.takelist_all_time end desc')->limit("{$offset},{$pagesize}")->select();
 
         if($list){

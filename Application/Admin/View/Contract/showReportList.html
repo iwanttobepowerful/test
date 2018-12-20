@@ -116,6 +116,8 @@
                         </if>
                         <if condition="$con['status']==7">
                             <span style="color:green">{$con.takename}已接单<br/>{$con.takelist_time}</span>
+                            <elseif condition="$con['status']==4 and $con['isaudit']==1"/>
+                            <span style="color:green">{$con.auditname}已审核<br/>{$con.verify_time}</span>
                             <elseif condition="$con['status']==5"/>
                             <span style="color:green">{$con.innername}已盖章签发<br/>{$con.inner_sign_time}</span>
                             <elseif condition="$con['status']==6"/>
