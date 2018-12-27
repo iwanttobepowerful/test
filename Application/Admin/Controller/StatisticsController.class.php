@@ -256,12 +256,16 @@ class StatisticsController extends Controller {
             ->setCellValue("M1", "E记录")->setCellValue("N1", "F记录")
             ->setCellValue("O1", "G1记录")->setCellValue("P1", "G2记录")
             ->setCellValue("Q1", "H记录")->setCellValue("R1", "副本")
-            ->setCellValue("S1", "基础费")->setCellValue("T1", "检验依据")
-            ->setCellValue("U1", "来样日期")->setCellValue("V1", "报告日期")
-            ->setCellValue("W1", "样品数量")->setCellValue("X1", "实验员")
-            ->setCellValue("Y1", "收样人")->setCellValue("Z1", "客户姓名")
-            ->setCellValue("AA1", "客户联系电话")->setCellValue("AB1", "客户地址")
-            ->setCellValue("AC1", "邮编")->setCellValue("AD1", "传真")->setCellValue("AE1", "E-mail");//填充数据
+            ->setCellValue("S1", "基础费")
+            ->setCellValue("T1", "项目修改费")
+            ->setCellValue("U1", "基础费")
+            ->setCellValue("V1", "检验依据")
+            ->setCellValue("W1", "来样日期")->setCellValue("X1", "报告日期")
+            ->setCellValue("Y1", "样品数量")->setCellValue("Z1", "实验员")
+            ->setCellValue("AA1", "收样人")->setCellValue("AB1", "客户姓名")
+            ->setCellValue("AC1", "客户联系电话")->setCellValue("AD1", "客户地址")
+            ->setCellValue("AE1", "邮编")->setCellValue("AF1", "传真")
+            ->setCellValue("AG1", "E-mail");//填充数据
     }
 
     /**
@@ -275,10 +279,13 @@ class StatisticsController extends Controller {
             ->setCellValue("E" . $j, $value['samplename'])->setCellValue("F" . $j, $value['specification'])->setCellValue("G" . $j, $value['testitem'])->setCellValue("H" . $j, $value['testcost'])
             ->setCellValue("I" . $j, $value['rarecord'])->setCellValue("J" . $j, $value['rbrecord'])->setCellValue("K" . $j, $value['rcrecord'])->setCellValue("L" . $j, $value['rdrecord'])
             ->setCellValue("M" . $j, $value['rerecord'])->setCellValue("N" . $j, $value['rfrecord'])->setCellValue("O" . $j, $value['rg1record'])->setCellValue("P" . $j, $value['rg2record'])
-            ->setCellValue("Q" . $j, $value['rhrecord'])->setCellValue("R" . $j, $value['dcopy'])->setCellValue("S" . $j, $value['donline'])->setCellValue("T" . $j, $value['testcriteria'])
-            ->setCellValue("U" . $j, $value['collectdate'])->setCellValue("V" . $j, $value['reportdate'])->setCellValue("W" . $j, $value['samplequantity'])->setCellValue("X" . $j, $value['takelist_user'])//实验员也就是接单人
-            ->setCellValue("Y" . $j, $value['collector'])->setCellValue("Z" . $j, $value['clientsign'])->setCellValue("AA" . $j, $value['telephone'])
-            ->setCellValue("AB" . $j, $value['address'])->setCellValue("AC" . $j, $value['postcode'])->setCellValue("AD" . $j, $value['tax'])->setCellValue("AE" . $j, $value['email']);
+            ->setCellValue("Q" . $j, $value['rhrecord'])->setCellValue("R" . $j, $value['dcopy'])->setCellValue("S" . $j, $value['donline'])
+            ->setCellValue("T" . $j, $value['drevise'])
+            ->setCellValue("U" . $j, $value['dother'])
+            ->setCellValue("V" . $j, $value['testcriteria'])
+            ->setCellValue("W" . $j, $value['collectdate'])->setCellValue("X" . $j, $value['reportdate'])->setCellValue("Y" . $j, $value['samplequantity'])->setCellValue("Z" . $j, $value['takelist_user'])//实验员也就是接单人
+            ->setCellValue("AA" . $j, $value['collector'])->setCellValue("AB" . $j, $value['clientsign'])->setCellValue("AC" . $j, $value['telephone'])
+            ->setCellValue("AD" . $j, $value['address'])->setCellValue("AE" . $j, $value['postcode'])->setCellValue("AF" . $j, $value['tax'])->setCellValue("AG" . $j, $value['email']);
     }
 
     /**
@@ -350,6 +357,8 @@ class StatisticsController extends Controller {
         $objActSheet->getStyle( 'AC1')->getFont()->setName('SimHei' )->setBold(true);
         $objActSheet->getStyle( 'AD1')->getFont()->setName('SimHei' )->setBold(true);
         $objActSheet->getStyle( 'AE1')->getFont()->setName('SimHei' )->setBold(true);
+        $objActSheet->getStyle( 'AF1')->getFont()->setName('SimHei' )->setBold(true);
+        $objActSheet->getStyle( 'AG1')->getFont()->setName('SimHei' )->setBold(true);
         $mytitle = '';
 
         $ch = chr($ch + 65);//转换到字母
@@ -409,6 +418,8 @@ class StatisticsController extends Controller {
         $objActSheet->getStyle( 'AC1')->getFont()->setName('SimHei' )->setBold(true);
         $objActSheet->getStyle( 'AD1')->getFont()->setName('SimHei' )->setBold(true);
         $objActSheet->getStyle( 'AE1')->getFont()->setName('SimHei' )->setBold(true);
+        $objActSheet->getStyle( 'AF1')->getFont()->setName('SimHei' )->setBold(true);
+        $objActSheet->getStyle( 'AG1')->getFont()->setName('SimHei' )->setBold(true);
         $mytitle = '';
 
         $mytitle .= 'G1科室';
@@ -466,6 +477,8 @@ class StatisticsController extends Controller {
         $objActSheet->getStyle( 'AC1')->getFont()->setName('SimHei' )->setBold(true);
         $objActSheet->getStyle( 'AD1')->getFont()->setName('SimHei' )->setBold(true);
         $objActSheet->getStyle( 'AE1')->getFont()->setName('SimHei' )->setBold(true);
+        $objActSheet->getStyle( 'AF1')->getFont()->setName('SimHei' )->setBold(true);
+        $objActSheet->getStyle( 'AG1')->getFont()->setName('SimHei' )->setBold(true);
         $mytitle = '';
 
         $mytitle .= 'G2科室';
@@ -523,6 +536,8 @@ class StatisticsController extends Controller {
         $objActSheet->getStyle( 'AC1')->getFont()->setName('SimHei' )->setBold(true);
         $objActSheet->getStyle( 'AD1')->getFont()->setName('SimHei' )->setBold(true);
         $objActSheet->getStyle( 'AE1')->getFont()->setName('SimHei' )->setBold(true);
+        $objActSheet->getStyle( 'AF1')->getFont()->setName('SimHei' )->setBold(true);
+        $objActSheet->getStyle( 'AG1')->getFont()->setName('SimHei' )->setBold(true);
         $mytitle = '';
 
         $mytitle .= 'H科室';
