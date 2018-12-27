@@ -258,7 +258,7 @@ class StatisticsController extends Controller {
             ->setCellValue("Q1", "H记录")->setCellValue("R1", "副本")
             ->setCellValue("S1", "基础费")
             ->setCellValue("T1", "项目修改费")
-            ->setCellValue("U1", "基础费")
+            ->setCellValue("U1", "其他")
             ->setCellValue("V1", "检验依据")
             ->setCellValue("W1", "来样日期")->setCellValue("X1", "报告日期")
             ->setCellValue("Y1", "样品数量")->setCellValue("Z1", "实验员")
