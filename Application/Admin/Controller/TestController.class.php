@@ -674,7 +674,7 @@ class TestController extends Controller
                 $tmpSavefile2 = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-sign2.' . $baseinfo['extension'];
                 waterMark($tmpSavefile, './Public/static/images/sign.png', $tmpSavefile2, array(350, 35));
                 $tmpSavefile1 = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-si.' . $baseinfo['extension'];
-                waterMark($tmpSavefile2, './Public/static/images/si.png', $tmpSavefile1, array(750, 37));
+                waterMark($tmpSavefile2, './Public/static/images/si.png', $tmpSavefile1, array(750, 32));
                 @rename($tmpSavefile1, $imageFiles[1]);
 //加水印
                 //再转换成pdf
@@ -820,7 +820,7 @@ class TestController extends Controller
                 $tmpSavefile2 = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-sign2.' . $baseinfo['extension'];
                 waterMark($tmpSavefile, './Public/static/images/sign.png', $tmpSavefile2, array(350, 35));
                 $tmpSavefile1 = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-si.' . $baseinfo['extension'];
-                waterMark($tmpSavefile2, './Public/static/images/si.png', $tmpSavefile1, array(750, 37));
+                waterMark($tmpSavefile2, './Public/static/images/si.png', $tmpSavefile1, array(750, 32));
                 @rename($tmpSavefile1, $imageFiles[1]);
 //加水印
                 //再转换成pdf
