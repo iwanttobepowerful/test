@@ -635,8 +635,11 @@ class TestController extends Controller
                     $tmpSavefile = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-mark.' . $baseinfo['extension'];
                     waterMark($imageFiles[0], './Public/static/images/sealB.png', $tmpSavefile, array(1050, 2620));
                     //左上角章
+                    $tmpSavefile1 = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-si.' . $baseinfo['extension'];
+                    waterMark($tmpSavefile, './Public/static/images/si.png', $tmpSavefile1, array(750, 46));
                     $tmpSavefile2 = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-sign.' . $baseinfo['extension'];
-                    waterMark($tmpSavefile, './Public/static/images/sign.png', $tmpSavefile2, array(350, 60));
+                    waterMark($tmpSavefile1, './Public/static/images/sign.png', $tmpSavefile2, array(350, 60));
+
                     //带mark的pdf
                     @rename($tmpSavefile2, $imageFiles[0]);
                     $imgFiles[] = $tmpSavefile;
@@ -648,9 +651,12 @@ class TestController extends Controller
                     //小中心
                     $tmpSavefile = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-mark.' . $baseinfo['extension'];
                     waterMark($imageFiles[0], './Public/static/images/sealB.png', $tmpSavefile, array(750, 2600));
+                    //新加公章
+                    $tmpSavefile1 = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-si.' . $baseinfo['extension'];
+                    waterMark($tmpSavefile, './Public/static/images/si.png', $tmpSavefile1, array(750, 46));
                     //第二个公章
                     $tmpSavefile2 = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-mark2.' . $baseinfo['extension'];
-                    waterMark($tmpSavefile, './Public/static/images/sealA.png', $tmpSavefile2, array(1350, 2600));
+                    waterMark($tmpSavefile1, './Public/static/images/sealA.png', $tmpSavefile2, array(1350, 2600));
                     //左上角章
                     $tmpSavefile3 = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-sign.' . $baseinfo['extension'];
                     waterMark($tmpSavefile2, './Public/static/images/sign.png', $tmpSavefile3, array(350, 60));
@@ -666,8 +672,10 @@ class TestController extends Controller
 
                 //左上角章
                 $tmpSavefile2 = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-sign2.' . $baseinfo['extension'];
-                waterMark($tmpSavefile, './Public/static/images/sign.png', $tmpSavefile2, array(350, 0));
-                @rename($tmpSavefile2, $imageFiles[1]);
+                waterMark($tmpSavefile, './Public/static/images/sign.png', $tmpSavefile2, array(350, 35));
+                $tmpSavefile1 = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-si.' . $baseinfo['extension'];
+                waterMark($tmpSavefile2, './Public/static/images/si.png', $tmpSavefile1, array(750, 37));
+                @rename($tmpSavefile1, $imageFiles[1]);
 //加水印
                 //再转换成pdf
                 $signPdf = './Public/attached/report/' . $centreno . '-sign.pdf';
@@ -687,6 +695,7 @@ class TestController extends Controller
                 $imgFiles[] = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-mark.' . $baseinfo['extension'];
                 $imgFiles[] = $tmpSavefile;
                 $imgFiles[] = $tmpSavefile2;
+                $imgFiles[] = $tmpSavefile1;
             }
             $data['pdf_path'] = $data['path'];
             $data['pdf_sign_path'] = substr($signPdf, 1);
@@ -774,8 +783,10 @@ class TestController extends Controller
                     $tmpSavefile = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-mark.' . $baseinfo['extension'];
                     waterMark($imageFiles[0], './Public/static/images/sealB.png', $tmpSavefile, array(1050, 2620));
                     //左上角章
+                    $tmpSavefile1 = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-si.' . $baseinfo['extension'];
+                    waterMark($tmpSavefile, './Public/static/images/si.png', $tmpSavefile1, array(750, 46));
                     $tmpSavefile2 = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-sign.' . $baseinfo['extension'];
-                    waterMark($tmpSavefile, './Public/static/images/sign.png', $tmpSavefile2, array(350, 60));
+                    waterMark($tmpSavefile1, './Public/static/images/sign.png', $tmpSavefile2, array(350, 60));
                     //带mark的pdf
                     @rename($tmpSavefile2, $imageFiles[0]);
                     $imgFiles[] = $tmpSavefile;
@@ -787,9 +798,12 @@ class TestController extends Controller
                     //小中心
                     $tmpSavefile = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-mark.' . $baseinfo['extension'];
                     waterMark($imageFiles[0], './Public/static/images/sealB.png', $tmpSavefile, array(750, 2600));
+                    //新加公章
+                    $tmpSavefile1 = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-si.' . $baseinfo['extension'];
+                    waterMark($tmpSavefile, './Public/static/images/si.png', $tmpSavefile1, array(750, 46));
                     //第二个公章
                     $tmpSavefile2 = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-mark2.' . $baseinfo['extension'];
-                    waterMark($tmpSavefile, './Public/static/images/sealA.png', $tmpSavefile2, array(1350, 2600));
+                    waterMark($tmpSavefile1, './Public/static/images/sealA.png', $tmpSavefile2, array(1350, 2600));
                     //左上角章
                     $tmpSavefile3 = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-sign.' . $baseinfo['extension'];
                     waterMark($tmpSavefile2, './Public/static/images/sign.png', $tmpSavefile3, array(350, 60));
@@ -804,8 +818,10 @@ class TestController extends Controller
                 }
                 //左上角章
                 $tmpSavefile2 = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-sign2.' . $baseinfo['extension'];
-                waterMark($tmpSavefile, './Public/static/images/sign.png', $tmpSavefile2, array(350, 0));
-                @rename($tmpSavefile2, $imageFiles[1]);
+                waterMark($tmpSavefile, './Public/static/images/sign.png', $tmpSavefile2, array(350, 35));
+                $tmpSavefile1 = $baseinfo['dirname'] . '/' . $baseinfo['filename'] . '-si.' . $baseinfo['extension'];
+                waterMark($tmpSavefile2, './Public/static/images/si.png', $tmpSavefile1, array(750, 37));
+                @rename($tmpSavefile1, $imageFiles[1]);
 //加水印
                 //再转换成pdf
                 $signPdf = './Public/attached/report_temp/' . $centreno . '-sign.pdf';
@@ -824,6 +840,7 @@ class TestController extends Controller
                 }
                 $imgFiles[] = $tmpSavefile;
                 $imgFiles[] = $tmpSavefile2;
+                $imgFiles[] = $tmpSavefile1;
             }
             $data['pdf_path'] = $data['path'];
             $data['pdf_sign_path'] = substr($signPdf, 1);
