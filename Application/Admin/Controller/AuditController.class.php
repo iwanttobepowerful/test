@@ -97,7 +97,7 @@ class AuditController extends Controller {
             ->join(' left join contract as a on r.centreNo=a.centreNo left join contract_flow as c on r.centreNo=c.centreNo')
             ->where($where)
             ->limit("{$offset},{$pagesize}")
-            ->order('r.create_time desc')->select();
+            ->order('case when r.status=0 then 0 end desc,r.create_time desc')->select();
         if($de =='B'){
             $rs=D("report_feedback")->alias("r")
                 ->field('if(r.status is null,-1,r.status) as sub_status,r.reason,r.create_time,r.centreno,r.id as reid,a.clientname,a.samplename,a.testcriteria,a.testitem,c.*,b.pdf_path,d.pdf_path as temp_pdf_path')
@@ -105,7 +105,7 @@ class AuditController extends Controller {
                 ->join('left join test_report as b on r.centreNo=b.centreNo left join test_report_temp as d on r.centreNo=d.centreNo')
                 ->where($where)
                 ->limit("{$offset},{$pagesize}")
-                ->order('r.create_time desc')->select();
+                ->order('case when r.status=0 then 0 end desc,r.create_time desc')->select();
         }
 
         $count = D("report_feedback")->alias("r")->where($where)->count();
